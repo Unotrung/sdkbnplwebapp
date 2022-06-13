@@ -1,0 +1,60 @@
+/* progress bar */
+.progress{
+    width: 210px;
+    height: 30px;
+    background-color: #9cbab4;
+    border-radius: 10px;
+    overflow: hidden;
+    outline: none;
+    border: none;
+    position: relative;
+}
+
+.progress__fill{
+    width: 0%;
+    height: 100%;
+    background-color: #009579;
+    transition: all 1s;
+}
+
+.progress__text{
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    font: bold 14px 'Quicksand', san-serif;
+    font-weight: bold;
+    color: #fff;
+}
+/* progress bar */
+
+
+/* circular progress bar */
+.circular__progress{
+    height: 250px;
+    width: 250px;
+    background-color: orange;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    position: relative;
+}
+
+.circular__progress::before{
+    content: "";
+    position: absolute;
+    height: 85%;
+    width: 85%;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.circular__value{
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: #231c3d;
+}
+/* circular progress bar */
+

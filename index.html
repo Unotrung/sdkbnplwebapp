@@ -5,54 +5,146 @@
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 
 <body>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' 
+    <div id='test'></div>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' 
     integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==' 
     crossorigin='anonymous' 
     referrerpolicy='no-referrer'>
     </script>
-    <script type="module" >
-        import { getAllUserCustomer, getAllUserPersonal, getAllTenor, checkPhoneExists, checkNidExists, checkNidPhoneExists, login, addInfoPersonal, sendOtp, verifyOtp, sendOtpPin, verifyOtpPin, resetPin, updatePin, getAllCity, getAllDistrict, getAllWard, getAllReferenceRelation, getDetail, addProvider, updateStep, requestRefreshToken  } from './index.js';
-        // console.log(getAllUserCustomer());
-        // console.log(getAllUserPersonal());
-        // console.log(getAllTenor());
-        // console.log(checkNidPhoneExists('0981284476', '030200010424'));
-        // console.log(sendOtp('0981284476'));
-        // console.log(verifyOtp('0981284476', '902894'));
-        // console.log(login('0981284476', '9999'));
-        // console.log(
-        //     addInfoPersonal(
-        //      "Nguyễn Trung Kiên",
-        //      "Nam",
-        //      "2000-08-11",
-        //      "0981284476",
-        //      "030200010424",
-        //      "2025-08-11",
-        //      "Thành phố Hồ Chí Minh",
-        //     "Gò Vấp" ,
-        //      "8",
-        //      "Quang Trung",
-        //      "Bạn",
-        //      "Nguyễn Hồng Quân",
-        //      "0981284475",
-        //     "1234"
-        //     )
-        // )
-        // console.log(sendOtpPin('0981284476', '030200010424'));
-        // console.log(verifyOtpPin('0981284476', '030200010424', '023527'));
-        // console.log(resetPin('0981284476', '1111', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTczODNkOGZjYTdhMDhkZmY3ZmYzYiIsInBob25lIjoiMDk4MTI4NDQ3NiIsImlhdCI6MTY1NDA3NzUxMSwiZXhwIjoxNjU0MDc3NTcxfQ.-RZX0dfzLDnc8DFgbZNWyflMiqIMWN75qlo0Su69izQ'));
-        // console.log(updatePin('0981284476', '1111', '9999'));
-        // console.log(getAllCity());
-        // console.log(getAllDistrict());
-        // console.log(getAllWard());
-        // console.log(getAllReferenceRelation());
-        // console.log(getDetail('0981284476', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTcxZWU5OGZjYTdhMDhkZmY3ZmRjYiIsInBob25lIjoiMDk4MTI4NDQ3NiIsImlhdCI6MTY1NDEzODkwNiwiZXhwIjoxNjU0MTQwNzA2fQ.YCMDwVTvjzwoUqWhiTUDInl_-EryyGOsxYrwTy8yuX8'));
-        // console.log(addProvider('Home Credit', '030200010424'))
-        // console.log(updateStep('0981284476', 4))
-        // console.log(requestRefreshToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTcxZWU5OGZjYTdhMDhkZmY3ZmRjYiIsInBob25lIjoiMDk4MTI4NDQ3NiIsImlhdCI6MTY1NDE0MTIwMCwiZXhwIjoxNjU0MTUyMDAwfQ.XyDK6R1o5ykVS1Rr6NUt3hY0IgyTrTht1cjJ2t1S6IE'))
+
+    <script type='text/javascript' src="https://hv-camera-web-sg.s3-ap-southeast-1.amazonaws.com/hyperverge-web-sdk@3.5.1/src/sdk.min.js">
+    </script>
+
+    <script type='text/javascript'>
+        async function fetchToken(){
+            const url = 'https://apibnpl.voolo.vn/v1/bnpl/fec/getHVToken';
+            const data = await fetch(url);
+            const json = await data.json();
+            const { token } = json;
+            const jwttoken = token.split(' ')[1];
+            return jwttoken;
+        };
+
+        async function getHV(){
+            await fetchToken()
+            .then((res) => {
+                console.log('Get HV Token');
+
+                HyperSnapSDK.init(res, HyperSnapParams.Region.AsiaPacific);
+
+                HyperSnapSDK.startUserSession(); 
+            })
+            .catch((err) => console.log(err))
+        };
+
+        async function LaunchFaceCaptureScreen(){
+                // Launch Face Capture Screen (Khởi chạy màn hình chụp khuôn mặt)
+                try{
+                    console.log('Launch Face Capture Screen');
+                    var hvFaceConfig = new HVFaceConfig();
+                    hvFaceConfig.setShouldShowInstructionPage(true);
+                    callback = (HVError, HVResponse) => {
+                    if(HVError) {
+                        var errorCode = HVError.getErrorCode();
+                        var errorMessage = HVError.getErrorMessage();
+                    } 
+                    if(HVResponse) {
+                        var apiResults = HVResponse.getApiResult();
+                        var apiHeaders = HVResponse.getApiHeaders();
+                        var imageBase64 = HVResponse.getImageBase64();
+                        var attemptsCount = HVResponse.getAttemptsCount();
+                    }
+                    };
+                    HVFaceModule.start(hvFaceConfig, callback);
+                }
+                catch(error){
+                    console.log('Error: ', error);
+                }
+        };
+
+        async function LaunchDocumentCaptureScreen(){
+            try{
+                var hvDocConfig = new HVDocConfig();
+                hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID",hvDocConfig.DocumentSide.FRONT, {}, {});
+                callback = (HVError, HVResponse) => {
+                    if(HVError) {
+                        var errorCode = HVError.getErrorCode();
+                        var errorMessage = HVError.getErrorMessage();
+                    } 
+                    if(HVResponse) {
+                        var apiResults = HVResponse.getApiResult();
+                        var apiHeaders = HVResponse.getApiHeaders();
+                        var imageBase64 = HVResponse.getImageBase64();
+                        var attemptsCount = HVResponse.getAttemptsCount();
+                    }
+                };
+                HVDocsModule.start(hvDocConfig, callback);
+            }
+            catch(error){
+                console.log('Error: ', error);
+            }
+        }
+       
+        async function runFaceCaptureScreen(){
+            try{
+                await getHV();
+                await LaunchFaceCaptureScreen();
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+
+        async function runDocumentCaptureScreen(){
+            try{
+                await getHV();
+                await LaunchDocumentCaptureScreen();
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+
+        async function makeFaceMatch(){
+            callback = (HVError, HVResponse) => {
+            if(HVError) {
+                var errorCode = HVError.getErrorCode();
+                var errorMessage = HVError.getErrorMessage();
+            }
+            if(HVResponse) {
+                var apiResults = HVResponse.getApiResult();
+                var apiHeaders = HVResponse.getApiHeaders();
+            }
+            };
+            HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
+        }
+
+        runFaceCaptureScreen();
+    </script>
+
+    <script type='module'>
+        import { showUICheck, showAllProvider, showFormVerifyOTP, showFormSetupPin, showMessage, showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar } from './frontend.js';
+        // window.addEventListener('DOMContentLoaded', function(){
+            // showUICheck('#test', 'phone');
+            // showAllProvider('#test');
+        // })
+
+        // showFormVerifyOTP('#test');
+        // showFormSetupPin('#test');
+
+        // showMessage('#test','Update password successfully', 'fa-solid fa-circle-check');
+
+        // showProgressbar('#test');
+        // updateProgressbar();
+
+        // showCircularProgressbar('#test');
+        // updateCircularProgressbar();
     </script>
 </body>
 </html>

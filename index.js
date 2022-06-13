@@ -16,7 +16,7 @@ export function login(phone, pin) {
     return callAjax({ phone: phone, pin: pin }, 'user/login', 'POST');
 }
 
-export function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate, city, district, ward, street, personal_title_ref, name_ref, phone_ref, pin) {
+export function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate, expirationDate, city, district, ward, street, temporaryCity, temporaryDistrict, temporaryWard, temporaryStreet, personal_title_ref, name_ref, phone_ref, pin, images) {
     return callAjax(
         {
             name: name,
@@ -25,14 +25,20 @@ export function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate
             phone: phone,
             citizenId: citizenId,
             issueDate: issueDate,
+            expirationDate: expirationDate,
             city: city,
             district: district,
             ward: ward,
             street: street,
+            temporaryCity: temporaryCity,
+            temporaryDistrict: temporaryDistrict,
+            temporaryWard: temporaryWard,
+            temporaryStreet: temporaryStreet,
             personal_title_ref: personal_title_ref,
             name_ref: name_ref,
             phone_ref: phone_ref,
-            pin: pin
+            pin: pin,
+            images: images
         },
         'personal/addInfoPersonal',
         'POST'
@@ -59,7 +65,7 @@ export function resetPin(phone, new_pin, token) {
     return callAjax({ phone: phone, new_pin: new_pin }, 'user/resetPin', 'PUT', token);
 }
 
-export function updatePin(phone, pin, new_pin, token) {
+export function updatePin(phone, pin, new_pin) {
     return callAjax({ phone: phone, pin: pin, new_pin: new_pin }, 'user/updatePin', 'PUT');
 }
 
@@ -107,5 +113,20 @@ export function requestRefreshToken(refreshToken) {
     return callAjax({ refreshToken: refreshToken }, 'user/requestRefreshToken', 'PUT');
 }
 
-
-
+export function getAllProviders() {
+    try {
+        let data = $.ajax({
+            url: 'https://apieap.voolo.vn/v1/eap/common/generateProviders',
+            type: 'GET',
+            async: false,
+            dataType: 'json',
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+}

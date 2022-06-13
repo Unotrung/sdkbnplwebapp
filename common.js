@@ -19,4 +19,4 @@ export function callAjax($data, $url, $type, $token = '') {
             errorMessage: error.message
         }
     }
-}
+};
