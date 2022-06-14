@@ -188,6 +188,7 @@ export function showFormVerifyOTP(element) {
     })
 }
 
+// Done
 export function showAllTenor(element) {
     let html = '';
     const data = getAllTenor();
@@ -204,6 +205,7 @@ export function showAllTenor(element) {
     $(element).html(html);
 };
 
+// Done
 export function showAllProvider(element) {
     let html = '';
     const data = getAllProviders();
@@ -220,10 +222,12 @@ export function showAllProvider(element) {
     $(element).html(html);
 };
 
+// Done
 export function selectTenor(id) {
     alert(id);
 }
 
+// Done
 export function selectProvider(id) {
     alert(id);
 }
@@ -237,11 +241,13 @@ export function showMessage(element, message, icon) {
     $(element).html(html);
 }
 
+// Done 
 $('body').on('click', '.btnSelectTenor', function () {
     var val = $(this).attr("data-id");
     selectTenor(val);
 })
 
+// Done
 $('body').on('click', '.btnSelectProvider', function () {
     var val = $(this).attr("data-id");
     selectProvider(val);

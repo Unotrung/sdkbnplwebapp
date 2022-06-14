@@ -7,11 +7,12 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>SDK BNPL</title>
 </head>
 
 <body>
     <div id='test'></div>
+    
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' 
     integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==' 
     crossorigin='anonymous' 
@@ -21,130 +22,272 @@
     <script type='text/javascript' src="https://hv-camera-web-sg.s3-ap-southeast-1.amazonaws.com/hyperverge-web-sdk@3.5.1/src/sdk.min.js">
     </script>
 
-    <script type='text/javascript'>
-        async function fetchToken(){
-            const url = 'https://apibnpl.voolo.vn/v1/bnpl/fec/getHVToken';
-            const data = await fetch(url);
-            const json = await data.json();
-            const { token } = json;
-            const jwttoken = token.split(' ')[1];
-            return jwttoken;
-        };
+    <script type='text/javascript' >
+        let selfieImage = '';
+        let frontNidImage = '';
+        let backNidImage = '';
 
-        async function getHV(){
-            await fetchToken()
-            .then((res) => {
-                console.log('Get HV Token');
+        // currentShot use for check back or front image, not selfie
+        let currentShot = '';
+        let selfieImageCompleted = '';
+        let frontNidImageCompleted = '';
+        let backNidImageCompleted = '';
 
-                HyperSnapSDK.init(res, HyperSnapParams.Region.AsiaPacific);
+        let image = '';
+        let base64 = '';
 
-                HyperSnapSDK.startUserSession(); 
-            })
-            .catch((err) => console.log(err))
-        };
-
-        async function LaunchFaceCaptureScreen(){
-                // Launch Face Capture Screen (Khởi chạy màn hình chụp khuôn mặt)
-                try{
-                    console.log('Launch Face Capture Screen');
-                    var hvFaceConfig = new HVFaceConfig();
-                    hvFaceConfig.setShouldShowInstructionPage(true);
-                    callback = (HVError, HVResponse) => {
-                    if(HVError) {
-                        var errorCode = HVError.getErrorCode();
-                        var errorMessage = HVError.getErrorMessage();
-                    } 
-                    if(HVResponse) {
-                        var apiResults = HVResponse.getApiResult();
-                        var apiHeaders = HVResponse.getApiHeaders();
-                        var imageBase64 = HVResponse.getImageBase64();
-                        var attemptsCount = HVResponse.getAttemptsCount();
-                    }
-                    };
-                    HVFaceModule.start(hvFaceConfig, callback);
+        async function fetchToken() {
+            try {
+                const url = 'https://apibnpl.voolo.vn/v1/bnpl/fec/getHVToken';
+                const data = await fetch(url);
+                const json = await data.json();
+                const { token } = json;
+                const jwttoken = token.split(' ')[1];
+                return jwttoken;
+            }
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
                 }
-                catch(error){
-                    console.log('Error: ', error);
-                }
+            }
         };
 
-        async function LaunchDocumentCaptureScreen(){
-            try{
-                var hvDocConfig = new HVDocConfig();
-                hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID",hvDocConfig.DocumentSide.FRONT, {}, {});
+        async function getHV() {
+            try {
+                await fetchToken()
+                    .then((res) => {
+                        HyperSnapSDK.init(res, HyperSnapParams.Region.AsiaPacific);
+                        HyperSnapSDK.startUserSession();
+                    })
+            }
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
+        }
+        };
+
+        async function LaunchFaceCaptureScreen() {
+            try {
+                console.log('Launch Face Capture Screen');
+                var hvFaceConfig = new HVFaceConfig();
+                hvFaceConfig.setShouldShowInstructionPage(true);
                 callback = (HVError, HVResponse) => {
-                    if(HVError) {
+                    if (HVError) {
                         var errorCode = HVError.getErrorCode();
+                        console.log('error code Face Capture Screen: ', errorCode);
                         var errorMessage = HVError.getErrorMessage();
-                    } 
-                    if(HVResponse) {
+                        console.log('error message Face Capture Screen: ', errorMessage);
+                    }
+                    if (HVResponse) {
                         var apiResults = HVResponse.getApiResult();
+                        console.log('Api Results Face Capture Screen: ', apiResults);
                         var apiHeaders = HVResponse.getApiHeaders();
+                        console.log('Api Headers Face Capture Screen: ', apiHeaders);
                         var imageBase64 = HVResponse.getImageBase64();
+                        console.log('Image Base64 Face Capture Screen: ', imageBase64);
                         var attemptsCount = HVResponse.getAttemptsCount();
+                        console.log('Attempt Count Face Capture Screen: ', attemptsCount);
+                        if(imageBase64 !== '' && imageBase64 !== null){
+                            localStorage.setItem('selfie-image', imageBase64);
+                            alert('Lưu ảnh Selfie thành công !');
+                        }
+                    }
+                };
+               HVFaceModule.start(hvFaceConfig, callback);
+            }
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
+        }
+        };
+
+        async function LaunchDocumentCaptureScreen(side) {
+            try {
+                console.log('Launch Document Capture Screen');
+                var hvDocConfig = new HVDocConfig();
+                if(side === 'FRONT'){
+                    hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
+                }
+                else if(side === 'BACK'){
+                    hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
+                }
+                callback = (HVError, HVResponse) => {
+                    if (HVError) {
+                        var errorCode = HVError.getErrorCode();
+                        console.log('error code Document Capture Screen: ', errorCode);
+                        var errorMessage = HVError.getErrorMessage();
+                        console.log('error message Document Capture Screen: ', errorCode);
+                    }
+                    if (HVResponse) {
+                        var apiResults = HVResponse.getApiResult();
+                        console.log('Api Results Document Capture Screen: ', apiResults);
+                        var apiHeaders = HVResponse.getApiHeaders();
+                        console.log('Api Headers Document Capture Screen: ', apiHeaders);
+                        var imageBase64 = HVResponse.getImageBase64();
+                        console.log('Image Base64 Document Capture Screen: ', imageBase64);
+                        var attemptsCount = HVResponse.getAttemptsCount();
+                        console.log('Attempt Count Document Capture Screen: ', attemptsCount);
+                        base64 = imageBase64;
+                        if(imageBase64 !== '' && imageBase64 !== null){
+                            if(side === 'FRONT'){
+                                localStorage.setItem('front-image', imageBase64);
+                                alert('Lưu mặt trước CMND thành công !');
+                            }
+                            else if(side === 'BACK'){
+                                localStorage.setItem('back-image', imageBase64);
+                                alert('Lưu mặt sau CMND thành công !');
+                            }
+                        }
                     }
                 };
                 HVDocsModule.start(hvDocConfig, callback);
             }
-            catch(error){
-                console.log('Error: ', error);
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
             }
         }
-       
-        async function runFaceCaptureScreen(){
+
+        function deleteImage(side){
             try{
-                await getHV();
-                await LaunchFaceCaptureScreen();
+                if(side === 'SELFIE'){
+                    localStorage.removeItem('selfie-image');
+                    alert('Xóa ảnh selfie thành công !');
+                }
+                else if(side === 'FRONT'){
+                    localStorage.removeItem('front-image');
+                    alert('Xóa mặt trước selfie thành công !');
+                }
+                else{
+                    localStorage.removeItem('back-image');
+                    alert('Xóa mặt sau selfie thành công !');
+                }
             }
-            catch(error){
-                console.log(error);
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
             }
         }
 
-        async function runDocumentCaptureScreen(){
-            try{
-                await getHV();
-                await LaunchDocumentCaptureScreen();
+        function runFaceCaptureScreen() {
+            try {
+                 getHV()
+                .then(() =>  LaunchFaceCaptureScreen());
             }
-            catch(error){
-                console.log(error);
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
             }
         }
 
-        async function makeFaceMatch(){
-            callback = (HVError, HVResponse) => {
-            if(HVError) {
-                var errorCode = HVError.getErrorCode();
-                var errorMessage = HVError.getErrorMessage();
+        function runDocumentCaptureScreen() {
+            try {
+                 getHV()
+                .then(() => LaunchDocumentCaptureScreen('FRONT'))
             }
-            if(HVResponse) {
-                var apiResults = HVResponse.getApiResult();
-                var apiHeaders = HVResponse.getApiHeaders();
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
             }
-            };
-            HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
         }
 
-        runFaceCaptureScreen();
+        function acceptImage(side, image, data){
+            if(side === 'SELFIE'){
+                selfieImage = image;
+                selfieImageCompleted = true;
+                return;
+            }
+            currentShot = side;
+            if(side === 'FRONT'){
+                frontNidImage = image;
+                frontNidImageCompleted = true;
+            }
+            if(side === 'BACK'){
+                backNidImage = image;
+                backNidImageCompleted = true;
+            }
+        }
+
+        function postNationalID(image) {
+            try {
+                var formData = new FormData();
+                formData.append('image', image);
+                console.log('form data: ', formData);
+                let data = $.ajax({
+                    url: 'https://vnm-docs.hyperverge.co/v2/nationalID',
+                    type: 'POST',
+                    async: false,
+                    data: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'appId': 'abe84d',
+                        'appKey': '7d2c0d7e1690c216458c',
+                        'transactionId': '6bdec326-5eff-4492-b045-160816e61cea'
+                    }
+                });
+                return data.responseJSON;
+            }
+            catch (error) {
+                return {
+                    errorCode: error.status || 500,
+                    errorMessage: error.message
+                }
+            }
+        }
+    
+        function convertBase64ToBlob(dataURI){
+            let byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else
+                byteString = unescape(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ia = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ia], {type: mimeString});
+        }
+
+        function convertBase64ToImage(base64){
+            image = new Image();
+            image.src = base64;
+            return image;
+        }
+        // runFaceCaptureScreen();
+        // runDocumentCaptureScreen();
+        // deleteImage('SELFIE');
+
+        console.log('CONVERT BASE 64 TO BLOB: ', postNationalID(convertBase64ToBlob(localStorage.getItem('front-image'))));
+        console.log('CONVERT BASE 64 TO IMAGE: ', postNationalID(convertBase64ToImage(localStorage.getItem('front-image'))));
+
     </script>
 
     <script type='module'>
-        import { showUICheck, showAllProvider, showFormVerifyOTP, showFormSetupPin, showMessage, showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar } from './frontend.js';
-        // window.addEventListener('DOMContentLoaded', function(){
-            // showUICheck('#test', 'phone');
-            // showAllProvider('#test');
-        // })
-
-        // showFormVerifyOTP('#test');
-        // showFormSetupPin('#test');
-
-        // showMessage('#test','Update password successfully', 'fa-solid fa-circle-check');
-
+        // import {  showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar, showAllTenor, showAllProvider } from './frontend.js';
+    
         // showProgressbar('#test');
         // updateProgressbar();
 
         // showCircularProgressbar('#test');
         // updateCircularProgressbar();
+
+        // showAllTenor('#test');
+        // showAllProvider('#test');
     </script>
+
 </body>
 </html>
