@@ -61,7 +61,7 @@ export function showUICheck(element, id) {
     var html =
         "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'>" +
         "<label for='" + id + "'>" + id + " </label>" +
-        "<input type='number' id='" + id + "' placeholder='Please enter your " + id + ":' class='input-global ng-pristine ng-invalid ng-touched'/>" +
+        "<input type='text' id='" + id + "' placeholder='Please enter your " + id + ":' class='input-global ng-pristine ng-invalid ng-touched'/>" +
         "<button type='button' id='btnSubmit' class='payment-button' >Gửi</button>" +
         "</form>";
     $(element).html(html);
