@@ -210,6 +210,7 @@
             }
         }
 
+<<<<<<< HEAD
         function acceptImage(side, image, data){
             if(side === 'SELFIE'){
                 selfieImage = image;
@@ -363,6 +364,26 @@
             }
             return new Blob([ia], {type: mimeString});
         }
+=======
+        // runFaceCaptureScreen();
+    </script>
+
+    <script type='module'>
+        import { showUICheck, 
+            showAllProvider, 
+            showFormVerifyOTP, 
+            showFormSetupPin, 
+            showMessage, 
+            showProgressbar, 
+            updateProgressbar, 
+            showCircularProgressbar, 
+            updateCircularProgressbar } from './frontend.js';
+
+        window.addEventListener('DOMContentLoaded', function(){
+            showUICheck('#test', 'phone');
+            // showAllProvider('#test');
+        })
+>>>>>>> cb3b0c5 (update css)
 
         function b64toBlob(b64Data, contentType, sliceSize) {
             contentType = contentType || '';
