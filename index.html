@@ -227,35 +227,12 @@
             }
         }
 
-<<<<<<< HEAD
-        function postNationalID(image) {
-            try {
-                console.log('Image Base 64: ', image);
-                let data = $.ajax({
-                    url: 'https://vnm-docs.hyperverge.co/v2/nationalID',
-                    type: 'POST',
-                    async: false,
-                    data: {
-                        image: image
-                    },
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'appId': 'abe84d',
-                        'appKey': '7d2c0d7e1690c216458c',
-                        'transactionId': '6bdec326-5eff-4492-b045-160816e61cea'
-                    }
-                });
-                console.log('Data: ', data);
-                console.log('Data Response JSON: ', data.responseJSON);
-                return data.responseJSON;
-=======
 
         function test(image){
             callback = (HVError, HVResponse) => {
             if(HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
             }
             if(HVResponse) {
                 var apiResults = HVResponse.getApiResult();
@@ -265,29 +242,6 @@
 
             HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
         }
-<<<<<<< HEAD
-    
-        // function convertBase64ToBlob(dataURI){
-        //     let byteString;
-        //     if (dataURI.split(',')[0].indexOf('base64') >= 0)
-        //         byteString = atob(dataURI.split(',')[1]);
-        //     else
-        //         byteString = unescape(dataURI.split(',')[1]);
-        //     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        //     const ia = new Uint8Array(byteString.length);
-        //     for (let i = 0; i < byteString.length; i++) {
-        //         ia[i] = byteString.charCodeAt(i);
-        //     }
-        //     return new Blob([ia], {type: mimeString});
-        // }
-
-        // function convertBase64ToImage(base64){
-        //     image = new Image();
-        //     image.src = base64;
-        //     return image;
-        // }
-
-=======
 
         function postNationalID(ImageURL) {
             var form = document.getElementById("myAwesomeForm");
@@ -387,22 +341,16 @@
             var blob = new Blob(byteArrays, {type: contentType});
             return blob;
         }
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
         // runFaceCaptureScreen();
         
         // getToken();
         runDocumentCaptureScreen();
         // deleteImage('SELFIE');
 
-<<<<<<< HEAD
-        console.log('Font Nid Image: ', localStorage.getItem('front-image'));
-        console.log(postNationalID(localStorage.getItem('front-image')));
-=======
         // console.log('CONVERT BASE 64 TO img: ', convertBase64ToBlob(localStorage.getItem('front-image')));
         // console.log('CONVERT BASE 64 TO BLOB: ', postNationalID(localStorage.getItem('front-image')));
         // console.log('CONVERT BASE 64 TO IMAGE: ', postNationalID(convertBase64ToImage(localStorage.getItem('front-image'))));
 
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
     </script>
 
     <script type='module'>
