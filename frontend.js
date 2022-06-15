@@ -61,8 +61,8 @@ export function showUICheck(element, id) {
     var html =
         "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'>" +
         "<label for='" + id + "'>" + id + " </label>" +
-        "<input type='text' id='" + id + "' placeholder='Please enter your " + id + ":' class='input-global ng-pristine ng-invalid ng-touched'/>" +
-        "<button type='button' id='btnSubmit' class='payment-button' >Gửi</button>" +
+        "<input type='text' id='" + id + "' class='input-global ng-pristine ng-invalid ng-touched'/>" +
+        "<button type='button' id='btnSubmit' class='payment-button' >Tiếp tục</button>" +
         "</form>";
     $(element).html(html);
 
@@ -105,7 +105,7 @@ export function showFormPincode(element, phone) {
         "<form id='formPassword'>" +
         "<label for='password'>Password</label>" +
         "<input type='password' id='password' placeholder='Please enter your pin code: ' />" +
-        "<button type='button' id='btnSubmitPW'>Gửi</button>" +
+        "<button type='button' id='btnSubmitPW'>Tiếp tục</button>" +
         "</form>";
     $(element).html(html);
 
@@ -242,7 +242,42 @@ export function showMessage(element, message, icon) {
 }
 
 export function configUi(config){
-    if(config.logo)  $("#test form").prepend("<div class='voolo-logo'></div>");
+    var iHtml = "";
+    if(config.logo) iHtml += "<div class='voolo-logo'></div>";
+    if(config.intro) iHtml += `
+    <div class='voolo-intro'>
+        <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
+        <ul>
+            <li>Mua sắm không giới hạn </li>
+            <li>Thanh toán linh hoạt </li>
+            <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
+        </ul>
+    </div>
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    $(config.element+" form").prepend(iHtml);
+
+    //show list items
+    var lItems = "";
+    lItems += `<div class='list-items'>
+        <div class='card'>
+            <div class='card-head'>Thông tin đơn hàng</div>
+            <div class='card-body'>
+                <div class='list'>
+                    <div class='image'><img src='https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg'/></div>
+                    <div class='info'>
+                        <p class='head-w-6 ellipsis'>iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng</p>
+                        <p>Space Grey / 256 GB</p>
+                        <p>SL: 1</p>
+                    </div>
+                    <div class='price head-w-6'>40.000.000 đ</div>
+                </div>
+            </div>
+            <div class='card-footer'>
+                <span>Tổng cộng</span>
+            <span class='total-price'>45.000.000 đ </span></div>
+        </div>
+    </div>`;
+    if(config.items) $(config.element).prepend(lItems);
 }
 
 // Done 
