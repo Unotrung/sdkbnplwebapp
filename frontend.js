@@ -241,6 +241,10 @@ export function showMessage(element, message, icon) {
     $(element).html(html);
 }
 
+export function configUi(config){
+    if(config.logo)  $("#test form").prepend("<div class='voolo-logo'></div>");
+}
+
 // Done 
 $('body').on('click', '.btnSelectTenor', function () {
     var val = $(this).attr("data-id");

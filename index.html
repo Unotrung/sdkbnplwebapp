@@ -12,12 +12,9 @@
 </head>
 
 <body>
-    <div id='test'></div>
-    <form id="myAwesomeForm" method="post" action="/php-code-that-handles-fileupload.php">
-        <input type="text" id="filename" name="filename" value="test.png"/> <!-- Filename -->
-        <img src="" id="hinh" />
-        <input type="submit" id="submitButton" name="submitButton" /> <!-- Submit -->
-    </form>
+    <div class="main-page">
+        <div id='test'></div>
+    </div>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js' 
     integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==' 
     crossorigin='anonymous' 
@@ -210,7 +207,6 @@
             }
         }
 
-<<<<<<< HEAD
         function acceptImage(side, image, data){
             if(side === 'SELFIE'){
                 selfieImage = image;
@@ -228,67 +224,7 @@
             }
         }
 
-<<<<<<< HEAD
-        function postNationalID(image) {
-            try {
-                console.log('Image Base 64: ', image);
-                let data = $.ajax({
-                    url: 'https://vnm-docs.hyperverge.co/v2/nationalID',
-                    type: 'POST',
-                    async: false,
-                    data: {
-                        image: image
-                    },
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        'appId': 'abe84d',
-                        'appKey': '7d2c0d7e1690c216458c',
-                        'transactionId': '6bdec326-5eff-4492-b045-160816e61cea'
-                    }
-                });
-                console.log('Data: ', data);
-                console.log('Data Response JSON: ', data.responseJSON);
-                return data.responseJSON;
-=======
 
-        function test(image){
-            callback = (HVError, HVResponse) => {
-            if(HVError) {
-                var errorCode = HVError.getErrorCode();
-                var errorMessage = HVError.getErrorMessage();
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
-            }
-            if(HVResponse) {
-                var apiResults = HVResponse.getApiResult();
-                var apiHeaders = HVResponse.getApiHeaders();
-            }
-            };
-
-            HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
-        }
-<<<<<<< HEAD
-    
-        // function convertBase64ToBlob(dataURI){
-        //     let byteString;
-        //     if (dataURI.split(',')[0].indexOf('base64') >= 0)
-        //         byteString = atob(dataURI.split(',')[1]);
-        //     else
-        //         byteString = unescape(dataURI.split(',')[1]);
-        //     const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        //     const ia = new Uint8Array(byteString.length);
-        //     for (let i = 0; i < byteString.length; i++) {
-        //         ia[i] = byteString.charCodeAt(i);
-        //     }
-        //     return new Blob([ia], {type: mimeString});
-        // }
-
-        // function convertBase64ToImage(base64){
-        //     image = new Image();
-        //     image.src = base64;
-        //     return image;
-        // }
-
-=======
 
         function postNationalID(ImageURL) {
             var form = document.getElementById("myAwesomeForm");
@@ -364,27 +300,6 @@
             }
             return new Blob([ia], {type: mimeString});
         }
-=======
-        // runFaceCaptureScreen();
-    </script>
-
-    <script type='module'>
-        import { showUICheck, 
-            showAllProvider, 
-            showFormVerifyOTP, 
-            showFormSetupPin, 
-            showMessage, 
-            showProgressbar, 
-            updateProgressbar, 
-            showCircularProgressbar, 
-            updateCircularProgressbar } from './frontend.js';
-
-        window.addEventListener('DOMContentLoaded', function(){
-            showUICheck('#test', 'phone');
-            $("#test form").prepend("<div class='voolo-logo'></div>");
-            // showAllProvider('#test');
-        })
->>>>>>> cb3b0c5 (update css)
 
         function b64toBlob(b64Data, contentType, sliceSize) {
             contentType = contentType || '';
@@ -409,27 +324,23 @@
             var blob = new Blob(byteArrays, {type: contentType});
             return blob;
         }
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
         // runFaceCaptureScreen();
         
         // getToken();
-        runDocumentCaptureScreen();
+        // runDocumentCaptureScreen();
         // deleteImage('SELFIE');
 
-<<<<<<< HEAD
-        console.log('Font Nid Image: ', localStorage.getItem('front-image'));
-        console.log(postNationalID(localStorage.getItem('front-image')));
-=======
-        // console.log('CONVERT BASE 64 TO img: ', convertBase64ToBlob(localStorage.getItem('front-image')));
-        // console.log('CONVERT BASE 64 TO BLOB: ', postNationalID(localStorage.getItem('front-image')));
-        // console.log('CONVERT BASE 64 TO IMAGE: ', postNationalID(convertBase64ToImage(localStorage.getItem('front-image'))));
-
->>>>>>> dee394b8058de9fc5d8c5ba3679d153a9905ce30
+        // console.log('Font Nid Image: ', localStorage.getItem('front-image'));
+        // console.log(postNationalID(localStorage.getItem('front-image')));
     </script>
 
     <script type='module'>
-        // import {  showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar, showAllTenor, showAllProvider } from './frontend.js';
-    
+        import { showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar, showAllTenor, showAllProvider,showUICheck,configUi } from './frontend.js';
+        
+        showUICheck("#test",'phone');
+        configUi({
+            logo:true
+        });
         // showProgressbar('#test');
         // updateProgressbar();
 
