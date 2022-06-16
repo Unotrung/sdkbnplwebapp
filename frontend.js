@@ -117,7 +117,7 @@ function showUICheckPhone(element) {
         "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
         "<label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
         "<input type='phone' id='phone' class='input-global ng-pristine ng-invalid ng-touched' />" +
-        "<button type='button' id='btnSubmit' class='payment-button' >Tiếp tục</button>" +
+        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
         "</div></form>";
     $(element).html(html);
 
@@ -621,7 +621,7 @@ function showMessage(element, message, icon) {
     $(element).html(html);
 }
 
-export function configUi(config){
+function configUi(config){
     var iHtml = "";
     if(config.logo) iHtml += "<div class='voolo-logo'></div>";
     if(config.intro) iHtml += `
@@ -677,9 +677,31 @@ function selectTenor(id) {
 }
 
 // Done +
+var data = [{ 
+    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
+    descript : "Space Grey / 256 GB",
+    quantity : "SL: 1",
+    priceShow   :   "20.000.000 đ",
+    price   :   "20000000",
+    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
+},{ 
+    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
+    descript : "Space Grey / 256 GB",
+    quantity : "SL: 1",
+    priceShow   :   "15.000.000 đ",
+    price   :   "15000000",
+    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
+}];
 function selectProvider(id) {
     let provider = localStorage.setItem('provider', id);
     showUICheckPhone('#test');
+    configUi({
+        element:"#test",
+        logo:true,
+        intro:true,
+        items:true,
+        dataItems:data 
+    });
 }
 
 // Done 
