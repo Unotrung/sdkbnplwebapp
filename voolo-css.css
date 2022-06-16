@@ -9,6 +9,7 @@
 }
 #test{
     display: flex;
+<<<<<<< HEAD
     background: rgba(247, 247, 247, 0.35);
     /* Main content background */
 
@@ -16,6 +17,8 @@
     border-radius: 20px;
     min-height: 95vh;
     font-size: 14px;
+=======
+>>>>>>> 6de899d (update front-end)
 }
 #test form#formValue{
     width: 50%;
