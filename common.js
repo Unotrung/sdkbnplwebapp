@@ -1,6 +1,4 @@
-import { baseURL, options } from './config.js';
-
-export function callAjax($data, $url, $type, $token = '') {
+function callAjax($data, $url, $type, $token = '') {
     options.Authorization = `Bearer ` + $token;
     try {
         let data = $.ajax({

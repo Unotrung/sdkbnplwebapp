@@ -1,8 +1,6 @@
-import { appKey, appId } from './keys.js';
+let baseURL = 'https://apibnpl.voolo.vn/v1/bnpl';
 
-export let baseURL = 'https://apibnpl.voolo.vn/v1/bnpl';
-
-export let options = {
+let options = {
     'Content-Type': 'application/json',
     'appKey': appKey,
     'appId': appId
