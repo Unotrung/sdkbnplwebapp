@@ -336,20 +336,44 @@
 
     <script type='module'>
         import { showProgressbar, updateProgressbar, showCircularProgressbar, updateCircularProgressbar, showAllTenor, showAllProvider,showUICheck,configUi } from './frontend.js';
-        showUICheck("#test",'Vui lòng nhập số điện thoại để để tiếp tục');
+        showUICheck("#test","phone",'Vui lòng nhập số điện thoại để để tiếp tục');
+
 
         /*
         * logo : show logo voolo, default FALSE;
         * intro : introdution buy now pay later (BNPL), default FALSE;
-        * items : show list bill, default FALSE, 
+        * items : show list bill, default FALSE,
+        * data-items: Array, ex : 
+        *   { 
+        *       product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
+        *       descript : "Space Grey / 256 GB",
+        *       quantity : "SL: 1",
+        *       price   :   "40.000.000 đ",
+        *       imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
+        *   } 
         * */
-
+        var data = [{ 
+                    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
+                    descript : "Space Grey / 256 GB",
+                    quantity : "SL: 1",
+                    priceShow   :   "20.000.000 đ",
+                    price   :   "20000000",
+                    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
+                },{ 
+                    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
+                    descript : "Space Grey / 256 GB",
+                    quantity : "SL: 1",
+                    priceShow   :   "15.000.000 đ",
+                    price   :   "15000000",
+                    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
+                }];
         configUi({
-                element:"#test",
-                logo:true,
-                intro:true,
-                items:true
-            });
+            element:"#test",
+            logo:true,
+            intro:true,
+            items:true,
+            dataItems:data 
+        });
         
         
         

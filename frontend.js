@@ -57,13 +57,13 @@ export function updateCircularProgressbar() {
     }, speed);
 }
 
-export function showUICheck(element, id) {
+export function showUICheck(element, id, label) {
     var html =
-        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'>" +
-        "<label for='" + id + "'>" + id + " </label>" +
+        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<label for='" + id + "'>" + label + " </label>" +
         "<input type='text' id='" + id + "' class='input-global ng-pristine ng-invalid ng-touched'/>" +
         "<button type='button' id='btnSubmit' class='payment-button' >Tiếp tục</button>" +
-        "</form>";
+        "</div></form>";
     $(element).html(html);
 
     $('#btnSubmit').click(function () {
@@ -257,24 +257,36 @@ export function configUi(config){
     $(config.element+" form").prepend(iHtml);
 
     //show list items
-    var lItems = "";
+    var list = "";
+    if(config.dataItems != null){
+        var lItems = "";
+        var total = 0;
+        config.dataItems.forEach(e => {
+            list += `<div class='list'>
+            <div class='image'><img src='`+e.imgUrl+`'/></div>
+            <div class='info'>
+                <p class='head-w-6 ellipsis'>`+e.product+`</p>
+                <p>`+e.descript+`</p>
+                <p>`+e.quantity+`</p>
+            </div>
+            <div class='price head-w-6'>`+e.priceShow+`</div>
+        </div>`;
+        total += parseInt(e.price);
+        });
+        var sTotal = total.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          });
+    }
     lItems += `<div class='list-items'>
         <div class='card'>
             <div class='card-head'>Thông tin đơn hàng</div>
             <div class='card-body'>
-                <div class='list'>
-                    <div class='image'><img src='https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg'/></div>
-                    <div class='info'>
-                        <p class='head-w-6 ellipsis'>iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng</p>
-                        <p>Space Grey / 256 GB</p>
-                        <p>SL: 1</p>
-                    </div>
-                    <div class='price head-w-6'>40.000.000 đ</div>
-                </div>
+                `+list+`
             </div>
             <div class='card-footer'>
                 <span>Tổng cộng</span>
-            <span class='total-price'>45.000.000 đ </span></div>
+            <span class='total-price'>`+sTotal+` </span></div>
         </div>
     </div>`;
     if(config.items) $(config.element).prepend(lItems);

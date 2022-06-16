@@ -75,7 +75,7 @@
     line-height: 20px;
 }
 .ellipsis{
-    width:80%;
+    width:100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -83,26 +83,30 @@
 .main-page .list-items{
     width: 50%;
     padding: 20px 5%;
-}
-.main-page .list-items{
     margin-top: 6%;
-
 }
 .main-page .list-items .card .card-body{
     background: #FFFFFF;
-    padding: 20px 25px;
+    /* padding: 20px 25px; */
     margin: 0;
 }
 .main-page .list-items .card .card-body .list{
     display: inline-flex;
     vertical-align: middle;
     width: 100%;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.main-page .list-items .card .card-body .list:last-child{
+    border-bottom: none;
 }
 .list .price{
     width: 20%;
+    text-align: right;
 }
 .list .info{
     width: 60%;
+    padding: 0 10px;
 }
 .list .info p{
     padding: 0;
@@ -122,7 +126,7 @@
     border-radius: 0px 0px 20px 20px;
     padding: 20px 25px;
     margin: 0;
-    border-top: 1px dashed rgba(7, 32, 55, 0.4);
+    border-top: 1px dashed #e5e5e5;
 }
 .main-page .list-items .card .card-footer span{
     line-height: 30px;
@@ -132,7 +136,7 @@
     border-radius: 20px 20px 0px 0px;
     padding: 20px 25px;
     margin: 0;
-    border-bottom: 1px dashed rgba(7, 32, 55, 0.4);
+    border-bottom: 1px dashed #e5e5e5;
 
 }
 .main-page .list-items .card .card-footer .total-price{
@@ -142,3 +146,55 @@
     line-height: 32px;
     color: #197DDE;
 }
+/*  and (min-width: 390px)  */
+@media only screen and (max-width: 414px){
+    .main-page{
+        display: flow-root;
+    }
+    .main-page .list-items{
+        width: 100%;
+        padding: 0;
+        order: 2;
+    }
+    #test{
+        display: flex;
+        flex-flow: column;
+        background: none; 
+        box-shadow: none;
+    }
+    #test form#formValue{
+        width: 100%;
+        padding: 0;
+        order: 1;
+    }
+    .main-page .list-items .card .card-body .list{
+        padding: 20px 15px;
+    }
+    .list .image {
+        width: 16%;
+        padding:0;
+        margin: auto;
+    }
+    .list .info {
+        width: 50%;
+        margin: 0 6px;
+    }
+    .list .price {
+        width: 34%;
+    }
+    .list .info p{
+        line-height: 20px;
+    }
+    .mobile{
+        padding: 20px 5%;
+        background: #F3F3F3;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 20px;
+    }
+    #test form#formValue .input-global{
+        width: 95%;
+    }
+    .payment-button{
+        width: 200px;
+    }
+}   
