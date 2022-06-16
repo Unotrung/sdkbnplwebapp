@@ -15,6 +15,7 @@
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     min-height: 95vh;
+    font-size: 14px;
 }
 #test form#formValue{
     width: 50%;
@@ -44,6 +45,7 @@
 }
 .voolo-intro ul{
     padding-left: 15px;
+    font-size: 14px;
 }
 .voolo-intro ul li{
     list-style: circle;
