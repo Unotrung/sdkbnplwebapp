@@ -120,6 +120,18 @@ function showUICheckPhone(element) {
         "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
         "</div></form>";
     $(element).html(html);
+    //custom show
+    configUi({
+        element:element,
+        logo:true,
+        intro:true
+    });
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
 
     $('#btnSubmitPhone').click(function () {
         let data = $('#phone').val();
@@ -158,12 +170,13 @@ function showUICheckPhone(element) {
 
 function showUICheckNid(element) {
     var html =
-        "<form id='formValue'>" +
-        "<label for='nid'>Nid</label>" +
-        "<input type='number' id='nid' placeholder='Please enter your nid: ' />" +
-        "<button type='button' id='callHP'>Call Hyperverge</button>" +
-        "<button type='button' id='btnSubmitNid'>Gửi</button>" +
-        "</form>";
+        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+        "<h3>Chụp ảnh chân dung</h3>" +
+        "<button type='button' id='callHP' class='btnCapture'></button>" +
+        "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
 
     $('#callHP').click(function () {
@@ -597,19 +610,24 @@ function showAllTenor(element) {
 
 // Done +
 function showAllProvider(element) {
-    let html = '';
+    let html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
         html += `
-        <div style='border: 3px solid black; margin: 10px auto; display: block'>
-        <img src='${providers[i].url}' />
-        <p>${providers[i].provider}</p>
-        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'>Select</button>
-        </div>
-        `
+        <div class='list-provider'>
+        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'><img src='${providers[i].url}' /></button>
+        </div>`
     }
+    html += `</div>`;
     $(element).html(html);
+
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
 };
 
 function showMessage(element, message, icon) {
@@ -635,7 +653,9 @@ function configUi(config){
     </div>
     <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
     $(config.element+" form").prepend(iHtml);
+}
 
+function listProductions(config){
     //show list items
     var list = "";
     if(config.dataItems != null){
@@ -677,31 +697,9 @@ function selectTenor(id) {
 }
 
 // Done +
-var data = [{ 
-    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
-    descript : "Space Grey / 256 GB",
-    quantity : "SL: 1",
-    priceShow   :   "20.000.000 đ",
-    price   :   "20000000",
-    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
-},{ 
-    product : "iPad Pro 2021 12.9-inch M1 WiFi - Hàng chính hãng" ,
-    descript : "Space Grey / 256 GB",
-    quantity : "SL: 1",
-    priceShow   :   "15.000.000 đ",
-    price   :   "15000000",
-    imgUrl : "https://cdn.tgdd.vn/Products/Images/522/247517/ipad-gen-9-wifi-grey-1-600x600.jpg"
-}];
 function selectProvider(id) {
     let provider = localStorage.setItem('provider', id);
     showUICheckPhone('#test');
-    configUi({
-        element:"#test",
-        logo:true,
-        intro:true,
-        items:true,
-        dataItems:data 
-    });
 }
 
 // Done 
