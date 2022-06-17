@@ -83,6 +83,109 @@ function updateCircularProgressbar() {
 }
 
 // Done +
+function showUICheckPhone(element) {
+    var html =
+        "<form id='formValuePhone' class='form-container'>" +
+        "<div class='form__row'>" +
+        "<label class='form__label'  for='phone'>Phone</label>" +
+        "<input class='form__input' type='phone' id='phone' placeholder='Please enter your phone: ' />" +
+        "</div>" +
+        "<button type='button' id='btnSubmitPhone'>Gửi</button>" +
+        "</form>";
+    $(element).html(html);
+
+    $('#btnSubmitPhone').click(function () {
+        let data = $('#phone').val();
+        localStorage.setItem('phone', data);
+        if (data !== null && data !== '') {
+            let result = checkPhoneExists(data);
+            if (result.errCode === 1000) {
+                let step = result.data.step;
+                if (step === 4) {
+
+                }
+                else if (step === 2) {
+
+                }
+                else if (step === 3) {
+
+                }
+                else if (step === 0) {
+
+                }
+            }
+            else if (result.errCode === 1003) {
+                showUICheckNid(element);
+            }
+            else if (result.errorCode === 8000) {
+                alert('Định dạng số điện thoại không hợp lệ !');
+                return;
+            }
+        }
+        else {
+            alert('Vui lòng nhập data phone !');
+            return;
+        }
+    })
+}
+
+// Done +
+function showUICheckNid(element) {
+    var html =
+        "<form id='formValueNid' class='form-container'>" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='nid'>Nid</label>" +
+        "<input class='form__input' type='number' id='nid' placeholder='Please enter your nid: ' />" +
+        "</div>" +
+        "<div class='selfie_image'>" +
+        "<p class='title_image'>Selfie Picture</p>" +
+        "<image src='' width='350px' height='350px' id='selfie_picture'/>" +
+        "<i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i>" +
+        "</div>" +
+        "<button type='button' id='callHP'>Call Hyperverge</button>" +
+        "<button type='button' id='btnSubmitNid'>Gửi</button>" +
+        "</form>";
+    $(element).html(html);
+
+    $('#callHP').click(function () {
+        runFaceCaptureScreen();
+    })
+
+    $('#selfie_image').click(function () {
+        deleteImage('SELFIE');
+    });
+
+    $('#btnSubmitNid').click(function () {
+        let data = $('#nid').val();
+        localStorage.setItem('nid', data);
+        if (data !== null && data !== '') {
+            let result = checkNidExists(data);
+            let checkSelfieImage = localStorage.getItem('selfie-image');
+            if (result.statusCode === 1000 && checkSelfieImage !== null) {
+
+            }
+            else if (result.statusCode === 900 && checkSelfieImage !== null) {
+                captureNidFrontAndBack(element);
+                let checkCustomer = {
+                    phone: localStorage.getItem('phone'),
+                    nid: localStorage.getItem('nid'),
+                    selfieImage: localStorage.getItem('selfie-image')
+                };
+                localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+            }
+            else if (result.errorCode === 8000) {
+                alert('Định dạng chứng minh nhân dân không hợp lệ !');
+                return;
+            }
+        }
+        else {
+            alert('Vui lòng nhập data nid!');
+            return;
+        }
+    })
+}
+
+// Done +
 function captureNidFrontAndBack(element) {
     var html =
         "<div class='buttons'>" +
@@ -90,17 +193,20 @@ function captureNidFrontAndBack(element) {
         "<button type='button' id='btnCaptureBack'>Chụp mặt sau</button>" +
         "<button type='button' id='btnSubmit'>Submit</button>" +
         "</div>" +
-        "<div class='images'>" +
-        "<div>" +
-        "<p>Front Picture</p>" +
+
+        "<div class='nid_images'>" +
+        "<div class='front_nid_image'>" +
+        "<p class='title_image'>Front Picture</p>" +
         "<image src='' width='350px' height='350px' id='front_picture'/>" +
         "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='front_image'></i></p>" +
         "</div>" +
-        "<div>" +
-        "<p>Back Picture</p>" +
+
+        "<div class='back_nid_image'>" +
+        "<p class='title_image'>Back Picture</p>" +
         "<image src='' width='350px' height='350px' id='back_picture'/>" +
         "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='back_image'></i></p>" +
         "</div>" +
+
         "</div>";
     $(element).html(html);
 
@@ -141,103 +247,6 @@ function captureNidFrontAndBack(element) {
             if (fn !== null && fn !== '' && bn !== null && bn !== '') {
                 showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent')
             }
-        }
-    })
-}
-
-// Done +
-function showUICheckPhone(element) {
-    var html =
-        "<form id='formValuePhone'>" +
-        "<label for='phone'>Phone</label>" +
-        "<input type='phone' id='phone' placeholder='Please enter your phone: ' />" +
-        "<button type='button' id='btnSubmitPhone'>Gửi</button>" +
-        "</form>";
-    $(element).html(html);
-
-    $('#btnSubmitPhone').click(function () {
-        let data = $('#phone').val();
-        localStorage.setItem('phone', data);
-        if (data !== null && data !== '') {
-            let result = checkPhoneExists(data);
-            if (result.errCode === 1000) {
-                let step = result.data.step;
-                if (step === 4) {
-                    showFormPincode(element, result.data.phone);
-                }
-                else if (step === 2) {
-
-                }
-                else if (step === 3) {
-
-                }
-                else if (step === 0) {
-
-                }
-            }
-            else if (result.errCode === 1003) {
-                showUICheckNid(element);
-            }
-            else if (result.errorCode === 8000) {
-                alert('Định dạng số điện thoại không hợp lệ !');
-                return;
-            }
-        }
-        else {
-            alert('Vui lòng nhập data phone !');
-            return;
-        }
-    })
-}
-
-// Done +
-function showUICheckNid(element) {
-    var html =
-        "<form id='formValueNid'>" +
-        "<label for='nid'>Nid</label>" +
-        "<input type='number' id='nid' placeholder='Please enter your nid: ' />" +
-        "<div>" +
-        "<p>Selfie Picture</p>" +
-        "<image src='' width='350px' height='350px' id='selfie_picture'/>" +
-        "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i></p>" +
-        "</div>" +
-        "<button type='button' id='callHP'>Call Hyperverge</button>" +
-        "<button type='button' id='btnSubmitNid'>Gửi</button>" +
-        "</form>";
-    $(element).html(html);
-
-    $('#callHP').click(function () {
-        runFaceCaptureScreen();
-    })
-
-    $('#selfie_image').click(function () {
-        deleteImage('SELFIE');
-    });
-
-    $('#btnSubmitNid').click(function () {
-        let data = $('#nid').val();
-        localStorage.setItem('nid', data);
-        if (data !== null && data !== '') {
-            let result = checkNidExists(data);
-            let checkSelfieImage = localStorage.getItem('selfie-image');
-            if (result.statusCode === 1000 && checkSelfieImage !== null) {
-            }
-            else if (result.statusCode === 900 && checkSelfieImage !== null) {
-                captureNidFrontAndBack(element);
-                let checkCustomer = {
-                    phone: localStorage.getItem('phone'),
-                    nid: localStorage.getItem('nid'),
-                    selfieImage: localStorage.getItem('selfie-image')
-                };
-                localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-            }
-            else if (result.errorCode === 8000) {
-                alert('Định dạng chứng minh nhân dân không hợp lệ !');
-                return;
-            }
-        }
-        else {
-            alert('Vui lòng nhập data !');
         }
     })
 }
@@ -783,74 +792,108 @@ function postNationalID(ImageURL) {
 
 function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent) {
     var html =
-        "<h2 style='margin-bottom: 20px; text-align: center'>Enter personal information</h2>" +
-        "<div>" +
+        "<h2>Enter personal information</h2>" +
 
-        "<form>" +
-        "<h3 style='margin-bottom: 10px; text-align: center'>Personal information</h3>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='fullname' style='margin-bottom: 5px'>Full Name</label>" +
-        "<input type='text' id='fullname' name='fullname' value=" + fullname + ">" +
-        "</div>" +
+        "<form class='form-container'>" +
 
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='gender' style='margin-bottom: 5px'>Gender</label>" +
-        "<input type='text' id='gender' name='gender' value=" + gender + ">" +
+        "<h3>Personal information</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname'>Full Name</label>" +
+        "<input class='form__input' type='text' id='fullname' name='fullname' value=" + fullname + ">" +
         "</div>" +
 
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: row; margin-bottom: 10px';>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='phone'>Phone number</label>" +
-        "<input type='phone' id='phone' name='phone' value=" + phone + ">" +
-        "</div>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='dob'>Date of birth</label>" +
-        "<input type='text' id='dob' name='dob' value=" + dob + ">" +
-        "</div>" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='gender'>Gender</label>" +
+        "<input class='form__input' type='text' id='gender' name='gender' value=" + gender + ">" +
         "</div>" +
 
-        "<div>" +
-        "<label for='nid'>ID number</label>" +
-        "<input type='text' id='nid' name='nid' value=" + nid + ">" +
-        "<label for='doi'>Date of issue</label>" +
-        "<input type='text' id='doi' name='doi' value=" + doi + ">" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone'>Phone number</label>" +
+        "<input class='form__input' type='phone' id='phone' name='phone' value=" + phone + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='dob'>Date of birth</label>" +
+        "<input class='form__input' type='text' id='dob' name='dob' value=" + dob + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='nid'>ID number</label>" +
+        "<input class='form__input' type='text' id='nid' name='nid' value=" + nid + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='doi'>Date of issue</label>" +
+        "<input class='form__input' type='text' id='doi' name='doi' value=" + doi + ">" +
         "</div>" +
 
         "<h3>Current address</h3>" +
-        "<label for='city'>City/Province</label>" +
-        "<input type='text' id='city' name='city' value=" + city + ">" +
-        "<label for='district'>District</label>" +
-        "<input type='text' id='district' name='district' value=" + district + ">" +
-        "<label for='wards'>Wards</label>" +
-        "<input type='text' id='wards' name='wards' value=" + wards + ">" +
-        "<label for='street'>Street</label>" +
-        "<input type='text' id='street' name='street' value=" + street + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city' name='city' value=" + city + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district'>District</label>" +
+        "<input class='form__input' type='text' id='district' name='district' value=" + district + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='wards'>Wards</label>" +
+        "<input class='form__input' type='text' id='wards' name='wards' value=" + wards + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street'>Street</label>" +
+        "<input class='form__input' type='text' id='street' name='street' value=" + street + ">" +
+        "</div>" +
 
         "<h3>Reference information</h3>" +
-        "<label for='relationship'>Relationship</label>" +
-        "<input type='text' id='relationship' name='relationship' value=" + relationship + ">" +
-        "<label for='fullname_ref'>Full name</label>" +
-        "<input type='text' id='fullname_ref' name='fullname_ref' value=" + fullname_ref + ">" +
-        "<label for='phone_ref'>Phone number</label>" +
-        "<input type='text' id='phone_ref' name='phone_ref' value=" + phone_ref + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='relationship'>Relationship</label>" +
+        "<input class='form__input' type='text' id='relationship' name='relationship' value=" + relationship + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname_ref'>Full name</label>" +
+        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref' value=" + fullname_ref + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone_ref'>Phone number</label>" +
+        "<input class='form__input' type='text' id='phone_ref' name='phone_ref' value=" + phone_ref + ">" +
+        "</div>" +
 
         "<h3>Permanent address</h3>" +
-        "<label for='city_permanent'>City/Province</label>" +
-        "<input type='text' id='city_permanent' name='city_permanent' value=" + city_permanent + ">" +
-        "<label for='district_permanent'>District</label>" +
-        "<input type='text' id='district_permanent' name='district_permanent' value=" + district_permanent + ">" +
-        "<label for='wards_permanent'>Wards</label>" +
-        "<input type='text' id='wards_permanent' name='wards_permanent' value=" + wards_permanent + ">" +
-        "<label for='street_permanent'>Street</label>" +
-        "<input type='text' id='street_permanent' name='street_permanent' value=" + street_permanent + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city_permanent'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city_permanent' name='city_permanent' value=" + city_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district_permanent'>District</label>" +
+        "<input class='form__input' type='text' id='district_permanent' name='district_permanent' value=" + district_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='wards_permanent'>Wards</label>" +
+        "<input class='form__input' type='text' id='wards_permanent' name='wards_permanent' value=" + wards_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street_permanent'>Street</label>" +
+        "<input class='form__input' type='text' id='street_permanent' name='street_permanent' value=" + street_permanent + ">" +
+        "</div>" +
 
         "<span><b>Note:</b>*Compulsory information</span>" +
 
         "<button type='button'>Continue</button>" +
 
-        "</form>" +
-
-        "</div>";
+        "</form>";
     $(element).html(html);
 }
 
