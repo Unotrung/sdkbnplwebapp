@@ -4,6 +4,7 @@
     font-size: 14px;
     line-height: 24px;
     color: #000000;
+    
 }
 .main-page{
     background-color: #F4F4F4 !important;
@@ -187,9 +188,28 @@
     display: flex;
     margin: 16px auto 32px;
     background: url(./assets/img/camera.png) center no-repeat;
-    background-color: #E5E5E5;
+    background-color: #FFF;
     border-radius: 30px;
-    border: 0;
+    border: 2px solid #EEEEEE;
+}
+.main-page .buttons label{
+    display: table-row;
+    width: 100%;
+    float: left;
+}
+.main-page .buttons{}
+.main-page .buttons .payment-button{
+    margin-top: 72px;
+}
+.main-page .buttons label.caption {
+    top: 90px;
+    position: relative;
+    font-weight: 400!important;
+    font-family: Montserrat Alternates,sans-serif;
+}
+.main-page .buttons button{
+    margin: 28px 14px 14px 14px;
+    display: table-cell;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){

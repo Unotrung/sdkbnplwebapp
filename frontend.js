@@ -91,10 +91,13 @@ function updateCircularProgressbar() {
 
 function captureNidFrontAndBack(element) {
     var html =
-        "<div class='buttons'>" +
-        "<button type='button' id='btnCaptureFront'>Chụp mặt trước</button>" +
-        "<button type='button' id='btnCaptureBack'>Chụp mặt sau</button>" +
-        "</div>";
+        "<form  id='formValue'>" +
+        "<div class='buttons mobile'>" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>" +
+        "<button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>" +
+        "<button type='button' id='' class='payment-button' disabled>Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
 
     $('#btnCaptureFront').click(function () {
@@ -177,6 +180,8 @@ function showUICheckNid(element) {
         "<button type='button' id='callHP' class='btnCapture'></button>" +
         "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
         "</div></form>";
+
+    html += ``;
     $(element).html(html);
 
     $('#callHP').click(function () {
