@@ -799,10 +799,13 @@ function postNationalID(ImageURL) {
     }
 }
 
-function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent, allDataNid = localStorage.getItem('allDataNid')) {
-    console.log(JSON.parse(allDataNid));
-    allDataNid = JSON.parse(allDataNid);
-    console.log("allDataNid : ", allDataNid.front_nid_customer.province);
+function showDataInform(element, cusInfo = JSON.parse(localStorage.getItem('checkCustomer')) , allDataNid = JSON.parse(localStorage.getItem('allDataNid'))) {
+    console.log(allDataNid);
+    console.log("cusInfo : ", cusInfo);
+    var gen = allDataNid.front_nid_customer.gender;
+    var strM,strF = '';
+    if(gen === 'M') strM = 'selected';
+    else strF = 'selected';
     var html =
         `<div class='form-card'>
             <h2>Nhập thông tin cá nhân</h2>
@@ -819,31 +822,31 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+cusInfo.phone+`" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Ngày sinh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+convertDateString(allDataNid.front_nid_customer.dob)+`" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Giới tính</label>
                             <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value='M'>Nam</option>
-                                <option value='F'>Nữ</option>
+                                <option value='M' ${strM}>Nam</option>
+                                <option value='F' ${strF}>Nữ</option>
                             </select>
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số CMND/CCCD</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='number' id='nid' name='nid' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='number' id='nid' name='nid' value="`+allDataNid.front_nid_customer.idNumber+`" />
                         </div>
                         <div class='form-row'>
                             <div class="form-cell">
                                 <label for='phone'>Ngày cấp</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doi' name='doi' value="`+allDataNid.front_nid_customer.phone+`" />
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doi' name='doi' value="`+convertDateString(allDataNid.back_nid_customer.doi)+`" />
                             </div>
                             <div class="form-cell">
                                 <label for='phone'>Ngày hết hạn</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doe' name='doe' value="`+allDataNid.front_nid_customer.phone+`" />
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doe' name='doe' value="`+convertDateString(allDataNid.front_nid_customer.doe)+`" />
                             </div>
                         </div>
                     </div>
@@ -860,7 +863,7 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Quận/Huyện</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="0987654321" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Phường</label>
@@ -887,7 +890,7 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Họ và tên </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="0987654321" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số điện thoại </label>
@@ -1081,4 +1084,11 @@ function showCapture(base64, eId){
         });
 
     }
+}
+
+// this function convert string date dd-mm-yyyy to yyyy-mm-dd
+function convertDateString(dateString){
+    if (dateString === '') return '';
+    const dateParts = dateString.split("-");
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 }
