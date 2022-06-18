@@ -197,26 +197,13 @@ function showUICheckNid(element) {
 // Done +
 function captureNidFrontAndBack(element) {
     var html =
-        "<div class='buttons'>" +
-        "<button type='button' id='btnCaptureFront'>Chụp mặt trước</button>" +
-        "<button type='button' id='btnCaptureBack'>Chụp mặt sau</button>" +
-        "<button type='button' id='btnSubmit'>Submit</button>" +
-        "</div>" +
-
-        "<div class='nid_images'>" +
-        "<div class='front_nid_image'>" +
-        "<p class='title_image'>Front Picture</p>" +
-        "<image src='' width='350px' height='350px' id='front_picture'/>" +
-        "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='front_image'></i></p>" +
-        "</div>" +
-
-        "<div class='back_nid_image'>" +
-        "<p class='title_image'>Back Picture</p>" +
-        "<image src='' width='350px' height='350px' id='back_picture'/>" +
-        "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='back_image'></i></p>" +
-        "</div>" +
-
-        "</div>";
+        "<form class='formValue'>" +
+        "<div class='buttons mobile'>" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>" +
+        "<button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>" +
+        "<button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
 
     $('#front_image').click(function () {
@@ -243,6 +230,7 @@ function captureNidFrontAndBack(element) {
     })
 
     $('#btnSubmit').click(function () {
+        alert("btnSubmit");
         let fnc = localStorage.getItem('front_nid_customer');
         let bnc = localStorage.getItem('back_nid_customer');
         let adn = JSON.parse(localStorage.getItem('allDataNid'));
@@ -563,7 +551,7 @@ async function LaunchFaceCaptureScreen() {
                 console.log('Attempt Count Face Capture Screen: ', attemptsCount);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
-                    showCapture(imageBase64,'selfie_picture');
+                    showCapture(imageBase64,'callHP');
                 }
             }
         };
@@ -610,14 +598,16 @@ async function LaunchDocumentCaptureScreen(side) {
                     if (side === 'FRONT' && side !== '') {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(base64);
-                        alert('Lưu mặt trước CMND thành công !');
-                        $("#front_picture").attr("src", imageBase64);
+                        showCapture(imageBase64,"btnCaptureFront");
+                        // alert('Lưu mặt trước CMND thành công !');
+                        // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (side === 'BACK' && side !== '') {
                         localStorage.setItem('back-image', imageBase64);
                         postNationalID(base64);
-                        alert('Lưu mặt sau CMND thành công !');
-                        $("#back_picture").attr("src", imageBase64);
+                        showCapture(imageBase64,"btnCaptureBack");
+                        // alert('Lưu mặt sau CMND thành công !');
+                        // $("#back_picture").attr("src", imageBase64);
                     }
                 }
             }
@@ -977,8 +967,8 @@ function listProductions(config){
 
 function showCapture(base64, eId){
     if(base64){
-        $('#callHP').addClass("showImage");
-        $('#callHP').css({
+        $('#'+eId).addClass("showImage");
+        $('#'+eId).css({
             'background': 'url(' + base64 + ') no-repeat center',
              'background-size': 'cover'
         });

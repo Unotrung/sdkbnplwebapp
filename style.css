@@ -162,13 +162,6 @@
     border-color: var(--line-border-fill);
 }
 
-.buttons{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-}
-
 .btn{
     background-color: var(--line-border-fill);
     color: #ffffff;
@@ -228,21 +221,6 @@
     color: #ccc;
 }
 
-button{
-    display: block;
-    padding: 8px;
-    color: white;
-    width: 100%;
-    text-transform: uppercase;
-    text-align: center;
-    border: 0;
-    outline: none;
-    border-radius: 5px;
-    background-color: #f87253;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
 .title_image{
     font-size: 18px;
     font-weight: bold;
@@ -251,13 +229,13 @@ button{
     text-align: center;
 }
 
-.buttons{
+/* .buttons{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 30px;
-}
+} */
 
 .nid_images{
     display: flex;
