@@ -1,28 +1,25 @@
+const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
+const arrType_back = ["cccd_chip_back", "cccd_back", "cmnd_new_cccd_back"];
+
 // Done +
-function generateObjectDraft(images, phone, citizenId) {
-    let data = null;
-    data = {
-        'images': images,
-        'name': 'Nguyễn Văn A',
-        'sex': 'Nam',
-        'birthday': '1990-09-21',
-        'phone': phone,
-        'citizenId': citizenId,
-        'issueDate': '2021-01-30',
-        'city': 'Bình Phước',
-        'district': 'Đồng Phú',
-        'ward': 'Tân Tiến',
-        'street': 'Minh Tân Tân Tiến',
-        'personal_title_ref': 'Bạn',
-        'name_ref': 'Nguyễn Văn B',
-        'phone_ref': '0987654321',
-        'temporaryCity': 'Bình Phước',
-        'temporaryDistrict': 'Đồng Phú',
-        'temporaryWard': 'Tân Tiến',
-        'temporaryStreet': 'Minh Tân Tân Tiến',
-        'expirationDate': '2025-01-30'
-    }
-    return data;
+function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
+    this.fullname = fullname;
+    this.gender = gender;
+    this.phone = phone;
+    this.dob = dob;
+    this.nid = nid;
+    this.doi = doi;
+    this.doe = doe;
+    this.city = city;
+    this.district = district;
+    this.ward = ward;
+    this.street = street;
+}
+
+// Done +
+function onlyNumber(data) {
+    var pin = /[^0-9]/gi;
+    data.value = data.value.replace(pin, "");
 }
 
 // Done +
@@ -85,29 +82,33 @@ function updateCircularProgressbar() {
 // Done +
 function showUICheckPhone(element) {
     var html =
-        "<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'><div class='mobile'>" +
+        "<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>" +
+        "<div class='mobile'>" +
+
         "<div class='form__row'>" +
-        "<label class='form__label'  for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
+        "<label class='form__label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
         "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
         "</div>" +
+
         "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
-        "</div></form>";
+
+        "</div>" +
+        "</form>";
     $(element).html(html);
 
     //custom show
     configUi({
-        element:element,
-        logo:true,
-        intro:true
+        element: element,
+        logo: true,
+        intro: true
     });
+
     // show list productions
     listProductions({
-        element:"#test",
-        items:true,
-        dataItems:pData 
+        element: "#test",
+        items: true,
+        dataItems: pData
     });
-
-
 
     $('#btnSubmitPhone').click(function () {
         let data = $('#phone').val();
@@ -117,7 +118,7 @@ function showUICheckPhone(element) {
             if (result.errCode === 1000) {
                 let step = result.data.step;
                 if (step === 4) {
-
+                    showFormPincode(element, data);
                 }
                 else if (step === 2) {
 
@@ -147,13 +148,18 @@ function showUICheckPhone(element) {
 // Done +
 function showUICheckNid(element) {
     var html =
-        "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>" +
+        "<div class='mobile'" +
+
         "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
         "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+
         "<h3>Chụp ảnh chân dung</h3>" +
         "<button type='button' id='callHP' class='btnCapture'></button>" +
         "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
-        "</div></form>";
+
+        "</div>" +
+        "</form>";
     $(element).html(html);
 
     $('#callHP').click(function () {
@@ -188,7 +194,7 @@ function showUICheckNid(element) {
             }
         }
         else {
-            alert('Vui lòng nhập data nid!');
+            alert('Vui lòng nhập data nid !');
             return;
         }
     })
@@ -199,11 +205,14 @@ function captureNidFrontAndBack(element) {
     var html =
         "<form class='formValue'>" +
         "<div class='buttons mobile'>" +
+
         "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
         "<button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>" +
         "<button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>" +
         "<button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>" +
-        "</div></form>";
+
+        "</div>" +
+        "</form>";
     $(element).html(html);
 
     $('#front_image').click(function () {
@@ -224,44 +233,52 @@ function captureNidFrontAndBack(element) {
             runDocumentCaptureScreen('BACK');
         }
         else {
-            alert('Vui lòng chụp cmnd mặt trước trước !');
+            alert('Vui lòng chụp cmnd mặt trước rùi mới chụp mặt sau !');
             return;
         }
     })
 
     $('#btnSubmit').click(function () {
-        alert("btnSubmit");
-        let fnc = localStorage.getItem('front_nid_customer');
-        let bnc = localStorage.getItem('back_nid_customer');
         let adn = JSON.parse(localStorage.getItem('allDataNid'));
-        if (fnc !== null && fnc !== '' && bnc !== null && bnc !== '' && adn !== null && adn !== '') {
+        if (adn !== null && adn !== '') {
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
-            console.log('fn: ', fn);
-            console.log('bn: ', bn);
-            console.log('Typeof fn: ', typeof fn);
-            console.log('Typeof bn: ', typeof bn);
             if (fn !== null && fn !== '' && bn !== null && bn !== '') {
-                showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent')
+                let personal = new Personal(fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street)
+                showDataInform('#test', personal);
+            }
+            else if (fn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt trước');
+                return;
+            }
+            else if (bn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt sau');
+                return;
             }
         }
     })
 }
 
+// Done +
 function showFormPincode(element, phone) {
     var html =
-        "<form id='formPassword'>" +
-        "<label for='pincode'>Pin code</label>" +
-        "<input type='password' id='pincode' placeholder='Please enter your pin code: ' />" +
-        "<button type='button' id='btnSubmitPW'>Gửi</button>" +
+        "<form id='formValuePassword'>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='pincode'>Pin code</label>" +
+        "<input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />" +
+        "</div>" +
+
+        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
         "</form>";
     $(element).html(html);
 
-    $('#btnSubmitPW').click(function () {
-        let pin = $('#password').val();
+    $('#btnSubmitPin').click(function () {
+        let pin = $('#pincode').val();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
-            if (result.status === true && result.step === 3) {
+            console.log('Result: ', result);
+            if (result.status === true && result.data.step === 4) {
                 showAllTenor(element);
             }
             else if (result.status === false && result.statusCode === 1002) {
@@ -290,6 +307,7 @@ function showFormSetupPin(element) {
         "<input type='password' id='pin3'/>" +
         "<input type='password' id='pin4'/>" +
         "</div>" +
+
         "<div>" +
         "<input type='password' id='pincf1'/>" +
         "<input type='password' id='pincf2'/>" +
@@ -315,7 +333,18 @@ function showFormSetupPin(element) {
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
         if (pin === pincf) {
-
+            const data = localStorage.getItem('personal_all_info');
+            const front_nid_image = localStorage.getItem('front-image');
+            const back_nid_image = localStorage.getItem('back-image');
+            const selfie_image = localStorage.getItem('selfie-image');
+            let all_data_info = {
+                ...data,
+                pin: pin,
+                nid_front_image: front_nid_image,
+                nid_back_image: back_nid_image,
+                selfie_image: selfie_image
+            }
+            console.log('ALL DATA INFO: ', all_data_info);
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
@@ -356,9 +385,9 @@ function showFormVerifyOTP(element, phone) {
     })
 }
 
+// Done +
 async function fetchToken() {
     try {
-        console.log('FETCH TOKEN');
         const url = 'https://apibnpl.voolo.vn/v1/bnpl/fec/getHVToken';
         const data = await fetch(url);
         const json = await data.json();
@@ -373,9 +402,9 @@ async function fetchToken() {
     }
 };
 
+// Done +
 async function getHV() {
     try {
-        console.log('GET HYPERVERGE');
         await fetchToken()
             .then((res) => {
                 HyperSnapSDK.init(res, HyperSnapParams.Region.AsiaPacific);
@@ -390,6 +419,7 @@ async function getHV() {
     }
 };
 
+// Done +
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 512;
@@ -414,42 +444,30 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return blob;
 }
 
+// Done +
 function cutStringData(infomation) {
     try {
-        if (infomation) {
+        if (infomation !== null) {
             const { status, statusCode, result } = infomation;
             const details = result?.details[0]?.fieldsExtracted;
             const nidType = result?.details[0]?.type;
             let front_nid_customer = '';
             let back_nid_customer = '';
             // FRONT NID IMAGE
-            if (nidType === 'cccd_chip_front' && nidType !== 'null') {
+            if (arrType_front.includes(nidType) && nidType !== null) {
                 let province = details?.province?.value;
-                console.log('province: ', province);
                 let idNumber = details?.idNumber?.value;
-                console.log('idNumber: ', idNumber);
                 let name = details?.name?.value;
-                console.log('name: ', name);
                 let dob = details?.dob?.value;
-                console.log('dob: ', dob);
                 let homeTown = details?.homeTown?.value;
-                console.log('homeTown: ', homeTown);
                 let permanentAddress = details?.permanentAddress?.value;
-                console.log('permanentAddress: ', permanentAddress);
                 let street = details?.permanentAddress?.value.split(',')[0];
-                console.log('street: ', street);
                 let ward = details?.permanentAddress.value.split(',')[2];
-                console.log('ward: ', ward);
                 let district = details?.permanentAddress.value.split(',')[3];
-                console.log('district: ', district);
                 let city = details?.permanentAddress.value.split(',')[4];
-                console.log('city: ', city);
                 let gender = details?.gender?.value;
-                console.log('gender: ', gender);
                 let doe = details?.doe?.value;
-                console.log('doe: ', doe);
                 let nationality = details?.nationality?.value;
-                console.log('nationality: ', nationality);
                 front_nid_customer = {
                     province: province,
                     idNumber: idNumber,
@@ -467,18 +485,16 @@ function cutStringData(infomation) {
                 localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
             }
             // BACK NID IMAGE
-            if (nidType === 'cccd_chip_back' && nidType !== 'null') {
+            if (arrType_back.includes(nidType) && nidType !== 'null') {
                 let doi = details?.doi?.value;
-                console.log('doi: ', doi);
                 let placeOfIssue = details?.placeOfIssue?.value;
-                console.log('placeOfIssue: ', placeOfIssue);
                 back_nid_customer = {
                     doi: doi,
                     placeOfIssue: placeOfIssue
                 }
                 localStorage.setItem('back_nid_customer', JSON.stringify(back_nid_customer));
             }
-            if (localStorage.getItem('front_nid_customer') !== null && localStorage.getItem('back_nid_customer') !== null && localStorage.getItem('front_nid_customer') !== '' && localStorage.getItem('back_nid_customer') !== '') {
+            if (localStorage.getItem('front_nid_customer') !== null && localStorage.getItem('back_nid_customer') !== null) {
                 let allDataNid = {
                     front_nid_customer: JSON.parse(localStorage.getItem('front_nid_customer')),
                     back_nid_customer: JSON.parse(localStorage.getItem('back_nid_customer'))
@@ -486,6 +502,18 @@ function cutStringData(infomation) {
                 localStorage.setItem('allDataNid', JSON.stringify(allDataNid));
                 return allDataNid;
             }
+            else if (localStorage.getItem('front_nid_customer') === null && localStorage.getItem('back_nid_customer') !== null) {
+                alert('Thông tin mặt trước của chứng minh nhân dân không tồn tại');
+                return;
+            }
+            else if (localStorage.getItem('front_nid_customer') !== null && localStorage.getItem('back_nid_customer') === null) {
+                alert('Thông tin mặt sau của chứng minh nhân dân không tồn tại');
+                return;
+            }
+        }
+        else {
+            alert('Thông tin không tồn tại để cắt data');
+            return;
         }
     }
     catch (error) {
@@ -496,31 +524,26 @@ function cutStringData(infomation) {
     }
 }
 
+// Done +
 function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
-    console.log('faceImageBase64String: ', faceImageBase64String);
-    console.log('docImageBase64String: ', docImageBase64String);
     callback = (HVError, HVResponse) => {
         if (HVError) {
             var errorCode = HVError.getErrorCode();
-            console.log('error code make face match call: ', errorCode);
             var errorMessage = HVError.getErrorMessage();
-            console.log('error message make face match call: ', errorMessage);
         }
         if (HVResponse) {
             var apiResults = HVResponse.getApiResult();
-            console.log('Api Results Make Face Match Call: ', apiResults);
             var apiHeaders = HVResponse.getApiHeaders();
-            console.log('Api Headers Make Face Match Call: ', apiHeaders);
             if (apiResults !== null && apiResults !== '') {
                 const data = apiResults?.result;
-                console.log('Data: ', data);
                 const matchFace = data.match;
-                console.log('Match Face: ', matchFace);
                 if (matchFace === 'no') {
                     alert('The face and the image of the identity card on the front side do not match');
+                    return false;
                 }
                 else {
-                    alert('The face and the image of the identity card on the front side match')
+                    alert('The face and the image of the identity card on the front side match');
+                    return true;
                 }
             }
         }
@@ -528,30 +551,24 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
     HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
 }
 
+// Done +
 async function LaunchFaceCaptureScreen() {
     try {
-        console.log('Launch Face Capture Screen');
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
-                console.log('error code Face Capture Screen: ', errorCode);
                 var errorMessage = HVError.getErrorMessage();
-                console.log('error message Face Capture Screen: ', errorMessage);
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
-                console.log('Api Results Face Capture Screen: ', apiResults);
                 var apiHeaders = HVResponse.getApiHeaders();
-                console.log('Api Headers Face Capture Screen: ', apiHeaders);
                 var imageBase64 = HVResponse.getImageBase64();
-                console.log('Image Base64 Face Capture Screen: ', imageBase64);
                 var attemptsCount = HVResponse.getAttemptsCount();
-                console.log('Attempt Count Face Capture Screen: ', attemptsCount);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
-                    showCapture(imageBase64,'callHP');
+                    showCapture(imageBase64, 'callHP');
                 }
             }
         };
@@ -565,9 +582,9 @@ async function LaunchFaceCaptureScreen() {
     }
 };
 
+// Done +
 async function LaunchDocumentCaptureScreen(side) {
     try {
-        console.log('Launch Document Capture Screen');
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
@@ -580,32 +597,25 @@ async function LaunchDocumentCaptureScreen(side) {
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
-                console.log('error code Document Capture Screen: ', errorCode);
                 var errorMessage = HVError.getErrorMessage();
-                console.log('error message Document Capture Screen: ', errorCode);
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
-                console.log('Api Results Document Capture Screen: ', apiResults);
                 var apiHeaders = HVResponse.getApiHeaders();
-                console.log('Api Headers Document Capture Screen: ', apiHeaders);
                 var imageBase64 = HVResponse.getImageBase64();
-                console.log('Image Base64 Document Capture Screen: ', imageBase64);
                 var attemptsCount = HVResponse.getAttemptsCount();
-                console.log('Attempt Count Document Capture Screen: ', attemptsCount);
-                base64 = imageBase64;
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (side === 'FRONT' && side !== '') {
                         localStorage.setItem('front-image', imageBase64);
-                        postNationalID(base64);
-                        showCapture(imageBase64,"btnCaptureFront");
+                        postNationalID(imageBase64);
+                        showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thành công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (side === 'BACK' && side !== '') {
                         localStorage.setItem('back-image', imageBase64);
-                        postNationalID(base64);
-                        showCapture(imageBase64,"btnCaptureBack");
+                        postNationalID(imageBase64);
+                        showCapture(imageBase64, "btnCaptureBack");
                         // alert('Lưu mặt sau CMND thành công !');
                         // $("#back_picture").attr("src", imageBase64);
                     }
@@ -622,6 +632,7 @@ async function LaunchDocumentCaptureScreen(side) {
     }
 }
 
+// Done +
 function runFaceCaptureScreen() {
     try {
         getHV()
@@ -635,6 +646,7 @@ function runFaceCaptureScreen() {
     }
 }
 
+// Done +
 function runDocumentCaptureScreen(side) {
     try {
         getHV()
@@ -681,9 +693,9 @@ function showAllProvider(element) {
 
     // show list productions
     listProductions({
-        element:"#test",
-        items:true,
-        dataItems:pData 
+        element: "#test",
+        items: true,
+        dataItems: pData
     });
 };
 
@@ -699,19 +711,20 @@ function showMessage(element, message, icon) {
 
 // Done +
 function selectTenor(id) {
-    let tenor = localStorage.setItem('tenor', id);
+    localStorage.setItem('tenor', id);
 }
 
 // Done +
 function selectProvider(id) {
-    let provider = localStorage.setItem('provider', id);
+    localStorage.setItem('provider', id);
     showUICheckPhone('#test');
 }
 
+// Done +
 function deleteImage(side) {
     try {
         if (side === 'SELFIE') {
-            if (localStorage.getItem('selfie-image') !== null || localStorage.getItem('selfie-image') !== '' && localStorage.getItem('selfie-image') !== undefined) {
+            if (localStorage.getItem('selfie-image') !== null) {
                 localStorage.removeItem('selfie-image');
                 $("#selfie_picture").attr("src", "");
                 alert('Xóa ảnh selfie thành công !');
@@ -721,7 +734,7 @@ function deleteImage(side) {
             }
         }
         else if (side === 'FRONT') {
-            if (localStorage.getItem('front_image') !== null || localStorage.getItem('front_image') !== '' && localStorage.getItem('front_image') !== undefined) {
+            if (localStorage.getItem('front_image') !== null) {
                 localStorage.removeItem('front-image');
                 $("#front_picture").attr("src", "");
                 alert('Xóa mặt trước selfie thành công !');
@@ -731,7 +744,7 @@ function deleteImage(side) {
             }
         }
         else {
-            if (localStorage.getItem('back_image') !== null || localStorage.getItem('back_image') !== '' && localStorage.getItem('back_image') !== undefined) {
+            if (localStorage.getItem('back_image') !== null) {
                 localStorage.removeItem('back-image');
                 $("#back_picture").attr("src", "");
                 alert('Xóa mặt sau selfie thành công !');
@@ -749,18 +762,14 @@ function deleteImage(side) {
     }
 }
 
+// Done +
 function postNationalID(ImageURL) {
     try {
-        // Split the base64 string in data and contentType
         var block = ImageURL.split(";");
-        // Get the content type of the image
-        var contentType = block[0].split(":")[1];   // In this case "image/gif"
-        // get the real base64 content of the file
-        var realData = block[1].split(",")[1];      // In this case "R0lGODlhPQBEAPeoAJosM...."
-        // Convert it to a blob to upload
+        var contentType = block[0].split(":")[1];
+        var realData = block[1].split(",")[1];
         var blob = b64toBlob(realData, contentType);
 
-        // Create a FormData and append the file with "image" as parameter name
         var formDataToUpload = new FormData();
         formDataToUpload.append("image", blob);
 
@@ -793,7 +802,8 @@ function postNationalID(ImageURL) {
     }
 }
 
-function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent) {
+// Done +
+function showDataInform(element, personal) {
     var html =
         "<h2>Enter personal information</h2>" +
 
@@ -803,119 +813,285 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
 
         "<div class='form__row'>" +
         "<label class='form__label' for='fullname'>Full Name</label>" +
-        "<input class='form__input' type='text' id='fullname' name='fullname' value=" + fullname + ">" +
+        "<input class='form__input' type='text' id='fullname' name='fullname' value='" + personal.fullname + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='gender'>Gender</label>" +
-        "<input class='form__input' type='text' id='gender' name='gender' value=" + gender + ">" +
+        "<input class='form__input' type='text' id='gender' name='gender' value='" + personal.gender + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='phone'>Phone number</label>" +
-        "<input class='form__input' type='phone' id='phone' name='phone' value=" + phone + ">" +
+        "<input class='form__input' type='phone' id='phone' name='phone' value='" + personal.phone + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='dob'>Date of birth</label>" +
-        "<input class='form__input' type='text' id='dob' name='dob' value=" + dob + ">" +
+        "<input class='form__input' type='text' id='dob' name='dob' value='" + personal.dob + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='nid'>ID number</label>" +
-        "<input class='form__input' type='text' id='nid' name='nid' value=" + nid + ">" +
+        "<input class='form__input' type='text' id='nid' name='nid' value='" + personal.nid + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='doi'>Date of issue</label>" +
-        "<input class='form__input' type='text' id='doi' name='doi' value=" + doi + ">" +
+        "<input class='form__input' type='text' id='doi' name='doi' value='" + personal.doi + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='doe'>Date of expiry</label>" +
+        "<input class='form__input' type='text' id='doe' name='doe' value='" + personal.doe + "'>" +
         "</div>" +
 
         "<h3>Current address</h3>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='city'>City/Province</label>" +
-        "<input class='form__input' type='text' id='city' name='city' value=" + city + ">" +
+        "<input class='form__input' type='text' id='city' name='city' value='" + personal.city + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='district'>District</label>" +
-        "<input class='form__input' type='text' id='district' name='district' value=" + district + ">" +
+        "<input class='form__input' type='text' id='district' name='district' value='" + personal.district + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
-        "<label class='form__label' for='wards'>Wards</label>" +
-        "<input class='form__input' type='text' id='wards' name='wards' value=" + wards + ">" +
+        "<label class='form__label' for='ward'>Ward</label>" +
+        "<input class='form__input' type='text' id='ward' name='ward' value='" + personal.ward + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='street'>Street</label>" +
-        "<input class='form__input' type='text' id='street' name='street' value=" + street + ">" +
+        "<input class='form__input' type='text' id='street' name='street' value='" + personal.street + "'>" +
         "</div>" +
 
         "<h3>Reference information</h3>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='relationship'>Relationship</label>" +
-        "<input class='form__input' type='text' id='relationship' name='relationship' value=" + relationship + ">" +
+        "<input class='form__input' type='text' id='relationship' name='relationship'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='fullname_ref'>Full name</label>" +
-        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref' value=" + fullname_ref + ">" +
+        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='phone_ref'>Phone number</label>" +
-        "<input class='form__input' type='text' id='phone_ref' name='phone_ref' value=" + phone_ref + ">" +
+        "<input class='form__input' type='text' id='phone_ref' name='phone_ref'>" +
         "</div>" +
 
         "<h3>Permanent address</h3>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='city_permanent'>City/Province</label>" +
-        "<input class='form__input' type='text' id='city_permanent' name='city_permanent' value=" + city_permanent + ">" +
+        "<input class='form__input' type='text' id='city_permanent' name='city_permanent'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='district_permanent'>District</label>" +
-        "<input class='form__input' type='text' id='district_permanent' name='district_permanent' value=" + district_permanent + ">" +
+        "<input class='form__input' type='text' id='district_permanent' name='district_permanent'>" +
         "</div>" +
 
         "<div class='form__row'>" +
-        "<label class='form__label' for='wards_permanent'>Wards</label>" +
-        "<input class='form__input' type='text' id='wards_permanent' name='wards_permanent' value=" + wards_permanent + ">" +
+        "<label class='form__label' for='ward_permanent'>Wards</label>" +
+        "<input class='form__input' type='text' id='ward_permanent' name='ward_permanent'>" +
         "</div>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='street_permanent'>Street</label>" +
-        "<input class='form__input' type='text' id='street_permanent' name='street_permanent' value=" + street_permanent + ">" +
+        "<input class='form__input' type='text' id='street_permanent' name='street_permanent'>" +
         "</div>" +
 
         "<span><b>Note:</b>*Compulsory information</span>" +
 
-        "<button type='button'>Continue</button>" +
+        "<button type='button' id='btnContinue'>Continue</button>" +
 
         "</form>";
     $(element).html(html);
+
+    $('#btnContinue').click(function () {
+        let fullname = document.getElementById('fullname').value.trim();
+        let gender = document.getElementById('gender').value.trim();
+        let phone = document.getElementById('phone').value.trim();
+        let dob = document.getElementById('dob').value.trim();
+        let nid = document.getElementById('nid').value.trim();
+        let doi = document.getElementById('doi').value.trim();
+        let doe = document.getElementById('doe').value.trim();
+        let city = document.getElementById('city').value.trim();
+        let district = document.getElementById('district').value.trim();
+        let ward = document.getElementById('ward').value.trim();
+        let street = document.getElementById('street').value.trim();
+        let relationship = document.getElementById('relationship').value.trim();
+        let fullname_ref = document.getElementById('fullname_ref').value.trim();
+        let phone_ref = document.getElementById('phone_ref').value.trim();
+        let city_permanent = document.getElementById('city_permanent').value.trim();
+        let district_permanent = document.getElementById('district_permanent').value.trim();
+        let ward_permanent = document.getElementById('ward_permanent').value.trim();
+        let street_permanent = document.getElementById('street_permanent').value.trim();
+        let personal_all_info = {
+            name: fullname,
+            sex: gender,
+            birthday: dob,
+            phone: phone,
+            citizenId: nid,
+            issueDate: doi,
+            city: city,
+            district: district,
+            ward: ward,
+            street: street,
+            "personal_title_ref": relationship,
+            "name_ref": fullname_ref,
+            "phone_ref": phone_ref,
+            "temporaryCity": city_permanent,
+            "temporaryDistrict": district_permanent,
+            "temporaryWard": ward_permanent,
+            "temporaryStreet": street_permanent,
+            "expirationDate": doe
+        }
+        if (personal_all_info !== null) {
+            localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
+            showConfirmDataInform(element, personal_all_info)
+        }
+    })
 }
 
-// Done 
+// Done +
+function showConfirmDataInform(element, personal_all_info) {
+    var html =
+        "<h2>Information Check</h2>" +
+
+        "<form class='form-container'>" +
+
+        "<h3>Personal information</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname'>Full Name</label>" +
+        "<input class='form__input' type='text' id='fullname' name='fullname' value='" + personal_all_info.name + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='gender'>Gender</label>" +
+        "<input class='form__input' type='text' id='gender' name='gender' value='" + personal_all_info.sex + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone'>Phone number</label>" +
+        "<input class='form__input' type='phone' id='phone' name='phone' value='" + personal_all_info.phone + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='dob'>Date of birth</label>" +
+        "<input class='form__input' type='text' id='dob' name='dob' value='" + personal_all_info.birthday + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='nid'>ID number</label>" +
+        "<input class='form__input' type='text' id='nid' name='nid' value='" + personal_all_info.citizenId + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='doi'>Date of issue</label>" +
+        "<input class='form__input' type='text' id='doi' name='doi' value='" + personal_all_info.issueDate + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='doe'>Date of expiry</label>" +
+        "<input class='form__input' type='text' id='doe' name='doe' value='" + personal_all_info.expirationDate + "'>" +
+        "</div>" +
+
+        "<h3>Current address</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city' name='city' value='" + personal_all_info.city + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district'>District</label>" +
+        "<input class='form__input' type='text' id='district' name='district' value='" + personal_all_info.district + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='wards'>Wards</label>" +
+        "<input class='form__input' type='text' id='wards' name='wards' value='" + personal_all_info.ward + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street'>Street</label>" +
+        "<input class='form__input' type='text' id='street' name='street' value='" + personal_all_info.street + "'>" +
+        "</div>" +
+
+        "<h3>Reference information</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='relationship'>Relationship</label>" +
+        "<input class='form__input' type='text' id='relationship' name='relationship' value='" + personal_all_info.personal_title_ref + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname_ref'>Full name</label>" +
+        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref' value='" + personal_all_info.name_ref + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone_ref'>Phone number</label>" +
+        "<input class='form__input' type='text' id='phone_ref' name='phone_ref' value='" + personal_all_info.phone_ref + "'>" +
+        "</div>" +
+
+        "<h3>Permanent address</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city_permanent'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city_permanent' name='city_permanent' value='" + personal_all_info.temporaryCity + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district_permanent'>District</label>" +
+        "<input class='form__input' type='text' id='district_permanent' name='district_permanent' value='" + personal_all_info.temporaryDistrict + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='ward_permanent'>Wards</label>" +
+        "<input class='form__input' type='text' id='ward_permanent' name='ward_permanent' value='" + personal_all_info.temporaryWard + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street_permanent'>Street</label>" +
+        "<input class='form__input' type='text' id='street_permanent' name='street_permanent' value='" + personal_all_info.temporaryStreet + "'>" +
+        "</div>" +
+
+        "<button type='button' id='btnContinueConfirm'>Continue</button>" +
+
+        "</form>";
+    $(element).html(html);
+
+    $('#btnContinueConfirm').click(function () {
+        showFormSetupPin(element);
+    });
+}
+
+// Done +
 $('body').on('click', '.btnSelectTenor', function () {
     var val = $(this).attr("data-id");
     selectTenor(val);
 })
 
-// Done
+// Done +
 $('body').on('click', '.btnSelectProvider', function () {
     var val = $(this).attr("data-id");
     selectProvider(val);
 });
 
-function configUi(config){
+// Done +
+function configUi(config) {
     var iHtml = "";
-    if(config.logo) iHtml += "<div class='voolo-logo'></div>";
-    if(config.intro) iHtml += `
+    if (config.logo) iHtml += "<div class='voolo-logo'></div>";
+    if (config.intro) iHtml += `
     <div class='voolo-intro'>
         <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
         <ul>
@@ -925,52 +1101,54 @@ function configUi(config){
         </ul>
     </div>
     <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
-    $(config.element+" form").prepend(iHtml);
+    $(config.element + " form").prepend(iHtml);
 }
 
-function listProductions(config){
+// Done +
+function listProductions(config) {
     //show list items
     var list = "";
-    if(config.dataItems != null){
+    if (config.dataItems != null) {
         var lItems = "";
         var total = 0;
         config.dataItems.forEach(e => {
             list += `<div class='list'>
-            <div class='image'><img src='`+e.imgUrl+`'/></div>
+            <div class='image'><img src='`+ e.imgUrl + `'/></div>
             <div class='info'>
-                <p class='head-w-6 ellipsis'>`+e.product+`</p>
-                <p>`+e.descript+`</p>
-                <p>`+e.quantity+`</p>
+                <p class='head-w-6 ellipsis'>`+ e.product + `</p>
+                <p>`+ e.descript + `</p>
+                <p>`+ e.quantity + `</p>
             </div>
-            <div class='price head-w-6'>`+e.priceShow+`</div>
+            <div class='price head-w-6'>`+ e.priceShow + `</div>
         </div>`;
-        total += parseInt(e.price);
+            total += parseInt(e.price);
         });
         var sTotal = total.toLocaleString('vi-VN', {
             style: 'currency',
             currency: 'VND',
-          });
+        });
     }
     lItems += `<div class='list-items'>
         <div class='card'>
             <div class='card-head'>Thông tin đơn hàng</div>
             <div class='card-body'>
-                `+list+`
+                `+ list + `
             </div>
             <div class='card-footer'>
                 <span>Tổng cộng</span>
-            <span class='total-price'>`+sTotal+` </span></div>
+            <span class='total-price'>`+ sTotal + ` </span></div>
         </div>
     </div>`;
-    if(config.items) $(config.element).prepend(lItems);
+    if (config.items) $(config.element).prepend(lItems);
 }
 
-function showCapture(base64, eId){
-    if(base64){
-        $('#'+eId).addClass("showImage");
-        $('#'+eId).css({
+// Done +
+function showCapture(base64, eId) {
+    if (base64) {
+        $('#' + eId).addClass("showImage");
+        $('#' + eId).css({
             'background': 'url(' + base64 + ') no-repeat center',
-             'background-size': 'cover'
+            'background-size': 'cover'
         });
 
     }
