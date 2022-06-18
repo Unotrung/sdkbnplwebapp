@@ -1,3 +1,9 @@
+/*
+*
+*
+* */
+const arrType_front = ["cccd_chip_front", "cccd_front","cmnd_old_front"];
+const arrType_back = ["cccd_chip_back", "cccd_back","cmnd_old_back"];
 // Done +
 function generateObjectDraft(images, phone, citizenId) {
     let data = null;
@@ -230,7 +236,6 @@ function captureNidFrontAndBack(element) {
     })
 
     $('#btnSubmit').click(function () {
-        alert("btnSubmit");
         let fnc = localStorage.getItem('front_nid_customer');
         let bnc = localStorage.getItem('back_nid_customer');
         let adn = JSON.parse(localStorage.getItem('allDataNid'));
@@ -423,7 +428,7 @@ function cutStringData(infomation) {
             let front_nid_customer = '';
             let back_nid_customer = '';
             // FRONT NID IMAGE
-            if (nidType === 'cccd_chip_front' && nidType !== 'null') {
+            if (arrType_front.includes(nidType) && nidType !== 'null') {
                 let province = details?.province?.value;
                 console.log('province: ', province);
                 let idNumber = details?.idNumber?.value;
@@ -467,7 +472,7 @@ function cutStringData(infomation) {
                 localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
             }
             // BACK NID IMAGE
-            if (nidType === 'cccd_chip_back' && nidType !== 'null') {
+            if (arrType_back.includes(nidType) && nidType !== 'null') {
                 let doi = details?.doi?.value;
                 console.log('doi: ', doi);
                 let placeOfIssue = details?.placeOfIssue?.value;
@@ -508,9 +513,9 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
         }
         if (HVResponse) {
             var apiResults = HVResponse.getApiResult();
-            console.log('Api Results Make Face Match Call: ', apiResults);
+            // console.log('Api Results Make Face Match Call: ', apiResults);
             var apiHeaders = HVResponse.getApiHeaders();
-            console.log('Api Headers Make Face Match Call: ', apiHeaders);
+            // console.log('Api Headers Make Face Match Call: ', apiHeaders);
             if (apiResults !== null && apiResults !== '') {
                 const data = apiResults?.result;
                 console.log('Data: ', data);
@@ -586,13 +591,13 @@ async function LaunchDocumentCaptureScreen(side) {
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
-                console.log('Api Results Document Capture Screen: ', apiResults);
+                // console.log('Api Results Document Capture Screen: ', apiResults);
                 var apiHeaders = HVResponse.getApiHeaders();
-                console.log('Api Headers Document Capture Screen: ', apiHeaders);
+                // console.log('Api Headers Document Capture Screen: ', apiHeaders);
                 var imageBase64 = HVResponse.getImageBase64();
-                console.log('Image Base64 Document Capture Screen: ', imageBase64);
+                // console.log('Image Base64 Document Capture Screen: ', imageBase64);
                 var attemptsCount = HVResponse.getAttemptsCount();
-                console.log('Attempt Count Document Capture Screen: ', attemptsCount);
+                // console.log('Attempt Count Document Capture Screen: ', attemptsCount);
                 base64 = imageBase64;
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (side === 'FRONT' && side !== '') {
@@ -782,6 +787,7 @@ function postNationalID(ImageURL) {
 
         $.ajax(settings).done(function (response) {
             const data = JSON.parse(response);
+            console.log("cutStringData : ", data);
             cutStringData(data);
         });
     }
