@@ -202,11 +202,11 @@
     background-color: #fff;
 }
 
-.form__row {
+/* .form__row {
     padding: 8px 4px;
     display: flex;
     flex-direction: column;
-}
+} */
 
 .form__label {
     display: inline-block;

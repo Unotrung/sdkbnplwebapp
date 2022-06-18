@@ -85,14 +85,29 @@ function updateCircularProgressbar() {
 // Done +
 function showUICheckPhone(element) {
     var html =
-        "<form id='formValuePhone' class='form-container'>" +
+        "<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'><div class='mobile'>" +
         "<div class='form__row'>" +
-        "<label class='form__label'  for='phone'>Phone</label>" +
-        "<input class='form__input' type='phone' id='phone' placeholder='Please enter your phone: ' />" +
+        "<label class='form__label'  for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
+        "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
         "</div>" +
-        "<button type='button' id='btnSubmitPhone'>Gửi</button>" +
-        "</form>";
+        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
+
+    //custom show
+    configUi({
+        element:element,
+        logo:true,
+        intro:true
+    });
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
+
+
 
     $('#btnSubmitPhone').click(function () {
         let data = $('#phone').val();
@@ -132,19 +147,13 @@ function showUICheckPhone(element) {
 // Done +
 function showUICheckNid(element) {
     var html =
-        "<form id='formValueNid' class='form-container'>" +
-        "<div class='form__row'>" +
-        "<label class='form__label' for='nid'>Nid</label>" +
-        "<input class='form__input' type='number' id='nid' placeholder='Please enter your nid: ' />" +
-        "</div>" +
-        "<div class='selfie_image'>" +
-        "<p class='title_image'>Selfie Picture</p>" +
-        "<image src='' width='350px' height='350px' id='selfie_picture'/>" +
-        "<i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i>" +
-        "</div>" +
-        "<button type='button' id='callHP'>Call Hyperverge</button>" +
-        "<button type='button' id='btnSubmitNid'>Gửi</button>" +
-        "</form>";
+        "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+        "<h3>Chụp ảnh chân dung</h3>" +
+        "<button type='button' id='callHP' class='btnCapture'></button>" +
+        "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
 
     $('#callHP').click(function () {
@@ -554,8 +563,7 @@ async function LaunchFaceCaptureScreen() {
                 console.log('Attempt Count Face Capture Screen: ', attemptsCount);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
-                    alert('Lưu ảnh Selfie thành công !');
-                    $("#selfie_picture").attr("src", imageBase64);
+                    showCapture(imageBase64,'selfie_picture');
                 }
             }
         };
@@ -669,19 +677,24 @@ function showAllTenor(element) {
 
 // Done +
 function showAllProvider(element) {
-    let html = '';
+    let html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
         html += `
-        <div style='border: 3px solid black; margin: 10px auto; display: block'>
-        <img src='${providers[i].url}' />
-        <p>${providers[i].provider}</p>
-        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'>Select</button>
-        </div>
-        `
+        <div class='list-provider'>
+        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'><img src='${providers[i].url}' /></button>
+        </div>`;
     }
+    html += `</div>`;
     $(element).html(html);
+
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
 };
 
 // Done +
@@ -907,4 +920,68 @@ $('body').on('click', '.btnSelectTenor', function () {
 $('body').on('click', '.btnSelectProvider', function () {
     var val = $(this).attr("data-id");
     selectProvider(val);
-})
+});
+
+function configUi(config){
+    var iHtml = "";
+    if(config.logo) iHtml += "<div class='voolo-logo'></div>";
+    if(config.intro) iHtml += `
+    <div class='voolo-intro'>
+        <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
+        <ul>
+            <li>Mua sắm không giới hạn </li>
+            <li>Thanh toán linh hoạt </li>
+            <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
+        </ul>
+    </div>
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    $(config.element+" form").prepend(iHtml);
+}
+
+function listProductions(config){
+    //show list items
+    var list = "";
+    if(config.dataItems != null){
+        var lItems = "";
+        var total = 0;
+        config.dataItems.forEach(e => {
+            list += `<div class='list'>
+            <div class='image'><img src='`+e.imgUrl+`'/></div>
+            <div class='info'>
+                <p class='head-w-6 ellipsis'>`+e.product+`</p>
+                <p>`+e.descript+`</p>
+                <p>`+e.quantity+`</p>
+            </div>
+            <div class='price head-w-6'>`+e.priceShow+`</div>
+        </div>`;
+        total += parseInt(e.price);
+        });
+        var sTotal = total.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          });
+    }
+    lItems += `<div class='list-items'>
+        <div class='card'>
+            <div class='card-head'>Thông tin đơn hàng</div>
+            <div class='card-body'>
+                `+list+`
+            </div>
+            <div class='card-footer'>
+                <span>Tổng cộng</span>
+            <span class='total-price'>`+sTotal+` </span></div>
+        </div>
+    </div>`;
+    if(config.items) $(config.element).prepend(lItems);
+}
+
+function showCapture(base64, eId){
+    if(base64){
+        $('#callHP').addClass("showImage");
+        $('#callHP').css({
+            'background': 'url(' + base64 + ') no-repeat center',
+             'background-size': 'cover'
+        });
+
+    }
+}
