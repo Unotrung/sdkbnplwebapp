@@ -191,6 +191,21 @@
     background-color: #FFF;
     border-radius: 30px;
     border: 2px solid #EEEEEE;
+    position: relative;
+}
+.main-page .selfie_picture{
+    width: 100px;
+    height: 100px;
+    border-radius: 30px;
+    display: none;
+}
+.main-page .btnCapture.showImage::after {
+    content: url(./assets/img/icon-check.png);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 22px;
+    height: 22px;
 }
 .main-page .buttons label{
     display: table-row;
