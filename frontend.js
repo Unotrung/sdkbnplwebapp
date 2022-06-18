@@ -3,7 +3,7 @@
 *
 * */
 const arrType_front = ["cccd_chip_front", "cccd_front","cmnd_old_front"];
-const arrType_back = ["cccd_chip_back", "cccd_back","cmnd_old_back"];
+const arrType_back = ["cccd_chip_back", "cccd_back","cmnd_old_back", "cmnd_new_cccd_back"];
 // Done +
 function generateObjectDraft(images, phone, citizenId) {
     let data = null;
@@ -247,7 +247,7 @@ function captureNidFrontAndBack(element) {
             console.log('Typeof fn: ', typeof fn);
             console.log('Typeof bn: ', typeof bn);
             if (fn !== null && fn !== '' && bn !== null && bn !== '') {
-                showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent')
+                showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent', adn)
             }
         }
     })
@@ -799,11 +799,61 @@ function postNationalID(ImageURL) {
     }
 }
 
-function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent) {
+function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent, allDataNid = localStorage.getItem('allDataNid')) {
+    console.log(JSON.parse(allDataNid));
+    allDataNid = JSON.parse(allDataNid);
+    console.log("allDataNid : ", allDataNid.front_nid_customer.province);
     var html =
+        `<div class='form-card'>
+            <h2>Nhập thông tin cá nhân</h2>
+            <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
+            <form class=''>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Personal information</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Họ và tên</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số điện thoại</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone' name='phone' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Ngày sinh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Giới tính</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='gender' name='gender' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số CMND/CCCD</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='nid' name='nid' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <div class="form-cell">
+                                <label for='phone'>Ngày cấp</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='doi' name='doi' value="`+allDataNid.front_nid_customer.phone+`" />
+                            </div>
+                            <div class="form-cell">
+                                <label for='phone'>Ngày hết hạn</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='doe' name='doe' value="`+allDataNid.front_nid_customer.phone+`" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </form>
+        </div>`;
+/*
         "<h2>Enter personal information</h2>" +
-
+        "<div class='list-items'>" + 
         "<form class='form-container'>" +
+
+        ""+
 
         "<h3>Personal information</h3>" +
 
@@ -834,14 +884,14 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
 
         "<div class='form__row'>" +
         "<label class='form__label' for='doi'>Date of issue</label>" +
-        "<input class='form__input' type='text' id='doi' name='doi' value=" + doi + ">" +
+        "<input class='form__input' type='text' id='doi' name='doi' value='" + allDataNid.back_nid_customer.doi + "'>" +
         "</div>" +
 
         "<h3>Current address</h3>" +
 
         "<div class='form__row'>" +
         "<label class='form__label' for='city'>City/Province</label>" +
-        "<input class='form__input' type='text' id='city' name='city' value=" + city + ">" +
+        "<input class='form__input' type='text' id='city' name='city' value='" + allDataNid.front_nid_customer.province + "'>" +
         "</div>" +
 
         "<div class='form__row'>" +
@@ -901,8 +951,8 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
         "<span><b>Note:</b>*Compulsory information</span>" +
 
         "<button type='button'>Continue</button>" +
-
-        "</form>";
+        "</form></div>";
+*/
     $(element).html(html);
 }
 
