@@ -810,7 +810,7 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
             <form class=''>
                 <div class="card">
                     <div class="card-head">
-                        <h3>Personal information</h3>
+                        <h3>Thông tin cá nhân</h3>
                     </div>
                     <div class="card-body">
                         <div class='form-row'>
@@ -819,33 +819,84 @@ function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, d
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone' name='phone' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Ngày sinh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Giới tính</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='gender' name='gender' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
+                                <option value='M'>Nam</option>
+                                <option value='F'>Nữ</option>
+                            </select>
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số CMND/CCCD</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='nid' name='nid' value="`+allDataNid.front_nid_customer.phone+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='number' id='nid' name='nid' value="`+allDataNid.front_nid_customer.phone+`" />
                         </div>
                         <div class='form-row'>
                             <div class="form-cell">
                                 <label for='phone'>Ngày cấp</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='doi' name='doi' value="`+allDataNid.front_nid_customer.phone+`" />
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doi' name='doi' value="`+allDataNid.front_nid_customer.phone+`" />
                             </div>
                             <div class="form-cell">
                                 <label for='phone'>Ngày hết hạn</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='doe' name='doe' value="`+allDataNid.front_nid_customer.phone+`" />
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doe' name='doe' value="`+allDataNid.front_nid_customer.phone+`" />
                             </div>
                         </div>
                     </div>
                     <div class="card-footer"></div>
                 </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Địa chỉ hiện tại</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Thành phố/Tỉnh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Quận/Huyện</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Phường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Đường</label>
+                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
+                                <option value='M'>Nam</option>
+                                <option value='F'>Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Thông tin tham chiếu</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Mối quan hệ </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Họ và tên </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số điện thoại </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <button type='button' class='payment-button'>Tiếp tục</button>
             </form>
         </div>`;
 /*
