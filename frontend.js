@@ -115,6 +115,7 @@ function showUICheckPhone(element) {
         localStorage.setItem('phone', data);
         if (data !== null && data !== '') {
             let result = checkPhoneExists(data);
+            console.log('result check phone: ', result);
             if (result.errCode === 1000) {
                 let step = result.data.step;
                 if (step === 4) {
@@ -344,7 +345,19 @@ function showFormSetupPin(element) {
                 nid_back_image: back_nid_image,
                 selfie_image: selfie_image
             }
-            console.log('ALL DATA INFO: ', all_data_info);
+            console.log('all_data_info: ', all_data_info);
+            let result = addInfoPersonal(all_data_info.name, all_data_info.sex, all_data_info.birthday, all_data_info.phone, all_data_info.citizenId,
+                all_data_info.issueDate, all_data_info.expirationDate, all_data_info.city, all_data_info.district, all_data_info.ward,
+                all_data_info.street, all_data_info.temporaryCity, all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
+                all_data_info.personal_title_ref, all_data_info.name_ref,
+                all_data_info.phone_ref, all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
+            console.log('result: ', result);
+            if (result.status === true) {
+                alert(result.message);
+            }
+            else {
+                alert('Add Infomation Personal Failure');
+            }
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
@@ -988,7 +1001,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         <div class='form-row'>
                             <label for='gender'>Giới tính</label>
                             <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
+                                <option value="Nam">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
                         </select>
                         </div>
                         <div class='form-row'>

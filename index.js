@@ -14,7 +14,7 @@ function login(phone, pin) {
     return callAjax({ phone: phone, pin: pin }, 'user/login', 'POST');
 }
 
-function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate, expirationDate, city, district, ward, street, temporaryCity, temporaryDistrict, temporaryWard, temporaryStreet, personal_title_ref, name_ref, phone_ref, pin, images) {
+function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate, expirationDate, city, district, ward, street, temporaryCity, temporaryDistrict, temporaryWard, temporaryStreet, personal_title_ref, name_ref, phone_ref, pin, nid_front_image, nid_back_image, selfie_image) {
     return callAjax(
         {
             name: name,
@@ -36,7 +36,9 @@ function addInfoPersonal(name, sex, birthday, phone, citizenId, issueDate, expir
             name_ref: name_ref,
             phone_ref: phone_ref,
             pin: pin,
-            images: images
+            nid_front_image: nid_front_image,
+            nid_back_image: nid_back_image,
+            selfie_image: selfie_image
         },
         'personal/addInfoPersonal',
         'POST'
