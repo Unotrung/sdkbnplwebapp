@@ -1,3 +1,9 @@
+/*
+*
+*
+* */
+const arrType_front = ["cccd_chip_front", "cccd_front","cmnd_old_front"];
+const arrType_back = ["cccd_chip_back", "cccd_back","cmnd_old_back", "cmnd_new_cccd_back"];
 // Done +
 function generateObjectDraft(images, phone, citizenId) {
     let data = null;
@@ -83,25 +89,163 @@ function updateCircularProgressbar() {
 }
 
 // Done +
+function showUICheckPhone(element) {
+    var html =
+        "<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'><div class='mobile'>" +
+        "<div class='form__row'>" +
+        "<label class='form__label'  for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
+        "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
+        "</div>" +
+        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
+        "</div></form>";
+    $(element).html(html);
+
+    //custom show
+    configUi({
+        element:element,
+        logo:true,
+        intro:true
+    });
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
+
+
+<<<<<<< HEAD
+// Done +
+function showUICheckPhone(element) {
+    var html =
+        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'>" +
+        "<label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
+        "<input type='phone' id='phone' class='input-global ng-pristine ng-invalid ng-touched' />" +
+        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
+        "</div></form>";
+    $(element).html(html);
+=======
+>>>>>>> origin
+
+    //custom show
+    configUi({
+        element:element,
+        logo:true,
+        intro:true
+    });
+    // show list productions
+    listProductions({
+        element:"#test",
+        items:true,
+        dataItems:pData 
+    });
+
+    $('#btnSubmitPhone').click(function () {
+        let data = $('#phone').val();
+        localStorage.setItem('phone', data);
+        if (data !== null && data !== '') {
+            let result = checkPhoneExists(data);
+            if (result.errCode === 1000) {
+                let step = result.data.step;
+                if (step === 4) {
+
+                }
+                else if (step === 2) {
+
+                }
+                else if (step === 3) {
+
+                }
+                else if (step === 0) {
+
+                }
+            }
+            else if (result.errCode === 1003) {
+                showUICheckNid(element);
+            }
+            else if (result.errorCode === 8000) {
+                alert('Định dạng số điện thoại không hợp lệ !');
+                return;
+            }
+        }
+        else {
+            alert('Vui lòng nhập data phone !');
+            return;
+        }
+    })
+}
+
+// Done +
+function showUICheckNid(element) {
+    var html =
+<<<<<<< HEAD
+        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+        "<h3>Chụp ảnh chân dung</h3>" +
+        // "<div class='showImage'>" +
+        // "<image src='' width='350px' height='350px' id='selfie_picture' class='selfie_picture'/>" +
+        // "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i></p>" +
+        // "</div>" +
+=======
+        "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+        "<h3>Chụp ảnh chân dung</h3>" +
+>>>>>>> origin
+        "<button type='button' id='callHP' class='btnCapture'></button>" +
+        "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
+        "</div></form>";
+    $(element).html(html);
+
+    $('#callHP').click(function () {
+        runFaceCaptureScreen();
+    })
+
+    $('#selfie_image').click(function () {
+        deleteImage('SELFIE');
+    });
+
+    $('#btnSubmitNid').click(function () {
+        let data = $('#nid').val();
+        localStorage.setItem('nid', data);
+        if (data !== null && data !== '') {
+            let result = checkNidExists(data);
+            let checkSelfieImage = localStorage.getItem('selfie-image');
+            if (result.statusCode === 1000 && checkSelfieImage !== null) {
+
+            }
+            else if (result.statusCode === 900 && checkSelfieImage !== null) {
+                captureNidFrontAndBack(element);
+                let checkCustomer = {
+                    phone: localStorage.getItem('phone'),
+                    nid: localStorage.getItem('nid'),
+                    selfieImage: localStorage.getItem('selfie-image')
+                };
+                localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+            }
+            else if (result.errorCode === 8000) {
+                alert('Định dạng chứng minh nhân dân không hợp lệ !');
+                return;
+            }
+        }
+        else {
+            alert('Vui lòng nhập data nid!');
+            return;
+        }
+    })
+}
+
+// Done +
 function captureNidFrontAndBack(element) {
     var html =
-        "<div class='buttons'>" +
-        "<button type='button' id='btnCaptureFront'>Chụp mặt trước</button>" +
-        "<button type='button' id='btnCaptureBack'>Chụp mặt sau</button>" +
-        "<button type='button' id='btnSubmit'>Submit</button>" +
-        "</div>" +
-        "<div class='images'>" +
-        "<div>" +
-        "<p>Front Picture</p>" +
-        "<image src='' width='350px' height='350px' id='front_picture'/>" +
-        "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='front_image'></i></p>" +
-        "</div>" +
-        "<div>" +
-        "<p>Back Picture</p>" +
-        "<image src='' width='350px' height='350px' id='back_picture'/>" +
-        "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='back_image'></i></p>" +
-        "</div>" +
-        "</div>";
+        "<form class='formValue'>" +
+        "<div class='buttons mobile'>" +
+        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
+        "<button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>" +
+        "<button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>" +
+        "<button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>" +
+        "</div></form>";
     $(element).html(html);
 
     $('#front_image').click(function () {
@@ -139,118 +283,8 @@ function captureNidFrontAndBack(element) {
             console.log('Typeof fn: ', typeof fn);
             console.log('Typeof bn: ', typeof bn);
             if (fn !== null && fn !== '' && bn !== null && bn !== '') {
-                showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent')
+                showDataInform('#test', fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.province, fn.district, fn.ward, fn.street, 'Ông', 'Nguyễn Hồng Quân', '0981234567', 'city_permanent', 'district_permanent', 'wards_permanent', 'street_permanent', adn)
             }
-        }
-    })
-}
-
-// Done +
-function showUICheckPhone(element) {
-    var html =
-        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'>" +
-        "<label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
-        "<input type='phone' id='phone' class='input-global ng-pristine ng-invalid ng-touched' />" +
-        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
-        "</div></form>";
-    $(element).html(html);
-
-    //custom show
-    configUi({
-        element:element,
-        logo:true,
-        intro:true
-    });
-    // show list productions
-    listProductions({
-        element:"#test",
-        items:true,
-        dataItems:pData 
-    });
-
-    $('#btnSubmitPhone').click(function () {
-        let data = $('#phone').val();
-        localStorage.setItem('phone', data);
-        if (data !== null && data !== '') {
-            let result = checkPhoneExists(data);
-            if (result.errCode === 1000) {
-                let step = result.data.step;
-                if (step === 4) {
-                    showFormPincode(element, result.data.phone);
-                }
-                else if (step === 2) {
-
-                }
-                else if (step === 3) {
-
-                }
-                else if (step === 0) {
-
-                }
-            }
-            else if (result.errCode === 1003) {
-                showUICheckNid(element);
-            }
-            else if (result.errorCode === 8000) {
-                alert('Định dạng số điện thoại không hợp lệ !');
-                return;
-            }
-        }
-        else {
-            alert('Vui lòng nhập data phone !');
-            return;
-        }
-    })
-}
-
-// Done +
-function showUICheckNid(element) {
-    var html =
-        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
-        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
-        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
-        "<h3>Chụp ảnh chân dung</h3>" +
-        // "<div class='showImage'>" +
-        // "<image src='' width='350px' height='350px' id='selfie_picture' class='selfie_picture'/>" +
-        // "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i></p>" +
-        // "</div>" +
-        "<button type='button' id='callHP' class='btnCapture'></button>" +
-        "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
-        "</div></form>";
-    $(element).html(html);
-
-    $('#callHP').click(function () {
-        runFaceCaptureScreen();
-    })
-
-    $('#selfie_image').click(function () {
-        deleteImage('SELFIE');
-    });
-
-    $('#btnSubmitNid').click(function () {
-        let data = $('#nid').val();
-        localStorage.setItem('nid', data);
-        if (data !== null && data !== '') {
-            let result = checkNidExists(data);
-            let checkSelfieImage = localStorage.getItem('selfie-image');
-            if (result.statusCode === 1000 && checkSelfieImage !== null) {
-            }
-            else if (result.statusCode === 900 && checkSelfieImage !== null) {
-                captureNidFrontAndBack(element);
-                let checkCustomer = {
-                    phone: localStorage.getItem('phone'),
-                    nid: localStorage.getItem('nid'),
-                    selfieImage: localStorage.getItem('selfie-image')
-                };
-                localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-            }
-            else if (result.errorCode === 8000) {
-                alert('Định dạng chứng minh nhân dân không hợp lệ !');
-                return;
-            }
-        }
-        else {
-            alert('Vui lòng nhập data !');
         }
     })
 }
@@ -440,8 +474,9 @@ function cutStringData(infomation) {
             const nidType = result?.details[0]?.type;
             let front_nid_customer = '';
             let back_nid_customer = '';
+            console.log("HV info : ", details);
             // FRONT NID IMAGE
-            if (nidType === 'cccd_chip_front' && nidType !== 'null') {
+            if (arrType_front.includes(nidType) && nidType !== 'null') {
                 let province = details?.province?.value;
                 console.log('province: ', province);
                 let idNumber = details?.idNumber?.value;
@@ -485,7 +520,7 @@ function cutStringData(infomation) {
                 localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
             }
             // BACK NID IMAGE
-            if (nidType === 'cccd_chip_back' && nidType !== 'null') {
+            if (arrType_back.includes(nidType) && nidType !== 'null') {
                 let doi = details?.doi?.value;
                 console.log('doi: ', doi);
                 let placeOfIssue = details?.placeOfIssue?.value;
@@ -526,9 +561,9 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
         }
         if (HVResponse) {
             var apiResults = HVResponse.getApiResult();
-            console.log('Api Results Make Face Match Call: ', apiResults);
+            // console.log('Api Results Make Face Match Call: ', apiResults);
             var apiHeaders = HVResponse.getApiHeaders();
-            console.log('Api Headers Make Face Match Call: ', apiHeaders);
+            // console.log('Api Headers Make Face Match Call: ', apiHeaders);
             if (apiResults !== null && apiResults !== '') {
                 const data = apiResults?.result;
                 console.log('Data: ', data);
@@ -569,9 +604,13 @@ async function LaunchFaceCaptureScreen() {
                 console.log('Attempt Count Face Capture Screen: ', attemptsCount);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
+<<<<<<< HEAD
                     showCapture(imageBase64,'selfie_picture');
                     // alert('Lưu ảnh Selfie thành công !');
                     // $("#selfie_picture").attr("src", imageBase64);
+=======
+                    showCapture(imageBase64,'callHP');
+>>>>>>> origin
                 }
             }
         };
@@ -606,26 +645,28 @@ async function LaunchDocumentCaptureScreen(side) {
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
-                console.log('Api Results Document Capture Screen: ', apiResults);
+                // console.log('Api Results Document Capture Screen: ', apiResults);
                 var apiHeaders = HVResponse.getApiHeaders();
-                console.log('Api Headers Document Capture Screen: ', apiHeaders);
+                // console.log('Api Headers Document Capture Screen: ', apiHeaders);
                 var imageBase64 = HVResponse.getImageBase64();
-                console.log('Image Base64 Document Capture Screen: ', imageBase64);
+                // console.log('Image Base64 Document Capture Screen: ', imageBase64);
                 var attemptsCount = HVResponse.getAttemptsCount();
-                console.log('Attempt Count Document Capture Screen: ', attemptsCount);
+                // console.log('Attempt Count Document Capture Screen: ', attemptsCount);
                 base64 = imageBase64;
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (side === 'FRONT' && side !== '') {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(base64);
-                        alert('Lưu mặt trước CMND thành công !');
-                        $("#front_picture").attr("src", imageBase64);
+                        showCapture(imageBase64,"btnCaptureFront");
+                        // alert('Lưu mặt trước CMND thành công !');
+                        // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (side === 'BACK' && side !== '') {
                         localStorage.setItem('back-image', imageBase64);
                         postNationalID(base64);
-                        alert('Lưu mặt sau CMND thành công !');
-                        $("#back_picture").attr("src", imageBase64);
+                        showCapture(imageBase64,"btnCaptureBack");
+                        // alert('Lưu mặt sau CMND thành công !');
+                        // $("#back_picture").attr("src", imageBase64);
                     }
                 }
             }
@@ -692,7 +733,11 @@ function showAllProvider(element) {
         html += `
         <div class='list-provider'>
         <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'><img src='${providers[i].url}' /></button>
+<<<<<<< HEAD
         </div>`
+=======
+        </div>`;
+>>>>>>> origin
     }
     html += `</div>`;
     $(element).html(html);
@@ -801,6 +846,7 @@ function postNationalID(ImageURL) {
 
         $.ajax(settings).done(function (response) {
             const data = JSON.parse(response);
+            console.log("cutStringData : ", data);
             cutStringData(data);
         });
     }
@@ -812,76 +858,214 @@ function postNationalID(ImageURL) {
     }
 }
 
-function showDataInform(element, fullname, gender, phone, dob, nid, doi, city, district, wards, street, relationship, fullname_ref, phone_ref, city_permanent, district_permanent, wards_permanent, street_permanent) {
+function showDataInform(element, cusInfo = JSON.parse(localStorage.getItem('checkCustomer')) , allDataNid = JSON.parse(localStorage.getItem('allDataNid'))) {
+    console.log(allDataNid);
+    console.log("cusInfo : ", cusInfo);
+    var gen = allDataNid.front_nid_customer.gender;
+    var strM,strF = '';
+    if(gen === 'M') strM = 'selected';
+    else strF = 'selected';
     var html =
-        "<h2 style='margin-bottom: 20px; text-align: center'>Enter personal information</h2>" +
-        "<div>" +
+        `<div class='form-card'>
+            <h2>Nhập thông tin cá nhân</h2>
+            <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
+            <form class=''>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Thông tin cá nhân</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Họ và tên</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số điện thoại</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+cusInfo.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Ngày sinh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+convertDateString(allDataNid.front_nid_customer.dob)+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Giới tính</label>
+                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
+                                <option value='M' ${strM}>Nam</option>
+                                <option value='F' ${strF}>Nữ</option>
+                            </select>
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số CMND/CCCD</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='number' id='nid' name='nid' value="`+allDataNid.front_nid_customer.idNumber+`" />
+                        </div>
+                        <div class='form-row'>
+                            <div class="form-cell">
+                                <label for='phone'>Ngày cấp</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doi' name='doi' value="`+convertDateString(allDataNid.back_nid_customer.doi)+`" />
+                            </div>
+                            <div class="form-cell">
+                                <label for='phone'>Ngày hết hạn</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doe' name='doe' value="`+convertDateString(allDataNid.front_nid_customer.doe)+`" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Địa chỉ hiện tại</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Thành phố/Tỉnh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.district+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Quận/Huyện</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="text" id="ward" name="ward" value="${allDataNid.front_nid_customer.ward}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Phường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Đường</label>
+                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
+                                <option value='M'>Nam</option>
+                                <option value='F'>Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Thông tin tham chiếu</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='fullname'>Mối quan hệ </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Họ và tên </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="0987654321" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số điện thoại </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+allDataNid.front_nid_customer.phone+`" />
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <button type='button' class='payment-button'>Tiếp tục</button>
+            </form>
+        </div>`;
+/*
+        "<h2>Enter personal information</h2>" +
+        "<div class='list-items'>" + 
+        "<form class='form-container'>" +
 
-        "<form>" +
-        "<h3 style='margin-bottom: 10px; text-align: center'>Personal information</h3>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='fullname' style='margin-bottom: 5px'>Full Name</label>" +
-        "<input type='text' id='fullname' name='fullname' value=" + fullname + ">" +
+        ""+
+
+        "<h3>Personal information</h3>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname'>Full Name</label>" +
+        "<input class='form__input' type='text' id='fullname' name='fullname' value=" + fullname + ">" +
         "</div>" +
 
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='gender' style='margin-bottom: 5px'>Gender</label>" +
-        "<input type='text' id='gender' name='gender' value=" + gender + ">" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='gender'>Gender</label>" +
+        "<input class='form__input' type='text' id='gender' name='gender' value=" + gender + ">" +
         "</div>" +
 
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: row; margin-bottom: 10px';>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='phone'>Phone number</label>" +
-        "<input type='phone' id='phone' name='phone' value=" + phone + ">" +
-        "</div>" +
-        "<div style='display: flex; align-items: start; justify-content: start; flex-direction: column; margin-bottom: 10px';>" +
-        "<label for='dob'>Date of birth</label>" +
-        "<input type='text' id='dob' name='dob' value=" + dob + ">" +
-        "</div>" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone'>Phone number</label>" +
+        "<input class='form__input' type='phone' id='phone' name='phone' value=" + phone + ">" +
         "</div>" +
 
-        "<div>" +
-        "<label for='nid'>ID number</label>" +
-        "<input type='text' id='nid' name='nid' value=" + nid + ">" +
-        "<label for='doi'>Date of issue</label>" +
-        "<input type='text' id='doi' name='doi' value=" + doi + ">" +
+        "<div class='form__row'>" +
+        "<label class='form__label' for='dob'>Date of birth</label>" +
+        "<input class='form__input' type='text' id='dob' name='dob' value=" + dob + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='nid'>ID number</label>" +
+        "<input class='form__input' type='text' id='nid' name='nid' value=" + nid + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='doi'>Date of issue</label>" +
+        "<input class='form__input' type='text' id='doi' name='doi' value='" + allDataNid.back_nid_customer.doi + "'>" +
         "</div>" +
 
         "<h3>Current address</h3>" +
-        "<label for='city'>City/Province</label>" +
-        "<input type='text' id='city' name='city' value=" + city + ">" +
-        "<label for='district'>District</label>" +
-        "<input type='text' id='district' name='district' value=" + district + ">" +
-        "<label for='wards'>Wards</label>" +
-        "<input type='text' id='wards' name='wards' value=" + wards + ">" +
-        "<label for='street'>Street</label>" +
-        "<input type='text' id='street' name='street' value=" + street + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city' name='city' value='" + allDataNid.front_nid_customer.province + "'>" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district'>District</label>" +
+        "<input class='form__input' type='text' id='district' name='district' value=" + district + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='wards'>Wards</label>" +
+        "<input class='form__input' type='text' id='wards' name='wards' value=" + wards + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street'>Street</label>" +
+        "<input class='form__input' type='text' id='street' name='street' value=" + street + ">" +
+        "</div>" +
 
         "<h3>Reference information</h3>" +
-        "<label for='relationship'>Relationship</label>" +
-        "<input type='text' id='relationship' name='relationship' value=" + relationship + ">" +
-        "<label for='fullname_ref'>Full name</label>" +
-        "<input type='text' id='fullname_ref' name='fullname_ref' value=" + fullname_ref + ">" +
-        "<label for='phone_ref'>Phone number</label>" +
-        "<input type='text' id='phone_ref' name='phone_ref' value=" + phone_ref + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='relationship'>Relationship</label>" +
+        "<input class='form__input' type='text' id='relationship' name='relationship' value=" + relationship + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='fullname_ref'>Full name</label>" +
+        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref' value=" + fullname_ref + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='phone_ref'>Phone number</label>" +
+        "<input class='form__input' type='text' id='phone_ref' name='phone_ref' value=" + phone_ref + ">" +
+        "</div>" +
 
         "<h3>Permanent address</h3>" +
-        "<label for='city_permanent'>City/Province</label>" +
-        "<input type='text' id='city_permanent' name='city_permanent' value=" + city_permanent + ">" +
-        "<label for='district_permanent'>District</label>" +
-        "<input type='text' id='district_permanent' name='district_permanent' value=" + district_permanent + ">" +
-        "<label for='wards_permanent'>Wards</label>" +
-        "<input type='text' id='wards_permanent' name='wards_permanent' value=" + wards_permanent + ">" +
-        "<label for='street_permanent'>Street</label>" +
-        "<input type='text' id='street_permanent' name='street_permanent' value=" + street_permanent + ">" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='city_permanent'>City/Province</label>" +
+        "<input class='form__input' type='text' id='city_permanent' name='city_permanent' value=" + city_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='district_permanent'>District</label>" +
+        "<input class='form__input' type='text' id='district_permanent' name='district_permanent' value=" + district_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='wards_permanent'>Wards</label>" +
+        "<input class='form__input' type='text' id='wards_permanent' name='wards_permanent' value=" + wards_permanent + ">" +
+        "</div>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='street_permanent'>Street</label>" +
+        "<input class='form__input' type='text' id='street_permanent' name='street_permanent' value=" + street_permanent + ">" +
+        "</div>" +
 
         "<span><b>Note:</b>*Compulsory information</span>" +
 
         "<button type='button'>Continue</button>" +
-
-        "</form>" +
-
-        "</div>";
+        "</form></div>";
+*/
     $(element).html(html);
 }
 
@@ -948,4 +1132,25 @@ function listProductions(config){
         </div>
     </div>`;
     if(config.items) $(config.element).prepend(lItems);
+<<<<<<< HEAD
+=======
+}
+
+function showCapture(base64, eId){
+    if(base64){
+        $('#'+eId).addClass("showImage");
+        $('#'+eId).css({
+            'background': 'url(' + base64 + ') no-repeat center',
+             'background-size': 'cover'
+        });
+
+    }
+}
+
+// this function convert string date dd-mm-yyyy to yyyy-mm-dd
+function convertDateString(dateString){
+    if (dateString === '') return '';
+    const dateParts = dateString.split("-");
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+>>>>>>> origin
 }
