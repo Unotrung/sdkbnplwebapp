@@ -114,31 +114,6 @@ function showUICheckPhone(element) {
     });
 
 
-<<<<<<< HEAD
-// Done +
-function showUICheckPhone(element) {
-    var html =
-        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'>" +
-        "<label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
-        "<input type='phone' id='phone' class='input-global ng-pristine ng-invalid ng-touched' />" +
-        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
-        "</div></form>";
-    $(element).html(html);
-=======
->>>>>>> origin
-
-    //custom show
-    configUi({
-        element:element,
-        logo:true,
-        intro:true
-    });
-    // show list productions
-    listProductions({
-        element:"#test",
-        items:true,
-        dataItems:pData 
-    });
 
     $('#btnSubmitPhone').click(function () {
         let data = $('#phone').val();
@@ -178,21 +153,10 @@ function showUICheckPhone(element) {
 // Done +
 function showUICheckNid(element) {
     var html =
-<<<<<<< HEAD
-        "<form id='formValue' class='ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
-        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
-        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
-        "<h3>Chụp ảnh chân dung</h3>" +
-        // "<div class='showImage'>" +
-        // "<image src='' width='350px' height='350px' id='selfie_picture' class='selfie_picture'/>" +
-        // "<p><i class='fa-solid fa-trash' width='50px' height='50px' id='selfie_image'></i></p>" +
-        // "</div>" +
-=======
         "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'><div class='mobile'" +
         "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
         "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
         "<h3>Chụp ảnh chân dung</h3>" +
->>>>>>> origin
         "<button type='button' id='callHP' class='btnCapture'></button>" +
         "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
         "</div></form>";
@@ -287,17 +251,6 @@ function captureNidFrontAndBack(element) {
             }
         }
     })
-}
-
-function showCapture(base64, eId){
-    if(base64){
-        $('#callHP').addClass("showImage");
-        $('#callHP').css({
-            'background': 'url(' + base64 + ') no-repeat center',
-             'background-size': 'cover'
-        });
-
-    }
 }
 
 function showFormPincode(element, phone) {
@@ -478,31 +431,18 @@ function cutStringData(infomation) {
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== 'null') {
                 let province = details?.province?.value;
-                console.log('province: ', province);
                 let idNumber = details?.idNumber?.value;
-                console.log('idNumber: ', idNumber);
                 let name = details?.name?.value;
-                console.log('name: ', name);
                 let dob = details?.dob?.value;
-                console.log('dob: ', dob);
                 let homeTown = details?.homeTown?.value;
-                console.log('homeTown: ', homeTown);
                 let permanentAddress = details?.permanentAddress?.value;
-                console.log('permanentAddress: ', permanentAddress);
                 let street = details?.permanentAddress?.value.split(',')[0];
-                console.log('street: ', street);
                 let ward = details?.permanentAddress.value.split(',')[2];
-                console.log('ward: ', ward);
                 let district = details?.permanentAddress.value.split(',')[3];
-                console.log('district: ', district);
                 let city = details?.permanentAddress.value.split(',')[4];
-                console.log('city: ', city);
                 let gender = details?.gender?.value;
-                console.log('gender: ', gender);
                 let doe = details?.doe?.value;
-                console.log('doe: ', doe);
                 let nationality = details?.nationality?.value;
-                console.log('nationality: ', nationality);
                 front_nid_customer = {
                     province: province,
                     idNumber: idNumber,
@@ -604,13 +544,7 @@ async function LaunchFaceCaptureScreen() {
                 console.log('Attempt Count Face Capture Screen: ', attemptsCount);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
-<<<<<<< HEAD
-                    showCapture(imageBase64,'selfie_picture');
-                    // alert('Lưu ảnh Selfie thành công !');
-                    // $("#selfie_picture").attr("src", imageBase64);
-=======
                     showCapture(imageBase64,'callHP');
->>>>>>> origin
                 }
             }
         };
@@ -733,11 +667,7 @@ function showAllProvider(element) {
         html += `
         <div class='list-provider'>
         <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'><img src='${providers[i].url}' /></button>
-<<<<<<< HEAD
-        </div>`
-=======
         </div>`;
->>>>>>> origin
     }
     html += `</div>`;
     $(element).html(html);
@@ -758,7 +688,6 @@ function showMessage(element, message, icon) {
         "<p>" + message + "</p>" +
         "</div>";
     $(element).html(html);
-    
 }
 
 // Done +
@@ -1132,8 +1061,6 @@ function listProductions(config){
         </div>
     </div>`;
     if(config.items) $(config.element).prepend(lItems);
-<<<<<<< HEAD
-=======
 }
 
 function showCapture(base64, eId){
@@ -1152,5 +1079,4 @@ function convertDateString(dateString){
     if (dateString === '') return '';
     const dateParts = dateString.split("-");
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
->>>>>>> origin
 }
