@@ -90,7 +90,7 @@ function showUICheckPhone(element) {
         "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
         "</div>" +
 
-        "<button type='button' id='btnSubmitPhone' class='payment-button' >Tiếp tục</button>" +
+        "<button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>" +
 
         "</div>" +
         "</form>";
@@ -333,7 +333,7 @@ function showFormSetupPin(element) {
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
         if (pin === pincf) {
-            const data = localStorage.getItem('personal_all_info');
+            const data = JSON.parse(localStorage.getItem('personal_all_info'));
             const front_nid_image = localStorage.getItem('front-image');
             const back_nid_image = localStorage.getItem('back-image');
             const selfie_image = localStorage.getItem('selfie-image');
@@ -453,7 +453,6 @@ function cutStringData(infomation) {
             const nidType = result?.details[0]?.type;
             let front_nid_customer = '';
             let back_nid_customer = '';
-            console.log("HV info : ", details);
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== null) {
                 let province = details?.province?.value;
@@ -784,7 +783,6 @@ function postNationalID(ImageURL) {
 
         $.ajax(settings).done(function (response) {
             const data = JSON.parse(response);
-            console.log("cutStringData : ", data);
             cutStringData(data);
         });
     }
@@ -810,63 +808,59 @@ function showDataInform(element, personal) {
                     <div class="card-body">
                         <div class='form-row'>
                             <label for='fullname'>Họ và tên</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+ allDataNid.front_nid_customer.name + `" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="`+ cusInfo.phone + `" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Ngày sinh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+ convertDateString(allDataNid.front_nid_customer.dob) + `" />
+                            <label for='dob'>Ngày sinh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Giới tính</label>
+                            <label for='gender'>Giới tính</label>
                             <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value='M' ${strM}>Nam</option>
-                                <option value='F' ${strF}>Nữ</option>
-                            </select>
+                                <option value="${personal.gender === 'Nam' ? 'M' : 'F'}">${personal.gender}</option>
+                        </select>
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Số CMND/CCCD</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='number' id='nid' name='nid' value="`+ allDataNid.front_nid_customer.idNumber + `" />
+                            <label for='nid'>Số CMND/CCCD</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
                         </div>
                         <div class='form-row'>
                             <div class="form-cell">
-                                <label for='phone'>Ngày cấp</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doi' name='doi' value="`+ convertDateString(allDataNid.back_nid_customer.doi) + `" />
+                                <label for='doi'>Ngày cấp</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
                             </div>
                             <div class="form-cell">
-                                <label for='phone'>Ngày hết hạn</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='doe' name='doe' value="`+ convertDateString(allDataNid.front_nid_customer.doe) + `" />
+                                <label for='doe'>Ngày hết hạn</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
                             </div>
                         </div>
-                    </div>
+                    </div >
                     <div class="card-footer"></div>
-                </div>
+                </div >
                 <div class="card">
                     <div class="card-head">
                         <h3>Địa chỉ hiện tại</h3>
                     </div>
                     <div class="card-body">
                         <div class='form-row'>
-                            <label for='fullname'>Thành phố/Tỉnh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+ allDataNid.front_nid_customer.district + `" />
+                            <label for='city'>Thành phố/Tỉnh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city}"/>
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Quận/Huyện</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="text" id="ward" name="ward" value="${allDataNid.front_nid_customer.ward}" />
+                            <label for='district'>Quận/Huyện</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal.district}" />
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Phường</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+ allDataNid.front_nid_customer.phone + `" />
+                            <label for='ward'>Phường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward}"/>
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Đường</label>
-                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value='M'>Nam</option>
-                                <option value='F'>Nữ</option>
-                            </select>
+                            <label for='street'>Đường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street}"/>
                         </div>
                     </div>
                     <div class="card-footer"></div>
@@ -877,23 +871,49 @@ function showDataInform(element, personal) {
                     </div>
                     <div class="card-body">
                         <div class='form-row'>
-                            <label for='fullname'>Mối quan hệ </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+ allDataNid.front_nid_customer.name + `" />
+                            <label for='relationship'>Mối quan hệ </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'  />
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Họ và tên </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="0987654321" />
+                            <label for='fullname_ref'>Họ và tên</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="fullname_ref" name="fullname_ref"   />
                         </div>
                         <div class='form-row'>
-                            <label for='phone'>Số điện thoại </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='date' id='dob' name='dob' value="`+ allDataNid.front_nid_customer.phone + `" />
+                            <label for='phone_ref'>Số điện thoại</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
                         </div>
                     </div>
                     <div class="card-footer"></div>
                 </div>
-                <button type='button' class='payment-button'>Tiếp tục</button>
-            </form>
-        </div>`;
+
+            <div class="card">
+                <div class="card-head">
+                    <h3>Địa chỉ tạm trú</h3>
+                </div>
+                <div class="card-body">
+                    <div class='form-row'>
+                        <label for='city_permanent'>Thành phố/Tỉnh</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
+                    </div>
+                    <div class='form-row'>
+                        <label for='district_permanent'>Quận/Huyện</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent"  />
+                    </div>
+                    <div class='form-row'>
+                        <label for='ward_permanent'>Phường</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
+                    </div>
+                    <div class='form-row'>
+                        <label for='street_permanent'>Đường</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' />
+                    </div>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+
+                <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
+            </form >
+        </div > `;
     $(element).html(html);
 
     $('#btnContinue').click(function () {
@@ -945,111 +965,122 @@ function showDataInform(element, personal) {
 // Done +
 function showConfirmDataInform(element, personal_all_info) {
     var html =
-        "<h2>Information Check</h2>" +
+        `<div class='form-card'>
+            <h2>Đối soát thông tin cá nhân</h2>
+            <form class=''>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Thông tin cá nhân</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='name'>Họ và tên</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='name' name='name' value="${personal_all_info.name}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone'>Số điện thoại</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='birthday'>Ngày sinh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='birthday' name='birthday' value="${personal_all_info.birthday}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='gender'>Giới tính</label>
+                            <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
+                                <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
+                        </select>
+                        </div>
+                        <div class='form-row'>
+                            <label for='citizenId'>Số CMND/CCCD</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='citizenId' name='citizenId' value="${personal_all_info.citizenId}"/>
+                        </div>
+                        <div class='form-row'>
+                            <div class="form-cell">
+                                <label for='issueDate'>Ngày cấp</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='issueDate' name='issueDate' value="${personal_all_info.issueDate}"/>
+                            </div>
+                            <div class="form-cell">
+                                <label for='doe'>Ngày hết hạn</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${personal_all_info.expirationDate}"/>
+                            </div>
+                        </div>
+                    </div >
+                    <div class="card-footer"></div>
+                </div >
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Địa chỉ hiện tại</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='city'>Thành phố/Tỉnh</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal_all_info.city}"/>
+                        </div>
+                        <div class='form-row'>
+                            <label for='district'>Quận/Huyện</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal_all_info.district}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='ward'>Phường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal_all_info.ward}"/>
+                        </div>
+                        <div class='form-row'>
+                            <label for='street'>Đường</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal_all_info.street}"/>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <h3>Thông tin tham chiếu</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class='form-row'>
+                            <label for='relationship'>Mối quan hệ </label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship' value="${personal_all_info.personal_title_ref}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='name_ref'>Họ và tên</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="name_ref" name="name_ref" value="${personal_all_info.name_ref}" />
+                        </div>
+                        <div class='form-row'>
+                            <label for='phone_ref'>Số điện thoại</label>
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone_ref}" />
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
 
-        "<form class='form-container'>" +
+            <div class="card">
+                <div class="card-head">
+                    <h3>Địa chỉ tạm trú</h3>
+                </div>
+                <div class="card-body">
+                    <div class='form-row'>
+                        <label for='city_permanent'>Thành phố/Tỉnh</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' value="${personal_all_info.temporaryCity}" />
+                    </div>
+                    <div class='form-row'>
+                        <label for='district_permanent'>Quận/Huyện</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent" value="${personal_all_info.temporaryDistrict}" />
+                    </div>
+                    <div class='form-row'>
+                        <label for='ward_permanent'>Phường</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent'  value="${personal_all_info.temporaryWard}" />
+                    </div>
+                    <div class='form-row'>
+                        <label for='street_permanent'>Đường</label>
+                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' value="${personal_all_info.temporaryStreet}" />
+                    </div>
+                </div>
+                <div class="card-footer"></div>
+            </div>
 
-        "<h3>Personal information</h3>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='fullname'>Full Name</label>" +
-        "<input class='form__input' type='text' id='fullname' name='fullname' value='" + personal_all_info.name + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='gender'>Gender</label>" +
-        "<input class='form__input' type='text' id='gender' name='gender' value='" + personal_all_info.sex + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='phone'>Phone number</label>" +
-        "<input class='form__input' type='phone' id='phone' name='phone' value='" + personal_all_info.phone + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='dob'>Date of birth</label>" +
-        "<input class='form__input' type='text' id='dob' name='dob' value='" + personal_all_info.birthday + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='nid'>ID number</label>" +
-        "<input class='form__input' type='text' id='nid' name='nid' value='" + personal_all_info.citizenId + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='doi'>Date of issue</label>" +
-        "<input class='form__input' type='text' id='doi' name='doi' value='" + personal_all_info.issueDate + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='doe'>Date of expiry</label>" +
-        "<input class='form__input' type='text' id='doe' name='doe' value='" + personal_all_info.expirationDate + "'>" +
-        "</div>" +
-
-        "<h3>Current address</h3>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='city'>City/Province</label>" +
-        "<input class='form__input' type='text' id='city' name='city' value='" + personal_all_info.city + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='district'>District</label>" +
-        "<input class='form__input' type='text' id='district' name='district' value='" + personal_all_info.district + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='wards'>Wards</label>" +
-        "<input class='form__input' type='text' id='wards' name='wards' value='" + personal_all_info.ward + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='street'>Street</label>" +
-        "<input class='form__input' type='text' id='street' name='street' value='" + personal_all_info.street + "'>" +
-        "</div>" +
-
-        "<h3>Reference information</h3>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='relationship'>Relationship</label>" +
-        "<input class='form__input' type='text' id='relationship' name='relationship' value='" + personal_all_info.personal_title_ref + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='fullname_ref'>Full name</label>" +
-        "<input class='form__input' type='text' id='fullname_ref' name='fullname_ref' value='" + personal_all_info.name_ref + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='phone_ref'>Phone number</label>" +
-        "<input class='form__input' type='text' id='phone_ref' name='phone_ref' value='" + personal_all_info.phone_ref + "'>" +
-        "</div>" +
-
-        "<h3>Permanent address</h3>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='city_permanent'>City/Province</label>" +
-        "<input class='form__input' type='text' id='city_permanent' name='city_permanent' value='" + personal_all_info.temporaryCity + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='district_permanent'>District</label>" +
-        "<input class='form__input' type='text' id='district_permanent' name='district_permanent' value='" + personal_all_info.temporaryDistrict + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='ward_permanent'>Wards</label>" +
-        "<input class='form__input' type='text' id='ward_permanent' name='ward_permanent' value='" + personal_all_info.temporaryWard + "'>" +
-        "</div>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='street_permanent'>Street</label>" +
-        "<input class='form__input' type='text' id='street_permanent' name='street_permanent' value='" + personal_all_info.temporaryStreet + "'>" +
-        "</div>" +
-
-        "<button type='button' id='btnContinueConfirm'>Continue</button>" +
-
-        "</form>";
+                <button type='button' class='payment-button' id='btnContinueConfirm'>Tiếp tục</button>
+            </form >
+        </div > `;
     $(element).html(html);
 
     $('#btnContinueConfirm').click(function () {
