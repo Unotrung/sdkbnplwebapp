@@ -427,6 +427,7 @@ function cutStringData(infomation) {
             const nidType = result?.details[0]?.type;
             let front_nid_customer = '';
             let back_nid_customer = '';
+            console.log("HV info : ", details);
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== 'null') {
                 let province = details?.province?.value;
@@ -859,11 +860,11 @@ function showDataInform(element, cusInfo = JSON.parse(localStorage.getItem('chec
                     <div class="card-body">
                         <div class='form-row'>
                             <label for='fullname'>Thành phố/Tỉnh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.name+`" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='text' id='fullname' name='fullname' value="`+allDataNid.front_nid_customer.district+`" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Quận/Huyện</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="number" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="0987654321" />
+                            <input class='input-global ng-pristine ng-invalid ng-touched ' type="text" id="ward" name="ward" value="${allDataNid.front_nid_customer.ward}" />
                         </div>
                         <div class='form-row'>
                             <label for='phone'>Phường</label>
