@@ -24,11 +24,10 @@ function onlyNumber(data) {
 
 // Done +
 function showProgressbar(element) {
-    var html =
-        "<div class='progress'>" +
-        "<div class='progress__fill'></div>" +
-        "<span class='progress__text'>0%</span>" +
-        "</div>";
+    var html = `<div class='progress'> 
+                    <div class='progress__fill'></div> 
+                    <span class='progress__text'>0%</span> 
+                </div>`;
     $(element).html(html);
 }
 
@@ -53,10 +52,9 @@ function updateProgressbar() {
 
 // Done +
 function showCircularProgressbar(element) {
-    var html =
-        "<div class='circular__progress'>" +
-        "<div class='circular__value'>0%<div>" +
-        "</div>";
+    var html = `<div class='circular__progress'> +
+                    <div class='circular__value'>0%<div> +
+                </div>`;
     $(element).html(html);
 }
 
@@ -81,19 +79,18 @@ function updateCircularProgressbar() {
 
 // Done +
 function showUICheckPhone(element) {
-    var html =
-        "<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>" +
-        "<div class='mobile'>" +
+    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
+                    <div class='mobile'>
 
-        "<div class='form__row'>" +
-        "<label class='form__label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
-        "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
-        "</div>" +
+                        <div class='form__row'>
+                            <label class='form__label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
+                        </div>
 
-        "<button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>" +
+                        <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
 
-        "</div>" +
-        "</form>";
+                    </div>
+                </form>`;
     $(element).html(html);
 
     //custom show
@@ -148,19 +145,18 @@ function showUICheckPhone(element) {
 
 // Done +
 function showUICheckNid(element) {
-    var html =
-        "<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>" +
-        "<div class='mobile'" +
+    var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
+                    <div class='mobile'>
 
-        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
-        "<input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />" +
+                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                        <input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />
 
-        "<h3>Chụp ảnh chân dung</h3>" +
-        "<button type='button' id='callHP' class='btnCapture'></button>" +
-        "<button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>" +
+                        <h3>Chụp ảnh chân dung</h3>
+                        <button type='button' id='callHP' class='btnCapture'></button>
+                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>"
 
-        "</div>" +
-        "</form>";
+                    </div>
+                </form>`;
     $(element).html(html);
 
     $('#callHP').click(function () {
@@ -179,7 +175,8 @@ function showUICheckNid(element) {
             console.log('Check nid exists: ', result);
             let checkSelfieImage = localStorage.getItem('selfie-image');
             if (result.statusCode === 1000 && checkSelfieImage !== null) {
-
+                alert('Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+                return;
             }
             else if (result.statusCode === 900 && checkSelfieImage !== null) {
                 captureNidFrontAndBack(element);
@@ -204,17 +201,16 @@ function showUICheckNid(element) {
 
 // Done +
 function captureNidFrontAndBack(element) {
-    var html =
-        "<form class='formValue'>" +
-        "<div class='buttons mobile'>" +
+    var html = `<form class='formValue'>
+                    <div class='buttons mobile'>
 
-        "<label for='nid'>Vui lòng nhập số CMND/CCCD</label>" +
-        "<button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>" +
-        "<button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>" +
-        "<button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>" +
+                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                        <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
+                        <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
+                        <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
 
-        "</div>" +
-        "</form>";
+                    </div>
+                </form>`;
     $(element).html(html);
 
     $('#front_image').click(function () {
@@ -245,16 +241,16 @@ function captureNidFrontAndBack(element) {
         if (adn !== null && adn !== '') {
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
-            if (fn !== null && fn !== '' && bn !== null && bn !== '') {
+            if (fn !== null && bn !== null) {
                 let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
                 showDataInform('#test', personal);
             }
             else if (fn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt trước');
+                alert('Không tìm thấy thông tin cmnd mặt trước !');
                 return;
             }
             else if (bn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt sau');
+                alert('Không tìm thấy thông tin cmnd mặt sau !');
                 return;
             }
         }
@@ -370,18 +366,18 @@ function cutStringData(infomation) {
                 }
                 localStorage.setItem('back_nid_customer', JSON.stringify(back_nid_customer));
             }
-            if (localStorage.getItem('front_nid_customer') !== null && localStorage.getItem('back_nid_customer') !== null) {
-                let allDataNid = {
-                    front_nid_customer: JSON.parse(localStorage.getItem('front_nid_customer')),
-                    back_nid_customer: JSON.parse(localStorage.getItem('back_nid_customer'))
-                }
-                localStorage.setItem('allDataNid', JSON.stringify(allDataNid));
-                return allDataNid;
-            }
         }
-        else {
-            alert('Thông tin không tồn tại để cắt data');
-            return;
+
+        let fnc = JSON.parse(localStorage.getItem('front_nid_customer'));
+        let bnc = JSON.parse(localStorage.getItem('back_nid_customer'));
+
+        if (fnc !== null && bnc !== null) {
+            let allDataNid = {
+                front_nid_customer: fnc,
+                back_nid_customer: bnc
+            }
+            localStorage.setItem('allDataNid', JSON.stringify(allDataNid));
+            return allDataNid;
         }
     }
     catch (error) {
@@ -573,7 +569,8 @@ function selectTenor(id) {
     // alert('Tenor Id: ' + id);
     // localStorage.setItem('tenor', id);
 
-    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
+    let phone = localStorage.getItem('phone');
+    showFormPincode('#test', phone, 'SHOW_SUCCESS_PAGE');
 }
 
 // Done +
@@ -587,11 +584,11 @@ function selectProvider(id) {
 
 // Done +
 function showMessage(element, message, icon) {
-    var html =
-        "<div>" +
-        "<icon class='" + icon + "'></icon>" +
-        "<p>" + message + "</p>" +
-        "</div>";
+    var html = `<div> 
+                    <icon class='${icon}'></icon> 
+                    <p>${message}</p> 
+                </div>;`;
+
     $(element).html(html);
 }
 
@@ -679,124 +676,123 @@ function postNationalID(ImageURL) {
 
 // Done +
 function showDataInform(element, personal) {
-    var html =
-        `<div class='form-card'>
-            <h2>Nhập thông tin cá nhân</h2>
-            <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
-            <form class=''>
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Thông tin cá nhân</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='fullname'>Họ và tên</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='phone'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='dob'>Ngày sinh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='gender'>Giới tính</label>
-                            <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
-                        </select>
-                        </div>
-                        <div class='form-row'>
-                            <label for='nid'>Số CMND/CCCD</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
-                        </div>
-                        <div class='form-row'>
-                            <div class="form-cell">
-                                <label for='doi'>Ngày cấp</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
+    var html = `<div class='form-card'>
+                    <h2>Nhập thông tin cá nhân</h2>
+                    <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
+                    <form class=''>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Thông tin cá nhân</h3>
                             </div>
-                            <div class="form-cell">
-                                <label for='doe'>Ngày hết hạn</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='fullname'>Họ và tên</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='phone'>Số điện thoại</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='dob'>Ngày sinh</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='gender'>Giới tính</label>
+                                    <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
+                                        <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
+                                    </select>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='nid'>Số CMND/CCCD</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
+                                </div>
+                                <div class='form-row'>
+                                    <div class="form-cell">
+                                        <label for='doi'>Ngày cấp</label>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
+                                    </div>
+                                    <div class="form-cell">
+                                        <label for='doe'>Ngày hết hạn</label>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
+                                    </div>
+                                </div>
+                            </div >
+                            <div class="card-footer"></div>
+                        </div >
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Địa chỉ hiện tại</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='city'>Thành phố/Tỉnh</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city}"/>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='district'>Quận/Huyện</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal.district}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='ward'>Phường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward}"/>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='street'>Đường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street}"/>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Thông tin tham chiếu</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='relationship'>Mối quan hệ </label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'  />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='fullname_ref'>Họ và tên</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="fullname_ref" name="fullname_ref"   />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='phone_ref'>Số điện thoại</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+
+                    <div class="card">
+                        <div class="card-head">
+                            <h3>Địa chỉ tạm trú</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class='form-row'>
+                                <label for='city_permanent'>Thành phố/Tỉnh</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
+                            </div>
+                            <div class='form-row'>
+                                <label for='district_permanent'>Quận/Huyện</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent"  />
+                            </div>
+                            <div class='form-row'>
+                                <label for='ward_permanent'>Phường</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
+                            </div>
+                            <div class='form-row'>
+                                <label for='street_permanent'>Đường</label>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' />
                             </div>
                         </div>
-                    </div >
-                    <div class="card-footer"></div>
-                </div >
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Địa chỉ hiện tại</h3>
+                        <div class="card-footer"></div>
                     </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='city'>Thành phố/Tỉnh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city}"/>
-                        </div>
-                        <div class='form-row'>
-                            <label for='district'>Quận/Huyện</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal.district}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='ward'>Phường</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward}"/>
-                        </div>
-                        <div class='form-row'>
-                            <label for='street'>Đường</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street}"/>
-                        </div>
-                    </div>
-                    <div class="card-footer"></div>
-                </div>
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Thông tin tham chiếu</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='relationship'>Mối quan hệ </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'  />
-                        </div>
-                        <div class='form-row'>
-                            <label for='fullname_ref'>Họ và tên</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="fullname_ref" name="fullname_ref"   />
-                        </div>
-                        <div class='form-row'>
-                            <label for='phone_ref'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
-                        </div>
-                    </div>
-                    <div class="card-footer"></div>
-                </div>
 
-            <div class="card">
-                <div class="card-head">
-                    <h3>Địa chỉ tạm trú</h3>
-                </div>
-                <div class="card-body">
-                    <div class='form-row'>
-                        <label for='city_permanent'>Thành phố/Tỉnh</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
-                    </div>
-                    <div class='form-row'>
-                        <label for='district_permanent'>Quận/Huyện</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent"  />
-                    </div>
-                    <div class='form-row'>
-                        <label for='ward_permanent'>Phường</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
-                    </div>
-                    <div class='form-row'>
-                        <label for='street_permanent'>Đường</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' />
-                    </div>
-                </div>
-                <div class="card-footer"></div>
-            </div>
-
-                <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
-            </form >
-        </div > `;
+                        <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
+                    </form >
+                </div > `;
     $(element).html(html);
 
     $('#btnContinue').click(function () {
@@ -847,127 +843,126 @@ function showDataInform(element, personal) {
 
 // Done +
 function showConfirmDataInform(element, personal_all_info) {
-    var html =
-        `<div class='form-card'>
-            <h2>Đối soát thông tin cá nhân</h2>
-            <form class=''>
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Thông tin cá nhân</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='name'>Họ và tên</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='name' name='name' value="${personal_all_info.name}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='phone'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='birthday'>Ngày sinh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='birthday' name='birthday' value="${personal_all_info.birthday}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='gender'>Giới tính</label>
-                            <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
-                        </select>
-                        </div>
-                        <div class='form-row'>
-                            <label for='citizenId'>Số CMND/CCCD</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='citizenId' name='citizenId' value="${personal_all_info.citizenId}"/>
-                        </div>
-                        <div class='form-row'>
-                            <div class="form-cell">
-                                <label for='issueDate'>Ngày cấp</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='issueDate' name='issueDate' value="${personal_all_info.issueDate}"/>
+    var html = `<div class='form-card'>
+                    <h2>Đối soát thông tin cá nhân</h2>
+                    <form class=''>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Thông tin cá nhân</h3>
                             </div>
-                            <div class="form-cell">
-                                <label for='doe'>Ngày hết hạn</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${personal_all_info.expirationDate}"/>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='name'>Họ và tên</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='name' name='name' value="${personal_all_info.name}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='phone'>Số điện thoại</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='birthday'>Ngày sinh</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='birthday' name='birthday' value="${personal_all_info.birthday}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='gender'>Giới tính</label>
+                                    <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
+                                        <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
+                                    </select>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='citizenId'>Số CMND/CCCD</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='citizenId' name='citizenId' value="${personal_all_info.citizenId}" />
+                                </div>
+                                <div class='form-row'>
+                                    <div class="form-cell">
+                                        <label for='issueDate'>Ngày cấp</label>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='issueDate' name='issueDate' value="${personal_all_info.issueDate}" />
+                                    </div>
+                                    <div class="form-cell">
+                                        <label for='doe'>Ngày hết hạn</label>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${personal_all_info.expirationDate}" />
+                                    </div>
+                                </div>
+                            </div >
+                            <div class="card-footer"></div>
+                        </div >
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Địa chỉ hiện tại</h3>
                             </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='city'>Thành phố/Tỉnh</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal_all_info.city}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='district'>Quận/Huyện</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal_all_info.district}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='ward'>Phường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal_all_info.ward}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='street'>Đường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal_all_info.street}" />
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
                         </div>
-                    </div >
-                    <div class="card-footer"></div>
-                </div >
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Địa chỉ hiện tại</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='city'>Thành phố/Tỉnh</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal_all_info.city}"/>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Thông tin tham chiếu</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='relationship'>Mối quan hệ </label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship' value="${personal_all_info.personal_title_ref}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='name_ref'>Họ và tên</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="name_ref" name="name_ref" value="${personal_all_info.name_ref}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='phone_ref'>Số điện thoại</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone_ref}" />
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
                         </div>
-                        <div class='form-row'>
-                            <label for='district'>Quận/Huyện</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal_all_info.district}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='ward'>Phường</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal_all_info.ward}"/>
-                        </div>
-                        <div class='form-row'>
-                            <label for='street'>Đường</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal_all_info.street}"/>
-                        </div>
-                    </div>
-                    <div class="card-footer"></div>
-                </div>
-                <div class="card">
-                    <div class="card-head">
-                        <h3>Thông tin tham chiếu</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class='form-row'>
-                            <label for='relationship'>Mối quan hệ </label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship' value="${personal_all_info.personal_title_ref}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='name_ref'>Họ và tên</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="name_ref" name="name_ref" value="${personal_all_info.name_ref}" />
-                        </div>
-                        <div class='form-row'>
-                            <label for='phone_ref'>Số điện thoại</label>
-                            <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone_ref}" />
-                        </div>
-                    </div>
-                    <div class="card-footer"></div>
-                </div>
 
-            <div class="card">
-                <div class="card-head">
-                    <h3>Địa chỉ tạm trú</h3>
-                </div>
-                <div class="card-body">
-                    <div class='form-row'>
-                        <label for='city_permanent'>Thành phố/Tỉnh</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' value="${personal_all_info.temporaryCity}" />
-                    </div>
-                    <div class='form-row'>
-                        <label for='district_permanent'>Quận/Huyện</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent" value="${personal_all_info.temporaryDistrict}" />
-                    </div>
-                    <div class='form-row'>
-                        <label for='ward_permanent'>Phường</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent'  value="${personal_all_info.temporaryWard}" />
-                    </div>
-                    <div class='form-row'>
-                        <label for='street_permanent'>Đường</label>
-                        <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' value="${personal_all_info.temporaryStreet}" />
-                    </div>
-                </div>
-                <div class="card-footer"></div>
-            </div>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Địa chỉ tạm trú</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='city_permanent'>Thành phố/Tỉnh</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' value="${personal_all_info.temporaryCity}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='district_permanent'>Quận/Huyện</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent" value="${personal_all_info.temporaryDistrict}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='ward_permanent'>Phường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' value="${personal_all_info.temporaryWard}" />
+                                </div>
+                                <div class='form-row'>
+                                    <label for='street_permanent'>Đường</label>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' value="${personal_all_info.temporaryStreet}" />
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
 
-                <button type='button' class='payment-button' id='btnContinueConfirm'>Tiếp tục</button>
-            </form >
-        </div > `;
+                        <button type='button' class='payment-button' id='btnContinueConfirm'>Tiếp tục</button>
+                    </form>
+                </div>`;
     $(element).html(html);
 
     $('#btnContinueConfirm').click(function () {
-        showFormSetupPin(element);
+        showFormSetupPin(element, 'SHOW_LOGIN');
     });
 }
 
@@ -1048,17 +1043,15 @@ function convertDateString(dateString) {
 
 // Done +
 function showFormPincode(element, phone, screen) {
-    var html =
-        "<form id='formValuePassword'>" +
+    var html = `<form id='formValuePassword'>
+                    <div class='form__row'>
+                        <label class='form__label' for='pincode'>Pin code</label>
+                        <input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />
+                    </div>
 
-        "<div class='form__row'>" +
-        "<label class='form__label' for='pincode'>Pin code</label>" +
-        "<input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />" +
-        "</div>" +
-
-        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
-        `<span>Forgot pin code?</span>  <button type='button' onclick='forgotPinPhone("${element}","${phone}")'>Click here</button>` +
-        "</form>";
+                    <button type='button' id='btnSubmitPin'>Gửi</button>
+                    <span>Forgot pin code?</span>  <button type='button' onclick='forgotPinPhone("${element}","${phone}")'>Click here</button>
+                </form>`;
     $(element).html(html);
 
     $('#btnSubmitPin').click(function () {
@@ -1066,11 +1059,13 @@ function showFormPincode(element, phone, screen) {
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
-            if (result.status === true && result.data.step === 4 && screen === 'SHOW_TENOR' && screen !== '') {
-                showAllTenor(element);
-            }
-            else if (result.status === true && result.data.step === 4 && screen === 'SHOW_SUCCESS_PAGE' && screen !== '') {
-                showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
+            if (result.status === true && result.data.step === 4) {
+                if (screen === 'SHOW_TENOR') {
+                    showAllTenor(element);
+                }
+                else if (screen === 'SHOW_SUCCESS_PAGE') {
+                    showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
+                }
             }
             else if (result.status === false && result.statusCode === 1002) {
                 alert('Số điện thoại không hợp lệ !');
@@ -1089,25 +1084,24 @@ function showFormPincode(element, phone, screen) {
 }
 
 // Done +
-function showFormSetupPin(element) {
-    var html =
-        "<h2>SET UP PIN CODE</h2>" +
-        "<form id='formSetupPinCode'>" +
-        "<div>" +
-        "<input type='password' id='pin1'/>" +
-        "<input type='password' id='pin2'/>" +
-        "<input type='password' id='pin3'/>" +
-        "<input type='password' id='pin4'/>" +
-        "</div>" +
+function showFormSetupPin(element, screen, token) {
+    var html = `<h2>${screen === 'SHOW_RESET_PIN' ? 'RESET YOUR PIN CODE' : 'SET UP YOUR PIN CODE'}</h2> 
+                <form id='formSetupPinCode'> 
+                <div> 
+                <input type='password' id='pin1'/> 
+                <input type='password' id='pin2'/> 
+                <input type='password' id='pin3'/> 
+                <input type='password' id='pin4'/> 
+                </div> 
 
-        "<div>" +
-        "<input type='password' id='pincf1'/>" +
-        "<input type='password' id='pincf2'/>" +
-        "<input type='password' id='pincf3'/>" +
-        "<input type='password' id='pincf4'/>" +
-        "</div>" +
-        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
-        "</form>";
+                <div> 
+                <input type='password' id='pincf1'/> 
+                <input type='password' id='pincf2'/> 
+                <input type='password' id='pincf3'/> 
+                <input type='password' id='pincf4'/> 
+                </div> 
+                <button type='button' id='btnSubmitPin'>Gửi</button> 
+                </form>`;
     $(element).html(html);
 
     $('#btnSubmitPin').click(function () {
@@ -1125,30 +1119,38 @@ function showFormSetupPin(element) {
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
         if (pin === pincf) {
-            const data = JSON.parse(localStorage.getItem('personal_all_info'));
-            const front_nid_image = localStorage.getItem('front-image');
-            const back_nid_image = localStorage.getItem('back-image');
-            const selfie_image = localStorage.getItem('selfie-image');
-            let all_data_info = {
-                ...data,
-                pin: pin,
-                nid_front_image: front_nid_image,
-                nid_back_image: back_nid_image,
-                selfie_image: selfie_image
+            if (screen === 'SHOW_LOGIN') {
+                console.log('SHOW_LOGIN');
+                const data = JSON.parse(localStorage.getItem('personal_all_info'));
+                const front_nid_image = localStorage.getItem('front-image');
+                const back_nid_image = localStorage.getItem('back-image');
+                const selfie_image = localStorage.getItem('selfie-image');
+                let all_data_info = {
+                    ...data,
+                    pin: pin,
+                    nid_front_image: front_nid_image,
+                    nid_back_image: back_nid_image,
+                    selfie_image: selfie_image
+                }
+                let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
+                    all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
+                    all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                    all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
+                    all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
+                    all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
+                    all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
+                console.log('Result: ', result);
+                if (result.status === true) {
+                    alert('Add Infomation Personal Success');
+                }
+                else {
+                    alert('Add Infomation Personal Failure');
+                }
             }
-            console.log('all_data_info: ', all_data_info);
-            let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
-                all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                all_data_info.expirationDate, all_data_info.city, all_data_info.district,
-                all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
-                all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
-                all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
-                all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-            if (result.status === true) {
-                alert(result.message);
-            }
-            else {
-                alert('Add Infomation Personal Failure');
+            else if (screen === 'SHOW_RESET_PIN') {
+                console.log('SHOW_RESET_PIN');
+                let phone = localStorage.getItem('phone');
+                resetPin(phone, pin, token);
             }
         }
         else {
@@ -1159,46 +1161,66 @@ function showFormSetupPin(element) {
 }
 
 function forgotPinPhone(element, phone) {
-    var html =
-        "<div>" +
-        "<h3>Phone Number</h3>" +
-        "<input type='phone' value=" + phone + ">" +
-        "<button id='btnContinue' type='button'>Continue</button>" +
-        "</div>";
+    var html = `<div>
+                    <h3>Phone Number</h3>
+                    <input type='phone' id='phone_reset' value="${phone}">
+                    <button id='btnContinue' type='button'>Continue</button>
+                </div>`;
     $(element).html(html);
     $('#btnContinue').click(function () {
+        let phone_reset = $('#phone_reset').val().trim();
+        localStorage.setItem('phone_reset', phone_reset);
         forgotPinNid(element);
     });
 }
 
 function forgotPinNid(element) {
-    var html =
-        `<div>
-            <h3>Id Card</h3>
-            <input type='number' id='nid'/>
-            <button id='btnSendOtp' type='button'>Send Otp</button>
-        </div>`;
+    var html = `<div>
+                    <h3>Id Card</h3>
+                    <input type='number' id='nid_reset'/>
+                    <button id='btnSendOtp' type='button'>Send Otp</button>
+                </div>`;
     $(element).html(html);
     $('#btnSendOtp').click(function () {
-        let phone = localStorage.getItem('phone');
-        let otp = sendOtp(phone);
-        showFormVerifyOTP(element, phone, otp);
+        localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
+        let phone_reset = localStorage.getItem('phone_reset');
+        let nid_reset = localStorage.getItem('nid_reset');
+        let data = sendOtpPin(phone_reset, nid_reset);
+        console.log('Data Send Otp Pin: ', data);
+        if (data.status === true) {
+            showFormVerifyOTP(element, phone_reset, data.otp);
+        }
+        else if (data.status === false && data.message === 'Send otp failure') {
+            alert('Mã Otp không hợp lệ. Vui lòng kiểm tra lại !');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1002) {
+            alert('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại !');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1001) {
+            alert('Chứng minh nhân dân không hợp lệ. Vui lòng kiểm tra lại !');
+            return;
+        }
+        else if (data.status === false && data.errorCode === 8000) {
+            alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
+            return;
+        }
     })
 }
 
 function showFormVerifyOTP(element, phone, otp) {
-    alert('Mã OTP của bạn là: ' + otp.otp);
-    var html =
-        "<h2>Verify OTP</h2>" +
-        "<form id='formVerifyOTP'>" +
-        "<input type='password' id='otp1'/>" +
-        "<input type='password' id='otp2'/>" +
-        "<input type='password' id='otp3'/>" +
-        "<input type='password' id='otp4'/>" +
-        "<input type='password' id='otp5'/>" +
-        "<input type='password' id='otp6'/>" +
-        "<button type='button' id='btnSubmitVerifyOTP'>Gửi</button>" +
-        "</form>";
+    alert('Mã OTP của bạn là: ' + otp);
+    var html = `<h2>Verify OTP</h2>
+                <form id='formVerifyOTP'>
+                <input type='password' id='otp1'/>
+                <input type='password' id='otp2'/>
+                <input type='password' id='otp3'/>
+                <input type='password' id='otp4'/>
+                <input type='password' id='otp5'/>
+                <input type='password' id='otp6'/>
+                <button type='button' id='btnSubmitVerifyOTP'>Gửi</button>
+                </form>`;
     $(element).html(html);
 
     $('#btnSubmitVerifyOTP').click(function () {
@@ -1210,8 +1232,25 @@ function showFormVerifyOTP(element, phone, otp) {
         let otp6 = $('#otp6').val().trim();
         let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         if (phone !== null && otp !== null) {
-            const data = verifyOtp(phone, otp);
-            console.log('Data: ', data);
+            let phone_reset = localStorage.getItem('phone_reset');
+            let nid_reset = localStorage.getItem('nid_reset');
+            const data = verifyOtpPin(phone_reset, nid_reset, otp);
+            console.log('Data Verify Otp Pin: ', data);
+            if (data?.status === true && data?.token !== null) {
+                showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
+            }
+            else if (data?.status === false && data?.statusCode === 4000) {
+                alert('Mã OTP không hợp lệ !');
+                return;
+            }
+            else if (data?.status === false && data?.statusCode === 3000) {
+                alert('Mã OTP đã hết hạn !');
+                return;
+            }
+            else if (data?.status === false && data?.errorCode === 8000) {
+                alert('Định dạng số điện thoại không hợp lệ !');
+                return;
+            }
         }
         else {
             alert('Thiếu số điện thoại hoặc mã otp !');
