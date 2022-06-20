@@ -61,12 +61,36 @@
 .voolo-intro{
     text-align: left;
     background: #FFFFFF;
-    box-shadow: inset 0px -1px 0px #E4E4E4;
+    box-shadow: 1px 1px 6px #e4e4e4;;
     border-radius: 20px;
-    padding: 25px 32px;
+    padding: 25px;
     margin-bottom: 32px;
 }
+.tenor-list{
+    margin-bottom: 12px;
+    border: 2px solid #fff;
+    position: relative;
+}
+.tenor-list:hover{
+    cursor: pointer;
+    border: 2px solid #197DDE;
 
+}
+.tenor-list.active{
+    border: 2px solid #197DDE;
+}
+.tenor-list.active::after{
+    content: url(./assets/img/icon-check.png);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+}
+a.ahref{
+    width: 100%;display: inline-block;line-height: 40px;color: #177dde;
+    cursor: pointer;
+}
 .main-page .paragraph-text{
     /* line-height: 10px; */
     font-size: 14px;
