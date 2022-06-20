@@ -82,10 +82,17 @@ function showUICheckPhone(element) {
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
 
+<<<<<<< HEAD
                         <div class='form__row'>
                             <label class='form__label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
                             <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
                         </div>
+=======
+        "<div class='form__row'>" +
+        "<label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>" +
+        "<input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />" +
+        "</div>" +
+>>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
 
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
 
@@ -525,21 +532,44 @@ function runDocumentCaptureScreen(side) {
 }
 
 // Done +
-function showAllTenor(element) {
+function showAllTenor(element, nCount=0) {
     let html = '';
     const data = getAllTenor();
     let tenors = data.data;
-    for (var i = 0; i < tenors.length; i++) {
+    count = nCount==0?tenors.length:nCount;
+    html += `<form class='formValue'>`;
+    for (var i = 0; i < count; i++) {
         html += `
-        <div style='border: 3px solid black; margin: 10px auto; display: block'>
-        <p>${tenors[i].convertFee}</p>
-        <p>${tenors[i].paymentSchedule}</p>
-        <button type='button' class='btnSelectTenor' data-id='${tenors[i]._id}' onclick='selectTenor("${tenors[i]._id}")'>Select</button>
-        </div>
-        `
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
+            <div class'tenor-item'>
+                <h3>KÌ HẠN 1</h3>
+                    <ul>
+                        <li>Giá sản phẩm: ${formatCurrency(35000000)}</li>
+                        <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
+                        <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
+                    </ul>
+                <p></p>
+                <p></p>
+            </div>
+        </div>`
     }
+    if(count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
+    html += `<button type='button' onclick='submitShowFormPincode()' class='payment-button'>Tiếp tục</button></form>`;
     $(element).html(html);
+
+    // show list productions
+    listProductions({
+        element: "#test",
+        items: true,
+        dataItems: pData
+    });
 };
+function formatCurrency(money){
+    return money.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+}
 
 // Done +
 function showAllProvider(element) {
@@ -564,13 +594,23 @@ function showAllProvider(element) {
 };
 
 // Done +
-function selectTenor(id) {
+function selectTenor(el) {
     // console.log('Tenor Id: ', id);
     // alert('Tenor Id: ' + id);
     // localStorage.setItem('tenor', id);
+    $(".tenor-list").removeClass("active");
+    $(el).closest('div.tenor-list').addClass("active");
+return;
+    // showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
+}
 
+<<<<<<< HEAD
     let phone = localStorage.getItem('phone');
     showFormPincode('#test', phone, 'SHOW_SUCCESS_PAGE');
+=======
+function submitShowFormPincode(id){
+    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
+>>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
 }
 
 // Done +
@@ -1059,6 +1099,7 @@ function showFormPincode(element, phone, screen) {
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
+<<<<<<< HEAD
             if (result.status === true && result.data.step === 4) {
                 if (screen === 'SHOW_TENOR') {
                     showAllTenor(element);
@@ -1066,6 +1107,13 @@ function showFormPincode(element, phone, screen) {
                 else if (screen === 'SHOW_SUCCESS_PAGE') {
                     showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
                 }
+=======
+            if (result.status === true && result.data.step === 4 && screen === 'SHOW_TENOR' && screen !== '') {
+                showAllTenor(element,3);
+            }
+            else if (result.status === true && result.data.step === 4 && screen === 'SHOW_SUCCESS_PAGE' && screen !== '') {
+                showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
+>>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
             }
             else if (result.status === false && result.statusCode === 1002) {
                 alert('Số điện thoại không hợp lệ !');
@@ -1084,6 +1132,7 @@ function showFormPincode(element, phone, screen) {
 }
 
 // Done +
+<<<<<<< HEAD
 function showFormSetupPin(element, screen, token) {
     var html = `<h2>${screen === 'SHOW_RESET_PIN' ? 'RESET YOUR PIN CODE' : 'SET UP YOUR PIN CODE'}</h2> 
                 <form id='formSetupPinCode'> 
@@ -1103,6 +1152,47 @@ function showFormSetupPin(element, screen, token) {
                 <button type='button' id='btnSubmitPin'>Gửi</button> 
                 </form>`;
     $(element).html(html);
+=======
+function showFormSetupPin(element) {
+    var html = `
+    <div class='form-card'>
+    <form id='formSetupPinCode'>
+        <div class='card'>
+            <div class='card-head no-line'></div>
+                <div class='card-body text-center form-pincode'>
+                    <h2>Cài đặt mã PIN của bạn</h2>
+                    <p>mã PIN</p>
+                    <div id='pincode'></div>
+                    <p>Nhập lại mã PIN</p>
+                    <div id='repincode'></div>
+                </div>
+            <div class='card-footer'></div>
+        </div>
+        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+    </form>
+    </div>`;
+
+        $(element).html(html);
+    new PincodeInput("#pincode", {
+        count: 4,
+        secure: true,
+        pattern: '[0-9]*',
+        previewDuration: 200,
+        inputId:'pin',
+        onInput: (value) => {
+            console.log(value)
+        }
+    });
+    new PincodeInput("#repincode", {
+        count: 4,
+        secure: true,
+        previewDuration: 200,
+        inputId:'pincf',
+        onInput: (value) => {
+            console.log(value)
+        }
+    });
+>>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
 
     $('#btnSubmitPin').click(function () {
         let pin1 = $('#pin1').val().trim();
@@ -1147,11 +1237,29 @@ function showFormSetupPin(element, screen, token) {
                     alert('Add Infomation Personal Failure');
                 }
             }
+<<<<<<< HEAD
             else if (screen === 'SHOW_RESET_PIN') {
                 console.log('SHOW_RESET_PIN');
                 let phone = localStorage.getItem('phone');
                 resetPin(phone, pin, token);
             }
+=======
+            console.log('all_data_info: ', all_data_info);
+            let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
+                all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
+                all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
+                all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
+                all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
+                all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
+            console.log("result :",result);
+            //     if (result.status === true) {
+            //     alert(result.message);
+            // }
+            // else {
+            //     alert('Add Infomation Personal Failure');
+            // }
+>>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
@@ -1258,3 +1366,83 @@ function showFormVerifyOTP(element, phone, otp) {
         }
     })
 }
+
+/* Pin code ui */
+var PincodeInput = function() {
+    "use strict";
+    return function() {
+        function e(e, t) {
+            var s = t.count,
+                i = void 0 === s ? 4 : s,
+                o = t.secure,
+                l = void 0 !== o && o,
+                n = t.previewDuration,
+                u = void 0 === n ? 200 : n,
+                c = t.numeric,
+                r = void 0 === c || c,
+                a = t.uppercase,
+                h = void 0 === a || a,
+                ipid = t.inputId;
+            this.args = t, this.selector = document.querySelector(e), this.count = i, this.secure = l, this.previewDuration = u, this.numeric = r, this.uppercase = h, this.cells = [], this.focusedCellIdx = 0, this.value = "",this.ipid = ipid, this.setCells()
+        }
+        return e.prototype.setCells = function() {
+            for (var e = 0; e < this.count; e++) {
+                var t = document.createElement("input");
+                var stt = e+1;
+                t.setAttribute("id",this.ipid+stt);
+                t.classList.add("pincode-input"), this.numeric && t.setAttribute("inputmode", "numeric"), this.uppercase || (t.style.textTransform = "lowercase"), this.cells.push(t), this.selector.appendChild(t)
+            }
+            this.initCells()
+        }, e.prototype.initCells = function() {
+            var e = this;
+            this.cells.forEach((function(t, s) {
+                t.addEventListener("input", (function(t) {
+                    var i = t.currentTarget.value;
+                    e.onCellChanged(s, i)
+                })), t.addEventListener("focus", (function() {
+                    e.focusedCellIdx = s
+                })), t.addEventListener("keydown", (function(t) {
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "text")
+                })), t.addEventListener("focus", (function() {
+                    t.classList.add("pincode-input--focused")
+                })), t.addEventListener("blur", (function() {
+                    t.classList.remove("pincode-input--focused")
+                }))
+            }))
+        }, e.prototype.onCellChanged = function(e, t) {
+            var s = this;
+            if (!this.isTheCellValid(t)) return this.cells[e].classList.remove("pincode-input--filled"), this.cells[e].value = "", void this.getValue();
+            this.cells[e].classList.add("pincode-input--filled"), this.secure && this.previewDuration && setTimeout((function() {
+                s.cells[e].setAttribute("type", "password")
+            }), this.previewDuration), this.getValue(), this.focusNextCell()
+        }, e.prototype.onKeyDown = function(e, t) {
+            switch (e.key) {
+                case "ArrowLeft":
+                    this.focusPreviousCell();
+                    break;
+                case "ArrowRight":
+                    this.focusNextCell();
+                    break;
+                case "Backspace":
+                    this.cells[t].value.length || this.onCellErase(t, e)
+            }
+        }, e.prototype.onCellErase = function(e, t) {
+            this.cells[e].value.length || (this.focusPreviousCell(), t.preventDefault())
+        }, e.prototype.focusPreviousCell = function() {
+            this.focusedCellIdx && this.focusCellByIndex(this.focusedCellIdx - 1)
+        }, e.prototype.focusNextCell = function() {
+            this.focusedCellIdx !== this.cells.length - 1 && this.focusCellByIndex(this.focusedCellIdx + 1)
+        }, e.prototype.focusCellByIndex = function(e) {
+            void 0 === e && (e = 0);
+            var t = this.cells[e];
+            t.focus(), t.select(), this.focusedCellIdx = e
+        }, e.prototype.isTheCellValid = function(e) {
+            return this.numeric ? !!e.match("^\\d{1}$") : e.length <= 1
+        }, e.prototype.getValue = function() {
+            var e = this;
+            this.value = "", this.cells.forEach((function(t) {
+                e.value += e.uppercase ? t.value.toUpperCase() : t.value
+            })), this.args.onInput && this.args.onInput(this.value)
+        }, e
+    }()
+}();
