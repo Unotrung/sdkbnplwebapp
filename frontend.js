@@ -119,7 +119,7 @@ function showUICheckPhone(element) {
             if (result.errCode === 1000) {
                 let step = result.data.step;
                 if (step === 4) {
-                    showFormPincode(element, data);
+                    showFormPincode(element, data, 'SHOW_TENOR');
                 }
                 else if (step === 2) {
 
@@ -257,146 +257,6 @@ function captureNidFrontAndBack(element) {
                 alert('Không tìm thấy thông tin cmnd mặt sau');
                 return;
             }
-        }
-    })
-}
-
-// Done +
-function showFormPincode(element, phone) {
-    var html =
-        "<form id='formValuePassword'>" +
-
-        "<div class='form__row'>" +
-        "<label class='form__label' for='pincode'>Pin code</label>" +
-        "<input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />" +
-        "</div>" +
-
-        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
-        "</form>";
-    $(element).html(html);
-
-    $('#btnSubmitPin').click(function () {
-        let pin = $('#pincode').val();
-        if (pin !== null && pin !== '') {
-            let result = login(phone, pin);
-            console.log('Result Login: ', result);
-            if (result.status === true && result.data.step === 4) {
-                showAllTenor(element);
-            }
-            else if (result.status === false && result.statusCode === 1002) {
-                alert('Số điện thoại không hợp lệ !');
-                return;
-            }
-            else if (result.status === false && result.statusCode === 1003) {
-                alert('Mã pin không hợp lệ !');
-                return;
-            }
-        }
-        else {
-            alert('Vui lòng nhập pin !');
-            return;
-        }
-    })
-}
-
-// Done +
-function showFormSetupPin(element) {
-    var html =
-        "<h2>SET UP PIN CODE</h2>" +
-        "<form id='formSetupPinCode'>" +
-        "<div>" +
-        "<input type='password' id='pin1'/>" +
-        "<input type='password' id='pin2'/>" +
-        "<input type='password' id='pin3'/>" +
-        "<input type='password' id='pin4'/>" +
-        "</div>" +
-
-        "<div>" +
-        "<input type='password' id='pincf1'/>" +
-        "<input type='password' id='pincf2'/>" +
-        "<input type='password' id='pincf3'/>" +
-        "<input type='password' id='pincf4'/>" +
-        "</div>" +
-        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
-        "</form>";
-    $(element).html(html);
-
-    $('#btnSubmitPin').click(function () {
-        let pin1 = $('#pin1').val().trim();
-        let pin2 = $('#pin2').val().trim();
-        let pin3 = $('#pin3').val().trim();
-        let pin4 = $('#pin4').val().trim();
-
-        let pincf1 = $('#pincf1').val().trim();
-        let pincf2 = $('#pincf2').val().trim();
-        let pincf3 = $('#pincf3').val().trim();
-        let pincf4 = $('#pincf4').val().trim();
-
-        let pin = pin1 + pin2 + pin3 + pin4;
-        let pincf = pincf1 + pincf2 + pincf3 + pincf4;
-
-        if (pin === pincf) {
-            const data = JSON.parse(localStorage.getItem('personal_all_info'));
-            const front_nid_image = localStorage.getItem('front-image');
-            const back_nid_image = localStorage.getItem('back-image');
-            const selfie_image = localStorage.getItem('selfie-image');
-            let all_data_info = {
-                ...data,
-                pin: pin,
-                nid_front_image: front_nid_image,
-                nid_back_image: back_nid_image,
-                selfie_image: selfie_image
-            }
-            console.log('all_data_info: ', all_data_info);
-            let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
-                all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                all_data_info.expirationDate, all_data_info.city, all_data_info.district,
-                all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
-                all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
-                all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
-                all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-            if (result.status === true) {
-                alert(result.message);
-            }
-            else {
-                alert('Add Infomation Personal Failure');
-            }
-        }
-        else {
-            alert('Mã pin không trùng khớp vui lòng thử lại !');
-            return;
-        }
-    })
-}
-
-function showFormVerifyOTP(element, phone) {
-    var html =
-        "<h2>Verify OTP</h2>" +
-        "<form id='formVerifyOTP'>" +
-        "<input type='password' id='otp1'/>" +
-        "<input type='password' id='otp2'/>" +
-        "<input type='password' id='otp3'/>" +
-        "<input type='password' id='otp4'/>" +
-        "<input type='password' id='otp5'/>" +
-        "<input type='password' id='otp6'/>" +
-        "<button type='button' id='btnSubmitVerifyOTP'>Gửi</button>" +
-        "</form>";
-    $(element).html(html);
-
-    $('#btnSubmitVerifyOTP').click(function () {
-        let otp1 = $('#otp1').val().trim();
-        let otp2 = $('#otp2').val().trim();
-        let otp3 = $('#otp3').val().trim();
-        let otp4 = $('#otp4').val().trim();
-        let otp5 = $('#otp5').val().trim();
-        let otp6 = $('#otp6').val().trim();
-        let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        if (phone !== null && otp !== null) {
-            verifyOtp(phone, otp);
-        }
-        else {
-            alert('Thiếu số điện thoại hoặc mã otp !');
-            return;
         }
     })
 }
@@ -678,7 +538,7 @@ function showAllTenor(element) {
         <div style='border: 3px solid black; margin: 10px auto; display: block'>
         <p>${tenors[i].convertFee}</p>
         <p>${tenors[i].paymentSchedule}</p>
-        <button type='button' class='btnSelectTenor' data-id='${tenors[i]._id}'>Select</button>
+        <button type='button' class='btnSelectTenor' data-id='${tenors[i]._id}' onclick='selectTenor("${tenors[i]._id}")'>Select</button>
         </div>
         `
     }
@@ -693,7 +553,7 @@ function showAllProvider(element) {
     for (var i = 0; i < providers.length; i++) {
         html += `
         <div class='list-provider'>
-        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}'><img src='${providers[i].url}' /></button>
+        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
         </div>`;
     }
     html += `</div>`;
@@ -708,6 +568,24 @@ function showAllProvider(element) {
 };
 
 // Done +
+function selectTenor(id) {
+    // console.log('Tenor Id: ', id);
+    // alert('Tenor Id: ' + id);
+    // localStorage.setItem('tenor', id);
+
+    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
+}
+
+// Done +
+function selectProvider(id) {
+    // console.log('Provider Id: ', id);
+    // alert('Provider Id: ' + id);
+    // localStorage.setItem('provider', id);
+
+    showUICheckPhone('#test');
+}
+
+// Done +
 function showMessage(element, message, icon) {
     var html =
         "<div>" +
@@ -715,17 +593,6 @@ function showMessage(element, message, icon) {
         "<p>" + message + "</p>" +
         "</div>";
     $(element).html(html);
-}
-
-// Done +
-function selectTenor(id) {
-    localStorage.setItem('tenor', id);
-}
-
-// Done +
-function selectProvider(id) {
-    localStorage.setItem('provider', id);
-    showUICheckPhone('#test');
 }
 
 // Done +
@@ -1105,18 +972,6 @@ function showConfirmDataInform(element, personal_all_info) {
 }
 
 // Done +
-$('body').on('click', '.btnSelectTenor', function () {
-    var val = $(this).attr("data-id");
-    selectTenor(val);
-})
-
-// Done +
-$('body').on('click', '.btnSelectProvider', function () {
-    var val = $(this).attr("data-id");
-    selectProvider(val);
-});
-
-// Done +
 function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
@@ -1189,4 +1044,178 @@ function convertDateString(dateString) {
     if (dateString === '') return '';
     const dateParts = dateString.split("-");
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+}
+
+// Done +
+function showFormPincode(element, phone, screen) {
+    var html =
+        "<form id='formValuePassword'>" +
+
+        "<div class='form__row'>" +
+        "<label class='form__label' for='pincode'>Pin code</label>" +
+        "<input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />" +
+        "</div>" +
+
+        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
+        `<span>Forgot pin code?</span>  <button type='button' onclick='forgotPinPhone("${element}","${phone}")'>Click here</button>` +
+        "</form>";
+    $(element).html(html);
+
+    $('#btnSubmitPin').click(function () {
+        let pin = $('#pincode').val();
+        if (pin !== null && pin !== '') {
+            let result = login(phone, pin);
+            console.log('Result Login: ', result);
+            if (result.status === true && result.data.step === 4 && screen === 'SHOW_TENOR' && screen !== '') {
+                showAllTenor(element);
+            }
+            else if (result.status === true && result.data.step === 4 && screen === 'SHOW_SUCCESS_PAGE' && screen !== '') {
+                showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
+            }
+            else if (result.status === false && result.statusCode === 1002) {
+                alert('Số điện thoại không hợp lệ !');
+                return;
+            }
+            else if (result.status === false && result.statusCode === 1003) {
+                alert('Mã pin không hợp lệ !');
+                return;
+            }
+        }
+        else {
+            alert('Vui lòng nhập pin !');
+            return;
+        }
+    })
+}
+
+// Done +
+function showFormSetupPin(element) {
+    var html =
+        "<h2>SET UP PIN CODE</h2>" +
+        "<form id='formSetupPinCode'>" +
+        "<div>" +
+        "<input type='password' id='pin1'/>" +
+        "<input type='password' id='pin2'/>" +
+        "<input type='password' id='pin3'/>" +
+        "<input type='password' id='pin4'/>" +
+        "</div>" +
+
+        "<div>" +
+        "<input type='password' id='pincf1'/>" +
+        "<input type='password' id='pincf2'/>" +
+        "<input type='password' id='pincf3'/>" +
+        "<input type='password' id='pincf4'/>" +
+        "</div>" +
+        "<button type='button' id='btnSubmitPin'>Gửi</button>" +
+        "</form>";
+    $(element).html(html);
+
+    $('#btnSubmitPin').click(function () {
+        let pin1 = $('#pin1').val().trim();
+        let pin2 = $('#pin2').val().trim();
+        let pin3 = $('#pin3').val().trim();
+        let pin4 = $('#pin4').val().trim();
+
+        let pincf1 = $('#pincf1').val().trim();
+        let pincf2 = $('#pincf2').val().trim();
+        let pincf3 = $('#pincf3').val().trim();
+        let pincf4 = $('#pincf4').val().trim();
+
+        let pin = pin1 + pin2 + pin3 + pin4;
+        let pincf = pincf1 + pincf2 + pincf3 + pincf4;
+
+        if (pin === pincf) {
+            const data = JSON.parse(localStorage.getItem('personal_all_info'));
+            const front_nid_image = localStorage.getItem('front-image');
+            const back_nid_image = localStorage.getItem('back-image');
+            const selfie_image = localStorage.getItem('selfie-image');
+            let all_data_info = {
+                ...data,
+                pin: pin,
+                nid_front_image: front_nid_image,
+                nid_back_image: back_nid_image,
+                selfie_image: selfie_image
+            }
+            console.log('all_data_info: ', all_data_info);
+            let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
+                all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
+                all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
+                all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
+                all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
+                all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
+            if (result.status === true) {
+                alert(result.message);
+            }
+            else {
+                alert('Add Infomation Personal Failure');
+            }
+        }
+        else {
+            alert('Mã pin không trùng khớp vui lòng thử lại !');
+            return;
+        }
+    })
+}
+
+function forgotPinPhone(element, phone) {
+    var html =
+        "<div>" +
+        "<h3>Phone Number</h3>" +
+        "<input type='phone' value=" + phone + ">" +
+        "<button id='btnContinue' type='button'>Continue</button>" +
+        "</div>";
+    $(element).html(html);
+    $('#btnContinue').click(function () {
+        forgotPinNid(element);
+    });
+}
+
+function forgotPinNid(element) {
+    var html =
+        `<div>
+            <h3>Id Card</h3>
+            <input type='number' id='nid'/>
+            <button id='btnSendOtp' type='button'>Send Otp</button>
+        </div>`;
+    $(element).html(html);
+    $('#btnSendOtp').click(function () {
+        let phone = localStorage.getItem('phone');
+        let otp = sendOtp(phone);
+        showFormVerifyOTP(element, phone, otp);
+    })
+}
+
+function showFormVerifyOTP(element, phone, otp) {
+    alert('Mã OTP của bạn là: ' + otp.otp);
+    var html =
+        "<h2>Verify OTP</h2>" +
+        "<form id='formVerifyOTP'>" +
+        "<input type='password' id='otp1'/>" +
+        "<input type='password' id='otp2'/>" +
+        "<input type='password' id='otp3'/>" +
+        "<input type='password' id='otp4'/>" +
+        "<input type='password' id='otp5'/>" +
+        "<input type='password' id='otp6'/>" +
+        "<button type='button' id='btnSubmitVerifyOTP'>Gửi</button>" +
+        "</form>";
+    $(element).html(html);
+
+    $('#btnSubmitVerifyOTP').click(function () {
+        let otp1 = $('#otp1').val().trim();
+        let otp2 = $('#otp2').val().trim();
+        let otp3 = $('#otp3').val().trim();
+        let otp4 = $('#otp4').val().trim();
+        let otp5 = $('#otp5').val().trim();
+        let otp6 = $('#otp6').val().trim();
+        let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
+        if (phone !== null && otp !== null) {
+            const data = verifyOtp(phone, otp);
+            console.log('Data: ', data);
+        }
+        else {
+            alert('Thiếu số điện thoại hoặc mã otp !');
+            return;
+        }
+    })
 }
