@@ -1,5 +1,5 @@
 const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
-const arrType_back = ["cccd_chip_back", "cccd_back", "cmnd_new_cccd_back"];
+const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 
 // Done +
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
@@ -115,7 +115,7 @@ function showUICheckPhone(element) {
         localStorage.setItem('phone', data);
         if (data !== null && data !== '') {
             let result = checkPhoneExists(data);
-            console.log('result check phone: ', result);
+            console.log('Check phone exists: ', result);
             if (result.errCode === 1000) {
                 let step = result.data.step;
                 if (step === 4) {
@@ -176,6 +176,7 @@ function showUICheckNid(element) {
         localStorage.setItem('nid', data);
         if (data !== null && data !== '') {
             let result = checkNidExists(data);
+            console.log('Check nid exists: ', result);
             let checkSelfieImage = localStorage.getItem('selfie-image');
             if (result.statusCode === 1000 && checkSelfieImage !== null) {
 
@@ -245,7 +246,7 @@ function captureNidFrontAndBack(element) {
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
             if (fn !== null && fn !== '' && bn !== null && bn !== '') {
-                let personal = new Personal(fn.name, fn.gender === 'M' ? 'Nam' : 'Nữ', localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street)
+                let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
                 showDataInform('#test', personal);
             }
             else if (fn === null) {
@@ -278,7 +279,7 @@ function showFormPincode(element, phone) {
         let pin = $('#pincode').val();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
-            console.log('Result: ', result);
+            console.log('Result Login: ', result);
             if (result.status === true && result.data.step === 4) {
                 showAllTenor(element);
             }
@@ -298,6 +299,7 @@ function showFormPincode(element, phone) {
     })
 }
 
+// Done +
 function showFormSetupPin(element) {
     var html =
         "<h2>SET UP PIN CODE</h2>" +
@@ -346,12 +348,13 @@ function showFormSetupPin(element) {
                 selfie_image: selfie_image
             }
             console.log('all_data_info: ', all_data_info);
-            let result = addInfoPersonal(all_data_info.name, all_data_info.sex, all_data_info.birthday, all_data_info.phone, all_data_info.citizenId,
-                all_data_info.issueDate, all_data_info.expirationDate, all_data_info.city, all_data_info.district, all_data_info.ward,
-                all_data_info.street, all_data_info.temporaryCity, all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
-                all_data_info.personal_title_ref, all_data_info.name_ref,
-                all_data_info.phone_ref, all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-            console.log('result: ', result);
+            let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
+                all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
+                all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
+                all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
+                all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
+                all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
             if (result.status === true) {
                 alert(result.message);
             }
@@ -474,10 +477,10 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value;
                 let homeTown = details?.homeTown?.value;
                 let permanentAddress = details?.permanentAddress?.value;
-                let street = details?.permanentAddress?.value.split(',')[0];
-                let ward = details?.permanentAddress.value.split(',')[2];
-                let district = details?.permanentAddress.value.split(',')[3];
-                let city = details?.permanentAddress.value.split(',')[4];
+                let street = details?.permanentAddress?.value.split(',')[0] || '';
+                let ward = details?.permanentAddress?.value.split(',')[1] || '';
+                let district = details?.permanentAddress?.value.split(',')[2] || '';
+                let city = details?.permanentAddress?.value.split(',')[3] || '';
                 let gender = details?.gender?.value;
                 let doe = details?.doe?.value;
                 let nationality = details?.nationality?.value;
@@ -834,7 +837,7 @@ function showDataInform(element, personal) {
                         <div class='form-row'>
                             <label for='gender'>Giới tính</label>
                             <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value="${personal.gender === 'Nam' ? 'M' : 'F'}">${personal.gender}</option>
+                                <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
                         </select>
                         </div>
                         <div class='form-row'>
@@ -1001,7 +1004,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         <div class='form-row'>
                             <label for='gender'>Giới tính</label>
                             <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
-                                <option value="Nam">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
+                                <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
                         </select>
                         </div>
                         <div class='form-row'>
