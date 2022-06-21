@@ -411,6 +411,20 @@ input::-webkit-inner-spin-button{
 .pincode-input.pincode-input--filled {
     border-color: #56CA8B;
 }  
+.ico-success{
+    width: 120px;
+    height: 120px;
+    background: url(./assets/img/Success.png) no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+}
+.ico-unsuccess{
+    width: 120px;
+    height: 120px;
+    background: url(./assets/img/Unsuccess.png) no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+}
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
     .main-page{
@@ -475,5 +489,11 @@ input::-webkit-inner-spin-button{
     }
     .form-card .form-row{
         width: 100%;
+    }
+    .form-verify label{
+        display: inline-block;
+    }
+    .form-verify div.info{
+        float: right;
     }
 }   

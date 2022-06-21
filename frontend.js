@@ -126,6 +126,8 @@ function showUICheckPhone(element) {
                 }
                 else if (step === 0) {
 
+                }else{
+                    showUICheckNid(element);
                 }
             }
             else if (result.errCode === 1003) {
@@ -611,11 +613,18 @@ function selectProvider(id) {
 }
 
 // Done +
+/*
+* icon : "ico-success", "ico-unsuccess"
+* message : html "<h3>Cập nhật mã PIN không thành công</h3><p>Vui lòng thử lại hoặc liên hệ 1900xxx để được hỗ trợ.</p>"
+*/
 function showMessage(element, message, icon) {
-    var html = `<div> 
-                    <icon class='${icon}'></icon> 
-                    <p>${message}</p> 
-                </div>;`;
+    var html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'>
+                    <div class='${icon}'></div> 
+                    ${message}
+                    <p style='text-align: center;'>
+                        <a class="ahref" href="/" style='width:auto'>Trở lại</a>
+                    </p>  
+                </div>`;
 
     $(element).html(html);
 }
@@ -879,36 +888,34 @@ function showConfirmDataInform(element, personal_all_info) {
                                 <h3>Thông tin cá nhân</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='name'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='name' name='name' value="${personal_all_info.name}" />
+                                    <div class="info">${personal_all_info.name}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone}" />
+                                    <div class="info">${personal_all_info.phone}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='birthday'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='birthday' name='birthday' value="${personal_all_info.birthday}" />
+                                    <div class="info">${personal_all_info.birthday}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='sex' name='sex' class='input-global ng-pristine ng-invalid ng-touched '>
-                                        <option value="${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</option>
-                                    </select>
+                                    <div class="info">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='citizenId'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='citizenId' name='citizenId' value="${personal_all_info.citizenId}" />
+                                    <div class="info">${personal_all_info.citizenId}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <div class="form-cell">
                                         <label for='issueDate'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='issueDate' name='issueDate' value="${personal_all_info.issueDate}" />
+                                        <div class="info">${personal_all_info.issueDate}</div>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${personal_all_info.expirationDate}" />
+                                        <div class="info">${personal_all_info.expirationDate}</div>
                                     </div>
                                 </div>
                             </div >
@@ -919,21 +926,21 @@ function showConfirmDataInform(element, personal_all_info) {
                                 <h3>Địa chỉ hiện tại</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal_all_info.city}" />
+                                    <div class="info">${personal_all_info.city}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal_all_info.district}" />
+                                    <div class="info">${personal_all_info.district}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal_all_info.ward}" />
+                                    <div class="info">${personal_all_info.ward}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal_all_info.street}" />
+                                    <div class="info">${personal_all_info.street}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -943,17 +950,17 @@ function showConfirmDataInform(element, personal_all_info) {
                                 <h3>Thông tin tham chiếu</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship' value="${personal_all_info.personal_title_ref}" />
+                                    <div class="info">${personal_all_info.personal_title_ref}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='name_ref'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="name_ref" name="name_ref" value="${personal_all_info.name_ref}" />
+                                    <div class="info">${personal_all_info.name_ref}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal_all_info.phone_ref}" />
+                                    <div class="info">${personal_all_info.phone_ref}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -964,21 +971,21 @@ function showConfirmDataInform(element, personal_all_info) {
                                 <h3>Địa chỉ tạm trú</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' value="${personal_all_info.temporaryCity}" />
+                                    <div class="info">${personal_all_info.temporaryCity}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='district_permanent'>Quận/Huyện</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent" value="${personal_all_info.temporaryDistrict}" />
+                                    <div class="info">${personal_all_info.temporaryDistrict}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='ward_permanent'>Phường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' value="${personal_all_info.temporaryWard}" />
+                                    <div class="info">${personal_all_info.temporaryWard}</div>
                                 </div>
-                                <div class='form-row'>
+                                <div class='form-row form-verify'>
                                     <label for='street_permanent'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' value="${personal_all_info.temporaryStreet}" />
+                                    <div class="info">${personal_all_info.temporaryStreet}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -988,7 +995,7 @@ function showConfirmDataInform(element, personal_all_info) {
                     </form>
                 </div>`;
     $(element).html(html);
-
+    $(element).scrollTop( 300 );
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
@@ -1111,7 +1118,7 @@ function showFormPincode(element, phone, screen) {
                     showAllTenor(element,3);
                 }
                 else if (screen === 'SHOW_SUCCESS_PAGE') {
-                    showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
+                    showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
                 }
             }
             else if (result.status === false && result.statusCode === 1002) {
