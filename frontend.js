@@ -119,7 +119,7 @@ function showUICheckPhone(element) {
                     showFormPincode(element, data, 'SHOW_TENOR');
                 }
                 else if (step === 2) {
-
+                    showContract(element);
                 }
                 else if (step === 3) {
 
@@ -398,9 +398,9 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
         if (HVResponse) {
             var apiResults = HVResponse.getApiResult();
             var apiHeaders = HVResponse.getApiHeaders();
-            if (apiResults !== null && apiResults !== '') {
+            if (apiResults !== null) {
                 const data = apiResults?.result;
-                const matchFace = data.match;
+                const matchFace = data?.match;
                 if (matchFace === 'no') {
                     alert('The face and the image of the identity card on the front side do not match');
                     return false;
@@ -452,10 +452,10 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
-        if (side === 'FRONT' && side !== '') {
+        if (side === 'FRONT' && side !== 'BACK' && side !== '') {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
         }
-        else if (side === 'BACK' && side !== '') {
+        else if (side === 'BACK' && side !== 'FRONT' && side !== '') {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
@@ -469,14 +469,14 @@ async function LaunchDocumentCaptureScreen(side) {
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
                 if (imageBase64 !== '' && imageBase64 !== null) {
-                    if (side === 'FRONT' && side !== '') {
+                    if (side === 'FRONT' && side !== 'BACK' && side !== '') {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thành công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
-                    else if (side === 'BACK' && side !== '') {
+                    else if (side === 'BACK' && side !== 'FRONT' && side !== '') {
                         localStorage.setItem('back-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureBack");
@@ -557,12 +557,6 @@ function showAllTenor(element, nCount = 0) {
         dataItems: pData
     });
 };
-function formatCurrency(money) {
-    return money.toLocaleString('vi-VN', {
-        style: 'currency',
-        currency: 'VND',
-    });
-}
 
 // Done +
 function showAllProvider(element) {
@@ -597,17 +591,17 @@ function selectTenor(el) {
     // showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
 }
 
-function submitShowFormPincode(id) {
-    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
-}
-
 // Done +
-function selectProvider(id) {
+function selectProvider() {
     // console.log('Provider Id: ', id);
     // alert('Provider Id: ' + id);
     // localStorage.setItem('provider', id);
 
     showUICheckPhone('#test');
+}
+
+function submitShowFormPincode() {
+    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
 }
 
 // Done +
@@ -703,7 +697,9 @@ function postNationalID(ImageURL) {
 }
 
 // Done +
-function showDataInform(element, personal) {
+function showDataInform(element) {
+    let cities = getAllCity();
+    let referencesRelation = getAllReferenceRelation();
     var html = `<div class='form-card'>
                     <h2>Nhập thông tin cá nhân</h2>
                     <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
@@ -715,34 +711,34 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                        <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
+                                        <option value=""></option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value=""/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value=""/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value=""/>
                                     </div>
                                 </div>
                             </div >
@@ -755,19 +751,23 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city}"/>
+                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' onchange='handleChangeCity("#city","#district")'/>
+                                        ${cities.data.map((city, index) => (`<option key='${index}' value='${city['Value']}'>${city['UI Show']}</option>`))}
+                                    </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district" name="district" value="${personal.district}" />
+                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district" name="district" onchange='handleChangeWard("#district","#ward")'/>
+                                    </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward}"/>
+                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward'/>
+                                    </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street}"/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value=""/>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -779,7 +779,9 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'  />
+                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'>
+                                        ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
+                                    </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
@@ -800,15 +802,21 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
+                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent'/>
+                                    ${cities.data.map((city, index) => ("<option key='" + index + "' value='" + city['Value'] + "'>" + city['UI Show'] + "</option>"))}
+                                </select>
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type="text" id="district_permanent" name="district_permanent"  />
+                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district_permanent" name="district_permanent"/>
+                                
+                                </select>
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
+                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent'/>
+                                
+                                </select>
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
@@ -866,6 +874,40 @@ function showDataInform(element, personal) {
             localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
             showConfirmDataInform(element, personal_all_info)
         }
+    })
+}
+
+function handleChangeCity(ele1, ele2) {
+    let districts = getAllDistrict();
+    let results = [];
+    let value = $(ele1).find(":selected").val();
+    $(ele2).empty();
+    districts.data.map((district, index) => {
+        if (district['Parent Value'] === value) {
+            console.log('Value district: ', district['Parent Value']);
+            console.log('Value City: ', value);
+            results.push(district);
+        }
+    });
+    results.map((item, index) => {
+        $(ele2).append(new Option(item['UI Show'], item['Value']));
+    })
+}
+
+function handleChangeWard(ele1, ele2) {
+    let wards = getAllWard();
+    let results = [];
+    let value = $(ele1).find(":selected").val();
+    $(ele2).empty();
+    wards.data.map((ward, index) => {
+        if (ward['Parent Value'] === value) {
+            console.log('Value Ward: ', ward['Parent Value']);
+            console.log('Value District: ', value);
+            results.push(ward);
+        }
+    });
+    results.map((item, index) => {
+        $(ele2).append(new Option(item['UI Show'], item['Value']));
     })
 }
 
@@ -1070,6 +1112,14 @@ function convertDateString(dateString) {
 }
 
 // Done +
+function formatCurrency(money) {
+    return money.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+}
+
+// Done +
 function showFormPincode(element, phone, screen) {
     var html = `
     <div class='form-card'>
@@ -1102,13 +1152,14 @@ function showFormPincode(element, phone, screen) {
     });
 
     $('#btnSubmitPin').click(function () {
-        let pin = $('#pincode').val();
+
+        let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
             if (result.status === true && result.data.step === 4) {
                 if (screen === 'SHOW_TENOR') {
-                    showAllTenor(element,3);
+                    showAllTenor(element, 3);
                 }
                 else if (screen === 'SHOW_SUCCESS_PAGE') {
                     showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
@@ -1209,6 +1260,7 @@ function showFormSetupPin(element, screen, token) {
                 console.log('Result: ', result);
                 if (result.status === true) {
                     alert('Add Infomation Personal Success');
+                    showContract(element);
                 }
                 else {
                     alert('Add Infomation Personal Failure');
@@ -1257,7 +1309,6 @@ function forgotPinPhone(element, phone) {
 }
 
 function forgotPinNid(element) {
-
     var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
         <div class='mobile'>
             <div class='form__row'>
@@ -1467,25 +1518,36 @@ let timerOn = true;
 function timer(remaining) {
     var m = Math.floor(remaining / 60);
     var s = remaining % 60;
-    
+
     m = m < 10 ? '0' + m : m;
     s = s < 10 ? '0' + s : s;
     // m + ':' + s
     document.getElementById('timer').innerHTML = s + 's';
     remaining -= 1;
-    
-    if(remaining >= 0 && timerOn) {
-      setTimeout(function() {
-          timer(remaining);
-      }, 1000);
-      return;
+
+    if (remaining >= 0 && timerOn) {
+        setTimeout(function () {
+            timer(remaining);
+        }, 1000);
+        return;
     }
-  
-    if(!timerOn) {
-      // Do validate stuff here
-      return;
+
+    if (!timerOn) {
+        // Do validate stuff here
+        return;
     }
-    
+
     // Do timeout stuff here
     // alert('Timeout for otp');
-  }
+}
+
+// Done +
+function showContract(element) {
+    let data = getContract();
+    var html = `<div>
+        <h1>${data.title1}</h1>
+        <h2>${data.title2}</h2>
+        <h2>${data.content}</h2>
+    </div>`;
+    $(element).html(html);
+}

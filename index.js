@@ -130,3 +130,21 @@ function getAllProviders() {
         }
     }
 }
+
+function getContract() {
+    try {
+        let data = $.ajax({
+            url: 'https://apieap.voolo.vn/v1/eap/common/generateContract',
+            type: 'GET',
+            async: false,
+            dataType: 'json',
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+}
