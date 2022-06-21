@@ -1087,7 +1087,6 @@ function showFormPincode(element, phone, screen) {
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
-<<<<<<< HEAD
             if (result.status === true && result.data.step === 4) {
                 if (screen === 'SHOW_TENOR') {
                     showAllTenor(element);
@@ -1095,13 +1094,6 @@ function showFormPincode(element, phone, screen) {
                 else if (screen === 'SHOW_SUCCESS_PAGE') {
                     showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
                 }
-=======
-            if (result.status === true && result.data.step === 4 && screen === 'SHOW_TENOR' && screen !== '') {
-                showAllTenor(element,3);
-            }
-            else if (result.status === true && result.data.step === 4 && screen === 'SHOW_SUCCESS_PAGE' && screen !== '') {
-                showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
->>>>>>> 60b9831ab1939b31526d89ac937ef45691d8033e
             }
             else if (result.status === false && result.statusCode === 1002) {
                 alert('Số điện thoại không hợp lệ !');
