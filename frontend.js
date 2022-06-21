@@ -83,7 +83,7 @@ function showUICheckPhone(element) {
                     <div class='mobile'>
 
                         <div class='form__row'>
-                            <label class='form__label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
                             <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
                         </div>
 
@@ -598,7 +598,7 @@ function selectTenor(el) {
 }
 
 function submitShowFormPincode(id) {
-    showFormPincode('#test', phone, 'SHOW_SUCCESS_PAGE');
+    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
 }
 
 // Done +
@@ -1071,16 +1071,35 @@ function convertDateString(dateString) {
 
 // Done +
 function showFormPincode(element, phone, screen) {
-    var html = `<form id='formValuePassword'>
-                    <div class='form__row'>
-                        <label class='form__label' for='pincode'>Pin code</label>
-                        <input type='password' id='pincode' class='form__input' placeholder='Please enter your pin code: ' />
-                    </div>
+    var html = `
+    <div class='form-card'>
+    <form id='formSetupPinCode'>
+        <div class='card'>
+            <div class='card-head no-line'></div>
+                <div class='card-body text-center form-pincode'>
+                    <h2>Nhập mã PIN</h2>
+                    <p class=''>Vui lòng nhập mã PIN để xác thực thông tin</p>
+                    <p class='paragraph-text-bold'>Mã PIN</p>
+                    <div id='pincode'></div>
+                </div>
+            <div class='card-footer ' style='height:32px'></div>
+        </div>
+        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+        <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>  
+    </form>
+    </div>`;
 
-                    <button type='button' id='btnSubmitPin'>Gửi</button>
-                    <span>Forgot pin code?</span>  <button type='button' onclick='forgotPinPhone("${element}","${phone}")'>Click here</button>
-                </form>`;
     $(element).html(html);
+    new PincodeInput("#pincode", {
+        count: 4,
+        secure: true,
+        pattern: '[0-9]*',
+        previewDuration: 200,
+        inputId: 'pin',
+        onInput: (value) => {
+            console.log(value)
+        }
+    });
 
     $('#btnSubmitPin').click(function () {
         let pin = $('#pincode').val();
@@ -1089,7 +1108,7 @@ function showFormPincode(element, phone, screen) {
             console.log('Result Login: ', result);
             if (result.status === true && result.data.step === 4) {
                 if (screen === 'SHOW_TENOR') {
-                    showAllTenor(element);
+                    showAllTenor(element,3);
                 }
                 else if (screen === 'SHOW_SUCCESS_PAGE') {
                     showMessage(element, 'BUY SUCCESSFULLY', 'fa-solid fa-check')
@@ -1119,7 +1138,7 @@ function showFormSetupPin(element, screen, token) {
         <div class='card'>
             <div class='card-head no-line'></div>
                 <div class='card-body text-center form-pincode'>
-                    <h2>${screen === 'SHOW_RESET_PIN' ? 'RESET YOUR PIN CODE' : 'SET UP YOUR PIN CODE'}</h2>
+                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
                     <p>mã PIN</p>
                     <div id='pincode'></div>
                     <p>Nhập lại mã PIN</p>
@@ -1209,12 +1228,27 @@ function showFormSetupPin(element, screen, token) {
 }
 
 function forgotPinPhone(element, phone) {
-    var html = `<div>
-                    <h3>Phone Number</h3>
-                    <input type='phone' id='phone_reset' value="${phone}">
-                    <button id='btnContinue' type='button'>Continue</button>
-                </div>`;
+
+    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
+                    <div class='mobile'>
+                        <div class='form__row'>
+                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input type='phone' id='phone_reset' class='form__input input-global ng-pristine ng-invalid ng-touched' value="${phone}" />
+                        </div>
+                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+
+                    </div>
+                </form>`;
     $(element).html(html);
+
+    //custom show
+    configUi({
+        element: element,
+        logo: true,
+        intro: false
+    });
+
     $('#btnContinue').click(function () {
         let phone_reset = $('#phone_reset').val().trim();
         localStorage.setItem('phone_reset', phone_reset);
@@ -1223,12 +1257,28 @@ function forgotPinPhone(element, phone) {
 }
 
 function forgotPinNid(element) {
-    var html = `<div>
-                    <h3>Id Card</h3>
-                    <input type='number' id='nid_reset'/>
-                    <button id='btnSendOtp' type='button'>Send Otp</button>
-                </div>`;
+
+    var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
+        <div class='mobile'>
+            <div class='form__row'>
+                <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
+                <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                <input type='number' id='nid_reset' class='form__input input-global ng-pristine ng-invalid ng-touched'/>
+            </div>
+            <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+
+        </div>
+    </form>`;
     $(element).html(html);
+
+    //custom show
+    configUi({
+        element: element,
+        logo: true,
+        intro: false
+    });
+
+
     $('#btnSendOtp').click(function () {
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
@@ -1258,18 +1308,43 @@ function forgotPinNid(element) {
 }
 
 function showFormVerifyOTP(element, phone, otp) {
-    alert('Mã OTP của bạn là: ' + otp);
-    var html = `<h2>Verify OTP</h2>
-                <form id='formVerifyOTP'>
-                <input type='password' id='otp1'/>
-                <input type='password' id='otp2'/>
-                <input type='password' id='otp3'/>
-                <input type='password' id='otp4'/>
-                <input type='password' id='otp5'/>
-                <input type='password' id='otp6'/>
-                <button type='button' id='btnSubmitVerifyOTP'>Gửi</button>
-                </form>`;
+    console.log('Mã OTP của bạn là: ' + otp);
+    var html = `
+    <div class='form-card'>
+    <form id='formSetupPinCode'>
+        <div class='card'>
+            <div class='card-head no-line'></div>
+            <div class='card-body text-center form-otpcode'>
+                <h2>Nhập OTP</h2>
+                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
+                <div id='otpcode'></div>
+            </div>
+            <div class='card-footer' style="height:32px"></div>
+        </div>
+        <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+        <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p> 
+    </form>
+    </div>`;
+
     $(element).html(html);
+    timer(60);
+    new PincodeInput("#otpcode", {
+        count: 6,
+        secure: false,
+        pattern: '[0-9]*',
+        previewDuration: 100,
+        inputId: 'otp',
+        onInput: (value) => {
+            console.log(value)
+        }
+    });
+
+    //custom show
+    configUi({
+        element: element,
+        logo: true,
+        intro: false
+    });
 
     $('#btnSubmitVerifyOTP').click(function () {
         let otp1 = $('#otp1').val().trim();
@@ -1386,3 +1461,31 @@ var PincodeInput = function () {
         }, e
     }()
 }();
+
+/* countdown */
+let timerOn = true;
+function timer(remaining) {
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    
+    m = m < 10 ? '0' + m : m;
+    s = s < 10 ? '0' + s : s;
+    // m + ':' + s
+    document.getElementById('timer').innerHTML = s + 's';
+    remaining -= 1;
+    
+    if(remaining >= 0 && timerOn) {
+      setTimeout(function() {
+          timer(remaining);
+      }, 1000);
+      return;
+    }
+  
+    if(!timerOn) {
+      // Do validate stuff here
+      return;
+    }
+    
+    // Do timeout stuff here
+    // alert('Timeout for otp');
+  }

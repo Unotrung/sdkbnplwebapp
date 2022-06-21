@@ -380,7 +380,7 @@ input::-webkit-inner-spin-button{
 .form-pincode{
     line-height: 64px;
 }
-.pincode-input {
+.form-pincode .pincode-input {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -388,6 +388,15 @@ input::-webkit-inner-spin-button{
     text-align: center;
     text-transform: uppercase;
     color: #56CA8B;
+}
+.form-otpcode .pincode-input {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000;
 }
 .pincode-input:not(:last-child) {
     margin-right: 1rem;
