@@ -425,6 +425,12 @@ input::-webkit-inner-spin-button{
     background-size: cover;
     margin: 0 auto;
 }
+#hv-camera-capture-button{
+    filter: invert(93%) sepia(72%) saturate(726%) hue-rotate(68deg) brightness(88%) contrast(77%);
+}
+.hv-liveness-face-found{
+    border-color:#56CA8B!important;
+}
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
     .main-page{
