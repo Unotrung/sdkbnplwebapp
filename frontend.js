@@ -1580,7 +1580,6 @@ function timer(remaining) {
 
     // Do timeout stuff here
     // alert('Timeout for otp');
-<<<<<<< HEAD
 }
 
 // Done +
@@ -1593,7 +1592,3 @@ function showContract(element) {
     </div>`;
     $(element).html(html);
 }
-=======
-  }
-  
->>>>>>> 59a178c754b62e760b301bc33b9bc602f611f40a
