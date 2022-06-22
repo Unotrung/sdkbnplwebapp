@@ -443,13 +443,14 @@ input::-webkit-inner-spin-button{
 }
 .alert-box{
     position: fixed;
-    width: 90%;
+    width: 25%;
     height: 169px;
     top: 33%;
     left: 0;
+    right: 0;
     z-index: 2;
     background-color: #fff;
-    margin: 20px;
+    margin: 20px auto;
     border-radius: 20px;
     text-align: center;
 }
@@ -661,5 +662,17 @@ body.loading .overlay{
     }
     .formValue-mt{
         margin-top: 0!important;
+    }
+    .alert-box{
+        position: fixed;
+        width: 90%;
+        height: 169px;
+        top: 33%;
+        left: 0;
+        z-index: 2;
+        background-color: #fff;
+        margin: 20px;
+        border-radius: 20px;
+        text-align: center;
     }
 }   
