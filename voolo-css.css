@@ -503,6 +503,22 @@ body.loading .overlay{
 .form-row select{
     width: 100%;
 }
+.headrow{
+    width: 100%;
+    position: fixed;
+    margin: 20px auto;
+    text-align: center;
+}
+.headrow .pipeline{
+    width: 70%;
+    margin: 0 auto;
+}
+.headrow .pipeline .pipe{
+    width: 100px;
+    height: 100px;
+    border-top: 1px dashed;
+}
+
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
     .main-page{

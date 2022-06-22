@@ -170,6 +170,7 @@ function showUICheckNid(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+
     //show waiting
     $("body").removeClass("loading"); 
 
@@ -229,6 +230,7 @@ function captureNidFrontAndBack(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+    showProcessPipeline();
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -1680,4 +1682,21 @@ function customerInfo(element){
         $(element).prepend(str);
     else
         $('.formValue').prepend(str); 
+}
+
+function showProcessPipeline(config=null){
+    var pipeline = `
+        <div class='headrow'>
+            <h3>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <div class='pipeline'>
+                <span class='pipe'>Thông tin khách hàng</span>
+                <span class='pipe'>Thông tin khách hàng</span>
+                <span class='pipe'>Thông tin khách hàng</span>
+                <span class='pipe'>Thông tin khách hàng</span>
+                <span class='pipe'>Thông tin khách hàng</span>
+            </div>
+        </div>`;
+
+    // $('#test').prepend(pipeline);
+    
 }
