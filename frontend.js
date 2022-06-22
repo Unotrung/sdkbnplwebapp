@@ -1,6 +1,7 @@
 const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
-
+let billTotal = 0;
+let customer ={avatar:'./assets/img/avatar.png', limit:'50000000',name:'Trung'};
 // Done +
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
     this.fullname = fullname;
@@ -106,9 +107,10 @@ function showUICheckPhone(element) {
         items: true,
         dataItems: pData
     });
-
+    
     $('#btnSubmitPhone').click(function () {
         //show waiting
+        console.log("//show waiting");
         $("body").addClass("loading"); 
 
         let data = $('#phone').val();
@@ -147,6 +149,9 @@ function showUICheckPhone(element) {
             alert('Vui lòng nhập data phone !');
             return;
         }
+            //hide waiting
+            console.log("//hide waiting");
+            $("body").removeClass("loading"); 
     })
 }
 
@@ -160,7 +165,7 @@ function showUICheckNid(element) {
 
                         <h3>Chụp ảnh chân dung</h3>
                         <button type='button' id='callHP' class='btnCapture'></button>
-                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>"
+                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
 
                     </div>
                 </form>`;
@@ -187,6 +192,7 @@ function showUICheckNid(element) {
             let checkSelfieImage = localStorage.getItem('selfie-image');
             if (result.statusCode === 1000 && checkSelfieImage !== null) {
                 alert('Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+                // showMessage(element,"<h2>Chứng minh nhân dân này đã tồn tại trong hệ thống !</h2>","ico-unsuccess");
                 return;
             }
             else if (result.statusCode === 900 && checkSelfieImage !== null) {
@@ -549,14 +555,14 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount == 0 ? tenors.length : nCount;
-    html += `<form class='formValue'>`;
+    html += `<form class='formValue orderTop'>`;
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class'tenor-item'>
                 <h3>KÌ HẠN 1</h3>
                     <ul>
-                        <li>Giá sản phẩm: ${formatCurrency(35000000)}</li>
+                        <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
                         <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
                         <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
                     </ul>
@@ -575,6 +581,11 @@ function showAllTenor(element, nCount = 0) {
         items: true,
         dataItems: pData
     });
+
+
+    customerInfo(element);
+    $("body").removeClass("loading");
+
 };
 
 // Done +
@@ -620,7 +631,7 @@ function selectProvider() {
 }
 
 function submitShowFormPincode() {
-    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
+    showFormPincode('#test', localStorage.getItem('phone'), 'BUY_SUCCESS');
 }
 
 // Done +
@@ -638,6 +649,8 @@ function showMessage(element, message, icon) {
                 </div>`;
 
     $(element).html(html);
+    //show waiting
+    $("body").removeClass("loading"); 
 }
 
 // Done +
@@ -723,7 +736,26 @@ function postNationalID(ImageURL) {
 }
 
 // Done +
-function showDataInform(element) {
+function showDataInform(element, personal) {
+    let adn = JSON.parse(localStorage.getItem('allDataNid'));
+        if (adn !== null && adn !== '') {
+            let fn = adn?.front_nid_customer;
+            let bn = adn?.back_nid_customer;
+            if (fn !== null && bn !== null) {
+                personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
+                // showDataInform('#test', personal);
+            }
+            else if (fn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt trước !');
+                return;
+            }
+            else if (bn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt sau !');
+                return;
+            }
+        }
+    /*
+    */
     let cities = getAllCity();
     let referencesRelation = getAllReferenceRelation();
     var html = `<div class='form-card'>
@@ -737,34 +769,34 @@ function showDataInform(element) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                        <option value=""></option>
+                                        <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value=""/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value=""/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value=""/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
                                     </div>
                                 </div>
                             </div >
@@ -775,10 +807,10 @@ function showDataInform(element) {
                                 <h3>Địa chỉ hiện tại</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
                                     <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' onchange='handleChangeCity("#city","#district")'/>
-                                        ${cities.data.map((city, index) => (`<option key='${index}' value='${city['Value']}'>${city['UI Show']}</option>`))}
+                                        ${cities.data.map((city, index) => (`<option key='${index}' value='${city['Value']}'>${city['UI_Show']}</option>`))}
                                     </select>
                                 </div>
                                 <div class='form-row'>
@@ -828,13 +860,13 @@ function showDataInform(element) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent'/>
-                                    ${cities.data.map((city, index) => ("<option key='" + index + "' value='" + city['Value'] + "'>" + city['UI Show'] + "</option>"))}
+                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' onchange='handleChangeCity("#city_permanent","#district_permanent")' />
+                                    ${cities.data.map((city, index) => ("<option key='" + index + "' value='" + city['Value'] + "'>" + city['UI_Show'] + "</option>"))}
                                 </select>
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district_permanent" name="district_permanent"/>
+                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district_permanent" name="district_permanent" onchange='handleChangeWard("#district_permanent","#ward_permanent")' />
                                 
                                 </select>
                             </div>
@@ -856,6 +888,13 @@ function showDataInform(element) {
                     </form >
                 </div > `;
     $(element).html(html);
+
+    var text1 = personal.city;
+    console.log(text1);
+    $("#city").filter(function() {
+        //may want to use $.trim in here
+        return $(this).text() == text1;
+    }).prop('selected', true);
 
     $('#btnContinue').click(function () {
         let fullname = document.getElementById('fullname').value.trim();
@@ -904,37 +943,42 @@ function showDataInform(element) {
 }
 
 function handleChangeCity(ele1, ele2) {
+    $('body').addClass('loading');
     let districts = getAllDistrict();
+    console.log(districts);
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     districts.data.map((district, index) => {
-        if (district['Parent Value'] === value) {
-            console.log('Value district: ', district['Parent Value']);
+        if (district['Parent_Value'] === value) {
+            console.log('Value district: ', district['Parent_Value']);
             console.log('Value City: ', value);
             results.push(district);
         }
     });
     results.map((item, index) => {
-        $(ele2).append(new Option(item['UI Show'], item['Value']));
-    })
+        $(ele2).append(new Option(item['UI_Show'], item['Value']));
+    });
+    $('body').removeClass('loading');
 }
 
 function handleChangeWard(ele1, ele2) {
+    $('body').addClass('loading');
     let wards = getAllWard();
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     wards.data.map((ward, index) => {
-        if (ward['Parent Value'] === value) {
-            console.log('Value Ward: ', ward['Parent Value']);
+        if (ward['Parent_Value'] === value) {
+            console.log('Value Ward: ', ward['Parent_Value']);
             console.log('Value District: ', value);
             results.push(ward);
         }
     });
     results.map((item, index) => {
-        $(ele2).append(new Option(item['UI Show'], item['Value']));
-    })
+        $(ele2).append(new Option(item['UI_Show'], item['Value']));
+    });
+    $('body').removeClass('loading');
 }
 
 // Done +
@@ -1100,6 +1144,9 @@ function listProductions(config) {
             style: 'currency',
             currency: 'VND',
         });
+
+        //set total local
+        billTotal = sTotal;
     }
     lItems += `<div class='list-items'>
         <div class='card'>
@@ -1179,17 +1226,42 @@ function showFormPincode(element, phone, screen) {
 
     $('#btnSubmitPin').click(function () {
 
+        //show waiting
+        $("body").addClass("loading"); 
+
         let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
+            //set cus info
+            customer.name = result.data.phone;
+            // customer.limit = result.data.limit;
+            // customer.avatar = result.data.avatar;
+            //end set cus info
             if (result.status === true && result.data.step === 4) {
-                if (screen === 'SHOW_TENOR') {
-                    showAllTenor(element, 3);
-                }
-                else if (screen === 'SHOW_SUCCESS_PAGE') {
-                    showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
-                }
+
+                switch(screen) {
+                    default:
+                        showMessage(element, '<h3>something wrong</h3>', 'ico-unsuccess');
+                    case "SHOW_TENOR":
+                        showAllTenor(element, 3);
+                        break;
+                    case "SHOW_SUCCESS_PAGE":
+                        showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
+                        break;
+                    case "BUY_SUCCESS":
+                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                        break;
+                    case "BUY_UNSUCCESS":
+                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-unsuccess');
+                        break;
+                } 
+                // if (screen === 'SHOW_TENOR') {
+                //     showAllTenor(element, 3);
+                // }
+                // else if (screen === 'SHOW_SUCCESS_PAGE') {
+                //     showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
+                // }
             }
             else if (result.status === false && result.statusCode === 1002) {
                 alert('Số điện thoại không hợp lệ !');
@@ -1591,4 +1663,21 @@ function showContract(element) {
         <h2>${data.content}</h2>
     </div>`;
     $(element).html(html);
+}
+
+function customerInfo(element){
+    var str = `
+    <div class='voolo-logo'></div>
+    <div id="customerInfo">
+        <div class="avatar"><img src="${customer.avatar}"  /></div>
+        <div class='detail'>
+            <h3>${customer.name} ơi!</h3>
+            <p>Hạn mức tín dụng của bạn là :</p>
+            <h2>${formatCurrency(customer.limit*1)}</h2>
+        </div>
+    </div>`;
+    if($(window).width() < 700) 
+        $(element).prepend(str);
+    else
+        $('.formValue').prepend(str); 
 }
