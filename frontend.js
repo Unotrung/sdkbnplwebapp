@@ -109,7 +109,7 @@ function showUICheckPhone(element) {
 
     $('#btnSubmitPhone').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
 
         let data = $('#phone').val();
         localStorage.setItem('phone', data);
@@ -129,7 +129,7 @@ function showUICheckPhone(element) {
                 }
                 else if (step === 0) {
 
-                }else{
+                } else {
                     showUICheckNid(element);
                 }
             }
@@ -143,7 +143,7 @@ function showUICheckPhone(element) {
         }
         else {
             //hide waiting
-            $("body").removeClass("loading"); 
+            $("body").removeClass("loading");
             alert('Vui lòng nhập data phone !');
             return;
         }
@@ -166,11 +166,11 @@ function showUICheckNid(element) {
                 </form>`;
     $(element).html(html);
     //show waiting
-    $("body").removeClass("loading"); 
+    $("body").removeClass("loading");
 
     $('#callHP').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
         runFaceCaptureScreen();
     })
 
@@ -234,7 +234,7 @@ function captureNidFrontAndBack(element) {
 
     $('#btnCaptureFront').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
         runDocumentCaptureScreen('FRONT');
     })
 
@@ -242,7 +242,7 @@ function captureNidFrontAndBack(element) {
         let front_image = localStorage.getItem('front-image');
         if (front_image !== null && front_image !== '' && front_image !== undefined) {
             //show waiting
-            $("body").addClass("loading"); 
+            $("body").addClass("loading");
             runDocumentCaptureScreen('BACK');
         }
         else {
@@ -450,7 +450,7 @@ async function LaunchFaceCaptureScreen() {
                     showCapture(imageBase64, 'callHP');
                 }
                 //hide waiting
-                $("body").removeClass("loading"); 
+                $("body").removeClass("loading");
             }
         };
         HVFaceModule.start(hvFaceConfig, callback);
@@ -628,6 +628,7 @@ function submitShowFormPincode() {
 * icon : "ico-success", "ico-unsuccess"
 * message : html "<h3>Cập nhật mã PIN không thành công</h3><p>Vui lòng thử lại hoặc liên hệ 1900xxx để được hỗ trợ.</p>"
 */
+
 function showMessage(element, message, icon) {
     var html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'>
                     <div class='${icon}'></div> 
@@ -1054,7 +1055,7 @@ function showConfirmDataInform(element, personal_all_info) {
                     </form>
                 </div>`;
     $(element).html(html);
-    $(element).scrollTop( 300 );
+    $(element).scrollTop(300);
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
@@ -1165,7 +1166,7 @@ function showFormPincode(element, phone, screen) {
 
     $(element).html(html);
     //show waiting
-    $("body").removeClass("loading"); 
+    $("body").removeClass("loading");
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1250,7 +1251,7 @@ function showFormSetupPin(element, screen, token) {
 
     $('#btnSubmitPin').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
         let pin1 = $('#pin1').val().trim();
         let pin2 = $('#pin2').val().trim();
         let pin3 = $('#pin3').val().trim();
@@ -1300,19 +1301,18 @@ function showFormSetupPin(element, screen, token) {
                 resetPin(phone, pin, token);
             }
             //show waiting
-            $("body").removeClass("loading"); 
+            $("body").removeClass("loading");
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
             //show waiting
-            $("body").removeClass("loading"); 
+            $("body").removeClass("loading");
             return;
         }
     })
 }
 
 function forgotPinPhone(element, phone) {
-
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
                         <div class='form__row'>
@@ -1364,7 +1364,7 @@ function forgotPinNid(element) {
 
     $('#btnSendOtp').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
         let nid_reset = localStorage.getItem('nid_reset');
@@ -1375,22 +1375,22 @@ function forgotPinNid(element) {
         }
         else if (data.status === false && data.message === 'Send otp failure') {
             alert('Mã Otp không hợp lệ. Vui lòng kiểm tra lại !');
-            
+
         }
         else if (data.status === false && data.statusCode === 1002) {
             alert('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại !');
-            
+
         }
         else if (data.status === false && data.statusCode === 1001) {
             alert('Chứng minh nhân dân không hợp lệ. Vui lòng kiểm tra lại !');
-            
+
         }
         else if (data.status === false && data.errorCode === 8000) {
             alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
-            
+
         }
         //hide waiting
-        $("body").removeClass("loading"); 
+        $("body").removeClass("loading");
         return;
     })
 }
@@ -1436,7 +1436,7 @@ function showFormVerifyOTP(element, phone, otp) {
 
     $('#btnSubmitVerifyOTP').click(function () {
         //show waiting
-        $("body").addClass("loading"); 
+        $("body").addClass("loading");
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
         let otp3 = $('#otp3').val().trim();
@@ -1462,13 +1462,13 @@ function showFormVerifyOTP(element, phone, otp) {
                 alert('Định dạng số điện thoại không hợp lệ !');
             }
             //show waiting
-            $("body").removeClass("loading"); 
+            $("body").removeClass("loading");
             return;
         }
         else {
             alert('Thiếu số điện thoại hoặc mã otp !');
             //show waiting
-            $("body").removeClass("loading"); 
+            $("body").removeClass("loading");
             return;
         }
     })
@@ -1577,23 +1577,21 @@ function timer(remaining) {
         // Do validate stuff here
         return;
     }
-
     // Do timeout stuff here
     // alert('Timeout for otp');
-<<<<<<< HEAD
 }
 
 // Done +
 function showContract(element) {
     let data = getContract();
     var html = `<div>
-        <h1>${data.title1}</h1>
-        <h2>${data.title2}</h2>
-        <h2>${data.content}</h2>
-    </div>`;
+                    <h1>${data.title1}</h1>
+                    <h2>${data.title2}</h2>
+                    <h2>${data.content}</h2>
+                </div>
+                
+            `
+
+        ;
     $(element).html(html);
 }
-=======
-  }
-  
->>>>>>> 59a178c754b62e760b301bc33b9bc602f611f40a
