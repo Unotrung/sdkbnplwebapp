@@ -1,5 +1,7 @@
 const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
+let billTotal = 0;
+let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
 
 // Done +
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
@@ -108,9 +110,7 @@ function showUICheckPhone(element) {
     });
 
     $('#btnSubmitPhone').click(function () {
-        //show waiting
         $("body").addClass("loading");
-
         let data = $('#phone').val();
         localStorage.setItem('phone', data);
         if (data !== null && data !== '') {
@@ -129,8 +129,6 @@ function showUICheckPhone(element) {
                 }
                 else if (step === 0) {
 
-                } else {
-                    showUICheckNid(element);
                 }
             }
             else if (result.errCode === 1003) {
@@ -142,11 +140,11 @@ function showUICheckPhone(element) {
             }
         }
         else {
-            //hide waiting
             $("body").removeClass("loading");
             alert('Vui lòng nhập data phone !');
             return;
         }
+        $("body").removeClass("loading");
     })
 }
 
@@ -160,16 +158,15 @@ function showUICheckNid(element) {
 
                         <h3>Chụp ảnh chân dung</h3>
                         <button type='button' id='callHP' class='btnCapture'></button>
-                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>"
+                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
 
                     </div>
                 </form>`;
     $(element).html(html);
-    //show waiting
+
     $("body").removeClass("loading");
 
     $('#callHP').click(function () {
-        //show waiting
         $("body").addClass("loading");
         runFaceCaptureScreen();
     })
@@ -187,6 +184,7 @@ function showUICheckNid(element) {
             let checkSelfieImage = localStorage.getItem('selfie-image');
             if (result.statusCode === 1000 && checkSelfieImage !== null) {
                 alert('Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+                // showMessage(element,"<h2>Chứng minh nhân dân này đã tồn tại trong hệ thống !</h2>","ico-unsuccess");
                 return;
             }
             else if (result.statusCode === 900 && checkSelfieImage !== null) {
@@ -233,7 +231,6 @@ function captureNidFrontAndBack(element) {
     });
 
     $('#btnCaptureFront').click(function () {
-        //show waiting
         $("body").addClass("loading");
         runDocumentCaptureScreen('FRONT');
     })
@@ -241,7 +238,6 @@ function captureNidFrontAndBack(element) {
     $('#btnCaptureBack').click(function () {
         let front_image = localStorage.getItem('front-image');
         if (front_image !== null && front_image !== '' && front_image !== undefined) {
-            //show waiting
             $("body").addClass("loading");
             runDocumentCaptureScreen('BACK');
         }
@@ -348,10 +344,10 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value;
                 let homeTown = details?.homeTown?.value;
                 let permanentAddress = details?.permanentAddress?.value;
-                let street = details?.permanentAddress?.value.split(',')[0] || '';
-                let ward = details?.permanentAddress?.value.split(',')[1] || '';
-                let district = details?.permanentAddress?.value.split(',')[2] || '';
-                let city = details?.permanentAddress?.value.split(',')[3] || '';
+                let street = details?.permanentAddress?.value.split(',')[0] ? details?.permanentAddress?.value.split(',')[0] : '';
+                let ward = details?.permanentAddress?.value.split(',')[1] ? details?.permanentAddress?.value.split(',')[1] : '';
+                let district = details?.permanentAddress?.value.split(',')[2] ? details?.permanentAddress?.value.split(',')[2] : '';
+                let city = details?.permanentAddress?.value.split(',')[3] ? details?.permanentAddress?.value.split(',')[3] : '';
                 let gender = details?.gender?.value;
                 let doe = details?.doe?.value;
                 let nationality = details?.nationality?.value;
@@ -372,7 +368,7 @@ function cutStringData(infomation) {
                 localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
             }
             // BACK NID IMAGE
-            if (arrType_back.includes(nidType) && nidType !== 'null') {
+            if (arrType_back.includes(nidType) && nidType !== null) {
                 let doi = details?.doi?.value;
                 let placeOfIssue = details?.placeOfIssue?.value;
                 back_nid_customer = {
@@ -449,7 +445,6 @@ async function LaunchFaceCaptureScreen() {
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
-                //hide waiting
                 $("body").removeClass("loading");
             }
         };
@@ -469,10 +464,12 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
-        if (side === 'FRONT' && side !== 'BACK' && side !== '') {
+        let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
+        let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
+        if (applyFrontNid) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
         }
-        else if (side === 'BACK' && side !== 'FRONT' && side !== '') {
+        else if (applyBackNid) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
@@ -486,21 +483,20 @@ async function LaunchDocumentCaptureScreen(side) {
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
                 if (imageBase64 !== '' && imageBase64 !== null) {
-                    if (side === 'FRONT' && side !== 'BACK' && side !== '') {
+                    if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thành công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
-                    else if (side === 'BACK' && side !== 'FRONT' && side !== '') {
+                    else if (applyBackNid) {
                         localStorage.setItem('back-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureBack");
                         // alert('Lưu mặt sau CMND thành công !');
                         // $("#back_picture").attr("src", imageBase64);
                     }
-                    //show waiting
                     $("body").removeClass("loading");
                 }
             }
@@ -549,14 +545,14 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount == 0 ? tenors.length : nCount;
-    html += `<form class='formValue'>`;
+    html += `<form class='formValue orderTop'>`;
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class'tenor-item'>
                 <h3>KÌ HẠN 1</h3>
                     <ul>
-                        <li>Giá sản phẩm: ${formatCurrency(35000000)}</li>
+                        <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
                         <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
                         <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
                     </ul>
@@ -566,7 +562,7 @@ function showAllTenor(element, nCount = 0) {
         </div>`
     }
     if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
-    html += `<button type='button' onclick='submitShowFormPincode()' class='payment-button'>Tiếp tục</button></form>`;
+    html += `<button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button></form>`;
     $(element).html(html);
 
     // show list productions
@@ -574,6 +570,13 @@ function showAllTenor(element, nCount = 0) {
         element: "#test",
         items: true,
         dataItems: pData
+    });
+
+    customerInfo(element);
+    $("body").removeClass("loading");
+
+    $('#btnContinue').click(function () {
+        showFormPincode(element, localStorage.getItem('phone'), 'BUY_SUCCESS');
     });
 };
 
@@ -619,16 +622,13 @@ function selectProvider() {
     showUICheckPhone('#test');
 }
 
-function submitShowFormPincode() {
-    showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
-}
-
 // Done +
 /*
 * icon : "ico-success", "ico-unsuccess"
 * message : html "<h3>Cập nhật mã PIN không thành công</h3><p>Vui lòng thử lại hoặc liên hệ 1900xxx để được hỗ trợ.</p>"
 */
 
+// Done +
 function showMessage(element, message, icon) {
     var html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'>
                     <div class='${icon}'></div> 
@@ -639,6 +639,7 @@ function showMessage(element, message, icon) {
                 </div>`;
 
     $(element).html(html);
+    $("body").removeClass("loading");
 }
 
 // Done +
@@ -724,7 +725,23 @@ function postNationalID(ImageURL) {
 }
 
 // Done +
-function showDataInform(element) {
+function showDataInform(element, personal) {
+    let adn = JSON.parse(localStorage.getItem('allDataNid'));
+    if (adn !== null && adn !== '') {
+        let fn = adn?.front_nid_customer;
+        let bn = adn?.back_nid_customer;
+        if (fn !== null && bn !== null) {
+            personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
+        }
+        else if (fn === null) {
+            alert('Không tìm thấy thông tin cmnd mặt trước !');
+            return;
+        }
+        else if (bn === null) {
+            alert('Không tìm thấy thông tin cmnd mặt sau !');
+            return;
+        }
+    }
     let cities = getAllCity();
     let referencesRelation = getAllReferenceRelation();
     var html = `<div class='form-card'>
@@ -738,34 +755,34 @@ function showDataInform(element) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                        <option value=""></option>
+                                        <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value=""/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value=""/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value=""/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
                                     </div>
                                 </div>
                             </div >
@@ -776,25 +793,21 @@ function showDataInform(element) {
                                 <h3>Địa chỉ hiện tại</h3>
                             </div>
                             <div class="card-body">
-                                <div class='form-row'>
+                                <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' onchange='handleChangeCity("#city","#district")'/>
-                                        ${cities.data.map((city, index) => (`<option key='${index}' value='${city['Value']}'>${city['UI Show']}</option>`))}
-                                    </select>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' value="${personal.city}" name='city' />
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district" name="district" onchange='handleChangeWard("#district","#ward")'/>
-                                    </select>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district' value="${personal.district}" name='district' />
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward'/>
-                                    </select>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' value="${personal.ward}" name='ward' />
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value=""/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' value="${personal.street}" name='street' />
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -829,21 +842,15 @@ function showDataInform(element) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent'/>
-                                    ${cities.data.map((city, index) => ("<option key='" + index + "' value='" + city['Value'] + "'>" + city['UI Show'] + "</option>"))}
-                                </select>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id="district_permanent" name="district_permanent"/>
-                                
-                                </select>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district_permanent' name='district_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
-                                <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent'/>
-                                
-                                </select>
+                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
@@ -857,6 +864,13 @@ function showDataInform(element) {
                     </form >
                 </div > `;
     $(element).html(html);
+
+    var text1 = personal.city;
+    console.log(text1);
+    $("#city").filter(function () {
+        //may want to use $.trim in here
+        return $(this).text() == text1;
+    }).prop('selected', true);
 
     $('#btnContinue').click(function () {
         let fullname = document.getElementById('fullname').value.trim();
@@ -899,43 +913,50 @@ function showDataInform(element) {
         }
         if (personal_all_info !== null) {
             localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
-            showConfirmDataInform(element, personal_all_info)
+            showConfirmDataInform(element, personal_all_info);
         }
     })
 }
 
+// Done +
 function handleChangeCity(ele1, ele2) {
+    $('body').addClass('loading');
     let districts = getAllDistrict();
+    console.log(districts);
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     districts.data.map((district, index) => {
-        if (district['Parent Value'] === value) {
-            console.log('Value district: ', district['Parent Value']);
+        if (district['Parent_Value'] === value) {
+            console.log('Value district: ', district['Parent_Value']);
             console.log('Value City: ', value);
             results.push(district);
         }
     });
     results.map((item, index) => {
-        $(ele2).append(new Option(item['UI Show'], item['Value']));
-    })
+        $(ele2).append(new Option(item['UI_Show'], item['Value']));
+    });
+    $('body').removeClass('loading');
 }
 
+// Done +
 function handleChangeWard(ele1, ele2) {
+    $('body').addClass('loading');
     let wards = getAllWard();
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     wards.data.map((ward, index) => {
-        if (ward['Parent Value'] === value) {
-            console.log('Value Ward: ', ward['Parent Value']);
+        if (ward['Parent_Value'] === value) {
+            console.log('Value Ward: ', ward['Parent_Value']);
             console.log('Value District: ', value);
             results.push(ward);
         }
     });
     results.map((item, index) => {
-        $(ele2).append(new Option(item['UI Show'], item['Value']));
-    })
+        $(ele2).append(new Option(item['UI_Show'], item['Value']));
+    });
+    $('body').removeClass('loading');
 }
 
 // Done +
@@ -1101,6 +1122,9 @@ function listProductions(config) {
             style: 'currency',
             currency: 'VND',
         });
+
+        //set total local
+        billTotal = sTotal;
     }
     lItems += `<div class='list-items'>
         <div class='card'>
@@ -1165,8 +1189,8 @@ function showFormPincode(element, phone, screen) {
     </div>`;
 
     $(element).html(html);
-    //show waiting
     $("body").removeClass("loading");
+
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1180,23 +1204,50 @@ function showFormPincode(element, phone, screen) {
 
     $('#btnSubmitPin').click(function () {
 
+        $("body").addClass("loading");
+
         let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
             console.log('Result Login: ', result);
+
+            //set cus info
+            // customer.name = result.data.phone;
+            // customer.limit = result.data.limit;
+            // customer.avatar = result.data.avatar;
+
+            //end set cus info
             if (result.status === true && result.data.step === 4) {
-                if (screen === 'SHOW_TENOR') {
-                    showAllTenor(element, 3);
+                switch (screen) {
+                    default:
+                        showMessage(element, '<h3>something wrong</h3>', 'ico-unsuccess');
+                    case "SHOW_TENOR":
+                        showAllTenor(element, 3);
+                        break;
+                    case "SHOW_SUCCESS_PAGE":
+                        showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
+                        break;
+                    case "BUY_SUCCESS":
+                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                        break;
+                    case "BUY_UNSUCCESS":
+                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-unsuccess');
+                        break;
                 }
-                else if (screen === 'SHOW_SUCCESS_PAGE') {
-                    showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
-                }
+                // if (screen === 'SHOW_TENOR') {
+                //     showAllTenor(element, 3);
+                // }
+                // else if (screen === 'SHOW_SUCCESS_PAGE') {
+                //     showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
+                // }
             }
             else if (result.status === false && result.statusCode === 1002) {
+                $("body").removeClass("loading");
                 alert('Số điện thoại không hợp lệ !');
                 return;
             }
             else if (result.status === false && result.statusCode === 1003) {
+                $("body").removeClass("loading");
                 alert('Mã pin không hợp lệ !');
                 return;
             }
@@ -1229,6 +1280,7 @@ function showFormSetupPin(element, screen, token) {
     </div>`;
 
     $(element).html(html);
+
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1239,6 +1291,7 @@ function showFormSetupPin(element, screen, token) {
             console.log(value)
         }
     });
+
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
@@ -1250,7 +1303,6 @@ function showFormSetupPin(element, screen, token) {
     });
 
     $('#btnSubmitPin').click(function () {
-        //show waiting
         $("body").addClass("loading");
         let pin1 = $('#pin1').val().trim();
         let pin2 = $('#pin2').val().trim();
@@ -1286,7 +1338,7 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-                console.log('Result: ', result);
+                console.log('Result Set Up Pin: ', result);
                 if (result.status === true) {
                     alert('Add Infomation Personal Success');
                     showContract(element);
@@ -1298,20 +1350,20 @@ function showFormSetupPin(element, screen, token) {
             else if (screen === 'SHOW_RESET_PIN') {
                 console.log('SHOW_RESET_PIN');
                 let phone = localStorage.getItem('phone');
-                resetPin(phone, pin, token);
+                let data = resetPin(phone, pin, token);
+                console.log('Result Reset Pin: ', data);
             }
-            //show waiting
             $("body").removeClass("loading");
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
-            //show waiting
             $("body").removeClass("loading");
             return;
         }
     })
 }
 
+// Done +
 function forgotPinPhone(element, phone) {
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
@@ -1340,6 +1392,7 @@ function forgotPinPhone(element, phone) {
     });
 }
 
+// Done +
 function forgotPinNid(element) {
     var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
         <div class='mobile'>
@@ -1361,58 +1414,56 @@ function forgotPinNid(element) {
         intro: false
     });
 
-
     $('#btnSendOtp').click(function () {
-        //show waiting
         $("body").addClass("loading");
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
         let nid_reset = localStorage.getItem('nid_reset');
         let data = sendOtpPin(phone_reset, nid_reset);
-        console.log('Data Send Otp Pin: ', data);
+        console.log('Result Send Otp Pin: ', data);
         if (data.status === true) {
-            showFormVerifyOTP(element, phone_reset, data.otp);
+            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
         }
         else if (data.status === false && data.message === 'Send otp failure') {
             alert('Mã Otp không hợp lệ. Vui lòng kiểm tra lại !');
+            return;
 
         }
         else if (data.status === false && data.statusCode === 1002) {
             alert('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại !');
-
+            return;
         }
         else if (data.status === false && data.statusCode === 1001) {
             alert('Chứng minh nhân dân không hợp lệ. Vui lòng kiểm tra lại !');
-
+            return;
         }
         else if (data.status === false && data.errorCode === 8000) {
             alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
-
+            return;
         }
-        //hide waiting
         $("body").removeClass("loading");
         return;
     })
 }
 
-function showFormVerifyOTP(element, phone, otp) {
+// Done +
+function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `
-    <div class='form-card'>
-    <form id='formSetupPinCode'>
-        <div class='card'>
-            <div class='card-head no-line'></div>
-            <div class='card-body text-center form-otpcode'>
-                <h2>Nhập OTP</h2>
-                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
-                <div id='otpcode'></div>
-            </div>
-            <div class='card-footer' style="height:32px"></div>
-        </div>
-        <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-        <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p> 
-    </form>
-    </div>`;
+    var html = `<div class='form-card'>
+                <form id='formSetupPinCode'>
+                    <div class='card'>
+                        <div class='card-head no-line'></div>
+                        <div class='card-body text-center form-otpcode'>
+                            <h2>Nhập OTP</h2>
+                            <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
+                            <div id='otpcode'></div>
+                        </div>
+                        <div class='card-footer' style="height:32px"></div>
+                    </div>
+                    <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                    <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p> 
+                </form>
+                </div>`;
 
     $(element).html(html);
     timer(60);
@@ -1435,7 +1486,6 @@ function showFormVerifyOTP(element, phone, otp) {
     });
 
     $('#btnSubmitVerifyOTP').click(function () {
-        //show waiting
         $("body").addClass("loading");
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
@@ -1445,29 +1495,50 @@ function showFormVerifyOTP(element, phone, otp) {
         let otp6 = $('#otp6').val().trim();
         let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         if (phone !== null && otp !== null) {
-            let phone_reset = localStorage.getItem('phone_reset');
-            let nid_reset = localStorage.getItem('nid_reset');
-            const data = verifyOtpPin(phone_reset, nid_reset, otp);
-            console.log('Data Verify Otp Pin: ', data);
-            if (data?.status === true && data?.token !== null) {
-                showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
+            if (screen === 'RESET_PIN' && screen !== '') {
+                let phone_reset = localStorage.getItem('phone_reset');
+                let nid_reset = localStorage.getItem('nid_reset');
+                const data = verifyOtpPin(phone_reset, nid_reset, otp);
+                console.log('Result Verify Otp Pin: ', data);
+                if (data.status === true && data.token !== null) {
+                    showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
+                }
+                else if (data.status === false && data.statusCode === 4000) {
+                    $("body").removeClass("loading");
+                    alert('Mã OTP không hợp lệ !');
+                    return;
+                }
+                else if (data.status === false && data.statusCode === 3000) {
+                    $("body").removeClass("loading");
+                    alert('Mã OTP đã hết hạn !');
+                    return;
+                }
+                else if (data.status === false && data.errorCode === 8000) {
+                    $("body").removeClass("loading");
+                    alert('Định dạng số điện thoại không hợp lệ !');
+                    return;
+                }
             }
-            else if (data?.status === false && data?.statusCode === 4000) {
-                alert('Mã OTP không hợp lệ !');
+            else if (screen === 'VERIFY_PHONE' && screen !== '') {
+                var data = verifyOtp(phone, otp);
+                console.log('Result Verify Phone', data);
+                if (data.status === true) {
+                    alert(data.message);
+                    showCircularProgressbar('#test');
+                    updateCircularProgressbar();
+                }
+                else if (data.statusCode === 4000 && data.status === false) {
+                    alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
+                    return;
+                }
+                else if (data.statusCode === 3000 && data.status === false) {
+                    alert("Otp đã hết hạn ! Vui lòng gửi lại OTP");
+                    return;
+                }
             }
-            else if (data?.status === false && data?.statusCode === 3000) {
-                alert('Mã OTP đã hết hạn !');
-            }
-            else if (data?.status === false && data?.errorCode === 8000) {
-                alert('Định dạng số điện thoại không hợp lệ !');
-            }
-            //show waiting
-            $("body").removeClass("loading");
-            return;
         }
         else {
             alert('Thiếu số điện thoại hoặc mã otp !');
-            //show waiting
             $("body").removeClass("loading");
             return;
         }
@@ -1584,14 +1655,66 @@ function timer(remaining) {
 // Done +
 function showContract(element) {
     let data = getContract();
-    var html = `<div>
+    var html = `<div style='display: block'>
                     <h1>${data.title1}</h1>
                     <h2>${data.title2}</h2>
                     <h2>${data.content}</h2>
                 </div>
-                
-            `
-
-        ;
+                <div style='display: block'>
+                <input type='checkbox' name='confirm_contract' id='confirm_contract'/> 
+                <span>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</span>
+                <div/>
+                <div style='display: block'>
+                <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
+                <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
+                <div/>
+                <button type='button' id='btnContinue'>Tiếp tục</button>
+                </div>`;
     $(element).html(html);
+
+    $('#btnContinue').click(function () {
+        let confirm_contract = $('#confirm_contract').is(":checked");
+        let confirm_otp = $('#confirm_otp').is(":checked");
+        console.log('confirm_contract: ', confirm_contract);
+        console.log('confirm_otp: ', confirm_otp);
+        if (confirm_contract && confirm_otp) {
+            let phone = localStorage.getItem('phone');
+            var otp = sendOtp(phone);
+            console.log('Result Show Contract: ', otp);
+            if (otp !== null) {
+                showFormVerifyOTP(element, phone, otp.otp, 'VERIFY_PHONE');
+            }
+        }
+        else if (!confirm_contract && !confirm_otp) {
+            alert('Vui lòng xác thực 2 ô check box');
+            return;
+        }
+        else if (!confirm_contract) {
+            alert('Vui lòng xác thực hợp đồng');
+            return;
+        }
+        else if (!confirm_otp) {
+            alert('Vui lòng xác thực otp');
+            return;
+        }
+    })
+}
+
+// Done +
+function customerInfo(element) {
+    var str = `<div class='voolo-logo'></div>
+    <div id="customerInfo">
+        <div class="avatar"><img src="${customer.avatar}"/></div>
+        <div class='detail'>
+            <h3>${customer.name} ơi!</h3>
+            <p>Hạn mức tín dụng của bạn là :</p>
+            <h2>${formatCurrency(customer.limit * 1)}</h2>
+        </div>
+</div>`;
+    if ($(window).width() < 700) {
+        $(element).prepend(str);
+    }
+    else {
+        $('.formValue').prepend(str);
+    }
 }
