@@ -230,7 +230,7 @@ function captureNidFrontAndBack(element) {
                     </div>
                 </form>`;
     $(element).html(html);
-    showProcessPipeline();
+    showProcessPipeline(2);
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -1684,19 +1684,44 @@ function customerInfo(element){
         $('.formValue').prepend(str); 
 }
 
-function showProcessPipeline(config=null){
+function showProcessPipeline(step){
+    var s1,s2,s3,s4 = '';
+    switch (step){
+        default:
+        case 1:
+            s1 = 'active';
+            break;
+        case 2:
+            s1=s2='active';
+            break;
+        case 3:
+            s1=s2=s3='active';
+            break;
+        case 4:
+            s1=s2=s3=s4='active';
+            break;
+    }
     var pipeline = `
         <div class='headrow'>
-            <h3>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+        <div class='voolo-logo'></div>
+            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <div class='line'>
+                <span class='Tpipe ${s1}'></span>
+                <span class='Tpipe ${s2}'></span>
+                <span class='Tpipe ${s3}'></span>
+                <span class='Tpipe ${s4}'></span>
+                <span class='Tpipe last'></span>
+            </div>
             <div class='pipeline'>
-                <span class='pipe'>Thông tin khách hàng</span>
-                <span class='pipe'>Thông tin khách hàng</span>
-                <span class='pipe'>Thông tin khách hàng</span>
-                <span class='pipe'>Thông tin khách hàng</span>
-                <span class='pipe'>Thông tin khách hàng</span>
+                <span class='pipe ${s1}'>Thông tin khách hàng</span>
+                <span class='pipe ${s1}'>Cài đặt PIN</span>
+                <span class='pipe ${s2}'>Ký điện tử</span>
+                <span class='pipe ${s3}'>Xác minh thông tin</span>
+                <span class='pipe ${s4}'>Hoàn thành</span>
             </div>
         </div>`;
 
-    // $('#test').prepend(pipeline);
+    $('#test').prepend(pipeline);
+    $('.formValue').addClass("formValue-mt");
     
 }

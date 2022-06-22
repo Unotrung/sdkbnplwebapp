@@ -504,19 +504,61 @@ body.loading .overlay{
     width: 100%;
 }
 .headrow{
-    width: 100%;
-    position: fixed;
+    width: 70%;
+    position: absolute;
     margin: 20px auto;
     text-align: center;
+    left: 0;
+    right: 0;
+}
+.headrow .line .Tpipe{
+    border-bottom: 1px dashed #ccc;
+    width: 23%;
+    height: 1px;
+}
+.headrow .line .Tpipe.active{
+    border-bottom: 1px solid #197DDE;
+    width: 23%;
+    height: 1px;
+}
+.headrow .line .Tpipe.last{
+    width: 12%;
+    border: 0;
+}
+.headrow .line{
+    width: 100%;
+    /* border-bottom: 1px dashed #ccc; */
+    display: flex;
+    padding-left: 10%;
 }
 .headrow .pipeline{
-    width: 70%;
+    width: 100%;
     margin: 0 auto;
+    display: inline-flex;
 }
 .headrow .pipeline .pipe{
-    width: 100px;
-    height: 100px;
-    border-top: 1px dashed;
+    height: 50px;
+    width: 20%;
+    font-size: 14px;
+    padding-top: 10px;
+    position: relative;
+}
+.headrow .pipeline .pipe::before{
+    content: "\25CF";
+    font-size: 32px;
+    color:gray;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: -22px;
+}
+.headrow .pipeline .pipe.active::before{
+    color:#197DDE;
+}
+.formValue-mt{
+    margin-top: 200px!important;
 }
 
 /*  and (min-width: 390px)  */
@@ -595,5 +637,29 @@ body.loading .overlay{
     }
     #customerInfo{
         margin-bottom: 0;
+    }
+    .headrow{
+        position: relative;
+        width: 100%;
+    }
+    .headrow .line .Tpipe{
+        border-bottom: 1px dashed #ccc;
+        width: 23%;
+        height: 1px;
+    }
+    .headrow .line .Tpipe.active{
+        border-bottom: 1px solid #197DDE;
+        width: 25%;
+        height: 1px;
+    }
+    .headrow .line .Tpipe.last{
+        width: 15%;
+        border: 0;
+    }
+    .headrow .pipeline .pipe{
+        font-size: 10px;
+    }
+    .formValue-mt{
+        margin-top: 0!important;
     }
 }   
