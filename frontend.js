@@ -3,7 +3,7 @@ const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
 let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
 
-// Done +
+// Done +++
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
     this.fullname = fullname;
     this.gender = gender;
@@ -18,13 +18,13 @@ function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, w
     this.street = street;
 }
 
-// Done +
+// Done +++
 function onlyNumber(data) {
     var pin = /[^0-9]/gi;
     data.value = data.value.replace(pin, "");
 }
 
-// Done +
+// Done +++
 function showProgressbar(element) {
     var html = `<div class='progress'> 
                     <div class='progress__fill'></div> 
@@ -33,7 +33,7 @@ function showProgressbar(element) {
     $(element).html(html);
 }
 
-// Done +
+// Done +++
 function updateProgressbar() {
     let progress__fill = document.querySelector('.progress__fill');
     let progress__text = document.querySelector('.progress__text');
@@ -52,7 +52,7 @@ function updateProgressbar() {
     }, speed);
 }
 
-// Done +
+// Done +++
 function showCircularProgressbar(element) {
     var html = `<div class='circular__progress'> +
                     <div class='circular__value'>0%<div> +
@@ -60,7 +60,7 @@ function showCircularProgressbar(element) {
     $(element).html(html);
 }
 
-// Done +
+// Done +++
 function updateCircularProgressbar() {
     let circular__progress = document.querySelector('.circular__progress');
     let circular__value = document.querySelector('.circular__value');
@@ -79,7 +79,7 @@ function updateCircularProgressbar() {
     }, speed);
 }
 
-// Done +
+// Done +++
 function showUICheckPhone(element) {
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
@@ -104,7 +104,7 @@ function showUICheckPhone(element) {
 
     // show list productions
     listProductions({
-        element: "#test",
+        element: element,
         items: true,
         dataItems: pData
     });
@@ -116,7 +116,7 @@ function showUICheckPhone(element) {
         if (data !== null && data !== '') {
             let result = checkPhoneExists(data);
             console.log('Check phone exists: ', result);
-            if (result.errCode === 1000) {
+            if (result.errCode === 1000 && result.status === true) {
                 let step = result.data.step;
                 if (step === 4) {
                     showFormPincode(element, data, 'SHOW_TENOR');
@@ -125,22 +125,29 @@ function showUICheckPhone(element) {
                     showContract(element);
                 }
                 else if (step === 3) {
-
+                    $('body').addClass('loading');
                 }
                 else if (step === 0) {
-
+                    showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
                 }
             }
-            else if (result.errCode === 1003) {
+            else if (result.errCode === 1003 && result.status === false) {
                 showUICheckNid(element);
             }
-            else if (result.errorCode === 8000) {
+            else if (result.errorCode === 8000 && result.status === false) {
                 alert('Định dạng số điện thoại không hợp lệ !');
+                return;
+            }
+            else if (result.errCode === 1008 && result.status === false) {
+                alert('Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+                return;
+            }
+            else if (result.errCode === 1004 && result.status === false) {
+                alert('Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
                 return;
             }
         }
         else {
-            $("body").removeClass("loading");
             alert('Vui lòng nhập data phone !');
             return;
         }
@@ -148,7 +155,7 @@ function showUICheckPhone(element) {
     })
 }
 
-// Done +
+// Done +++
 function showUICheckNid(element) {
     var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
                     <div class='mobile'>
@@ -182,12 +189,11 @@ function showUICheckNid(element) {
             let result = checkNidExists(data);
             console.log('Check nid exists: ', result);
             let checkSelfieImage = localStorage.getItem('selfie-image');
-            if (result.statusCode === 1000 && checkSelfieImage !== null) {
+            if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
                 alert('Chứng minh nhân dân này đã tồn tại trong hệ thống !');
-                // showMessage(element,"<h2>Chứng minh nhân dân này đã tồn tại trong hệ thống !</h2>","ico-unsuccess");
                 return;
             }
-            else if (result.statusCode === 900 && checkSelfieImage !== null) {
+            else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
                 captureNidFrontAndBack(element);
                 let checkCustomer = {
                     phone: localStorage.getItem('phone'),
@@ -196,7 +202,7 @@ function showUICheckNid(element) {
                 };
                 localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
             }
-            else if (result.errorCode === 8000) {
+            else if (result.errorCode === 8000 && result.status === false) {
                 alert('Định dạng chứng minh nhân dân không hợp lệ !');
                 return;
             }
@@ -208,7 +214,7 @@ function showUICheckNid(element) {
     })
 }
 
-// Done +
+// Done +++
 function captureNidFrontAndBack(element) {
     var html = `<form class='formValue'>
                     <div class='buttons mobile'>
@@ -221,6 +227,7 @@ function captureNidFrontAndBack(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+    showProcessPipeline(1);
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -268,7 +275,7 @@ function captureNidFrontAndBack(element) {
     })
 }
 
-// Done +
+// Done +++
 async function fetchToken() {
     try {
         const url = 'https://apibnpl.voolo.vn/v1/bnpl/fec/getHVToken';
@@ -285,7 +292,7 @@ async function fetchToken() {
     }
 };
 
-// Done +
+// Done +++
 async function getHV() {
     try {
         await fetchToken()
@@ -302,7 +309,7 @@ async function getHV() {
     }
 };
 
-// Done +
+// Done +++
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 512;
@@ -327,7 +334,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     return blob;
 }
 
-// Done +
+// Done +++
 function cutStringData(infomation) {
     try {
         if (infomation !== null) {
@@ -338,6 +345,7 @@ function cutStringData(infomation) {
             let back_nid_customer = '';
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== null) {
+                localStorage.setItem('typeFrontNid', nidType);
                 let province = details?.province?.value;
                 let idNumber = details?.idNumber?.value;
                 let name = details?.name?.value;
@@ -369,13 +377,20 @@ function cutStringData(infomation) {
             }
             // BACK NID IMAGE
             if (arrType_back.includes(nidType) && nidType !== null) {
-                let doi = details?.doi?.value;
-                let placeOfIssue = details?.placeOfIssue?.value;
-                back_nid_customer = {
-                    doi: doi,
-                    placeOfIssue: placeOfIssue
+                let typeFrontNid = localStorage.getItem('typeFrontNid');
+                if ((typeFrontNid === 'cccd_chip_front' && nidType === 'cccd_chip_back') || (typeFrontNid === 'cccd_front' && nidType === 'cmnd_new_cccd_back') || (typeFrontNid === 'cmnd_old_front' && nidType === 'cmnd_back_front')) {
+                    let doi = details?.doi?.value;
+                    let placeOfIssue = details?.placeOfIssue?.value;
+                    back_nid_customer = {
+                        doi: doi,
+                        placeOfIssue: placeOfIssue
+                    }
+                    localStorage.setItem('back_nid_customer', JSON.stringify(back_nid_customer));
                 }
-                localStorage.setItem('back_nid_customer', JSON.stringify(back_nid_customer));
+                else {
+                    alert('Hai mặt chứng minh nhân dân không phù hợp và trùng khớp !');
+                    return;
+                }
             }
         }
 
@@ -399,7 +414,7 @@ function cutStringData(infomation) {
     }
 }
 
-// Done +
+// Done +++
 function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
     callback = (HVError, HVResponse) => {
         if (HVError) {
@@ -426,7 +441,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
     HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
 }
 
-// Done +
+// Done +++
 async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
@@ -458,7 +473,7 @@ async function LaunchFaceCaptureScreen() {
     }
 };
 
-// Done +
+// Done +++
 async function LaunchDocumentCaptureScreen(side) {
     try {
         var hvDocConfig = new HVDocConfig();
@@ -511,7 +526,7 @@ async function LaunchDocumentCaptureScreen(side) {
     }
 }
 
-// Done +
+// Done +++
 function runFaceCaptureScreen() {
     try {
         getHV()
@@ -525,7 +540,7 @@ function runFaceCaptureScreen() {
     }
 }
 
-// Done +
+// Done +++
 function runDocumentCaptureScreen(side) {
     try {
         getHV()
@@ -539,12 +554,12 @@ function runDocumentCaptureScreen(side) {
     }
 }
 
-// Done +
+// Done +++
 function showAllTenor(element, nCount = 0) {
     let html = '';
     const data = getAllTenor();
     let tenors = data.data;
-    count = nCount == 0 ? tenors.length : nCount;
+    count = nCount === 0 ? tenors.length : nCount;
     html += `<form class='formValue orderTop'>`;
     for (var i = 0; i < count; i++) {
         html += `
@@ -567,7 +582,7 @@ function showAllTenor(element, nCount = 0) {
 
     // show list productions
     listProductions({
-        element: "#test",
+        element: element,
         items: true,
         dataItems: pData
     });
@@ -576,11 +591,12 @@ function showAllTenor(element, nCount = 0) {
     $("body").removeClass("loading");
 
     $('#btnContinue').click(function () {
-        showFormPincode(element, localStorage.getItem('phone'), 'BUY_SUCCESS');
+        let phone = localStorage.getItem('phone');
+        showFormPincode(element, phone, 'BUY_SUCCESS');
     });
 };
 
-// Done +
+// Done +++
 function showAllProvider(element) {
     let html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
@@ -596,53 +612,47 @@ function showAllProvider(element) {
 
     // show list productions
     listProductions({
-        element: "#test",
+        element: element,
         items: true,
         dataItems: pData
     });
 };
 
-// Done +
+// Done +++
 function selectTenor(el) {
-    // console.log('Tenor Id: ', id);
-    // alert('Tenor Id: ' + id);
-    // localStorage.setItem('tenor', id);
     $(".tenor-list").removeClass("active");
     $(el).closest('div.tenor-list').addClass("active");
     return;
-    // showFormPincode('#test', localStorage.getItem('phone'), 'SHOW_SUCCESS_PAGE');
 }
 
-// Done +
+// Done +++
 function selectProvider() {
-    // console.log('Provider Id: ', id);
-    // alert('Provider Id: ' + id);
-    // localStorage.setItem('provider', id);
-
     showUICheckPhone('#test');
 }
 
-// Done +
+// Done +++
 /*
 * icon : "ico-success", "ico-unsuccess"
 * message : html "<h3>Cập nhật mã PIN không thành công</h3><p>Vui lòng thử lại hoặc liên hệ 1900xxx để được hỗ trợ.</p>"
 */
 
-// Done +
+// Done +++
 function showMessage(element, message, icon) {
-    var html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'>
+    var html = `<div class='box'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
                     <div class='${icon}'></div> 
                     ${message}
                     <p style='text-align: center;'>
                         <a class="ahref" href="/" style='width:auto'>Trở lại</a>
-                    </p>  
+                    </p> 
+                    </div> 
                 </div>`;
 
     $(element).html(html);
     $("body").removeClass("loading");
 }
 
-// Done +
+// Done +++
 function deleteImage(side) {
     try {
         if (side === 'SELFIE') {
@@ -684,7 +694,7 @@ function deleteImage(side) {
     }
 }
 
-// Done +
+// Done +++
 function postNationalID(ImageURL) {
     try {
         var block = ImageURL.split(";");
@@ -724,7 +734,7 @@ function postNationalID(ImageURL) {
     }
 }
 
-// Done +
+// Done +++
 function showDataInform(element, personal) {
     let adn = JSON.parse(localStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
@@ -865,12 +875,12 @@ function showDataInform(element, personal) {
                 </div > `;
     $(element).html(html);
 
-    var text1 = personal.city;
-    console.log(text1);
-    $("#city").filter(function () {
-        //may want to use $.trim in here
-        return $(this).text() == text1;
-    }).prop('selected', true);
+    // var text1 = personal.city;
+    // console.log(text1);
+    // $("#city").filter(function () {
+    //     //may want to use $.trim in here
+    //     return $(this).text() == text1;
+    // }).prop('selected', true);
 
     $('#btnContinue').click(function () {
         let fullname = document.getElementById('fullname').value.trim();
@@ -915,51 +925,50 @@ function showDataInform(element, personal) {
             localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
             showConfirmDataInform(element, personal_all_info);
         }
+        else {
+            alert('Không tìm thấy thông tin người dùng ! Vui lòng kiểm tra lại');
+            return;
+        }
     })
 }
 
-// Done +
+// Done +++
 function handleChangeCity(ele1, ele2) {
-    $('body').addClass('loading');
+    // $('body').addClass('loading');
     let districts = getAllDistrict();
-    console.log(districts);
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     districts.data.map((district, index) => {
         if (district['Parent_Value'] === value) {
-            console.log('Value district: ', district['Parent_Value']);
-            console.log('Value City: ', value);
             results.push(district);
         }
     });
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
-    $('body').removeClass('loading');
+    // $('body').removeClass('loading');
 }
 
-// Done +
+// Done +++
 function handleChangeWard(ele1, ele2) {
-    $('body').addClass('loading');
+    // $('body').addClass('loading');
     let wards = getAllWard();
     let results = [];
     let value = $(ele1).find(":selected").val();
     $(ele2).empty();
     wards.data.map((ward, index) => {
         if (ward['Parent_Value'] === value) {
-            console.log('Value Ward: ', ward['Parent_Value']);
-            console.log('Value District: ', value);
             results.push(ward);
         }
     });
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
-    $('body').removeClass('loading');
+    // $('body').removeClass('loading');
 }
 
-// Done +
+// Done +++
 function showConfirmDataInform(element, personal_all_info) {
     var html = `<div class='form-card'>
                     <h2>Đối soát thông tin cá nhân</h2>
@@ -1082,7 +1091,7 @@ function showConfirmDataInform(element, personal_all_info) {
     });
 }
 
-// Done +
+// Done +++
 function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
@@ -1099,7 +1108,7 @@ function configUi(config) {
     $(config.element + " form").prepend(iHtml);
 }
 
-// Done +
+// Done +++
 function listProductions(config) {
     //show list items
     var list = "";
@@ -1140,7 +1149,7 @@ function listProductions(config) {
     if (config.items) $(config.element).prepend(lItems);
 }
 
-// Done +
+// Done +++
 function showCapture(base64, eId) {
     if (base64) {
         $('#' + eId).addClass("showImage");
@@ -1152,7 +1161,7 @@ function showCapture(base64, eId) {
     }
 }
 
-// Done +
+// Done +++
 // this function convert string date dd-mm-yyyy to yyyy-mm-dd
 function convertDateString(dateString) {
     if (dateString === '') return '';
@@ -1160,7 +1169,7 @@ function convertDateString(dateString) {
     return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 }
 
-// Done +
+// Done +++
 function formatCurrency(money) {
     return money.toLocaleString('vi-VN', {
         style: 'currency',
@@ -1168,7 +1177,7 @@ function formatCurrency(money) {
     });
 }
 
-// Done +
+// Done +++
 function showFormPincode(element, phone, screen) {
     var html = `
     <div class='form-card'>
@@ -1177,7 +1186,7 @@ function showFormPincode(element, phone, screen) {
             <div class='card-head no-line'></div>
                 <div class='card-body text-center form-pincode'>
                     <h2>Nhập mã PIN</h2>
-                    <p class=''>Vui lòng nhập mã PIN để xác thực thông tin</p>
+                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
                     <p class='paragraph-text-bold'>Mã PIN</p>
                     <div id='pincode'></div>
                 </div>
@@ -1209,18 +1218,18 @@ function showFormPincode(element, phone, screen) {
         let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
         if (pin !== null && pin !== '') {
             let result = login(phone, pin);
-            console.log('Result Login: ', result);
+            console.log('Result Show Form Pin code: ', result);
 
             //set cus info
             // customer.name = result.data.phone;
             // customer.limit = result.data.limit;
             // customer.avatar = result.data.avatar;
-
             //end set cus info
+
             if (result.status === true && result.data.step === 4) {
                 switch (screen) {
                     default:
-                        showMessage(element, '<h3>something wrong</h3>', 'ico-unsuccess');
+                        showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
                     case "SHOW_TENOR":
                         showAllTenor(element, 3);
                         break;
@@ -1231,23 +1240,15 @@ function showFormPincode(element, phone, screen) {
                         showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
                         break;
                     case "BUY_UNSUCCESS":
-                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-unsuccess');
+                        showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
                         break;
                 }
-                // if (screen === 'SHOW_TENOR') {
-                //     showAllTenor(element, 3);
-                // }
-                // else if (screen === 'SHOW_SUCCESS_PAGE') {
-                //     showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'fa-solid fa-check');
-                // }
             }
             else if (result.status === false && result.statusCode === 1002) {
-                $("body").removeClass("loading");
                 alert('Số điện thoại không hợp lệ !');
                 return;
             }
             else if (result.status === false && result.statusCode === 1003) {
-                $("body").removeClass("loading");
                 alert('Mã pin không hợp lệ !');
                 return;
             }
@@ -1256,10 +1257,11 @@ function showFormPincode(element, phone, screen) {
             alert('Vui lòng nhập pin !');
             return;
         }
+        $("body").removeClass("loading");
     })
 }
 
-// Done +
+// Done +++
 function showFormSetupPin(element, screen, token) {
     var html = `
     <div class='form-card'>
@@ -1267,7 +1269,7 @@ function showFormSetupPin(element, screen, token) {
         <div class='card'>
             <div class='card-head no-line'></div>
                 <div class='card-body text-center form-pincode'>
-                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
+                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
                     <p>mã PIN</p>
                     <div id='pincode'></div>
                     <p>Nhập lại mã PIN</p>
@@ -1319,7 +1321,6 @@ function showFormSetupPin(element, screen, token) {
 
         if (pin === pincf) {
             if (screen === 'SHOW_LOGIN') {
-                console.log('SHOW_LOGIN');
                 const data = JSON.parse(localStorage.getItem('personal_all_info'));
                 const front_nid_image = localStorage.getItem('front-image');
                 const back_nid_image = localStorage.getItem('back-image');
@@ -1345,25 +1346,28 @@ function showFormSetupPin(element, screen, token) {
                 }
                 else {
                     alert('Add Infomation Personal Failure');
+                    return;
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {
-                console.log('SHOW_RESET_PIN');
                 let phone = localStorage.getItem('phone');
                 let data = resetPin(phone, pin, token);
                 console.log('Result Reset Pin: ', data);
+                if (data.status === true) {
+                    showMessage(element, "<h3>Cập nhật mã pin thành công</h3>", "ico-success");
+                }
             }
-            $("body").removeClass("loading");
+            // $("body").removeClass("loading");
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
-            $("body").removeClass("loading");
+            // $("body").removeClass("loading");
             return;
         }
     })
 }
 
-// Done +
+// Done +++
 function forgotPinPhone(element, phone) {
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
@@ -1392,10 +1396,11 @@ function forgotPinPhone(element, phone) {
     });
 }
 
-// Done +
+// Done +++
 function forgotPinNid(element) {
     var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
         <div class='mobile'>
+
             <div class='form__row'>
                 <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
                 <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
@@ -1415,7 +1420,7 @@ function forgotPinNid(element) {
     });
 
     $('#btnSendOtp').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
         let nid_reset = localStorage.getItem('nid_reset');
@@ -1427,7 +1432,6 @@ function forgotPinNid(element) {
         else if (data.status === false && data.message === 'Send otp failure') {
             alert('Mã Otp không hợp lệ. Vui lòng kiểm tra lại !');
             return;
-
         }
         else if (data.status === false && data.statusCode === 1002) {
             alert('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại !');
@@ -1441,12 +1445,12 @@ function forgotPinNid(element) {
             alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
             return;
         }
-        $("body").removeClass("loading");
+        // $("body").removeClass("loading");
         return;
     })
 }
 
-// Done +
+// Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
     var html = `<div class='form-card'>
@@ -1652,7 +1656,7 @@ function timer(remaining) {
     // alert('Timeout for otp');
 }
 
-// Done +
+// Done +++
 function showContract(element) {
     let data = getContract();
     var html = `<div style='display: block'>
@@ -1675,32 +1679,29 @@ function showContract(element) {
     $('#btnContinue').click(function () {
         let confirm_contract = $('#confirm_contract').is(":checked");
         let confirm_otp = $('#confirm_otp').is(":checked");
-        console.log('confirm_contract: ', confirm_contract);
-        console.log('confirm_otp: ', confirm_otp);
         if (confirm_contract && confirm_otp) {
             let phone = localStorage.getItem('phone');
             var otp = sendOtp(phone);
-            console.log('Result Show Contract: ', otp);
             if (otp !== null) {
                 showFormVerifyOTP(element, phone, otp.otp, 'VERIFY_PHONE');
             }
         }
         else if (!confirm_contract && !confirm_otp) {
-            alert('Vui lòng xác thực 2 ô check box');
+            alert('Vui lòng check 2 ô check box');
             return;
         }
         else if (!confirm_contract) {
-            alert('Vui lòng xác thực hợp đồng');
+            alert('Vui lòng check ô check box thứ 1');
             return;
         }
         else if (!confirm_otp) {
-            alert('Vui lòng xác thực otp');
+            alert('Vui lòng check ô check box thứ 2');
             return;
         }
     })
 }
 
-// Done +
+// Done +++
 function customerInfo(element) {
     var str = `<div class='voolo-logo'></div>
     <div id="customerInfo">
@@ -1717,4 +1718,47 @@ function customerInfo(element) {
     else {
         $('.formValue').prepend(str);
     }
+}
+
+// Done +++
+function showProcessPipeline(step) {
+    var s1, s2, s3, s4 = '';
+    switch (step) {
+        default:
+        case 1:
+            s1 = 'active';
+            break;
+        case 2:
+            s1 = s2 = 'active';
+            break;
+        case 3:
+            s1 = s2 = s3 = 'active';
+            break;
+        case 4:
+            s1 = s2 = s3 = s4 = 'active';
+            break;
+    }
+    var pipeline = `
+        <div class='headrow'>
+        <div class='voolo-logo'></div>
+            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <div class='line'>
+                <span class='Tpipe ${s1}'></span>
+                <span class='Tpipe ${s2}'></span>
+                <span class='Tpipe ${s3}'></span>
+                <span class='Tpipe ${s4}'></span>
+                <span class='Tpipe last'></span>
+            </div>
+            <div class='pipeline'>
+                <span class='pipe ${s1}'>Thông tin khách hàng</span>
+                <span class='pipe ${s1}'>Cài đặt PIN</span>
+                <span class='pipe ${s2}'>Ký điện tử</span>
+                <span class='pipe ${s3}'>Xác minh thông tin</span>
+                <span class='pipe ${s4}'>Hoàn thành</span>
+            </div>
+        </div>`;
+
+    $('#test').prepend(pipeline);
+    $('.formValue').addClass("formValue-mt");
+
 }
