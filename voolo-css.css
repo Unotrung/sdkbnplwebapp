@@ -381,7 +381,6 @@ a.ahref{
 .form-row input{
     padding: 8px 20px;
     width: 100%;
-    font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -651,9 +650,15 @@ body.loading .overlay{
     left: 0;
     right: 0;
     top: -22px;
+
 }
+<<<<<<< HEAD
 
 .headrow .pipeline .pipe.active::before{
+=======
+.headrow .pipeline .pipe.active::before,
+.headrow .pipeline .pipe.active{
+>>>>>>> e2f5677ef0bd540aa73de282d0da62a8ab656a1c
     color:#197DDE;
 }
 
