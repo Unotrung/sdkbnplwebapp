@@ -736,8 +736,6 @@ function postNationalID(ImageURL) {
 
 // Done +++
 function showDataInform(element, personal) {
-    //show progress bar
-    showProcessPipeline(1);
     let adn = JSON.parse(localStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
         let fn = adn?.front_nid_customer;
@@ -876,6 +874,8 @@ function showDataInform(element, personal) {
                     </form >
                 </div > `;
     $(element).html(html);
+    //show progress bar
+    showProcessPipeline(1);
 
     var text1 = personal.city;
     $("#city").filter(function() {
@@ -1764,5 +1764,10 @@ function showProcessPipeline(step) {
 
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
+<<<<<<< HEAD
 
+=======
+    $('.form-card').addClass("formValue-mt");
+    
+>>>>>>> a01d9f4 (as)
 }
