@@ -502,7 +502,7 @@ async function LaunchDocumentCaptureScreen(side) {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
-                        // alert('Lưu mặt trước CMND thành công !');
+                        // alert('Lưu mặt trước CMND thà công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (applyBackNid) {
@@ -736,6 +736,8 @@ function postNationalID(ImageURL) {
 
 // Done +++
 function showDataInform(element, personal) {
+    //show progress bar
+    showProcessPipeline(1);
     let adn = JSON.parse(localStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
         let fn = adn?.front_nid_customer;
@@ -875,12 +877,11 @@ function showDataInform(element, personal) {
                 </div > `;
     $(element).html(html);
 
-    // var text1 = personal.city;
-    // console.log(text1);
-    // $("#city").filter(function () {
-    //     //may want to use $.trim in here
-    //     return $(this).text() == text1;
-    // }).prop('selected', true);
+    var text1 = personal.city;
+    $("#city").filter(function() {
+        //may want to use $.trim in here
+        return $(this).text() == text1;
+    }).prop('selected', true);
 
     $('#btnContinue').click(function () {
         let fullname = document.getElementById('fullname').value.trim();
@@ -970,6 +971,8 @@ function handleChangeWard(ele1, ele2) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_info) {
+    //show progress bar
+    showProcessPipeline(1);
     var html = `<div class='form-card'>
                     <h2>Đối soát thông tin cá nhân</h2>
                     <form class=''>
@@ -1282,7 +1285,8 @@ function showFormSetupPin(element, screen, token) {
     </div>`;
 
     $(element).html(html);
-
+    //show progress bar
+    showProcessPipeline(2);
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1675,7 +1679,7 @@ function showContract(element) {
                 <button type='button' id='btnContinue'>Tiếp tục</button>
                 </div>`;
     $(element).html(html);
-
+    showProcessPipeline(2);
     $('#btnContinue').click(function () {
         let confirm_contract = $('#confirm_contract').is(":checked");
         let confirm_otp = $('#confirm_otp').is(":checked");
@@ -1743,7 +1747,7 @@ function showProcessPipeline(step) {
         <div class='voolo-logo'></div>
             <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
-                <span class='Tpipe ${s1}'></span>
+                <span class='Tpipe ${(step!==1)?s1:""}'></span>
                 <span class='Tpipe ${s2}'></span>
                 <span class='Tpipe ${s3}'></span>
                 <span class='Tpipe ${s4}'></span>
@@ -1751,7 +1755,7 @@ function showProcessPipeline(step) {
             </div>
             <div class='pipeline'>
                 <span class='pipe ${s1}'>Thông tin khách hàng</span>
-                <span class='pipe ${s1}'>Cài đặt PIN</span>
+                <span class='pipe ${s2}'>Cài đặt PIN</span>
                 <span class='pipe ${s2}'>Ký điện tử</span>
                 <span class='pipe ${s3}'>Xác minh thông tin</span>
                 <span class='pipe ${s4}'>Hoàn thành</span>

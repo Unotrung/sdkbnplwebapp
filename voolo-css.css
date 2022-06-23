@@ -554,8 +554,10 @@ body.loading .overlay{
     left: 0;
     right: 0;
     top: -22px;
+
 }
-.headrow .pipeline .pipe.active::before{
+.headrow .pipeline .pipe.active::before,
+.headrow .pipeline .pipe.active{
     color:#197DDE;
 }
 .formValue-mt{
