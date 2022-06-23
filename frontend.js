@@ -219,7 +219,7 @@ function captureNidFrontAndBack(element) {
     var html = `<form class='formValue'>
                     <div class='buttons mobile'>
 
-                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                        <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
                         <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
                         <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
                         <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
@@ -754,45 +754,45 @@ function showDataInform(element, personal) {
     }
     let cities = getAllCity();
     let referencesRelation = getAllReferenceRelation();
-    var html = `<div class='form-card'>
-                    <h2>Nhập thông tin cá nhân</h2>
-                    <p class='desc'>Vui lòng điền các trường thông tin bên dưới</p>
+    var html = `<div class='form-card form-showdata'>
+                    <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
+                    <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
                     <form class=''>
                         <div class="card">
                             <div class="card-head">
-                                <h3>Thông tin cá nhân</h3>
+                                <h3 class='form-showdata-info'>Thông tin cá nhân</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname ? personal.fullname : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone ? personal.phone : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob)}" />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob) ? convertDateString(personal.dob) : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched '>
-                                        <option value="${personal.gender}">${personal.gender === 'M' ? 'Nam' : 'Nữ'}</option>
+                                    <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched ' disabled>
+                                        <option value="${personal.gender ? personal.gender : ''}">${(personal.gender === 'M' ? 'Nam' : 'Nữ') ? (personal.gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid}"/>
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid ? personal.nid : ''}" disabled/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi)}"/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi) ? convertDateString(personal.doi) : ''}" disabled/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe)}"/>
+                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe) ? convertDateString(personal.doe) : ''}" disabled/>
                                     </div>
                                 </div>
                             </div >
@@ -805,19 +805,19 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' value="${personal.city}" name='city' />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city ? personal.city : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district' value="${personal.district}" name='district' />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district' name='district' value="${personal.district ? personal.district : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' value="${personal.ward}" name='ward' />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward ? personal.ward : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' value="${personal.street}" name='street' />
+                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street ? personal.street : ''}" />
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -970,12 +970,13 @@ function handleChangeWard(ele1, ele2) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_info) {
-    var html = `<div class='form-card'>
-                    <h2>Đối soát thông tin cá nhân</h2>
+    var html = `<div class='form-card form-confirmdata'>
+                    <p class='form-confirmdata-title'>Đối soát thông tin</p>
+                    <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
                     <form class=''>
                         <div class="card">
                             <div class="card-head">
-                                <h3>Thông tin cá nhân</h3>
+                                <h3 class='form-confirmdata-info'>Thông tin cá nhân</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
@@ -1204,7 +1205,7 @@ function showFormPincode(element, phone, screen) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 200,
+        // previewDuration: 200,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1270,7 +1271,7 @@ function showFormSetupPin(element, screen, token) {
             <div class='card-head no-line'></div>
                 <div class='card-body text-center form-pincode'>
                     <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
-                    <p>mã PIN</p>
+                    <p>Mã PIN</p>
                     <div id='pincode'></div>
                     <p>Nhập lại mã PIN</p>
                     <div id='repincode'></div>
@@ -1287,7 +1288,7 @@ function showFormSetupPin(element, screen, token) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 200,
+        // previewDuration: 200,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1297,7 +1298,7 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
-        previewDuration: 200,
+        // previewDuration: 200,
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value)
@@ -1475,7 +1476,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         count: 6,
         secure: false,
         pattern: '[0-9]*',
-        previewDuration: 100,
+        // previewDuration: 100,
         inputId: 'otp',
         onInput: (value) => {
             console.log(value)
