@@ -878,7 +878,7 @@ function showDataInform(element, personal) {
     showProcessPipeline(1);
 
     var text1 = personal.city;
-    $("#city").filter(function() {
+    $("#city").filter(function () {
         //may want to use $.trim in here
         return $(this).text() == text1;
     }).prop('selected', true);
@@ -971,16 +971,9 @@ function handleChangeWard(ele1, ele2) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_info) {
-<<<<<<< HEAD
     var html = `<div class='form-card form-confirmdata'>
                     <p class='form-confirmdata-title'>Đối soát thông tin</p>
                     <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
-=======
-    //show progress bar
-    showProcessPipeline(1);
-    var html = `<div class='form-card'>
-                    <h2>Đối soát thông tin cá nhân</h2>
->>>>>>> e2f5677ef0bd540aa73de282d0da62a8ab656a1c
                     <form class=''>
                         <div class="card">
                             <div class="card-head">
@@ -1753,7 +1746,7 @@ function showProcessPipeline(step) {
         <div class='voolo-logo'></div>
             <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
-                <span class='Tpipe ${(step!==1)?s1:""}'></span>
+                <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s2}'></span>
                 <span class='Tpipe ${s3}'></span>
                 <span class='Tpipe ${s4}'></span>
@@ -1770,10 +1763,5 @@ function showProcessPipeline(step) {
 
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
-<<<<<<< HEAD
-
-=======
     $('.form-card').addClass("formValue-mt");
-    
->>>>>>> a01d9f4 (as)
 }

@@ -652,13 +652,8 @@ body.loading .overlay{
     top: -22px;
 
 }
-<<<<<<< HEAD
-
-.headrow .pipeline .pipe.active::before{
-=======
 .headrow .pipeline .pipe.active::before,
 .headrow .pipeline .pipe.active{
->>>>>>> e2f5677ef0bd540aa73de282d0da62a8ab656a1c
     color:#197DDE;
 }
 
