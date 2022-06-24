@@ -119,7 +119,7 @@ function showUICheckPhone(element) {
             if (result.errCode === 1000 && result.status === true) {
                 let step = result.data.step;
                 if (step === 4) {
-                    showFormPincode(element, data, 'SHOW_TENOR');
+                    showFormPincode(element, data, 'VERIFY_PIN');
                 }
                 else if (step === 2) {
                     showContract(element);
@@ -592,7 +592,7 @@ function showAllTenor(element, nCount = 0) {
 
     $('#btnContinue').click(function () {
         let phone = localStorage.getItem('phone');
-        showFormPincode(element, phone, 'BUY_SUCCESS');
+        showFormPincode(element, phone, 'SHOW_TENOR');
     });
 };
 
@@ -1011,33 +1011,13 @@ function showConfirmDataInform(element, personal_all_info) {
                                     <label for='doe'>Ngày hết hạn</label>
                                     <div class="info">${personal_all_info.expirationDate}</div>
                                 </div>
+                                <div class='form-row form-verify'>
+                                    <label for='doe'>Địa chỉ hiện tại</label>
+                                    <div class="info">${personal_all_info.street}, ${personal_all_info.ward}, ${personal_all_info.district}, ${personal_all_info.city}</div>
+                                </div>
                             </div >
                             <div class="card-footer"></div>
                         </div >
-                        <div class="card">
-                            <div class="card-head">
-                                <h3>Địa chỉ hiện tại</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class='form-row form-verify'>
-                                    <label for='city'>Thành phố/Tỉnh</label>
-                                    <div class="info">${personal_all_info.city}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='district'>Quận/Huyện</label>
-                                    <div class="info">${personal_all_info.district}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='ward'>Phường</label>
-                                    <div class="info">${personal_all_info.ward}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='street'>Đường</label>
-                                    <div class="info">${personal_all_info.street}</div>
-                                </div>
-                            </div>
-                            <div class="card-footer"></div>
-                        </div>
                         <div class="card">
                             <div class="card-head">
                                 <h3>Thông tin tham chiếu</h3>
@@ -1104,14 +1084,14 @@ function configUi(config) {
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
     <div class='voolo-intro'>
-        <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
+        <h2 class=''>VOOLO giúp bạn:</h2>
         <ul>
             <li>Mua sắm không giới hạn </li>
             <li>Thanh toán linh hoạt </li>
             <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
         </ul>
     </div>
-    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
     $(config.element + " form").prepend(iHtml);
 }
 
@@ -1144,7 +1124,7 @@ function listProductions(config) {
     }
     lItems += `<div class='list-items'>
         <div class='card'>
-            <div class='card-head'>Thông tin đơn hàng</div>
+            <div class='card-head'><h2>Thông tin đơn hàng</h2></div>
             <div class='card-body'>
                 `+ list + `
             </div>
@@ -1211,7 +1191,7 @@ function showFormPincode(element, phone, screen) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1295,7 +1275,7 @@ function showFormSetupPin(element, screen, token) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1305,7 +1285,7 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value)
@@ -1350,10 +1330,12 @@ function showFormSetupPin(element, screen, token) {
                 console.log('Result Set Up Pin: ', result);
                 if (result.status === true) {
                     alert('Add Infomation Personal Success');
+                    $("body").removeClass("loading");
                     showContract(element);
                 }
                 else {
                     alert('Add Infomation Personal Failure');
+                    $("body").removeClass("loading");
                     return;
                 }
             }
@@ -1749,7 +1731,7 @@ function showProcessPipeline(step) {
     var pipeline = `
         <div class='headrow'>
         <div class='voolo-logo'></div>
-            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <h3 style="margin-bottom:32px; font-size:24px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
