@@ -81,12 +81,12 @@ function updateCircularProgressbar() {
 
 // Done +++
 function showUICheckPhone(element) {
-    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
+    var html = `<form id='formValuePhone' class='formValue'>
                     <div class='mobile'>
 
                         <div class='form__row'>
-                            <label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
+                            <label class='formValuePhone-label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input class='formValuePhone-input' type='phone' id='phone' class='form__input input-global' />
                         </div>
 
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
@@ -110,7 +110,7 @@ function showUICheckPhone(element) {
     });
 
     $('#btnSubmitPhone').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         let data = $('#phone').val();
         localStorage.setItem('phone', data);
         if (data !== null && data !== '') {
@@ -125,7 +125,7 @@ function showUICheckPhone(element) {
                     showContract(element);
                 }
                 else if (step === 3) {
-                    $('body').addClass('loading');
+                    showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
                 }
                 else if (step === 0) {
                     showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
@@ -151,30 +151,31 @@ function showUICheckPhone(element) {
             alert('Vui lòng nhập data phone !');
             return;
         }
-        $("body").removeClass("loading");
+        // $("body").removeClass("loading");
     })
 }
 
 // Done +++
 function showUICheckNid(element) {
-    var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
-                    <div class='mobile'>
+    var html = `<form id='formValueNid' class='formValue'>
+                    <!--<div class='mobile'>-->
 
-                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
-                        <input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />
+                        <label class='formValueNid-label' for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                        <input class='formValueNid-input' type='number' id='nid' class='input-global' />
 
-                        <h3>Chụp ảnh chân dung</h3>
+                        <h3 class='formValueNid-title'>Chụp ảnh chân dung</h3>
+
                         <button type='button' id='callHP' class='btnCapture'></button>
-                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnSubmitNid'>Tiếp tục</button>
 
-                    </div>
+                    <!--</div>-->
                 </form>`;
     $(element).html(html);
 
-    $("body").removeClass("loading");
+    // $("body").removeClass("loading");
 
     $('#callHP').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         runFaceCaptureScreen();
     })
 
@@ -215,17 +216,37 @@ function showUICheckNid(element) {
 }
 
 // Done +++
+function showSelfieIntroduction(element) {
+    var Selfie_Introductions = [
+        { id: 1, linkImg: './assets/img/1_dont.png', content: 'Không nên', desc1: 'Vui lòng', desc_bold: 'KHÔNG đội nón, đeo kính, khẩu trang', desc2: '' },
+        { id: 2, linkImg: './assets/img/1_dont_1.png', content: 'Không nên', desc1: 'Vui lòng', desc_bold: 'chọn nơi có đủ ánh sáng', desc2: 'để chụp ảnh' },
+        { id: 3, linkImg: './assets/img/1_do.png', content: 'Tốt lắm', desc1: 'Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn', desc_bold: '', desc2: '' }
+    ];
+    let html = '';
+    html += "<div class='container-selfieintroduction-list'>";
+    html += Selfie_Introductions.map((item) => (
+        `<div class='selfieintroduction-item'> 
+            <img src='${item.linkImg}' class='selfieintroduction-item-img'/> 
+            <h3 class='selfieintroduction-item-content'>${item.content}</h3> 
+            <p class='selfieintroduction-item-desc'>${item.desc1} <b>${item.desc_bold ? item.desc_bold : ''}<b/> ${item.desc2 ? item.desc2 : ''}</p> 
+        </div>`
+    )).join('');
+    html += "</div>";
+    $(element).html(html);
+}
+
+// Done +++
 function captureNidFrontAndBack(element) {
-    var html = `<form class='formValue'>
-                    <div class='buttons mobile'>
+    var html = `< form class='formValue' >
+            <div class='buttons mobile'>
 
-                        <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
-                        <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
-                        <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
-                        <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
+                <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
+                <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
+                <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
+                <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
 
-                    </div>
-                </form>`;
+            </div>
+                </ > `;
     $(element).html(html);
     showProcessPipeline(1);
 
@@ -238,14 +259,14 @@ function captureNidFrontAndBack(element) {
     });
 
     $('#btnCaptureFront').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         runDocumentCaptureScreen('FRONT');
     })
 
     $('#btnCaptureBack').click(function () {
         let front_image = localStorage.getItem('front-image');
         if (front_image !== null && front_image !== '' && front_image !== undefined) {
-            $("body").addClass("loading");
+            // $("body").addClass("loading");
             runDocumentCaptureScreen('BACK');
         }
         else {
@@ -460,7 +481,7 @@ async function LaunchFaceCaptureScreen() {
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
-                $("body").removeClass("loading");
+                // $("body").removeClass("loading");
             }
         };
         HVFaceModule.start(hvFaceConfig, callback);
@@ -512,7 +533,7 @@ async function LaunchDocumentCaptureScreen(side) {
                         // alert('Lưu mặt sau CMND thành công !');
                         // $("#back_picture").attr("src", imageBase64);
                     }
-                    $("body").removeClass("loading");
+                    // $("body").removeClass("loading");
                 }
             }
         };
@@ -560,11 +581,11 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `<form class='formValue orderTop'>`;
+    html += `< form class='formValue orderTop' > `;
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
-            <div class'tenor-item'>
+            < div class='voolo-intro tenor-list' data - id='${tenors[i]._id}' onclick = 'selectTenor(this)' >
+                <div class'tenor-item' >
                 <h3>KÌ HẠN 1</h3>
                     <ul>
                         <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
@@ -573,11 +594,11 @@ function showAllTenor(element, nCount = 0) {
                     </ul>
                 <p></p>
                 <p></p>
-            </div>
-        </div>`
+            </div >
+        </ > `
     }
-    if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
-    html += `<button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button></form>`;
+    if (count <= 3 && tenors.length > 3) html += `< a onclick = 'showAllTenor("${element}",0)' class='ahref' > Hiển thị thêm</ > `;
+    html += `< button type = 'button' id = 'btnContinue' class='payment-button' > Tiếp tục</ ></form > `;
     $(element).html(html);
 
     // show list productions
@@ -588,7 +609,7 @@ function showAllTenor(element, nCount = 0) {
     });
 
     customerInfo(element);
-    $("body").removeClass("loading");
+    // $("body").removeClass("loading");
 
     $('#btnContinue').click(function () {
         let phone = localStorage.getItem('phone');
@@ -598,16 +619,16 @@ function showAllTenor(element, nCount = 0) {
 
 // Done +++
 function showAllProvider(element) {
-    let html = `<div class='box'><div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
+    let html = `< div class='box' > <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
         html += `
-        <div class='list-provider'>
-        <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
-        </div>`;
+            < div class='list-provider' >
+                <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
+        </ > `;
     }
-    html += `</div>`;
+    html += `</div > `;
     $(element).html(html);
 
     // show list productions
@@ -638,18 +659,33 @@ function selectProvider() {
 
 // Done +++
 function showMessage(element, message, icon) {
-    var html = `<div class='box'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                    <div class='${icon}'></div> 
-                    ${message}
-                    <p style='text-align: center;'>
-                        <a class="ahref" href="/" style='width:auto'>Trở lại</a>
-                    </p> 
-                    </div> 
-                </div>`;
-
+    var html = `< div class='box' >
+            <div class='paragraph-text text-center margin-bottom-default'>
+                <div class='${icon}'></div>
+                ${message}
+                <p style='text-align: center;'>
+                    <a class="ahref" href="/" style='width:auto'>Trở lại</a>
+                </p>
+            </div> 
+                </ > `;
     $(element).html(html);
-    $("body").removeClass("loading");
+}
+
+// Done +++
+function showStatusPage(element, message, imagePath, desc, step) {
+    $(element).empty();
+    showHeader();
+    showProcessPipeline(step);
+    var html = `< div class='container-status-page' >
+                    <img src='${imagePath}' class='container-status-page-img'/>
+                    <h1 class='container-status-page-title'>${message}</h1>
+                    ${desc !== null && desc !== '' ? `<p class='container-status-page-desc'>${desc}</p>` : ''} 
+                </ > `;
+    $(element).prepend(html);
+
+    $('body').click(function () {
+        showStatusPage(element, 'Bạn đã đăng ký thành công', './assets/img/Success.png', 'Bấm vào đây để quay trở lại. Tự động trở lại trang mua hàng sau 5s.', 4);
+    })
 }
 
 // Done +++
@@ -754,7 +790,8 @@ function showDataInform(element, personal) {
     }
     let cities = getAllCity();
     let referencesRelation = getAllReferenceRelation();
-    var html = `<div class='form-card form-showdata'>
+    showHeader();
+    var html = `< div class='form-card form-showdata' >
                     <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
                     <form class=''>
@@ -765,34 +802,34 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='fullname' name='fullname' value="${personal.fullname ? personal.fullname : ''}" disabled />
+                                    <input class='input-global' type='text' id='fullname' name='fullname' value="${personal.fullname ? personal.fullname : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone ? personal.phone : ''}" disabled />
+                                    <input class='input-global' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone ? personal.phone : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='dob' name='dob' value="${convertDateString(personal.dob) ? convertDateString(personal.dob) : ''}" disabled />
+                                    <input class='input-global' type='date' id='dob' name='dob' value="${convertDateString(personal.dob) ? convertDateString(personal.dob) : ''}" disabled />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global ng-pristine ng-invalid ng-touched ' disabled>
+                                    <select id='gender' name='gender' class='input-global ' disabled>
                                         <option value="${personal.gender ? personal.gender : ''}">${(personal.gender === 'M' ? 'Nam' : 'Nữ') ? (personal.gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='number' id='nid' name='nid' value="${personal.nid ? personal.nid : ''}" disabled/>
+                                    <input class='input-global' type='number' id='nid' name='nid' value="${personal.nid ? personal.nid : ''}" disabled/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doi' name='doi' value="${convertDateString(personal.doi) ? convertDateString(personal.doi) : ''}" disabled/>
+                                        <input class='input-global' type='date' id='doi' name='doi' value="${convertDateString(personal.doi) ? convertDateString(personal.doi) : ''}" disabled/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global ng-pristine ng-invalid ng-touched' type='date' id='doe' name='doe' value="${convertDateString(personal.doe) ? convertDateString(personal.doe) : ''}" disabled/>
+                                        <input class='input-global' type='date' id='doe' name='doe' value="${convertDateString(personal.doe) ? convertDateString(personal.doe) : ''}" disabled/>
                                     </div>
                                 </div>
                             </div >
@@ -805,19 +842,19 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city' name='city' value="${personal.city ? personal.city : ''}" />
+                                    <input class='input-global' type='text' id='city' name='city' value="${personal.city ? personal.city : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district' name='district' value="${personal.district ? personal.district : ''}" />
+                                    <input class='input-global' type='text' id='district' name='district' value="${personal.district ? personal.district : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward' name='ward' value="${personal.ward ? personal.ward : ''}" />
+                                    <input class='input-global' type='text' id='ward' name='ward' value="${personal.ward ? personal.ward : ''}" />
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street' name='street' value="${personal.street ? personal.street : ''}" />
+                                    <input class='input-global' type='text' id='street' name='street' value="${personal.street ? personal.street : ''}" />
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -829,17 +866,17 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <select class='input-global ng-pristine ng-invalid ng-touched' type='text' id='relationship' name='relationship'>
+                                    <select class='input-global' type='text' id='relationship' name='relationship'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id="fullname_ref" name="fullname_ref"   />
+                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref"   />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ng-pristine ng-invalid ng-touched ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
+                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -852,19 +889,19 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='city_permanent' name='city_permanent' />
+                                <input class='input-global' type='text' id='city_permanent' name='city_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='district_permanent' name='district_permanent' />
+                                <input class='input-global' type='text' id='district_permanent' name='district_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='ward_permanent' name='ward_permanent' />
+                                <input class='input-global' type='text' id='ward_permanent' name='ward_permanent' />
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
-                                <input class='input-global ng-pristine ng-invalid ng-touched' type='text' id='street_permanent' name='street_permanent' />
+                                <input class='input-global' type='text' id='street_permanent' name='street_permanent' />
                             </div>
                         </div>
                         <div class="card-footer"></div>
@@ -872,7 +909,7 @@ function showDataInform(element, personal) {
 
                         <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
                     </form >
-                </div > `;
+                </ > `;
     $(element).html(html);
     //show progress bar
     showProcessPipeline(1);
@@ -971,7 +1008,8 @@ function handleChangeWard(ele1, ele2) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_info) {
-    var html = `<div class='form-card form-confirmdata'>
+    showHeader();
+    var html = `< div class='form-card form-confirmdata' >
                     <p class='form-confirmdata-title'>Đối soát thông tin</p>
                     <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
                     <form class=''>
@@ -1085,8 +1123,10 @@ function showConfirmDataInform(element, personal_all_info) {
 
                         <button type='button' class='payment-button' id='btnContinueConfirm'>Tiếp tục</button>
                     </form>
-                </div>`;
+                </ > `;
     $(element).html(html);
+    showProcessPipeline(1);
+
     $(element).scrollTop(300);
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
@@ -1098,15 +1138,15 @@ function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
-    <div class='voolo-intro'>
+            < div class='voolo-intro' >
         <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
         <ul>
             <li>Mua sắm không giới hạn </li>
             <li>Thanh toán linh hoạt </li>
             <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
         </ul>
-    </div>
-    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    </ >
+            <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
     $(config.element + " form").prepend(iHtml);
 }
 
@@ -1118,7 +1158,7 @@ function listProductions(config) {
         var lItems = "";
         var total = 0;
         config.dataItems.forEach(e => {
-            list += `<div class='list'>
+            list += `< div class='list' >
             <div class='image'><img src='`+ e.imgUrl + `'/></div>
             <div class='info'>
                 <p class='head-w-6 ellipsis'>`+ e.product + `</p>
@@ -1126,7 +1166,7 @@ function listProductions(config) {
                 <p>`+ e.quantity + `</p>
             </div>
             <div class='price head-w-6'>`+ e.priceShow + `</div>
-        </div>`;
+        </ > `;
             total += parseInt(e.price);
         });
         var sTotal = total.toLocaleString('vi-VN', {
@@ -1137,17 +1177,17 @@ function listProductions(config) {
         //set total local
         billTotal = sTotal;
     }
-    lItems += `<div class='list-items'>
-        <div class='card'>
-            <div class='card-head'>Thông tin đơn hàng</div>
-            <div class='card-body'>
-                `+ list + `
+    lItems += `< div class='list-items' >
+            <div class='card'>
+                <div class='card-head'>Thông tin đơn hàng</div>
+                <div class='card-body'>
+                    `+ list + `
+                </div>
+                <div class='card-footer'>
+                    <span>Tổng cộng</span>
+                    <span class='total-price'>`+ sTotal + ` </span></div>
             </div>
-            <div class='card-footer'>
-                <span>Tổng cộng</span>
-            <span class='total-price'>`+ sTotal + ` </span></div>
-        </div>
-    </div>`;
+    </ > `;
     if (config.items) $(config.element).prepend(lItems);
 }
 
@@ -1168,7 +1208,7 @@ function showCapture(base64, eId) {
 function convertDateString(dateString) {
     if (dateString === '') return '';
     const dateParts = dateString.split("-");
-    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+    return `${dateParts[2]} -${dateParts[1]} -${dateParts[0]} `;
 }
 
 // Done +++
@@ -1181,26 +1221,27 @@ function formatCurrency(money) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
+    showLogo(63);
     var html = `
-    <div class='form-card'>
-    <form id='formSetupPinCode'>
-        <div class='card'>
-            <div class='card-head no-line'></div>
-                <div class='card-body text-center form-pincode'>
-                    <h2>Nhập mã PIN</h2>
-                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                    <p class='paragraph-text-bold'>Mã PIN</p>
-                    <div id='pincode'></div>
-                </div>
-            <div class='card-footer ' style='height:32px'></div>
-        </div>
-        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
-        <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>  
-    </form>
-    </div>`;
+            < div class='form-card form-card-pincode' >
+                <form id='formSetupPinCode'>
+                    <div class='card'>
+                        <div class='card-head no-line'></div>
+                        <div class='card-body text-center form-pincode'>
+                            <h2>Nhập mã PIN</h2>
+                            <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
+                            <p class='paragraph-text-bold'>Mã PIN</p>
+                            <div id='pincode'></div>
+                        </div>
+                        <div class='card-footer ' style='height:32px'></div>
+                    </div>
+                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+                    <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                </form>
+    </ > `;
 
     $(element).html(html);
-    $("body").removeClass("loading");
+    // $("body").removeClass("loading");
 
     new PincodeInput("#pincode", {
         count: 4,
@@ -1215,7 +1256,7 @@ function showFormPincode(element, phone, screen) {
 
     $('#btnSubmitPin').click(function () {
 
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
 
         let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
         if (pin !== null && pin !== '') {
@@ -1259,33 +1300,37 @@ function showFormPincode(element, phone, screen) {
             alert('Vui lòng nhập pin !');
             return;
         }
-        $("body").removeClass("loading");
+        // $("body").removeClass("loading");
     })
 }
 
 // Done +++
 function showFormSetupPin(element, screen, token) {
+    showHeader();
     var html = `
-    <div class='form-card'>
-    <form id='formSetupPinCode'>
-        <div class='card'>
-            <div class='card-head no-line'></div>
-                <div class='card-body text-center form-pincode'>
-                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
-                    <p>Mã PIN</p>
-                    <div id='pincode'></div>
-                    <p>Nhập lại mã PIN</p>
-                    <div id='repincode'></div>
-                </div>
-            <div class='card-footer'></div>
-        </div>
-        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
-    </form>
-    </div>`;
+            < div class='form-card' >
+                <form id='formSetupPinCode'>
+                    <div class='card'>
+                        <div class='card-head no-line'></div>
+                        <div class='card-body text-center form-pincode'>
+                            <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
+                            <p>Mã PIN</p>
+                            <div id='pincode'></div>
+                            <p>Nhập lại mã PIN</p>
+                            <div id='repincode'></div>
+                        </div>
+                        <div class='card-footer'></div>
+                    </div>
+                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+                </form>
+    </ > `;
 
     $(element).html(html);
-    //show progress bar
-    showProcessPipeline(2);
+    if (screen !== '' && screen === 'SHOW_LOGIN') {
+        //show progress bar
+        showProcessPipeline(2);
+    }
+
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1308,7 +1353,7 @@ function showFormSetupPin(element, screen, token) {
     });
 
     $('#btnSubmitPin').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         let pin1 = $('#pin1').val().trim();
         let pin2 = $('#pin2').val().trim();
         let pin3 = $('#pin3').val().trim();
@@ -1360,11 +1405,11 @@ function showFormSetupPin(element, screen, token) {
                     showMessage(element, "<h3>Cập nhật mã pin thành công</h3>", "ico-success");
                 }
             }
-            // $("body").removeClass("loading");
+            $("body").removeClass("loading");
         }
         else {
             alert('Mã pin không trùng khớp vui lòng thử lại !');
-            // $("body").removeClass("loading");
+            $("body").removeClass("loading");
             return;
         }
     })
@@ -1372,17 +1417,17 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
-                    <div class='mobile'>
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input type='phone' id='phone_reset' class='form__input input-global ng-pristine ng-invalid ng-touched' value="${phone}" />
-                        </div>
-                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+    var html = `< form id = 'formValuePhone' class='formValue' >
+            <div class='mobile'>
+                <div class='form__row'>
+                    <h2 style="margin-bottom:40px">Số điện thoại</h2>
+                    <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                    <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
+                </div>
+                <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
 
-                    </div>
-                </form>`;
+            </div>
+                </ > `;
     $(element).html(html);
 
     //custom show
@@ -1401,18 +1446,18 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
-        <div class='mobile'>
+    var html = `< form class='formValue' >
+            <div class='mobile'>
 
-            <div class='form__row'>
-                <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
-                <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                <input type='number' id='nid_reset' class='form__input input-global ng-pristine ng-invalid ng-touched'/>
+                <div class='form__row'>
+                    <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
+                    <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                    <input type='number' id='nid_reset' class='form__input input-global' />
+                </div>
+                <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+
             </div>
-            <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
-
-        </div>
-    </form>`;
+    </ > `;
     $(element).html(html);
 
     //custom show
@@ -1423,7 +1468,7 @@ function forgotPinNid(element) {
     });
 
     $('#btnSendOtp').click(function () {
-        // $("body").addClass("loading");
+        $("body").addClass("loading");
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
         let nid_reset = localStorage.getItem('nid_reset');
@@ -1448,7 +1493,7 @@ function forgotPinNid(element) {
             alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
             return;
         }
-        // $("body").removeClass("loading");
+        $("body").removeClass("loading");
         return;
     })
 }
@@ -1456,21 +1501,21 @@ function forgotPinNid(element) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `<div class='form-card'>
-                <form id='formSetupPinCode'>
-                    <div class='card'>
-                        <div class='card-head no-line'></div>
-                        <div class='card-body text-center form-otpcode'>
-                            <h2>Nhập OTP</h2>
-                            <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
-                            <div id='otpcode'></div>
-                        </div>
-                        <div class='card-footer' style="height:32px"></div>
+    var html = `< div class='form-card' >
+            <form id='formSetupPinCode'>
+                <div class='card'>
+                    <div class='card-head no-line'></div>
+                    <div class='card-body text-center form-otpcode'>
+                        <h2>Nhập OTP</h2>
+                        <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
+                        <div id='otpcode'></div>
                     </div>
-                    <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                    <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p> 
-                </form>
-                </div>`;
+                    <div class='card-footer' style="height:32px"></div>
+                </div>
+                <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+            </form>
+                </ > `;
 
     $(element).html(html);
     timer(60);
@@ -1493,7 +1538,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     });
 
     $('#btnSubmitVerifyOTP').click(function () {
-        $("body").addClass("loading");
+        // $("body").addClass("loading");
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
         let otp3 = $('#otp3').val().trim();
@@ -1511,17 +1556,14 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
                 }
                 else if (data.status === false && data.statusCode === 4000) {
-                    $("body").removeClass("loading");
                     alert('Mã OTP không hợp lệ !');
                     return;
                 }
                 else if (data.status === false && data.statusCode === 3000) {
-                    $("body").removeClass("loading");
                     alert('Mã OTP đã hết hạn !');
                     return;
                 }
                 else if (data.status === false && data.errorCode === 8000) {
-                    $("body").removeClass("loading");
                     alert('Định dạng số điện thoại không hợp lệ !');
                     return;
                 }
@@ -1530,9 +1572,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
-                    alert(data.message);
-                    showCircularProgressbar('#test');
-                    updateCircularProgressbar();
+                    showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
@@ -1546,7 +1586,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         }
         else {
             alert('Thiếu số điện thoại hoặc mã otp !');
-            $("body").removeClass("loading");
+            // $("body").removeClass("loading");
             return;
         }
     })
@@ -1662,23 +1702,24 @@ function timer(remaining) {
 // Done +++
 function showContract(element) {
     let data = getContract();
-    var html = `<div style='display: block'>
+    showHeader();
+    var html = `< div style = 'display: block' >
                     <h1>${data.title1}</h1>
                     <h2>${data.title2}</h2>
                     <h2>${data.content}</h2>
-                </div>
-                <div style='display: block'>
-                <input type='checkbox' name='confirm_contract' id='confirm_contract'/> 
+                </ >
+            <div style='display: block'>
+                <input type='checkbox' name='confirm_contract' id='confirm_contract' />
                 <span>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</span>
-                <div/>
+                <div />
                 <div style='display: block'>
-                <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
-                <div/>
-                <button type='button' id='btnContinue'>Tiếp tục</button>
+                    <input type='checkbox' name='confirm_otp' id='confirm_otp' />
+                    <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
+                    <div />
+                    <button type='button' id='btnContinue'>Tiếp tục</button>
                 </div>`;
     $(element).html(html);
-    showProcessPipeline(2);
+    showProcessPipeline(3);
     $('#btnContinue').click(function () {
         let confirm_contract = $('#confirm_contract').is(":checked");
         let confirm_otp = $('#confirm_otp').is(":checked");
@@ -1706,15 +1747,16 @@ function showContract(element) {
 
 // Done +++
 function customerInfo(element) {
+    showLogo(56);
     var str = `<div class='voolo-logo'></div>
-    <div id="customerInfo">
-        <div class="avatar"><img src="${customer.avatar}"/></div>
-        <div class='detail'>
-            <h3>${customer.name} ơi!</h3>
-            <p>Hạn mức tín dụng của bạn là :</p>
-            <h2>${formatCurrency(customer.limit * 1)}</h2>
-        </div>
-</div>`;
+                <div id="customerInfo">
+                    <div class="avatar"><img src="${customer.avatar}" /></div>
+                    <div class='detail'>
+                        <h3>${customer.name} ơi!</h3>
+                        <p>Hạn mức tín dụng của bạn là :</p>
+                        <h2>${formatCurrency(customer.limit * 1)}</h2>
+                    </div>
+                </div>`;
     if ($(window).width() < 700) {
         $(element).prepend(str);
     }
@@ -1742,26 +1784,51 @@ function showProcessPipeline(step) {
             break;
     }
     var pipeline = `
-        <div class='headrow'>
-        <div class='voolo-logo'></div>
-            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
-            <div class='line'>
-                <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
-                <span class='Tpipe ${s2}'></span>
-                <span class='Tpipe ${s3}'></span>
-                <span class='Tpipe ${s4}'></span>
-                <span class='Tpipe last'></span>
-            </div>
-            <div class='pipeline'>
-                <span class='pipe ${s1}'>Thông tin khách hàng</span>
-                <span class='pipe ${s2}'>Cài đặt PIN</span>
-                <span class='pipe ${s2}'>Ký điện tử</span>
-                <span class='pipe ${s3}'>Xác minh thông tin</span>
-                <span class='pipe ${s4}'>Hoàn thành</span>
-            </div>
-        </div>`;
+                <div class='headrow'>
+                    <div class='voolo-logo'></div>
+                    <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+                    <div class='line'>
+                        <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
+                        <span class='Tpipe ${s2}'></span>
+                        <span class='Tpipe ${s3}'></span>
+                        <span class='Tpipe ${s4}'></span>
+                        <span class='Tpipe last'></span>
+                    </div>
+                    <div class='pipeline'>
+                        <span class='pipe ${s1}'>Thông tin khách hàng</span>
+                        <span class='pipe ${s2}'>Cài đặt PIN</span>
+                        <span class='pipe ${s2}'>Ký điện tử</span>
+                        <span class='pipe ${s3}'>Xác minh thông tin</span>
+                        <span class='pipe ${s4}'>Hoàn thành</span>
+                    </div>
+                </div>`;
 
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
     $('.form-card').addClass("formValue-mt");
 }
+
+// Done +++
+function showHeader() {
+    var html = `<div class='header-voolo'>
+                    <div id='header-voolo-logo'>
+                        <img src='./assets/img/VOOLO_logo_horizontal.png' />
+                    </div>
+                    <h1 id='header-voolo-title'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h1>
+                </div>`;
+    return html;
+}
+
+// Done +++
+function showLogo(mb) {
+    var html = `<div id='img-voolo-logo' style='margin-bottom: ' ${mb}'px>
+                <img src='./assets/img/VOOLO_logo_horizontal.png' />
+            </div>`;
+    return html;
+};
+
+// Done +++
+function showTitle(mb) {
+    var html = `< h1 id = 'voolo-title' > Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</ > `;
+    return html;
+};
