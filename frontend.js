@@ -221,63 +221,46 @@ function showUICheckNid(element) {
     var btnSubmitNid = document.querySelector('#btnSubmitNid');
     btnSubmitNid.disabled = true;
 
-    let checkSelfieImage = localStorage.getItem('selfie-image');
+    var checkSelfieImage = localStorage.getItem('selfie-image');
+
+    var btnCapture = document.querySelector('#callHP');
 
     dataNid.oninput = function () {
         if (dataNid.value !== null && dataNid.value !== '') {
-            if (checkSelfieImage !== null && checkSelfieImage !== undefined) {
-                formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
-                $('#btnSubmitNid').click(function () {
-                    let data = $('#nid').val();
-                    localStorage.setItem('nid', data);
-                    let result = checkNidExists(data);
-                    console.log('Check nid exists: ', result);
-                    if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
-                        return;
-                    }
-                    else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
-                        captureNidFrontAndBack(element);
-                        let checkCustomer = {
-                            phone: localStorage.getItem('phone'),
-                            nid: localStorage.getItem('nid'),
-                            selfieImage: localStorage.getItem('selfie-image')
-                        };
-                        localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-                    }
-                    else if (result.errorCode === 8000 && result.status === false) {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
-                        return;
-                    }
-                })
-            }
-            else {
-                formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng chụp ảnh selfie');
-            }
+            // if (btnCapture.clicked === true) {
+            formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
+            $('#btnSubmitNid').click(function () {
+                let data = $('#nid').val();
+                localStorage.setItem('nid', data);
+                let result = checkNidExists(data);
+                console.log('Check nid exists: ', result);
+                if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
+                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+                    return;
+                }
+                else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
+                    captureNidFrontAndBack(element);
+                    let checkCustomer = {
+                        phone: localStorage.getItem('phone'),
+                        nid: localStorage.getItem('nid'),
+                        selfieImage: localStorage.getItem('selfie-image')
+                    };
+                    localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+                }
+                else if (result.errorCode === 8000 && result.status === false) {
+                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
+                    return;
+                }
+            })
+            // }
+            // else {
+            //     alert('Vui lòng chụp ảnh selfie');
+            // }
         }
         else {
             formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng nhập CMND/CCCD');
         }
     }
-}
-
-function showSelfieIntroduction(element) {
-    var Selfie_Introductions = [
-        { id: 1, linkImg: './assets/img/1_dont.png', content: 'Không nên', desc1: 'Vui lòng', desc_bold: 'KHÔNG đội nón, đeo kính, khẩu trang', desc2: '' },
-        { id: 2, linkImg: './assets/img/1_dont_1.png', content: 'Không nên', desc1: 'Vui lòng', desc_bold: 'chọn nơi có đủ ánh sáng', desc2: 'để chụp ảnh' },
-        { id: 3, linkImg: './assets/img/1_do.png', content: 'Tốt lắm', desc1: 'Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn', desc_bold: '', desc2: '' }
-    ];
-    let html = '';
-    html += "<div class='container-selfieintroduction-list'>";
-    html += Selfie_Introductions.map((item) => (
-        `<div class='selfieintroduction-item'> 
-            <img src='${item.linkImg}' class='selfieintroduction-item-img'/> 
-            <h3 class='selfieintroduction-item-content'>${item.content}</h3> 
-            <p class='selfieintroduction-item-desc'>${item.desc1} <b>${item.desc_bold ? item.desc_bold : ''}<b/> ${item.desc2 ? item.desc2 : ''}</p> 
-        </div>`
-    )).join('');
-    html += "</div>";
-    $(element).html(html);
 }
 
 // Done +++
@@ -328,33 +311,33 @@ function captureNidFrontAndBack(element) {
     let frontImage = localStorage.getItem('front-image');
     let backImage = localStorage.getItem('back-image');
 
-    if (frontImage !== null && frontImage !== undefined && backImage !== null && backImage !== undefined) {
-        btnSubmit.disabled = false;
-        $('#btnSubmit').click(function () {
-            let adn = JSON.parse(localStorage.getItem('allDataNid'));
-            if (adn !== null && adn !== '') {
-                let fn = adn?.front_nid_customer;
-                let bn = adn?.back_nid_customer;
-                if (fn !== null && bn !== null) {
-                    let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
-                    showDataInform('#test', personal);
-                }
-                else if (fn === null) {
-                    alert('Không tìm thấy thông tin cmnd mặt trước !');
-                    return;
-                }
-                else if (bn === null) {
-                    alert('Không tìm thấy thông tin cmnd mặt sau !');
-                    return;
-                }
+    // if (btnCaptureFront.clicked === true && btnCaptureBack.clicked === true) {
+    btnSubmit.disabled = false;
+    $('#btnSubmit').click(function () {
+        let adn = JSON.parse(localStorage.getItem('allDataNid'));
+        if (adn !== null && adn !== '') {
+            let fn = adn?.front_nid_customer;
+            let bn = adn?.back_nid_customer;
+            if (fn !== null && bn !== null) {
+                let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
+                showDataInform('#test', personal);
             }
-        })
-    }
-    else {
-        btnSubmit.disabled = true;
-        alert('Vui lòng chụp đủ 2 mặt chứng minh nhân dân');
-        return;
-    }
+            else if (fn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt trước !');
+                return;
+            }
+            else if (bn === null) {
+                alert('Không tìm thấy thông tin cmnd mặt sau !');
+                return;
+            }
+        }
+    })
+    // }
+    // else {
+    //     btnSubmit.disabled = true;
+    //     alert('Vui lòng chụp đủ 2 mặt chứng minh nhân dân');
+    //     return;
+    // }
 }
 
 // Done +++
@@ -829,6 +812,53 @@ function postNationalID(ImageURL) {
     }
 }
 
+function showErrorMessage(input, message) {
+    console.log('showErrorMessage');
+    let parent = input.parentElement;
+    console.log('Parent: ', parent);
+    let inputEle = parent.querySelector('input');
+    console.log('Input Ele: ', inputEle);
+    inputEle.style.borderColor = '#EE4D2D';
+    let spanError = parent.querySelector('span');
+    console.log('Span Error: ', spanError);
+    spanError.innerText = message;
+    spanError.style.visibility = 'visible';
+    spanError.style.opacity = '1';
+}
+
+function showSuccessMessage(input) {
+    console.log('showSuccessMessage');
+    let parent = input.parentElement;
+    console.log('Parent: ', parent);
+    let inputEle = parent.querySelector('input');
+    if (inputEle !== null && inputEle !== undefined) {
+        console.log('Input Ele: ', inputEle);
+        inputEle.style.borderColor = '#197DDE';
+    }
+    let spanError = parent.querySelector('span');
+    console.log('Span Error: ', spanError);
+    spanError.innerText = '';
+    spanError.style.visibility = 'hidden';
+    spanError.style.opacity = '0';;
+}
+
+function checkEmptyError(listInput) {
+    console.log('LIST INPUT: ', listInput);
+    let isEmptyError = false;
+    listInput.forEach(input => {
+        console.log('Input: ', input);
+        input.value = input.value.trim();
+        if (input.value === null && input.value === '') {
+            isEmptyError = true;
+            showErrorMessage(input, 'Vui lòng không để trống');
+        }
+        else {
+            showSuccessMessage(input);
+        }
+    });
+    return isEmptyError;
+}
+
 // Done +++
 function showDataInform(element, personal) {
     setRoute("showDataInform");
@@ -852,31 +882,31 @@ function showDataInform(element, personal) {
     let referencesRelation = getAllReferenceRelation();
     showHeader();
     let fullname = personal.fullname;
-    let conditionFullname = personal.fullname !== null && personal.fullname !== '';
+    let conditionFullname = personal.fullname !== null && personal.fullname !== '' && personal.fullname !== undefined;
     let phone = personal.phone;
-    let conditionPhone = personal.phone !== null && personal.phone !== '';
+    let conditionPhone = personal.phone !== null && personal.phone !== '' && personal.phone !== undefined;
     let dob = convertDateString(personal.dob);
-    let conditionDob = convertDateString(personal.dob) !== null && convertDateString(personal.dob) !== '';
+    let conditionDob = convertDateString(personal.dob) !== null && convertDateString(personal.dob) !== '' && convertDateString(personal.dob) !== undefined;
     let gender = personal.gender;
-    let conditionGender = personal.gender !== null && personal.gender !== '';
+    let conditionGender = personal.gender !== null && personal.gender !== '' && personal.gender !== undefined;
     let nid = personal.nid;
     let conditionNid = personal.nid !== null && personal.nid !== '';
     let doi = convertDateString(personal.doi);
-    let conditionDoi = convertDateString(personal.doi) !== null && convertDateString(personal.doi) !== '';
+    let conditionDoi = convertDateString(personal.doi) !== null && convertDateString(personal.doi) !== '' && convertDateString(personal.doi) !== undefined;
     let doe = convertDateString(personal.doe);
-    let conditionDoe = convertDateString(personal.doe) !== null && convertDateString(personal.doe) !== '';
+    let conditionDoe = convertDateString(personal.doe) !== null && convertDateString(personal.doe) !== '' && convertDateString(personal.doe) !== undefined;
     let city = personal.city;
-    let conditionCity = personal.city !== null && personal.city !== '';
+    let conditionCity = personal.city !== null && personal.city !== '' && personal.city !== undefined;
     let district = personal.district;
-    let conditionDistrict = personal.district !== null && personal.district !== '';
+    let conditionDistrict = personal.district !== null && personal.district !== '' && personal.district !== undefined;
     let ward = personal.ward;
-    let conditionWard = personal.ward !== null && personal.ward !== '';
+    let conditionWard = personal.ward !== null && personal.ward !== '' && personal.ward !== undefined;
     let street = personal.street;
-    let conditionStreet = personal.street !== null && personal.street !== '';
+    let conditionStreet = personal.street !== null && personal.street !== '' && personal.street !== undefined;
     var html = `<div class='form-card form-showdata'>
                     <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
-                    <form class=''>
+                    <form class='' id='formDataValue'>
                         <div class="card">
                             <div class="card-head">
                                 <h3 class='form-showdata-info'>Thông tin cá nhân</h3>
@@ -885,33 +915,40 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
                                     <input class='input-global' type='text' id='fullname' name='fullname' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
                                     <input class='input-global' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+                                    <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
                                     <input class='input-global' type='date' id='dob' name='dob' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} />
+                                    <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
                                         <option value="${conditionGender ? personal.gender : ''}">${(gender === 'M' ? 'Nam' : 'Nữ') ? (gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
                                     </select>
+                                    <span class='error_gender error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
                                     <input class='input-global' type='number' id='nid' name='nid' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global' type='date' id='doi' name='doi' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                        <input class='input-global' type='text' id='doi' name='doi' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                        <span class='error_doi error_message'></span>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global' type='date' id='doe' name='doe' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                        <input class='input-global' type='text' id='doe' name='doe' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                        <span class='error_doe error_message'></span>
                                     </div>
                                 </div>
                             </div >
@@ -925,21 +962,25 @@ function showDataInform(element, personal) {
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
                                     <input class='input-global' type='text' id='city' name='city' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}/>
+                                    <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
                                     <input class='input-global' type='text' id='district' name='district' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}/>
+                                    <span class='error_district error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
                                     <input class='input-global' type='text' id='ward' name='ward' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled' : ''} />
+                                    <span class='error_ward error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
                                     <input class='input-global' type='text' id='street' name='street' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <span class='error_street error_message'></span>
                                 </div>
                             </div >
-        <div class="card-footer"></div>
+                            <div class="card-footer"></div>
                         </div >
                         <div class="card">
                             <div class="card-head">
@@ -951,14 +992,17 @@ function showDataInform(element, personal) {
                                     <select class='input-global' type='text' id='relationship' name='relationship'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
+                                    <span class='error_relationship error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref"   />
+                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref"/>
+                                    <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"  />
+                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"/>
+                                    <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -972,57 +1016,104 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
                                 <input class='input-global' type='text' id='city_permanent' name='city_permanent' />
+                                <span class='error_city_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
                                 <input class='input-global' type='text' id='district_permanent' name='district_permanent' />
+                                <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
                                 <input class='input-global' type='text' id='ward_permanent' name='ward_permanent' />
+                                <span class='error_ward_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
                                 <input class='input-global' type='text' id='street_permanent' name='street_permanent' />
+                                <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
                         <div class="card-footer"></div>
                     </div>
-
-                        <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
-                        </form >
-                        </div > `;
+                        <button type='submit' class='payment-button' id='btnContinue'>Tiếp tục</button>
+                    </form >
+                </div > `;
     $(element).html(html);
     //show progress bar
     showProcessPipeline(1);
 
-    var text1 = personal.city;
-    $("#city").filter(function () {
-        //may want to use $.trim in here
-        return $(this).text() == text1;
-    }).prop('selected', true);
+    // var text1 = personal.city;
+    // $("#city").filter(function () {
+    //     //may want to use $.trim in here
+    //     return $(this).text() == text1;
+    // }).prop('selected', true);
 
-    $('#btnContinue').click(function () {
-        let fullname = document.getElementById('fullname').value.trim();
-        let gender = document.getElementById('gender').value.trim();
-        let phone = document.getElementById('phone').value.trim();
-        let dob = document.getElementById('dob').value.trim();
-        let nid = document.getElementById('nid').value.trim();
-        let doi = document.getElementById('doi').value.trim();
-        let doe = document.getElementById('doe').value.trim();
-        let city = document.getElementById('city').value.trim();
-        let district = document.getElementById('district').value.trim();
-        let ward = document.getElementById('ward').value.trim();
-        let street = document.getElementById('street').value.trim();
-        let relationship = document.getElementById('relationship').value.trim();
+    const formDataValue = document.querySelector('#formDataValue');
+
+    formDataValue.addEventListener('submit', function (e) {
+        e.preventDefault();
+        let fullnameEle = document.getElementById('fullname');
+        let fullname = fullnameEle.value.trim();
+
+        let genderEle = document.getElementById('gender');
+        let gender = genderEle.value.trim();
+
+        let phoneEle = document.getElementById('phone');
+        let phone = phoneEle.value.trim();
+
+        let dobEle = document.getElementById('dob');
+        let dob = dobEle.value.trim();
+
+        let nidEle = document.getElementById('nid');
+        let nid = nidEle.value.trim();
+
+        let doiELe = document.getElementById('doi');
+        let doi = doiELe.value.trim();
+
+        let doeEle = document.getElementById('doe');
+        let doe = doeEle.value.trim();
+
+        let cityEle = document.getElementById('city');
+        let city = cityEle.value.trim();
+
+        let districtEle = document.getElementById('district');
+        let district = districtEle.value.trim();
+
+        let wardEle = document.getElementById('ward');
+        let ward = wardEle.value.trim();
+
+        let streetEle = document.getElementById('street');
+        let street = streetEle.value.trim();
+
+        let relationshipEle = document.getElementById('relationship');
+        let relationship = relationshipEle.value.trim();
+
         let fieldRelationship = document.getElementById('relationship');
         var relationshipUI = fieldRelationship.options[fieldRelationship.selectedIndex].text;
-        let fullname_ref = document.getElementById('fullname_ref').value.trim();
-        let phone_ref = document.getElementById('phone_ref').value.trim();
-        let city_permanent = document.getElementById('city_permanent').value.trim();
-        let district_permanent = document.getElementById('district_permanent').value.trim();
-        let ward_permanent = document.getElementById('ward_permanent').value.trim();
-        let street_permanent = document.getElementById('street_permanent').value.trim();
+
+
+        let fullname_refEle = document.getElementById('fullname_ref');
+        let fullname_ref = fullname_refEle.value.trim();
+
+        let phone_refEle = document.getElementById('phone_ref');
+        let phone_ref = phone_refEle.value.trim();
+
+        let city_permanentEle = document.getElementById('city_permanent');
+        let city_permanent = city_permanentEle.value.trim();
+
+        let district_permanentEle = document.getElementById('district_permanent');
+        let district_permanent = district_permanentEle.value.trim();
+
+        let ward_permanentEle = document.getElementById('ward_permanent');
+        let ward_permanent = ward_permanentEle.value.trim();
+
+        let street_permanentEle = document.getElementById('street_permanent');
+        let street_permanent = street_permanentEle.value.trim();
+
+        let isCheckEmpty = checkEmptyError([fullnameEle, genderEle, phoneEle, dobEle, nidEle, doiELe, doeEle, cityEle, districtEle, wardEle, streetEle, relationshipEle, fullname_refEle, phone_refEle, city_permanentEle, district_permanentEle, ward_permanentEle, street_permanentEle])
+        console.log('isCheckEmpty: ', isCheckEmpty);
+
         let personal_all_info = {
             name: fullname,
             sex: gender,
@@ -1044,15 +1135,23 @@ function showDataInform(element, personal) {
             "temporaryStreet": street_permanent,
             "expirationDate": doe
         }
-        if (personal_all_info !== null) {
-            localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
-            showConfirmDataInform(element, personal_all_info);
+
+        if (isCheckEmpty) {
+            if (personal_all_info !== null) {
+                localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
+                showConfirmDataInform(element, personal_all_info);
+            }
+            else {
+                alert('Không tìm thấy thông tin người dùng ! Vui lòng kiểm tra lại');
+                return;
+            }
         }
-        else {
-            alert('Không tìm thấy thông tin người dùng ! Vui lòng kiểm tra lại');
-            return;
-        }
+
     })
+
+    // $('#btnContinue').click(function () {
+
+    // })
 }
 
 // Done +++
@@ -1573,19 +1672,19 @@ function forgotPinNid(element) {
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
     var html = `<div class='form-card card-otpcode'>
-            <form id='formSetupPinCode'>
-                <div class='card'>
-                    <div class='card-head no-line'></div>
-                    <div class='card-body text-center form-otpcode'>
-                        <h2>Nhập OTP</h2>
-                        <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
-                        <div id='otpcode'></div>
-                    </div>
-                    <div class='card-footer' style="height:32px"></div>
-                </div>
-                <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
-            </form>
+                    <form id='formSetupPinCode'>
+                        <div class='card'>
+                            <div class='card-head no-line'></div>
+                            <div class='card-body text-center form-otpcode'>
+                                <h2>Nhập OTP</h2>
+                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
+                                <div id='otpcode'></div>
+                            </div>
+                            <div class='card-footer' style="height:32px"></div>
+                        </div>
+                        <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                        <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                    </form>
             </div>`;
 
     $(element).html(html);
@@ -1594,7 +1693,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         count: 6,
         secure: false,
         pattern: '[0-9]*',
-        // previewDuration: 100,
+        previewDuration: 100,
         inputId: 'otp',
         onInput: (value) => {
             console.log(value)
