@@ -69,7 +69,8 @@ function showCircularProgressbar(element) {
                 </div>`;
     $(element).html(html);
     showProcessPipeline(4);
-
+    $("body").removeClass("loading");
+    
 }
 
 // Done +++
@@ -139,7 +140,9 @@ function showUICheckPhone(element) {
                     showContract(element);
                 }
                 else if (step === 3) {
-                    showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
+                    showCircularProgressbar(element);
+                    // showFormPincode(element, data, 'VERIFY_PIN');
+                    // $('body').addClass('loading');
                 }
                 else if (step === 0) {
                     showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
@@ -1296,6 +1299,10 @@ function showFormPincode(element, phone, screen) {
                         break;
                 }
             }
+            // else if (result.status === true && result.data.step === 3) {
+            //     showCircularProgressbar(element);
+            //     return;
+            // }
             else if (result.status === false && result.statusCode === 1002) {
                 alert('Số điện thoại không hợp lệ !');
                 return;
@@ -1715,8 +1722,7 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-    showHeader();
-    var html = `<div class='box'>
+    var html = `<div class='box formValue-mt'>
     <div style = 'display: block'>
                     <h1>${data.title1}</h1>
                     <h2>${data.title2}</h2>
@@ -1727,9 +1733,10 @@ function showContract(element) {
                 <span>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</span>
                 <div/>
                 <div style='display: block'>
-                    <input type='checkbox' name='confirm_otp' id='confirm_otp' />
-                    <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
-                    <button type='button' id='btnContinue'>Tiếp tục</button>
+                <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
+                <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
+                <div/>
+                <button type='button' id='btnContinue'>Tiếp tục</button>
                 </div></div>`;
     $(element).html(html);
     showProcessPipeline(3);
