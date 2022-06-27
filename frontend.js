@@ -19,12 +19,6 @@ function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, w
 }
 
 // Done +++
-function onlyNumber(data) {
-    var pin = /[^0-9]/gi;
-    data.value = data.value.replace(pin, "");
-}
-
-// Done +++
 function showProgressbar(element) {
     var html = `<div class='progress'> 
                     <div class='progress__fill'></div> 
@@ -88,14 +82,35 @@ function updateCircularProgressbar() {
 }
 
 // Done +++
+function formatStyleCorrectInput(data, errorMessage, btn) {
+    data.style.borderColor = '#197DDE';
+    errorMessage.innerHTML = '';
+    errorMessage.style.visibility = 'hidden';
+    errorMessage.style.opacity = '0';
+    btn.style.backgroundColor = '#000000';
+    btn.disabled = false;
+}
+
+// Done +++
+function formatStyleWrongInput(data, errorMessage, btn, content) {
+    data.style.borderColor = '#EE4D2D';
+    errorMessage.innerHTML = content;
+    errorMessage.style.visibility = 'visible';
+    errorMessage.style.opacity = '1';
+    btn.disabled = true;
+    btn.style.backgroundColor = 'rgba(154, 147, 147, 0.1)';
+}
+
+// Done +++
 function showUICheckPhone(element) {
     setRoute("showUICheckPhone");
-    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
+    var html = `<form id='formValuePhone' class='formValue'>
                     <div class='mobile'>
 
                         <div class='form__row'>
                             <label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
+                            <input type='phone' id='phone' class='form__input input-global' />
+                            <span class='error_message'></span>
                         </div>
 
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
@@ -118,63 +133,70 @@ function showUICheckPhone(element) {
         dataItems: pData
     });
 
-    $('#btnSubmitPhone').click(function () {
-        // $("body").addClass("loading");
-        let data = $('#phone').val();
-        localStorage.setItem('phone', data);
-        if (data !== null && data !== '') {
-            let result = checkPhoneExists(data);
-            console.log('Check phone exists: ', result);
-            if (result.errCode === 1000 && result.status === true) {
-                let step = result.data.step;
-                console.log("step : ", step);
-                if (step === 4) {
-                    showFormPincode(element, data, 'VERIFY_PIN');
+    var dataPhone = document.querySelector('#phone');
+
+    var errorMessage = document.querySelector('.error_message');
+
+    var btnSubmitPhone = document.querySelector('#btnSubmitPhone');
+    btnSubmitPhone.disabled = true;
+
+    dataPhone.oninput = function () {
+        if (dataPhone.value !== null && dataPhone.value !== '') {
+            formatStyleCorrectInput(dataPhone, errorMessage, btnSubmitPhone);
+            $('#btnSubmitPhone').click(function () {
+                let data = dataPhone.value;
+                localStorage.setItem('phone', data);
+                let result = checkPhoneExists(data);
+                console.log('Check phone exists: ', result);
+                if (result.errCode === 1000 && result.status === true) {
+                    let step = result.data.step;
+                    if (step === 4) {
+                        showFormPincode(element, data, 'VERIFY_PIN');
+                    }
+                    else if (step === 2) {
+                        showContract(element);
+                    }
+                    else if (step === 3) {
+                        showCircularProgressbar(element);
+                    }
+                    else if (step === 0) {
+                        showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
+                    }
                 }
-                else if (step === 2) {
-                    showContract(element);
+                else if (result.errCode === 1003 && result.status === false) {
+                    showUICheckNid(element);
                 }
-                else if (step === 3) {
-                    showCircularProgressbar(element);
-                    // showFormPincode(element, data, 'VERIFY_PIN');
-                    // $('body').addClass('loading');
+                else if (result.errorCode === 8000 && result.status === false) {
+                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Định dạng số điện thoại không hợp lệ');
+                    return;
                 }
-                else if (step === 0) {
-                    showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
+                else if (result.errCode === 1008 && result.status === false) {
+                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+                    return;
                 }
-            }
-            else if (result.errCode === 1003 && result.status === false) {
-                showUICheckNid(element);
-            }
-            else if (result.errorCode === 8000 && result.status === false) {
-                alert('Định dạng số điện thoại không hợp lệ !');
-                return;
-            }
-            else if (result.errCode === 1008 && result.status === false) {
-                alert('Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
-                return;
-            }
-            else if (result.errCode === 1004 && result.status === false) {
-                alert('Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
-                return;
-            }
+                else if (result.errCode === 1004 && result.status === false) {
+                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
+                    return;
+                }
+            })
         }
         else {
-            alert('Vui lòng nhập data phone !');
-            return;
+            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Vui lòng nhập số điện thoại');
         }
-        // $("body").removeClass("loading");
-    })
+    }
 }
 
 // Done +++
 function showUICheckNid(element) {
     setRoute("showUICheckNid");
-    var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
+    var html = `<form id='formValueNid' class='formValue '>
                     <div class='mobile'>
 
-                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
-                        <input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />
+                        <div class='form__row'>
+                            <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                            <input type='number' id='nid' class='input-global' />
+                            <span class='error_message'></span>
+                        </div>
 
                         <h3>Chụp ảnh chân dung</h3>
                         <button type='button' id='callHP' class='btnCapture'></button>
@@ -192,39 +214,53 @@ function showUICheckNid(element) {
         deleteImage('SELFIE');
     });
 
-    $('#btnSubmitNid').click(function () {
-        let data = $('#nid').val();
-        localStorage.setItem('nid', data);
-        if (data !== null && data !== '') {
-            let result = checkNidExists(data);
-            console.log('Check nid exists: ', result);
-            let checkSelfieImage = localStorage.getItem('selfie-image');
-            if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-                alert('Chứng minh nhân dân này đã tồn tại trong hệ thống !');
-                return;
+    var dataNid = document.querySelector('#nid');
+
+    var errorMessage = document.querySelector('.error_message');
+
+    var btnSubmitNid = document.querySelector('#btnSubmitNid');
+    btnSubmitNid.disabled = true;
+
+    let checkSelfieImage = localStorage.getItem('selfie-image');
+
+    dataNid.oninput = function () {
+        if (dataNid.value !== null && dataNid.value !== '') {
+            if (checkSelfieImage !== null && checkSelfieImage !== undefined) {
+                formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
+                $('#btnSubmitNid').click(function () {
+                    let data = $('#nid').val();
+                    localStorage.setItem('nid', data);
+                    let result = checkNidExists(data);
+                    console.log('Check nid exists: ', result);
+                    if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+                        return;
+                    }
+                    else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
+                        captureNidFrontAndBack(element);
+                        let checkCustomer = {
+                            phone: localStorage.getItem('phone'),
+                            nid: localStorage.getItem('nid'),
+                            selfieImage: localStorage.getItem('selfie-image')
+                        };
+                        localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+                    }
+                    else if (result.errorCode === 8000 && result.status === false) {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
+                        return;
+                    }
+                })
             }
-            else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
-                captureNidFrontAndBack(element);
-                let checkCustomer = {
-                    phone: localStorage.getItem('phone'),
-                    nid: localStorage.getItem('nid'),
-                    selfieImage: localStorage.getItem('selfie-image')
-                };
-                localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-            }
-            else if (result.errorCode === 8000 && result.status === false) {
-                alert('Định dạng chứng minh nhân dân không hợp lệ !');
-                return;
+            else {
+                formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng chụp ảnh selfie');
             }
         }
         else {
-            alert('Vui lòng nhập data nid !');
-            return;
+            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng nhập CMND/CCCD');
         }
-    })
+    }
 }
 
-// Done +++
 function showSelfieIntroduction(element) {
     var Selfie_Introductions = [
         { id: 1, linkImg: './assets/img/1_dont.png', content: 'Không nên', desc1: 'Vui lòng', desc_bold: 'KHÔNG đội nón, đeo kính, khẩu trang', desc2: '' },
@@ -250,8 +286,10 @@ function captureNidFrontAndBack(element) {
     var html = `<form class='formValue'>
                     <div class='buttons mobile'>
                         <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
+                        <div>
                         <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
                         <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
+                        </div>
                         <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
                     </div>
                 </form> `;
@@ -281,25 +319,42 @@ function captureNidFrontAndBack(element) {
         }
     })
 
-    $('#btnSubmit').click(function () {
-        let adn = JSON.parse(localStorage.getItem('allDataNid'));
-        if (adn !== null && adn !== '') {
-            let fn = adn?.front_nid_customer;
-            let bn = adn?.back_nid_customer;
-            if (fn !== null && bn !== null) {
-                let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
-                showDataInform('#test', personal);
+    let btnCaptureFront = document.querySelector('#btnCaptureFront');
+    let btnCaptureBack = document.querySelector('#btnCaptureBack');
+    let btnSubmit = document.querySelector('#btnSubmit');
+    btnSubmit.disabled = true;
+    btnSubmit
+
+    let frontImage = localStorage.getItem('front-image');
+    let backImage = localStorage.getItem('back-image');
+
+    if (frontImage !== null && frontImage !== undefined && backImage !== null && backImage !== undefined) {
+        btnSubmit.disabled = false;
+        $('#btnSubmit').click(function () {
+            let adn = JSON.parse(localStorage.getItem('allDataNid'));
+            if (adn !== null && adn !== '') {
+                let fn = adn?.front_nid_customer;
+                let bn = adn?.back_nid_customer;
+                if (fn !== null && bn !== null) {
+                    let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
+                    showDataInform('#test', personal);
+                }
+                else if (fn === null) {
+                    alert('Không tìm thấy thông tin cmnd mặt trước !');
+                    return;
+                }
+                else if (bn === null) {
+                    alert('Không tìm thấy thông tin cmnd mặt sau !');
+                    return;
+                }
             }
-            else if (fn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt trước !');
-                return;
-            }
-            else if (bn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt sau !');
-                return;
-            }
-        }
-    })
+        })
+    }
+    else {
+        btnSubmit.disabled = true;
+        alert('Vui lòng chụp đủ 2 mặt chứng minh nhân dân');
+        return;
+    }
 }
 
 // Done +++
@@ -1896,8 +1951,8 @@ function router(element) {
 *
 **/
 
-function messageScreen(element,config){
-    if(config.screen == 'successScreen'){
+function messageScreen(element, config) {
+    if (config.screen == 'successScreen') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
@@ -1907,9 +1962,9 @@ function messageScreen(element,config){
                         </p>
                     </div> 
                 </div>`;
-        
+
     }
-    if(config.screen == 'unsuccessScreen'){
+    if (config.screen == 'unsuccessScreen') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess'></div>
@@ -1920,7 +1975,7 @@ function messageScreen(element,config){
                     </div> 
                 </div>`;
     }
-    if(config.screen == 'pincode_unsuccess'){
+    if (config.screen == 'pincode_unsuccess') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess'></div>
@@ -1930,7 +1985,7 @@ function messageScreen(element,config){
                     </div> 
                 </div>`;
     }
-    if(config.screen == 'pincode_success'){
+    if (config.screen == 'pincode_success') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
@@ -1941,5 +1996,5 @@ function messageScreen(element,config){
                 </div>`;
     }
     $(element).html(html);
-    if(config.pipeline) showProcessPipeline(5);
+    if (config.pipeline) showProcessPipeline(5);
 }

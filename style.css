@@ -162,7 +162,7 @@
     border-color: var(--line-border-fill);
 }
 
-.btn{
+/* .btn{
     background-color: var(--line-border-fill);
     color: #ffffff;
     border-radius: 6px;
@@ -185,15 +185,15 @@
 .btn:disabled{
     background-color: var(--line-border-empty);
     cursor: not-allowed;
-}
+} */
 /* multi progress bar */
 
-.form-container {
+/* .form-container {
     max-width: 860px;
     padding: 32px;
     margin: 36px auto 0 auto;
     background-color: #fff;
-}
+} */
 
 /* .form__row {
     padding: 8px 4px;
@@ -201,7 +201,7 @@
     flex-direction: column;
 } */
 
-.form__label {
+/* .form__label {
     display: block;
     font-size: 12px;
     width: 30%;
@@ -215,10 +215,10 @@
     font-size: 14px;
     color: #333;
     width: 65%;
-}
+} */
 
 /* Set màu cho placeholder trong thẻ input */
-.form__row input::-webkit-input-placeholder{
+/* .form__row input::-webkit-input-placeholder{
     color: #ccc;
 }
 
@@ -228,7 +228,7 @@
     text-transform: uppercase;
     margin: 15px 0;
     text-align: center;
-}
+} */
 
 /* .buttons{
     display: flex;
@@ -238,7 +238,7 @@
     padding: 30px;
 } */
 
-.nid_images{
+/* .nid_images{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -261,5 +261,5 @@
 
 .front_nid_image{
     margin-bottom: 30px;
-}
+} */
 
