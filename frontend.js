@@ -822,30 +822,24 @@ function postNationalID(ImageURL) {
 }
 
 function showErrorMessage(input, message) {
-    console.log('showErrorMessage');
     let parent = input.parentElement;
-    console.log('Parent: ', parent);
     let inputEle = parent.querySelector('input');
-    console.log('Input Ele: ', inputEle);
-    inputEle.style.borderColor = '#EE4D2D';
+    if (inputEle !== null && inputEle !== undefined) {
+        inputEle.style.borderColor = '#EE4D2D';
+    }
     let spanError = parent.querySelector('span');
-    console.log('Span Error: ', spanError);
     spanError.innerText = message;
     spanError.style.visibility = 'visible';
     spanError.style.opacity = '1';
 }
 
 function showSuccessMessage(input) {
-    console.log('showSuccessMessage');
     let parent = input.parentElement;
-    console.log('Parent: ', parent);
     let inputEle = parent.querySelector('input');
     if (inputEle !== null && inputEle !== undefined) {
-        console.log('Input Ele: ', inputEle);
         inputEle.style.borderColor = '#197DDE';
     }
     let spanError = parent.querySelector('span');
-    console.log('Span Error: ', spanError);
     spanError.innerText = '';
     spanError.style.visibility = 'hidden';
     spanError.style.opacity = '0';;
@@ -857,12 +851,12 @@ function checkEmptyError(listInput) {
     listInput.forEach(input => {
         console.log('Input: ', input);
         input.value = input.value.trim();
-        if (input.value === null && input.value === '') {
-            isEmptyError = true;
-            showErrorMessage(input, 'Vui lòng không để trống');
+        if (input.value) {
+            showSuccessMessage(input);
         }
         else {
-            showSuccessMessage(input);
+            isEmptyError = true;
+            showErrorMessage(input, 'Vui lòng không để trống');
         }
     });
     return isEmptyError;
