@@ -796,7 +796,7 @@ function postNationalID(ImageURL) {
             "method": "POST",
             "timeout": 0,
             "headers": {
-                "content-type" : 'multipart/formdata',
+                "content-type": 'multipart/formdata',
                 "appId": "abe84d",
                 "appKey": "7d2c0d7e1690c216458c",
                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea"
