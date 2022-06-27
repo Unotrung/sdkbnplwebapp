@@ -81,6 +81,7 @@ function updateCircularProgressbar() {
 
 // Done +++
 function showUICheckPhone(element) {
+    setRoute("showUICheckPhone");
     var html = `<form id='formValuePhone' class='formValue'>
                     <div class='mobile'>
 
@@ -119,7 +120,7 @@ function showUICheckPhone(element) {
             if (result.errCode === 1000 && result.status === true) {
                 let step = result.data.step;
                 if (step === 4) {
-                    showFormPincode(element, data, 'SHOW_TENOR');
+                    showFormPincode(element, data, 'VERIFY_PIN');
                 }
                 else if (step === 2) {
                     showContract(element);
@@ -157,8 +158,9 @@ function showUICheckPhone(element) {
 
 // Done +++
 function showUICheckNid(element) {
+    setRoute("showUICheckNid");
     var html = `<form id='formValueNid' class='formValue'>
-                    <!--<div class='mobile'>-->
+                    <div class='mobile'>
 
                         <label class='formValueNid-label' for='nid'>Vui lòng nhập số CMND/CCCD</label>
                         <input class='formValueNid-input' type='number' id='nid' class='input-global' />
@@ -172,10 +174,7 @@ function showUICheckNid(element) {
                 </form>`;
     $(element).html(html);
 
-    // $("body").removeClass("loading");
-
     $('#callHP').click(function () {
-        // $("body").addClass("loading");
         runFaceCaptureScreen();
     })
 
@@ -237,16 +236,15 @@ function showSelfieIntroduction(element) {
 
 // Done +++
 function captureNidFrontAndBack(element) {
-    var html = `< form class='formValue' >
-            <div class='buttons mobile'>
-
-                <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
-                <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
-                <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
-                <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
-
-            </div>
-                </ > `;
+    setRoute("captureNidFrontAndBack");
+    var html = `<form class='formValue'>
+                    <div class='buttons mobile'>
+                        <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
+                        <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
+                        <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
+                        <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
+                    </div>
+                </form> `;
     $(element).html(html);
     showProcessPipeline(1);
 
@@ -259,14 +257,12 @@ function captureNidFrontAndBack(element) {
     });
 
     $('#btnCaptureFront').click(function () {
-        // $("body").addClass("loading");
         runDocumentCaptureScreen('FRONT');
     })
 
     $('#btnCaptureBack').click(function () {
         let front_image = localStorage.getItem('front-image');
         if (front_image !== null && front_image !== '' && front_image !== undefined) {
-            // $("body").addClass("loading");
             runDocumentCaptureScreen('BACK');
         }
         else {
@@ -481,7 +477,6 @@ async function LaunchFaceCaptureScreen() {
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
-                // $("body").removeClass("loading");
             }
         };
         HVFaceModule.start(hvFaceConfig, callback);
@@ -533,7 +528,6 @@ async function LaunchDocumentCaptureScreen(side) {
                         // alert('Lưu mặt sau CMND thành công !');
                         // $("#back_picture").attr("src", imageBase64);
                     }
-                    // $("body").removeClass("loading");
                 }
             }
         };
@@ -577,15 +571,16 @@ function runDocumentCaptureScreen(side) {
 
 // Done +++
 function showAllTenor(element, nCount = 0) {
+    setRoute("showAllTenor");
     let html = '';
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `< form class='formValue orderTop' > `;
+    html += `<form class='formValue orderTop'> `;
     for (var i = 0; i < count; i++) {
         html += `
-            < div class='voolo-intro tenor-list' data - id='${tenors[i]._id}' onclick = 'selectTenor(this)' >
-                <div class'tenor-item' >
+        < div class='voolo-intro tenor-list' data - id='${tenors[i]._id}' onclick = 'selectTenor(this)' >
+            <div class'tenor-item' >
                 <h3>KÌ HẠN 1</h3>
                     <ul>
                         <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
@@ -609,23 +604,22 @@ function showAllTenor(element, nCount = 0) {
     });
 
     customerInfo(element);
-    // $("body").removeClass("loading");
 
     $('#btnContinue').click(function () {
         let phone = localStorage.getItem('phone');
-        showFormPincode(element, phone, 'BUY_SUCCESS');
+        showFormPincode(element, phone, 'SHOW_TENOR');
     });
 };
 
 // Done +++
 function showAllProvider(element) {
-    let html = `< div class='box' > <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
+    let html = `<div class='box' > <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
         html += `
-            < div class='list-provider' >
-                <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
+        < div class='list-provider' >
+            <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
         </ > `;
     }
     html += `</div > `;
@@ -659,15 +653,15 @@ function selectProvider() {
 
 // Done +++
 function showMessage(element, message, icon) {
-    var html = `< div class='box' >
-            <div class='paragraph-text text-center margin-bottom-default'>
-                <div class='${icon}'></div>
-                ${message}
-                <p style='text-align: center;'>
-                    <a class="ahref" href="/" style='width:auto'>Trở lại</a>
-                </p>
-            </div> 
-                </ > `;
+    var html = `<div class='box'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='${icon}'></div>
+                        ${message}
+                        <p style='text-align: center;'>
+                            <a class="ahref" href="/" style='width:auto'>Trở lại</a>
+                        </p>
+                    </div> 
+                </div> `;
     $(element).html(html);
 }
 
@@ -772,6 +766,7 @@ function postNationalID(ImageURL) {
 
 // Done +++
 function showDataInform(element, personal) {
+    setRoute("showDataInform");
     let adn = JSON.parse(localStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
         let fn = adn?.front_nid_customer;
@@ -791,6 +786,28 @@ function showDataInform(element, personal) {
     let cities = getAllCity();
     let referencesRelation = getAllReferenceRelation();
     showHeader();
+    let fullname = personal.fullname;
+    let conditionFullname = personal.fullname !== null && personal.fullname !== '';
+    let phone = personal.phone;
+    let conditionPhone = personal.phone !== null && personal.phone !== '';
+    let dob = convertDateString(personal.dob);
+    let conditionDob = convertDateString(personal.dob) !== null && convertDateString(personal.dob) !== '';
+    let gender = personal.gender;
+    let conditionGender = personal.gender !== null && personal.gender !== '';
+    let nid = personal.nid;
+    let conditionNid = personal.nid !== null && personal.nid !== '';
+    let doi = convertDateString(personal.doi);
+    let conditionDoi = convertDateString(personal.doi) !== null && convertDateString(personal.doi) !== '';
+    let doe = convertDateString(personal.doe);
+    let conditionDoe = convertDateString(personal.doe) !== null && convertDateString(personal.doe) !== '';
+    let city = personal.city;
+    let conditionCity = personal.city !== null && personal.city !== '';
+    let district = personal.district;
+    let conditionDistrict = personal.district !== null && personal.district !== '';
+    let ward = personal.ward;
+    let conditionWard = personal.ward !== null && personal.ward !== '';
+    let street = personal.strees;
+    let conditionStreet = personal.street !== null && personal.street !== '';
     var html = `< div class='form-card form-showdata' >
                     <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
@@ -802,34 +819,34 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global' type='text' id='fullname' name='fullname' value="${personal.fullname ? personal.fullname : ''}" disabled />
+                                    <input class='input-global' type='text' id='fullname' name='fullname' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${personal.phone ? personal.phone : ''}" disabled />
+                                    <input class='input-global' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global' type='date' id='dob' name='dob' value="${convertDateString(personal.dob) ? convertDateString(personal.dob) : ''}" disabled />
+                                    <input class='input-global' type='date' id='dob' name='dob' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} />
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global ' disabled>
-                                        <option value="${personal.gender ? personal.gender : ''}">${(personal.gender === 'M' ? 'Nam' : 'Nữ') ? (personal.gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
+                                    <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
+                                        <option value="${conditionGender ? personal.gender : ''}">${(gender === 'M' ? 'Nam' : 'Nữ') ? (gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
                                     </select>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global' type='number' id='nid' name='nid' value="${personal.nid ? personal.nid : ''}" disabled/>
+                                    <input class='input-global' type='number' id='nid' name='nid' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global' type='date' id='doi' name='doi' value="${convertDateString(personal.doi) ? convertDateString(personal.doi) : ''}" disabled/>
+                                        <input class='input-global' type='date' id='doi' name='doi' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global' type='date' id='doe' name='doe' value="${convertDateString(personal.doe) ? convertDateString(personal.doe) : ''}" disabled/>
+                                        <input class='input-global' type='date' id='doe' name='doe' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
                                     </div>
                                 </div>
                             </div >
@@ -842,23 +859,23 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global' type='text' id='city' name='city' value="${personal.city ? personal.city : ''}" />
+                                    <input class='input-global' type='text' id='city' name='city' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}/>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global' type='text' id='district' name='district' value="${personal.district ? personal.district : ''}" />
-                                </div>
+                                    <input class='input-global' type='text' id='district' name='district' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}/>
+                                </div >
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global' type='text' id='ward' name='ward' value="${personal.ward ? personal.ward : ''}" />
+                                    <input class='input-global' type='text' id='ward' name='ward' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled' : ''} />
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' type='text' id='street' name='street' value="${personal.street ? personal.street : ''}" />
+                                    <input class='input-global' type='text' id='street' name='street' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
                                 </div>
-                            </div>
-                            <div class="card-footer"></div>
-                        </div>
+                            </div >
+        <div class="card-footer"></div>
+                        </div >
                         <div class="card">
                             <div class="card-head">
                                 <h3>Thông tin tham chiếu</h3>
@@ -1049,33 +1066,13 @@ function showConfirmDataInform(element, personal_all_info) {
                                     <label for='doe'>Ngày hết hạn</label>
                                     <div class="info">${personal_all_info.expirationDate}</div>
                                 </div>
+                                <div class='form-row form-verify'>
+                                    <label for='doe'>Địa chỉ hiện tại</label>
+                                    <div class="info">${personal_all_info.street}, ${personal_all_info.ward}, ${personal_all_info.district}, ${personal_all_info.city}</div>
+                                </div>
                             </div >
                             <div class="card-footer"></div>
                         </div >
-                        <div class="card">
-                            <div class="card-head">
-                                <h3>Địa chỉ hiện tại</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class='form-row form-verify'>
-                                    <label for='city'>Thành phố/Tỉnh</label>
-                                    <div class="info">${personal_all_info.city}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='district'>Quận/Huyện</label>
-                                    <div class="info">${personal_all_info.district}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='ward'>Phường</label>
-                                    <div class="info">${personal_all_info.ward}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='street'>Đường</label>
-                                    <div class="info">${personal_all_info.street}</div>
-                                </div>
-                            </div>
-                            <div class="card-footer"></div>
-                        </div>
                         <div class="card">
                             <div class="card-head">
                                 <h3>Thông tin tham chiếu</h3>
@@ -1128,15 +1125,9 @@ function showConfirmDataInform(element, personal_all_info) {
                     </form>
                 </ > `;
     $(element).html(html);
-<<<<<<< HEAD
-    showProcessPipeline(1);
-
-    $(element).scrollTop(300);
-=======
     //show progress bar
     showProcessPipeline(1);
     $(window).scrollTop(0);
->>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
@@ -1147,15 +1138,15 @@ function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
-            < div class='voolo-intro' >
-        <h2 class='paragraph-text paragraph-text-bold header-2'>VOOLO giúp bạn:</h2>
+    <div class='voolo-intro'>
+        <h2 class=''>VOOLO giúp bạn:</h2>
         <ul>
             <li>Mua sắm không giới hạn </li>
             <li>Thanh toán linh hoạt </li>
             <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
         </ul>
-    </ >
-            <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua Trước Trả Sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    </div>
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
     $(config.element + " form").prepend(iHtml);
 }
 
@@ -1187,16 +1178,12 @@ function listProductions(config) {
         billTotal = sTotal;
     }
     lItems += `< div class='list-items' >
-            <div class='card'>
-                <div class='card-head'>Thông tin đơn hàng</div>
-                <div class='card-body'>
-                    `+ list + `
-                </div>
-                <div class='card-footer'>
-                    <span>Tổng cộng</span>
-                    <span class='total-price'>`+ sTotal + ` </span></div>
+        <div class='card'>
+            <div class='card-head'><h2>Thông tin đơn hàng</h2></div>
+            <div class='card-body'>
+                `+ list + `
             </div>
-    </ > `;
+        </ > `;
     if (config.items) $(config.element).prepend(lItems);
 }
 
@@ -1215,7 +1202,7 @@ function showCapture(base64, eId) {
 // Done +++
 // this function convert string date dd-mm-yyyy to yyyy-mm-dd
 function convertDateString(dateString) {
-    if (dateString === '') return '';
+    if (dateString === '' || dateString === null) return '';
     const dateParts = dateString.split("-");
     return `${dateParts[2]} -${dateParts[1]} -${dateParts[0]} `;
 }
@@ -1232,21 +1219,21 @@ function formatCurrency(money) {
 function showFormPincode(element, phone, screen) {
     showLogo(63);
     var html = `
-            < div class='form-card form-card-pincode' >
-                <form id='formSetupPinCode'>
-                    <div class='card'>
-                        <div class='card-head no-line'></div>
-                        <div class='card-body text-center form-pincode'>
-                            <h2>Nhập mã PIN</h2>
-                            <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                            <p class='paragraph-text-bold'>Mã PIN</p>
-                            <div id='pincode'></div>
-                        </div>
-                        <div class='card-footer ' style='height:32px'></div>
+        < div class='form-card form-card-pincode' >
+            <form id='formSetupPinCode'>
+                <div class='card'>
+                    <div class='card-head no-line'></div>
+                    <div class='card-body text-center form-pincode'>
+                        <h2>Nhập mã PIN</h2>
+                        <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
+                        <p class='paragraph-text-bold'>Mã PIN</p>
+                        <div id='pincode'></div>
                     </div>
-                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
-                    <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
-                </form>
+                    <div class='card-footer ' style='height:32px'></div>
+                </div>
+                <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+                <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+            </form>
     </ > `;
 
     $(element).html(html);
@@ -1256,7 +1243,7 @@ function showFormPincode(element, phone, screen) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1317,24 +1304,6 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     showHeader();
     var html = `
-<<<<<<< HEAD
-            < div class='form-card' >
-                <form id='formSetupPinCode'>
-                    <div class='card'>
-                        <div class='card-head no-line'></div>
-                        <div class='card-body text-center form-pincode'>
-                            <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
-                            <p>Mã PIN</p>
-                            <div id='pincode'></div>
-                            <p>Nhập lại mã PIN</p>
-                            <div id='repincode'></div>
-                        </div>
-                        <div class='card-footer'></div>
-                    </div>
-                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
-                </form>
-    </ > `;
-=======
     <div class='form-card'>
     <form id='formSetupPinCode'>
         <div class=''>
@@ -1351,7 +1320,6 @@ function showFormSetupPin(element, screen, token) {
         <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
     </form>
     </div>`;
->>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
 
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
@@ -1363,7 +1331,7 @@ function showFormSetupPin(element, screen, token) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1373,7 +1341,7 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
-        // previewDuration: 200,
+        previewDuration: 1,
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value)
@@ -1418,10 +1386,12 @@ function showFormSetupPin(element, screen, token) {
                 console.log('Result Set Up Pin: ', result);
                 if (result.status === true) {
                     alert('Add Infomation Personal Success');
+                    $("body").removeClass("loading");
                     showContract(element);
                 }
                 else {
                     alert('Add Infomation Personal Failure');
+                    $("body").removeClass("loading");
                     return;
                 }
             }
@@ -1729,6 +1699,7 @@ function timer(remaining) {
 
 // Done +++
 function showContract(element) {
+    setRoute("showContract");
     let data = getContract();
     showHeader();
     var html = `< div style = 'display: block' >
@@ -1812,29 +1783,9 @@ function showProcessPipeline(step) {
             break;
     }
     var pipeline = `
-<<<<<<< HEAD
-                <div class='headrow'>
-                    <div class='voolo-logo'></div>
-                    <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
-                    <div class='line'>
-                        <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
-                        <span class='Tpipe ${s2}'></span>
-                        <span class='Tpipe ${s3}'></span>
-                        <span class='Tpipe ${s4}'></span>
-                        <span class='Tpipe last'></span>
-                    </div>
-                    <div class='pipeline'>
-                        <span class='pipe ${s1}'>Thông tin khách hàng</span>
-                        <span class='pipe ${s2}'>Cài đặt PIN</span>
-                        <span class='pipe ${s2}'>Ký điện tử</span>
-                        <span class='pipe ${s3}'>Xác minh thông tin</span>
-                        <span class='pipe ${s4}'>Hoàn thành</span>
-                    </div>
-                </div>`;
-=======
         <div class='headrow'>
         <div class='voolo-logo'></div>
-            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <h3 style="margin-bottom:32px; font-size:24px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -1850,7 +1801,6 @@ function showProcessPipeline(step) {
                 <span class='pipe ${s5}'>Hoàn thành</span>
             </div>
         </div>`;
->>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
 
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
@@ -1878,6 +1828,44 @@ function showLogo(mb) {
 
 // Done +++
 function showTitle(mb) {
-    var html = `< h1 id = 'voolo-title' > Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</ > `;
+    var html = `<h1 id = 'voolo-title' > Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h1> `;
     return html;
 };
+
+function setRoute(func) {
+    history.pushState({}, "Voolo Set Url", "#" + func);
+}
+
+function router(element) {
+    var url = window.location.href;
+    route = url.split('#')[1];
+    switch (route) {
+        default:
+            showAllProvider(element);
+        case undefined:
+            showAllProvider(element);
+            break;
+        case "showUICheckPhone":
+            showUICheckPhone(element);
+            break;
+        case "showUICheckNid":
+            showUICheckNid(element);
+            break;
+        case "captureNidFrontAndBack":
+            captureNidFrontAndBack(element);
+            break;
+        case "showDataInform":
+            showDataInform(element);
+            break;
+        case "showContract":
+            showContract(element);
+            break;
+        case "showAllTenor":
+            showAllTenor(element);
+            break;
+
+    }
+
+}
+
+
