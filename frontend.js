@@ -629,16 +629,16 @@ function showAllTenor(element, nCount = 0) {
 
 // Done +++
 function showAllProvider(element) {
-    let html = `<div class='box' > <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
+    let html = `<div class='box'> <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
         html += `
-        < div class='list-provider' >
+        <div class='list-provider'>
             <button type='button' class='btnSelectProvider' data-id='${providers[i]._id}' onclick='selectProvider("${providers[i]._id}")'><img src='${providers[i].url}' /></button>
-        </ > `;
+        </div> `;
     }
-    html += `</div > `;
+    html += `</div>`;
     $(element).html(html);
 
     // show list productions
