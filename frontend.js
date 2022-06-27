@@ -54,23 +54,18 @@ function updateProgressbar() {
 
 // Done +++
 function showCircularProgressbar(element) {
-    // var html = `<div class='circular__progress'> +
-    //                 <div class='circular__value'>0%<div> +
-    //             </div>`;
-
     var html = `<div class='box' style='margin-top:200px'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                     <div class="imgloading-140"></div>
                     <h2>Đang trong tiến trình xác minh thông tin</h2>
                     <p style='text-align: center;'>
-                        <a class="ahref" href="#" style='width:auto'>Trở lại</a>
+                        <a class="ahref" href="#showmess" style='width:auto'>Trở lại thành công</a>
                     </p> 
                     </div> 
                 </div>`;
     $(element).html(html);
     showProcessPipeline(4);
     $("body").removeClass("loading");
-    
 }
 
 // Done +++
@@ -668,12 +663,12 @@ function selectProvider() {
 
 // Done +++
 function showMessage(element, message, icon) {
-    var html = `<div class='box'>
+    var html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='${icon}'></div>
                         ${message}
                         <p style='text-align: center;'>
-                            <a class="ahref" href="/" style='width:auto'>Trở lại</a>
+                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
                         </p>
                     </div> 
                 </div> `;
@@ -821,9 +816,9 @@ function showDataInform(element, personal) {
     let conditionDistrict = personal.district !== null && personal.district !== '';
     let ward = personal.ward;
     let conditionWard = personal.ward !== null && personal.ward !== '';
-    let street = personal.strees;
+    let street = personal.street;
     let conditionStreet = personal.street !== null && personal.street !== '';
-    var html = `< div class='form-card form-showdata' >
+    var html = `<div class='form-card form-showdata'>
                     <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
                     <form class=''>
@@ -940,8 +935,8 @@ function showDataInform(element, personal) {
                     </div>
 
                         <button type='button' class='payment-button' id='btnContinue'>Tiếp tục</button>
-                    </form >
-                </ > `;
+                        </form >
+                        </div > `;
     $(element).html(html);
     //show progress bar
     showProcessPipeline(1);
@@ -1044,7 +1039,7 @@ function handleChangeWard(ele1, ele2) {
 // Done +++
 function showConfirmDataInform(element, personal_all_info) {
     showHeader();
-    var html = `< div class='form-card form-confirmdata' >
+    var html = `<div class='form-card form-confirmdata'>
                     <p class='form-confirmdata-title'>Đối soát thông tin</p>
                     <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
                     <form class=''>
@@ -1138,7 +1133,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         <button type='button' class='payment-button' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
                         </div>
                     </form>
-                </ > `;
+                </div>`;
     $(element).html(html);
     //show progress bar
     showProcessPipeline(1);
@@ -1223,7 +1218,7 @@ function showCapture(base64, eId) {
 function convertDateString(dateString) {
     if (dateString === '' || dateString === null) return '';
     const dateParts = dateString.split("-");
-    return `${dateParts[2]} -${dateParts[1]} -${dateParts[0]} `;
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 }
 
 // Done +++
@@ -1522,7 +1517,7 @@ function forgotPinNid(element) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `< div class='form-card' >
+    var html = `<div class='form-card card-otpcode'>
             <form id='formSetupPinCode'>
                 <div class='card'>
                     <div class='card-head no-line'></div>
@@ -1536,7 +1531,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
                 <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
             </form>
-                </ > `;
+            </div>`;
 
     $(element).html(html);
     timer(60);
@@ -1832,6 +1827,7 @@ function showProcessPipeline(step) {
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
     $('.form-card').addClass("formValue-mt");
+    $('.box').addClass("formValue-mt");
 }
 
 // Done +++
@@ -1895,4 +1891,55 @@ function router(element) {
 
 }
 
+/* 
+* ex : messageScreen(element,{screen : "successScreen",pipeline:true});
+*
+**/
 
+function messageScreen(element,config){
+    if(config.screen == 'successScreen'){
+        html = `<div class='box showMessage formValue-mt'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Bạn đã đăng ký thành công</h3>
+                        <p style='text-align: center;'>
+                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                        </p>
+                    </div> 
+                </div>`;
+        
+    }
+    if(config.screen == 'unsuccessScreen'){
+        html = `<div class='box showMessage formValue-mt'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-unsuccess'></div>
+                        <h3>Đăng ký không thành công</h3>
+                        <p style='text-align: center;'>
+                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                        </p>
+                    </div> 
+                </div>`;
+    }
+    if(config.screen == 'pincode_unsuccess'){
+        html = `<div class='box showMessage formValue-mt'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-unsuccess'></div>
+                        <h3>Cập nhật mã PIN không thành công</h3>
+                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
+                        <button class='payment-button' id="tryagain">Thử lại</button>
+                    </div> 
+                </div>`;
+    }
+    if(config.screen == 'pincode_success'){
+        html = `<div class='box showMessage formValue-mt'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Cập nhật mã PIN thành công</h3>
+                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
+                        <button class='payment-button' id="tryagain">Thử lại</button>
+                    </div> 
+                </div>`;
+    }
+    $(element).html(html);
+    if(config.pipeline) showProcessPipeline(5);
+}
