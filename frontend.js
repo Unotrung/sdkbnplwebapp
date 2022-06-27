@@ -1716,21 +1716,21 @@ function showContract(element) {
     setRoute("showContract");
     let data = getContract();
     showHeader();
-    var html = `< div style = 'display: block' >
+    var html = `<div class='box'>
+    <div style = 'display: block'>
                     <h1>${data.title1}</h1>
                     <h2>${data.title2}</h2>
                     <h2>${data.content}</h2>
-                </ >
+                </div>
             <div style='display: block'>
                 <input type='checkbox' name='confirm_contract' id='confirm_contract' />
                 <span>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</span>
-                <div />
+                <div/>
                 <div style='display: block'>
                     <input type='checkbox' name='confirm_otp' id='confirm_otp' />
                     <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
-                    <div />
                     <button type='button' id='btnContinue'>Tiếp tục</button>
-                </div>`;
+                </div></div>`;
     $(element).html(html);
     showProcessPipeline(3);
     $('#btnContinue').click(function () {
