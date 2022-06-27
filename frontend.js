@@ -933,6 +933,8 @@ function showDataInform(element, personal) {
         let ward = document.getElementById('ward').value.trim();
         let street = document.getElementById('street').value.trim();
         let relationship = document.getElementById('relationship').value.trim();
+        let fieldRelationship = document.getElementById('relationship');
+        var relationshipUI = fieldRelationship.options[fieldRelationship.selectedIndex].text;
         let fullname_ref = document.getElementById('fullname_ref').value.trim();
         let phone_ref = document.getElementById('phone_ref').value.trim();
         let city_permanent = document.getElementById('city_permanent').value.trim();
@@ -951,6 +953,7 @@ function showDataInform(element, personal) {
             ward: ward,
             street: street,
             "personal_title_ref": relationship,
+            "personal_title_ref_ui": relationshipUI,
             "name_ref": fullname_ref,
             "phone_ref": phone_ref,
             "temporaryCity": city_permanent,
@@ -1039,14 +1042,12 @@ function showConfirmDataInform(element, personal_all_info) {
                                     <div class="info">${personal_all_info.citizenId}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <div class="form-cell">
-                                        <label for='issueDate'>Ngày cấp</label>
-                                        <div class="info">${personal_all_info.issueDate}</div>
-                                    </div>
-                                    <div class="form-cell">
-                                        <label for='doe'>Ngày hết hạn</label>
-                                        <div class="info">${personal_all_info.expirationDate}</div>
-                                    </div>
+                                    <label for='issueDate'>Ngày cấp</label>
+                                    <div class="info">${personal_all_info.issueDate}</div>
+                                </div>
+                                <div class='form-row form-verify'>
+                                    <label for='doe'>Ngày hết hạn</label>
+                                    <div class="info">${personal_all_info.expirationDate}</div>
                                 </div>
                             </div >
                             <div class="card-footer"></div>
@@ -1082,7 +1083,7 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <div class="info">${personal_all_info.personal_title_ref}</div>
+                                    <div class="info">${personal_all_info.personal_title_ref_ui}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='name_ref'>Họ và tên</label>
@@ -1120,14 +1121,22 @@ function showConfirmDataInform(element, personal_all_info) {
                             </div>
                             <div class="card-footer"></div>
                         </div>
-
-                        <button type='button' class='payment-button' id='btnContinueConfirm'>Tiếp tục</button>
+                        <div class="form-row" style="width: 100%;padding: 0;display: flex;">
+                        <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
+                        <button type='button' class='payment-button' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                        </div>
                     </form>
                 </ > `;
     $(element).html(html);
+<<<<<<< HEAD
     showProcessPipeline(1);
 
     $(element).scrollTop(300);
+=======
+    //show progress bar
+    showProcessPipeline(1);
+    $(window).scrollTop(0);
+>>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
@@ -1308,6 +1317,7 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     showHeader();
     var html = `
+<<<<<<< HEAD
             < div class='form-card' >
                 <form id='formSetupPinCode'>
                     <div class='card'>
@@ -1324,6 +1334,24 @@ function showFormSetupPin(element, screen, token) {
                     <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
                 </form>
     </ > `;
+=======
+    <div class='form-card'>
+    <form id='formSetupPinCode'>
+        <div class=''>
+            <div class=' no-line'></div>
+                <div class='text-center form-pincode'>
+                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
+                    <p>Mã PIN</p>
+                    <div id='pincode'></div>
+                    <p>Nhập lại mã PIN</p>
+                    <div id='repincode'></div>
+                </div>
+            <div class='' style="height: 39px;"></div>
+        </div>
+        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+    </form>
+    </div>`;
+>>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
 
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
@@ -1767,7 +1795,7 @@ function customerInfo(element) {
 
 // Done +++
 function showProcessPipeline(step) {
-    var s1, s2, s3, s4 = '';
+    var s1, s2, s3, s4, s5 = '';
     switch (step) {
         default:
         case 1:
@@ -1780,10 +1808,11 @@ function showProcessPipeline(step) {
             s1 = s2 = s3 = 'active';
             break;
         case 4:
-            s1 = s2 = s3 = s4 = 'active';
+            s5 = s1 = s2 = s3 = s4 = 'active';
             break;
     }
     var pipeline = `
+<<<<<<< HEAD
                 <div class='headrow'>
                     <div class='voolo-logo'></div>
                     <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
@@ -1802,6 +1831,26 @@ function showProcessPipeline(step) {
                         <span class='pipe ${s4}'>Hoàn thành</span>
                     </div>
                 </div>`;
+=======
+        <div class='headrow'>
+        <div class='voolo-logo'></div>
+            <h3 style="margin-bottom:32px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <div class='line'>
+                <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
+                <span class='Tpipe ${s3}'></span>
+                <span class='Tpipe ${s4}'></span>
+                <span class='Tpipe ${s5}'></span>
+                <span class='Tpipe last'></span>
+            </div>
+            <div class='pipeline'>
+                <span class='pipe ${s1}'>Thông tin khách hàng</span>
+                <span class='pipe ${s2}'>Cài đặt PIN</span>
+                <span class='pipe ${s3}'>Ký điện tử</span>
+                <span class='pipe ${s4}'>Xác minh thông tin</span>
+                <span class='pipe ${s5}'>Hoàn thành</span>
+            </div>
+        </div>`;
+>>>>>>> 71d15e2f4b31a5acd3a9eac66fda77d4b758b0cf
 
     $('#test').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
