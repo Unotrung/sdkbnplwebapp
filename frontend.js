@@ -54,10 +54,22 @@ function updateProgressbar() {
 
 // Done +++
 function showCircularProgressbar(element) {
-    var html = `<div class='circular__progress'> +
-                    <div class='circular__value'>0%<div> +
+    // var html = `<div class='circular__progress'> +
+    //                 <div class='circular__value'>0%<div> +
+    //             </div>`;
+
+    var html = `<div class='box' style='margin-top:200px'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                    <div class="imgloading-140"></div>
+                    <h2>Đang trong tiến trình xác minh thông tin</h2>
+                    <p style='text-align: center;'>
+                        <a class="ahref" href="#" style='width:auto'>Trở lại</a>
+                    </p> 
+                    </div> 
                 </div>`;
     $(element).html(html);
+    showProcessPipeline(4);
+
 }
 
 // Done +++
@@ -119,6 +131,7 @@ function showUICheckPhone(element) {
             console.log('Check phone exists: ', result);
             if (result.errCode === 1000 && result.status === true) {
                 let step = result.data.step;
+                console.log("step : ", step);
                 if (step === 4) {
                     showFormPincode(element, data, 'VERIFY_PIN');
                 }
@@ -1570,7 +1583,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
-                    showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
+                    showCircularProgressbar('#test');
+                    // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
@@ -1779,6 +1793,9 @@ function showProcessPipeline(step) {
             s1 = s2 = s3 = 'active';
             break;
         case 4:
+            s1 = s2 = s3 = s4 = 'active';
+            break;
+        case 5:
             s5 = s1 = s2 = s3 = s4 = 'active';
             break;
     }
