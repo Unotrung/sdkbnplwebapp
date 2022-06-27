@@ -95,12 +95,12 @@ function updateCircularProgressbar() {
 // Done +++
 function showUICheckPhone(element) {
     setRoute("showUICheckPhone");
-    var html = `<form id='formValuePhone' class='formValue'>
+    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
 
                         <div class='form__row'>
-                            <label class='formValuePhone-label' for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input class='formValuePhone-input' type='phone' id='phone' class='form__input input-global' />
+                            <label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input type='phone' id='phone' class='form__input input-global ng-pristine ng-invalid ng-touched' />
                         </div>
 
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
@@ -175,18 +175,17 @@ function showUICheckPhone(element) {
 // Done +++
 function showUICheckNid(element) {
     setRoute("showUICheckNid");
-    var html = `<form id='formValueNid' class='formValue'>
+    var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
                     <div class='mobile'>
 
-                        <label class='formValueNid-label' for='nid'>Vui lòng nhập số CMND/CCCD</label>
-                        <input class='formValueNid-input' type='number' id='nid' class='input-global' />
+                        <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                        <input type='number' id='nid' class='input-global ng-pristine ng-invalid ng-touched' />
 
-                        <h3 class='formValueNid-title'>Chụp ảnh chân dung</h3>
-
+                        <h3>Chụp ảnh chân dung</h3>
                         <button type='button' id='callHP' class='btnCapture'></button>
-                        <button type='button' id='btnSubmitNid'>Tiếp tục</button>
+                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
 
-                    <!--</div>-->
+                    </div>
                 </form>`;
     $(element).html(html);
 
@@ -1174,7 +1173,7 @@ function listProductions(config) {
         var lItems = "";
         var total = 0;
         config.dataItems.forEach(e => {
-            list += `< div class='list' >
+            list += `<div class='list'>
             <div class='image'><img src='`+ e.imgUrl + `'/></div>
             <div class='info'>
                 <p class='head-w-6 ellipsis'>`+ e.product + `</p>
@@ -1182,7 +1181,7 @@ function listProductions(config) {
                 <p>`+ e.quantity + `</p>
             </div>
             <div class='price head-w-6'>`+ e.priceShow + `</div>
-        </ > `;
+        </div>`;
             total += parseInt(e.price);
         });
         var sTotal = total.toLocaleString('vi-VN', {
@@ -1193,13 +1192,17 @@ function listProductions(config) {
         //set total local
         billTotal = sTotal;
     }
-    lItems += `< div class='list-items' >
+    lItems += `<div class='list-items'>
         <div class='card'>
             <div class='card-head'><h2>Thông tin đơn hàng</h2></div>
             <div class='card-body'>
                 `+ list + `
             </div>
-        </ > `;
+            <div class='card-footer'>
+                <span>Tổng cộng</span>
+            <span class='total-price'>`+ sTotal + ` </span></div>
+        </div>
+    </div>`;
     if (config.items) $(config.element).prepend(lItems);
 }
 
