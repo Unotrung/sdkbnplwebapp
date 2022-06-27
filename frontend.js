@@ -81,6 +81,7 @@ function updateCircularProgressbar() {
 
 // Done +++
 function showUICheckPhone(element) {
+    setRoute("showUICheckPhone");
     var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
                     <div class='mobile'>
 
@@ -157,6 +158,7 @@ function showUICheckPhone(element) {
 
 // Done +++
 function showUICheckNid(element) {
+    setRoute("showUICheckNid");
     var html = `<form id='formValueNid' class='formValue ng-untouched ng-pristine ng-invalid'>
                     <div class='mobile'>
 
@@ -216,6 +218,7 @@ function showUICheckNid(element) {
 
 // Done +++
 function captureNidFrontAndBack(element) {
+    setRoute("captureNidFrontAndBack");
     var html = `<form class='formValue'>
                     <div class='buttons mobile'>
 
@@ -556,6 +559,7 @@ function runDocumentCaptureScreen(side) {
 
 // Done +++
 function showAllTenor(element, nCount = 0) {
+    setRoute("showAllTenor");
     let html = '';
     const data = getAllTenor();
     let tenors = data.data;
@@ -736,6 +740,7 @@ function postNationalID(ImageURL) {
 
 // Done +++
 function showDataInform(element, personal) {
+    setRoute("showDataInform");
     let adn = JSON.parse(localStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
         let fn = adn?.front_nid_customer;
@@ -1648,6 +1653,7 @@ function timer(remaining) {
 
 // Done +++
 function showContract(element) {
+    setRoute("showContract");
     let data = getContract();
     var html = `<div style='display: block'>
                     <h1>${data.title1}</h1>
@@ -1752,3 +1758,41 @@ function showProcessPipeline(step) {
     $('.formValue').addClass("formValue-mt");
     $('.form-card').addClass("formValue-mt");
 }
+
+function setRoute(func){
+    history.pushState({},"Voolo Set Url","#"+func);
+}
+
+function router(element){
+    var url = window.location.href;
+    route = url.split('#')[1];
+    switch (route){
+        default:
+            showAllProvider(element);
+        case undefined : 
+            showAllProvider(element);
+            break;
+        case "showUICheckPhone" : 
+            showUICheckPhone(element);
+            break;
+        case "showUICheckNid" : 
+            showUICheckNid(element);
+            break;
+        case "captureNidFrontAndBack" : 
+            captureNidFrontAndBack(element);
+            break;
+        case "showDataInform" : 
+            showDataInform(element);
+            break;
+        case "showContract" : 
+            showContract(element);
+            break;
+        case "showAllTenor" : 
+            showAllTenor(element);
+            break;
+
+    }
+
+}
+
+
