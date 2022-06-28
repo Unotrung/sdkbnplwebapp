@@ -502,7 +502,7 @@ input::-webkit-inner-spin-button{
 }
 
 .pincode-input.pincode-input--filled[type="password"] {
-    font: small-caption;
+    font: caption;
     font-size: 5em;
 }
 
