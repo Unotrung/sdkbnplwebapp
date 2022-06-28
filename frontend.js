@@ -53,7 +53,7 @@ function showCircularProgressbar(element) {
                     <div class="imgloading-140"></div>
                     <h2>Đang trong tiến trình xác minh thông tin</h2>
                     <p style='text-align: center;'>
-                        <a class="ahref" href="#showmess" style='width:auto'>Trở lại thành công</a>
+                        <a class="ahref" href="#showmess" style='width:auto'>Trở lại</a>
                     </p> 
                     </div> 
                 </div>`;
@@ -644,8 +644,8 @@ function showAllTenor(element, nCount = 0) {
     html += `<form class='formValue orderTop'> `;
     for (var i = 0; i < count; i++) {
         html += `
-        < div class='voolo-intro tenor-list' data - id='${tenors[i]._id}' onclick = 'selectTenor(this)' >
-            <div class'tenor-item' >
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
+            <div class'tenor-item'>
                 <h3>KÌ HẠN 1</h3>
                     <ul>
                         <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
@@ -654,11 +654,11 @@ function showAllTenor(element, nCount = 0) {
                     </ul>
                 <p></p>
                 <p></p>
-            </div >
-        </ > `
+            </div>
+        </div>`
     }
-    if (count <= 3 && tenors.length > 3) html += `< a onclick = 'showAllTenor("${element}",0)' class='ahref' > Hiển thị thêm</ > `;
-    html += `< button type = 'button' id = 'btnContinue' class='payment-button' > Tiếp tục</ ></form > `;
+    if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
+    html += `<button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button></form>`;
     $(element).html(html);
 
     // show list productions
@@ -735,11 +735,11 @@ function showStatusPage(element, message, imagePath, desc, step) {
     $(element).empty();
     showHeader();
     showProcessPipeline(step);
-    var html = `< div class='container-status-page' >
+    var html = `<div class='container-status-page'>
                     <img src='${imagePath}' class='container-status-page-img'/>
                     <h1 class='container-status-page-title'>${message}</h1>
                     ${desc !== null && desc !== '' ? `<p class='container-status-page-desc'>${desc}</p>` : ''} 
-                </ > `;
+                </div> `;
     $(element).prepend(html);
 
     $('body').click(function () {
@@ -1288,7 +1288,7 @@ function formatCurrency(money) {
 function showFormPincode(element, phone, screen) {
     showLogo(63);
     var html = `
-        < div class='form-card form-card-pincode' >
+        <div class='form-card form-card-pincode'>
             <form id='formSetupPinCode'>
                 <div class='card'>
                     <div class='card-head no-line'></div>
@@ -1303,7 +1303,7 @@ function showFormPincode(element, phone, screen) {
                 <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
                 <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
-    </ > `;
+            </div>`;
 
     $(element).html(html);
     // $("body").removeClass("loading");
@@ -1488,7 +1488,7 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `< form id = 'formValuePhone' class='formValue' >
+    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
             <div class='mobile'>
                 <div class='form__row'>
                     <h2 style="margin-bottom:40px">Số điện thoại</h2>
@@ -1498,7 +1498,7 @@ function forgotPinPhone(element, phone) {
                 <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
 
             </div>
-                </ > `;
+            </form>`;
     $(element).html(html);
 
     //custom show
@@ -1517,7 +1517,7 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `< form class='formValue' >
+    var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
             <div class='mobile'>
 
                 <div class='form__row'>
@@ -1528,7 +1528,7 @@ function forgotPinNid(element) {
                 <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
 
             </div>
-    </ > `;
+            </form>`;
     $(element).html(html);
 
     //custom show
