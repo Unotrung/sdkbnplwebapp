@@ -306,7 +306,6 @@ function captureNidFrontAndBack(element) {
     let btnCaptureBack = document.querySelector('#btnCaptureBack');
     let btnSubmit = document.querySelector('#btnSubmit');
     btnSubmit.disabled = true;
-    btnSubmit
 
     let frontImage = localStorage.getItem('front-image');
     let backImage = localStorage.getItem('back-image');
@@ -824,11 +823,18 @@ function postNationalID(ImageURL) {
 function showErrorMessage(input, message) {
     let parent = input.parentElement;
     let inputEle = parent.querySelector('input');
-    if (inputEle !== null && inputEle !== undefined) {
-        inputEle.style.borderColor = '#EE4D2D';
+    let selectEle = parent.querySelector('select');
+    if (inputEle) {
+        inputEle.style.border = '1px solid #EE4D2D';
+    }
+    if (selectEle) {
+        selectEle.style.border = '1px solid #EE4D2D';
     }
     let spanError = parent.querySelector('span');
     spanError.innerText = message;
+    spanError.style.marginTop = '10px';
+    spanError.style.textAlign = 'left';
+    spanError.style.marginLeft = '0px';
     spanError.style.visibility = 'visible';
     spanError.style.opacity = '1';
 }
@@ -836,27 +842,58 @@ function showErrorMessage(input, message) {
 function showSuccessMessage(input) {
     let parent = input.parentElement;
     let inputEle = parent.querySelector('input');
-    if (inputEle !== null && inputEle !== undefined) {
-        inputEle.style.borderColor = '#197DDE';
+    let selectEle = parent.querySelector('select');
+    if (inputEle) {
+        inputEle.style.border = '1px solid #EE4D2D';
+    }
+    if (selectEle) {
+        selectEle.style.border = '1px solid #EE4D2D';
     }
     let spanError = parent.querySelector('span');
     spanError.innerText = '';
     spanError.style.visibility = 'hidden';
-    spanError.style.opacity = '0';;
+    spanError.style.opacity = '0';
+    spanError.style.marginTop = '0px';
+    spanError.style.marginLeft = '0px';
+}
+
+function onChangeValidation(input, message) {
+    let element = document.querySelector(input);
+    let value = element.value.trim();
+    let parent = element.parentElement;
+    let span = parent.querySelector('span');
+    console.log('Input: ', input);
+    console.log('Element: ', element);
+    console.log('Value: ', value);
+    console.log('Span: ', span);
+    if (value) {
+        element.style.border = '1px solid #197DDE';
+        span.innerText = '';
+        span.style.marginTop = '0px';
+        span.style.visibility = 'hidden';
+        span.style.opacity = '0';
+    }
+    else {
+        element.style.border = '1px solid #EE4D2D';
+        span.innerText = message;
+        span.style.visibility = 'visible';
+        span.style.opacity = '1';
+        span.style.marginTop = '0px';
+        span.style.marginLeft = '0px';
+    }
 }
 
 function checkEmptyError(listInput) {
-    console.log('LIST INPUT: ', listInput);
     let isEmptyError = false;
     listInput.forEach(input => {
-        console.log('Input: ', input);
         input.value = input.value.trim();
         if (input.value) {
+            isEmptyError = false;
             showSuccessMessage(input);
         }
         else {
             isEmptyError = true;
-            showErrorMessage(input, 'Vui lòng không để trống');
+            showErrorMessage(input, 'Vui lòng nhập thông tin');
         }
     });
     return isEmptyError;
@@ -891,6 +928,8 @@ function showDataInform(element, personal) {
     let dob = convertDateString(personal.dob);
     let conditionDob = convertDateString(personal.dob) !== null && convertDateString(personal.dob) !== '' && convertDateString(personal.dob) !== undefined;
     let gender = personal.gender;
+    let genM = gender === 'M' ? "selected" : '';
+    let genF = gender === 'F' ? "selected" : '';
     let conditionGender = personal.gender !== null && personal.gender !== '' && personal.gender !== undefined;
     let nid = personal.nid;
     let conditionNid = personal.nid !== null && personal.nid !== '';
@@ -917,40 +956,42 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global' type='text' id='fullname' name='fullname' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <input class='input-global' type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                     <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' type='phone' id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+                                    <input class='input-global' type='phone' id="phone" name="phone"  onchange='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global' type='date' id='dob' name='dob' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} />
+                                    <input class='input-global' type='date' id='dob' name='dob' onchange='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} />
                                     <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
-                                        <option value="${conditionGender ? personal.gender : ''}">${(gender === 'M' ? 'Nam' : 'Nữ') ? (gender === 'M' ? 'Nam' : 'Nữ') : ''}</option>
+                                    <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''}>
+                                    <option value="" >Vui lòng chọn</option>
+                                    <option value="M" ${genM}>Nam</option>
+                                    <option value="F" ${genF}>Nữ</option>
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global' type='number' id='nid' name='nid' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <input class='input-global' type='number' id='nid' name='nid' onchange='onChangeValidation("#nid")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global' type='text' id='doi' name='doi' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                        <input class='input-global' type='text' id='doi' name='doi' onchange='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
                                         <span class='error_doi error_message'></span>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global' type='text' id='doe' name='doe' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                        <input class='input-global' type='text' id='doe' name='doe' onchange='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
                                         <span class='error_doe error_message'></span>
                                     </div>
                                 </div>
@@ -964,22 +1005,22 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global' type='text' id='city' name='city' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}/>
+                                    <input class='input-global' type='text' id='city' name='city' onchange='onChangeValidation("#city")' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}/>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global' type='text' id='district' name='district' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}/>
+                                    <input class='input-global' type='text' id='district' name='district' onchange='onChangeValidation("#district")' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}/>
                                     <span class='error_district error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global' type='text' id='ward' name='ward' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled' : ''} />
+                                    <input class='input-global' type='text' id='ward' name='ward' onchange='onChangeValidation("#ward")' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled' : ''} />
                                     <span class='error_ward error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' type='text' id='street' name='street' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <input class='input-global' type='text' id='street' name='street' onchange='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -999,12 +1040,12 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref"/>
+                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref")'/>
                                     <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"/>
+                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1018,22 +1059,22 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <input class='input-global' type='text' id='city_permanent' name='city_permanent' />
+                                <input class='input-global' type='text' id='city_permanent' name='city_permanent' onchange='onChangeValidation("#city_permanent")'/>
                                 <span class='error_city_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <input class='input-global' type='text' id='district_permanent' name='district_permanent' />
+                                <input class='input-global' type='text' id='district_permanent' name='district_permanent' onchange='onChangeValidation("#district_permanent")'/>
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
-                                <input class='input-global' type='text' id='ward_permanent' name='ward_permanent' />
+                                <input class='input-global' type='text' id='ward_permanent' name='ward_permanent' onchange='onChangeValidation("#ward_permanent")'/>
                                 <span class='error_ward_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
-                                <input class='input-global' type='text' id='street_permanent' name='street_permanent' />
+                                <input class='input-global' type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent")'/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
@@ -1116,6 +1157,12 @@ function showDataInform(element, personal) {
 
         let isCheckEmpty = checkEmptyError([fullnameEle, genderEle, phoneEle, dobEle, nidEle, doiELe, doeEle, cityEle, districtEle, wardEle, streetEle, relationshipEle, fullname_refEle, phone_refEle, city_permanentEle, district_permanentEle, ward_permanentEle, street_permanentEle])
         console.log('isCheckEmpty: ', isCheckEmpty);
+        let isPhoneError = checkPhoneValidate(phoneEle);
+        console.log('isPhoneError: ', isPhoneError);
+        let isPhoneRefError = checkPhoneRefValidate(phone_refEle);
+        console.log('isPhoneRefError: ', isPhoneRefError);
+        let isNidError = checkNidValidate(nidEle);
+        console.log('isNidError: ', isNidError);
 
         let personal_all_info = {
             name: fullname,
@@ -1139,7 +1186,7 @@ function showDataInform(element, personal) {
             "expirationDate": doe
         }
 
-        if (isCheckEmpty) {
+        if (!isCheckEmpty) {
             if (personal_all_info !== null) {
                 localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
                 showConfirmDataInform(element, personal_all_info);
@@ -1149,12 +1196,64 @@ function showDataInform(element, personal) {
                 return;
             }
         }
-
     })
 
-    // $('#btnContinue').click(function () {
+}
 
-    // })
+// Done +++
+function checkPhoneValidate(input) {
+    const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+    input.value = input.value.trim();
+    let isPhoneErr = !regexPhone.test(input.value);
+    if (regexPhone.test(input.value)) {
+        showSuccessMessage(input);
+    }
+    else {
+        showErrorMessage(input, 'Số điện thoại không hợp lệ');
+    }
+    return isPhoneErr;
+}
+
+// Done +++
+function checkPhoneRefValidate(input) {
+    const regexPhoneRef = /^(09|03|07|08|05|02)+([0-9]{8,9}$)/;
+    input.value = input.value.trim();
+    let isPhoneRefErr = !regexPhoneRef.test(input.value)
+    if (regexPhoneRef.test(input.value)) {
+        showSuccessMessage(input);
+    }
+    else {
+        showErrorMessage(input, 'Số điện thoại người tham chiếu không hợp lệ');
+    }
+    return isPhoneRefErr;
+}
+
+// Done +++
+function checkNidValidate(input) {
+    const regexNid = /^\d{12}$|^\d{9}$/;
+    input.value = input.value.trim();
+    let isNidErr = !regexNid.test(input.value);
+    if (regexNid.test(input.value)) {
+        showSuccessMessage(input);
+    }
+    else {
+        showErrorMessage(input, 'Chứng minh nhân dân không hợp lệ');
+    }
+    return isNidErr;
+}
+
+// Done +++
+function checkPinValidate(input) {
+    const regexPin = /^\d{4}$/;
+    input.value = input.value.trim();
+    let isPinErr = !regexPin.test(input.value);
+    if (regexPin.test(input.value)) {
+        showSuccessMessage(input);
+    }
+    else {
+        showErrorMessage(input, 'Mã Pin không hợp lệ');
+    }
+    return isPinErr;
 }
 
 // Done +++
