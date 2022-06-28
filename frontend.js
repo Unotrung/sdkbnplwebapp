@@ -960,11 +960,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-<<<<<<< HEAD
-                                    <input class='input-global' type='phone' id="phone" name="phone"  onchange='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
-=======
                                     <input class='input-global' type='phone' id="phone" name="phone" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
@@ -974,17 +970,10 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-<<<<<<< HEAD
                                     <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''}>
                                     <option value="" >Vui lòng chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
-=======
-                                    <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
-                                    <option value="" >Vui lòng chọn</option>
-                                    <option value="M" ${genM}>Nam</option>
-                                    <option value="F" ${genF}>Nu</option>
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
@@ -1055,11 +1044,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-<<<<<<< HEAD
                                     <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
-=======
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' "/>
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1199,10 +1184,6 @@ function showDataInform(element, personal) {
             "temporaryStreet": street_permanent,
             "expirationDate": doe
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
         if (!isCheckEmpty) {
             if (personal_all_info !== null) {
                 localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
@@ -1508,23 +1489,23 @@ function showFormPincode(element, phone, screen) {
     var html = `
         <div class='form-card form-card-pincode'>
             <form id='formSetupPinCode'>
-                <div class='card'>
-                    <div class='card-head no-line'></div>
-                    <div class='card-body text-center form-pincode'>
-                        <h2>Nhập mã PIN</h2>
-                        <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                        <p class='paragraph-text-bold'>Mã PIN</p>
-                        <div id='pincode'></div>
+                    <div class='card'>
+                        <div class='card-head no-line'></div>
+                        <div class='card-body text-center form-pincode'>
+                            <h2>Nhập mã PIN</h2>
+                            <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
+                            <p class='paragraph-text-bold'>Mã PIN</p>
+                            <div id='pincode'></div>
+                            <span class='error_message error_message_pin'></span>
+                        </div>
+                        <div class='card-footer' style='height:32px'></div>
                     </div>
-                    <div class='card-footer ' style='height:32px'></div>
-                </div>
-                <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
-                <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+                    <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
-            </div>`;
+        </div>`;
 
     $(element).html(html);
-    // $("body").removeClass("loading");
 
     new PincodeInput("#pincode", {
         count: 4,
@@ -1537,15 +1518,20 @@ function showFormPincode(element, phone, screen) {
         }
     });
 
-    $('#btnSubmitPin').click(function () {
+    var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
 
-        // $("body").addClass("loading");
+    var pincode = document.querySelector('#pincode');
 
-        let pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
-        if (pin !== null && pin !== '') {
+    var errorMessage = document.querySelector('.error_message');
+
+    var btnSubmitPin = document.querySelector('#btnSubmitPin');
+    btnSubmitPin.disabled = true;
+
+    if (pin !== null && pin !== '' && pin !== undefined) {
+        $('#btnSubmitPin').click(function () {
+            formatStyleCorrectInput(pincode, errorMessage, btnSubmitPin);
             let result = login(phone, pin);
             console.log('Result Show Form Pin code: ', result);
-
             //set cus info
             // customer.name = result.data.phone;
             // customer.limit = result.data.limit;
@@ -1553,22 +1539,23 @@ function showFormPincode(element, phone, screen) {
             //end set cus info
 
             if (result.status === true && result.data.step === 4) {
-                switch (screen) {
-                    default:
-                        showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
-                    case "SHOW_TENOR":
-                        showAllTenor(element, 3);
-                        break;
-                    case "SHOW_SUCCESS_PAGE":
-                        showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
-                        break;
-                    case "BUY_SUCCESS":
-                        showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
-                        break;
-                    case "BUY_UNSUCCESS":
-                        showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
-                        break;
-                }
+                showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                // switch (screen) {
+                //     default:
+                //         showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
+                //     case "SHOW_TENOR":
+                //         showAllTenor(element, 3);
+                //         break;
+                //     case "SHOW_SUCCESS_PAGE":
+                //         showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
+                //         break;
+                //     case "BUY_SUCCESS":
+                //         showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                //         break;
+                //     case "BUY_UNSUCCESS":
+                //         showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
+                //         break;
+                // }
             }
             // else if (result.status === true && result.data.step === 3) {
             //     showCircularProgressbar(element);
@@ -1582,13 +1569,11 @@ function showFormPincode(element, phone, screen) {
                 alert('Mã pin không hợp lệ !');
                 return;
             }
-        }
-        else {
-            alert('Vui lòng nhập pin !');
-            return;
-        }
-        // $("body").removeClass("loading");
-    })
+        })
+    }
+    else {
+        formatStyleWrongInput(pincode, errorMessage, btnSubmitPin, 'Vui lòng nhập mã pin');
+    }
 }
 
 // Done +++
@@ -1706,18 +1691,27 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `<form id='formValuePhone' class='ng-untouched ng-pristine ng-invalid formValue'>
-            <div class='mobile'>
-                <div class='form__row'>
-                    <h2 style="margin-bottom:40px">Số điện thoại</h2>
-                    <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                    <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
-                </div>
-                <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+    var html = `<form id='formValuePhone' class='formValue'>
+                    <div class='mobile'>
 
-            </div>
-            </form>`;
+                        <div class='form__row'>
+                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+
+                    </div>
+                </form>`;
     $(element).html(html);
+
+    var dataPhone = document.querySelector('#phone_reset');
+
+    var errorMessage = document.querySelector('.error_message');
+
+    var btnContinue = document.querySelector('#btnContinue');
+    btnContinue.disabled = true;
 
     //custom show
     configUi({
@@ -1726,27 +1720,44 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
-    $('#btnContinue').click(function () {
-        let phone_reset = $('#phone_reset').val().trim();
-        localStorage.setItem('phone_reset', phone_reset);
-        forgotPinNid(element);
-    });
+    dataPhone.oninput = function () {
+        if (dataPhone.value !== null && dataPhone.value !== '') {
+            formatStyleCorrectInput(dataPhone, errorMessage, btnContinue);
+            const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+            let isPhoneErr = !regexPhone.test(dataPhone.value);
+            if (!isPhoneErr) {
+                $('#btnContinue').click(function () {
+                    let phone_reset = $('#phone_reset').val().trim();
+                    localStorage.setItem('phone_reset', phone_reset);
+                    forgotPinNid(element);
+                });
+            }
+            else {
+                formatStyleWrongInput(dataPhone, errorMessage, btnContinue, 'Định dạng số điện thoại không hợp lệ');
+            }
+
+        }
+        else {
+            formatStyleWrongInput(dataPhone, errorMessage, btnContinue, 'Vui lòng nhập số điện thoại');
+        }
+    }
 }
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `<form class='ng-untouched ng-pristine ng-invalid formValue'>
-            <div class='mobile'>
+    var html = `<form class='formValue'>
+                    <div class='mobile'>
 
-                <div class='form__row'>
-                    <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
-                    <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                    <input type='number' id='nid_reset' class='form__input input-global' />
-                </div>
-                <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+                        <div class='form__row'>
+                            <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
+                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                            <input type='number' id='nid_reset' class='form__input input-global' />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
 
-            </div>
-            </form>`;
+                    </div>
+                </form>`;
     $(element).html(html);
 
     //custom show
@@ -1756,35 +1767,54 @@ function forgotPinNid(element) {
         intro: false
     });
 
-    $('#btnSendOtp').click(function () {
-        $("body").addClass("loading");
-        localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
-        let phone_reset = localStorage.getItem('phone_reset');
-        let nid_reset = localStorage.getItem('nid_reset');
-        let data = sendOtpPin(phone_reset, nid_reset);
-        console.log('Result Send Otp Pin: ', data);
-        if (data.status === true) {
-            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
+    var dataNid = document.querySelector('#nid_reset');
+
+    var errorMessage = document.querySelector('.error_message');
+
+    var btnSendOtp = document.querySelector('#btnSendOtp');
+    btnSendOtp.disabled = true;
+
+    dataNid.oninput = function () {
+        if (dataNid.value !== null && dataNid.value !== '') {
+            formatStyleCorrectInput(dataNid, errorMessage, btnSendOtp);
+            const regexNid = /^\d{12}$|^\d{9}$/;
+            let isNidErr = !regexNid.test(dataNid.value);
+            if (!isNidErr) {
+                $('#btnSendOtp').click(function () {
+                    localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
+                    let phone_reset = localStorage.getItem('phone_reset');
+                    let nid_reset = localStorage.getItem('nid_reset');
+                    let data = sendOtpPin(phone_reset, nid_reset);
+                    console.log('Result Send Otp Pin: ', data);
+                    if (data.status === true) {
+                        showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
+                    }
+                    else if (data.status === false && data.message === 'Send otp failure') {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Mã Otp không chính xác');
+                        return;
+                    }
+                    else if (data.status === false && data.statusCode === 1002) {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Số điện thoại không chính xác');
+                        return;
+                    }
+                    else if (data.status === false && data.statusCode === 1001) {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Chứng minh nhân dân không chính xác');
+                        return;
+                    }
+                    else if (data.status === false && data.errorCode === 8000) {
+                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Định dang data không hợp lệ');
+                        return;
+                    }
+                })
+            }
+            else {
+                formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Số CMND/CCCD không hợp lệ');
+            }
         }
-        else if (data.status === false && data.message === 'Send otp failure') {
-            alert('Mã Otp không hợp lệ. Vui lòng kiểm tra lại !');
-            return;
+        else {
+            formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Vui lòng nhập CMND/CCCD');
         }
-        else if (data.status === false && data.statusCode === 1002) {
-            alert('Số điện thoại không hợp lệ. Vui lòng kiểm tra lại !');
-            return;
-        }
-        else if (data.status === false && data.statusCode === 1001) {
-            alert('Chứng minh nhân dân không hợp lệ. Vui lòng kiểm tra lại !');
-            return;
-        }
-        else if (data.status === false && data.errorCode === 8000) {
-            alert('Định dang data không hợp lệ. Vui lòng kiểm tra lại !');
-            return;
-        }
-        $("body").removeClass("loading");
-        return;
-    })
+    }
 }
 
 // Done +++
@@ -1827,7 +1857,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     });
 
     $('#btnSubmitVerifyOTP').click(function () {
-        // $("body").addClass("loading");
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
         let otp3 = $('#otp3').val().trim();
@@ -1861,8 +1890,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
-                    showCircularProgressbar('#test');
-                    // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
+                    // showCircularProgressbar('#test');
+                    showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
@@ -1876,7 +1905,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         }
         else {
             alert('Thiếu số điện thoại hoặc mã otp !');
-            // $("body").removeClass("loading");
             return;
         }
     })
