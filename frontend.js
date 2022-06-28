@@ -53,7 +53,7 @@ function showCircularProgressbar(element) {
                     <div class="imgloading-140"></div>
                     <h2>Đang trong tiến trình xác minh thông tin</h2>
                     <p style='text-align: center;'>
-                        <a class="ahref" href="#showmess" style='width:auto'>Trở lại</a>
+                    Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
                     </p> 
                     </div> 
                 </div>`;
@@ -1672,6 +1672,8 @@ function showFormSetupPin(element, screen, token) {
                 console.log('Result Reset Pin: ', data);
                 if (data.status === true) {
                     showMessage(element, "<h3>Cập nhật mã pin thành công</h3>", "ico-success");
+                }else{
+                    messageScreen(element,{screen : "pincode_unsuccess",pipeline:false});
                 }
             }
             $("body").removeClass("loading");
@@ -2062,7 +2064,7 @@ function showProcessPipeline(step) {
     var pipeline = `
         <div class='headrow'>
         <div class='voolo-logo'></div>
-            <h3 style="margin-bottom:32px; font-size:24px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <h3>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -2198,3 +2200,5 @@ function messageScreen(element, config) {
     $(element).html(html);
     if (config.pipeline) showProcessPipeline(5);
 }
+
+// function autoload
