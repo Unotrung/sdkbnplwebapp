@@ -53,7 +53,7 @@ function showCircularProgressbar(element) {
                     <div class="imgloading-140"></div>
                     <h2>Đang trong tiến trình xác minh thông tin</h2>
                     <p style='text-align: center;'>
-                        <a class="ahref" href="#showmess" style='width:auto'>Trở lại</a>
+                    Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
                     </p> 
                     </div> 
                 </div>`;
@@ -960,7 +960,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' type='phone' id="phone" name="phone" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+                                    <input class='input-global' type='phone' id="phone" name="phone"  onchange='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
@@ -1485,9 +1485,9 @@ function formatCurrency(money) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
-    showLogo(63);
     var html = `
-        <div class='form-card form-card-pincode'>
+        <div class='box form-card-pincode'>
+        <div class='voolo-logo'></div>
             <form id='formSetupPinCode'>
                     <div class='card'>
                         <div class='card-head no-line'></div>
@@ -1511,7 +1511,7 @@ function showFormPincode(element, phone, screen) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1607,7 +1607,7 @@ function showFormSetupPin(element, screen, token) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1617,7 +1617,7 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value)
@@ -1677,6 +1677,8 @@ function showFormSetupPin(element, screen, token) {
                 console.log('Result Reset Pin: ', data);
                 if (data.status === true) {
                     showMessage(element, "<h3>Cập nhật mã pin thành công</h3>", "ico-success");
+                } else {
+                    messageScreen(element, { screen: "pincode_unsuccess", pipeline: false });
                 }
             }
             $("body").removeClass("loading");
@@ -2110,7 +2112,7 @@ function showProcessPipeline(step) {
     var pipeline = `
         <div class='headrow'>
         <div class='voolo-logo'></div>
-            <h3 style="margin-bottom:32px; font-size:24px">Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+            <h3>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -2187,7 +2189,7 @@ function router(element) {
             showContract(element);
             break;
         case "showAllTenor":
-            showAllTenor(element);
+            showAllTenor(element, 3);
             break;
 
     }
@@ -2246,3 +2248,5 @@ function messageScreen(element, config) {
     $(element).html(html);
     if (config.pipeline) showProcessPipeline(5);
 }
+
+// function autoload
