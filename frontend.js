@@ -2,7 +2,7 @@ const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
 let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
-
+let btnSelActive,btnFrontActive,btnBackActive = false;
 // Done +++
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
     this.fullname = fullname;
@@ -60,6 +60,20 @@ function showCircularProgressbar(element) {
     $(element).html(html);
     showProcessPipeline(4);
     $("body").removeClass("loading");
+    
+    var myInterval = setInterval(function(){
+        let phone = localStorage.getItem('phone');
+        let result = checkPhoneExists(phone);
+        if (result.errCode === 1000 && result.status === true) {
+            let step = result.data.step;
+            console.log(step);
+            if (step === 4) {
+                clearInterval(myInterval);
+                messageScreen(element,{screen : "successScreen",pipeline:true});
+            }
+        }
+    }, 5000);
+
 }
 
 // Done +++
@@ -140,50 +154,54 @@ function showUICheckPhone(element) {
     var btnSubmitPhone = document.querySelector('#btnSubmitPhone');
     btnSubmitPhone.disabled = true;
 
-    dataPhone.oninput = function () {
-        if (dataPhone.value !== null && dataPhone.value !== '') {
+    $("#phone").on('input',function(){
+        if (dataPhone.value !== null && dataPhone.value !== '' && $(this).val().length >9 && $(this).val().length < 12) {
             formatStyleCorrectInput(dataPhone, errorMessage, btnSubmitPhone);
-            $('#btnSubmitPhone').click(function () {
-                let data = dataPhone.value;
-                localStorage.setItem('phone', data);
-                let result = checkPhoneExists(data);
-                console.log('Check phone exists: ', result);
-                if (result.errCode === 1000 && result.status === true) {
-                    let step = result.data.step;
-                    if (step === 4) {
-                        showFormPincode(element, data, 'VERIFY_PIN');
-                    }
-                    else if (step === 2) {
-                        showContract(element);
-                    }
-                    else if (step === 3) {
-                        showCircularProgressbar(element);
-                    }
-                    else if (step === 0) {
-                        showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
-                    }
-                }
-                else if (result.errCode === 1003 && result.status === false) {
-                    showUICheckNid(element);
-                }
-                else if (result.errorCode === 8000 && result.status === false) {
-                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Định dạng số điện thoại không hợp lệ');
-                    return;
-                }
-                else if (result.errCode === 1008 && result.status === false) {
-                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
-                    return;
-                }
-                else if (result.errCode === 1004 && result.status === false) {
-                    formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
-                    return;
-                }
-            })
+            
         }
         else {
             formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Vui lòng nhập số điện thoại');
         }
-    }
+    });
+    
+
+    $('#btnSubmitPhone').click(function () {
+        let data = dataPhone.value;
+        localStorage.setItem('phone', data);
+        let result = checkPhoneExists(data);
+        console.log('Check phone exists: ', result);
+        if (result.errCode === 1000 && result.status === true) {
+            let step = result.data.step;
+            if (step === 4) {
+                showFormPincode(element, data, 'VERIFY_PIN');
+            }
+            else if (step === 2) {
+                showContract(element);
+            }
+            else if (step === 3) {
+                showCircularProgressbar(element);
+            }
+            else if (step === 0) {
+                showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
+            }
+        }
+        else if (result.errCode === 1003 && result.status === false) {
+            showUICheckNid(element);
+        }
+        else if (result.errorCode === 8000 && result.status === false) {
+            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Định dạng số điện thoại không hợp lệ');
+            return;
+        }
+        else if (result.errCode === 1008 && result.status === false) {
+            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            return;
+        }
+        else if (result.errCode === 1004 && result.status === false) {
+            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            return;
+        }
+    });
+
 }
 
 // Done +++
@@ -226,7 +244,7 @@ function showUICheckNid(element) {
     var btnCapture = document.querySelector('#callHP');
 
     dataNid.oninput = function () {
-        if (dataNid.value !== null && dataNid.value !== '') {
+        if (dataNid.value !== null && dataNid.value !== '' && dataNid.value.length > 8 && dataNid.value.length < 13) {
             // if (btnCapture.clicked === true) {
             formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
             $('#btnSubmitNid').click(function () {
@@ -311,7 +329,7 @@ function captureNidFrontAndBack(element) {
     let backImage = localStorage.getItem('back-image');
 
     // if (btnCaptureFront.clicked === true && btnCaptureBack.clicked === true) {
-    btnSubmit.disabled = false;
+    // btnSubmit.disabled = false;
     $('#btnSubmit').click(function () {
         let adn = JSON.parse(localStorage.getItem('allDataNid'));
         if (adn !== null && adn !== '') {
@@ -651,6 +669,10 @@ function showAllTenor(element, nCount = 0) {
     html += `<button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button></form>`;
     $(element).html(html);
 
+    //validation button
+    var btnSubmitPin = document.querySelector('#btnContinue');
+    btnSubmitPin.disabled = true;
+
     // show list productions
     listProductions({
         element: element,
@@ -662,7 +684,7 @@ function showAllTenor(element, nCount = 0) {
 
     $('#btnContinue').click(function () {
         let phone = localStorage.getItem('phone');
-        showFormPincode(element, phone, 'SHOW_TENOR');
+        showFormPincode(element, phone, 'BUY_SUCCESS');
     });
 };
 
@@ -692,6 +714,9 @@ function showAllProvider(element) {
 function selectTenor(el) {
     $(".tenor-list").removeClass("active");
     $(el).closest('div.tenor-list').addClass("active");
+    //validation button
+    var btnSubmitPin = document.querySelector('#btnContinue');
+    btnSubmitPin.disabled = false;
     return;
 }
 
@@ -843,10 +868,10 @@ function showSuccessMessage(input) {
     let inputEle = parent.querySelector('input');
     let selectEle = parent.querySelector('select');
     if (inputEle) {
-        inputEle.style.border = '1px solid #EE4D2D';
+        inputEle.style.border = '1px solid #e4e2e2';
     }
     if (selectEle) {
-        selectEle.style.border = '1px solid #EE4D2D';
+        selectEle.style.border = '1px solid #e4e2e2';
     }
     let spanError = parent.querySelector('span');
     spanError.innerText = '';
@@ -1463,6 +1488,15 @@ function showCapture(base64, eId) {
             'background': 'url(' + base64 + ') no-repeat center',
             'background-size': 'cover'
         });
+        if(eId === 'btnCaptureFront'){
+            btnFrontActive = true;
+        }
+        if(eId === 'btnCaptureBack'){
+            btnFrontActive = true;
+        }
+        if(btnFrontActive && btnFrontActive){
+            $("#btnSubmit").attr("disabled",false);
+        }
 
     }
 }
@@ -1489,16 +1523,15 @@ function showFormPincode(element, phone, screen) {
         <div class='box form-card-pincode'>
         <div class='voolo-logo'></div>
             <form id='formSetupPinCode'>
-                    <div class='card'>
-                        <div class='card-head no-line'></div>
-                        <div class='card-body text-center form-pincode'>
-                            <h2>Nhập mã PIN</h2>
+                    <div class=''>
+                        <div class='text-center form-pincode'>
+                            <h1>Nhập mã PIN</h1>
                             <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                            <p class='paragraph-text-bold'>Mã PIN</p>
+                            <h2 class=''>Mã PIN</h2>
                             <div id='pincode'></div>
                             <span class='error_message error_message_pin'></span>
                         </div>
-                        <div class='card-footer' style='height:32px'></div>
+                        <div class='' style='height:32px'></div>
                     </div>
                     <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
                     <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
@@ -1507,6 +1540,9 @@ function showFormPincode(element, phone, screen) {
 
     $(element).html(html);
 
+    var btnSubmitPin = document.querySelector('#btnSubmitPin');
+    btnSubmitPin.disabled = true;
+
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1514,66 +1550,67 @@ function showFormPincode(element, phone, screen) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
-            console.log(value)
+            console.log(value);
+            if(value.length == 4){
+                btnSubmitPin.disabled = false;
+            }
         }
     });
 
-    var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
 
     var pincode = document.querySelector('#pincode');
 
     var errorMessage = document.querySelector('.error_message');
 
-    var btnSubmitPin = document.querySelector('#btnSubmitPin');
-    btnSubmitPin.disabled = true;
+    $('#btnSubmitPin').click(function () {
+        var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
+        if (pin === null || pin === '' || pin === undefined){
+            formatStyleWrongInput(pincode, errorMessage, btnSubmitPin, 'Vui lòng nhập mã pin');
+            return;
+        }
+        formatStyleCorrectInput(pincode, errorMessage, btnSubmitPin);
+        let result = login(phone, pin);
+        console.log('Result Show Form Pin code: ', result);
+        //set cus info
+        // customer.name = result.data.phone;
+        // customer.limit = result.data.limit;
+        // customer.avatar = result.data.avatar;
+        //end set cus info
 
-    if (pin !== null && pin !== '' && pin !== undefined) {
-        $('#btnSubmitPin').click(function () {
-            formatStyleCorrectInput(pincode, errorMessage, btnSubmitPin);
-            let result = login(phone, pin);
-            console.log('Result Show Form Pin code: ', result);
-            //set cus info
-            // customer.name = result.data.phone;
-            // customer.limit = result.data.limit;
-            // customer.avatar = result.data.avatar;
-            //end set cus info
-
-            if (result.status === true && result.data.step === 4) {
-                showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
-                // switch (screen) {
-                //     default:
-                //         showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
-                //     case "SHOW_TENOR":
-                //         showAllTenor(element, 3);
-                //         break;
-                //     case "SHOW_SUCCESS_PAGE":
-                //         showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
-                //         break;
-                //     case "BUY_SUCCESS":
-                //         showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
-                //         break;
-                //     case "BUY_UNSUCCESS":
-                //         showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
-                //         break;
-                // }
+        if (result.status === true && result.data.step === 4) {
+            // showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+            switch (screen) {
+                default:
+                    showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
+                case "SHOW_TENOR":
+                    showAllTenor(element, 3);
+                    break;
+                case "SHOW_SUCCESS_PAGE":
+                    showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
+                    break;
+                case "BUY_SUCCESS":
+                    showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                    break;
+                case "BUY_UNSUCCESS":
+                    showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
+                    break;
             }
-            // else if (result.status === true && result.data.step === 3) {
-            //     showCircularProgressbar(element);
-            //     return;
-            // }
-            else if (result.status === false && result.statusCode === 1002) {
-                alert('Số điện thoại không hợp lệ !');
-                return;
-            }
-            else if (result.status === false && result.statusCode === 1003) {
-                alert('Mã pin không hợp lệ !');
-                return;
-            }
-        })
-    }
-    else {
-        formatStyleWrongInput(pincode, errorMessage, btnSubmitPin, 'Vui lòng nhập mã pin');
-    }
+        }
+        // else if (result.status === true && result.data.step === 3) {
+        //     showCircularProgressbar(element);
+        //     return;
+        // }
+        else if (result.status === false && result.statusCode === 1002) {
+            alert('Số điện thoại không hợp lệ !');
+            return;
+        }
+        else if (result.status === false && result.statusCode === 1003) {
+            alert('Mã pin không hợp lệ !');
+            $(".pincode-input").val("");
+            return;
+        }
+    });
+    
 }
 
 // Done +++
@@ -1603,6 +1640,9 @@ function showFormSetupPin(element, screen, token) {
         showProcessPipeline(2);
     }
 
+    let iPut1,iPut2 = false;
+    $('#btnSubmitPin').attr("disabled",true);
+
     new PincodeInput("#pincode", {
         count: 4,
         secure: true,
@@ -1610,7 +1650,14 @@ function showFormSetupPin(element, screen, token) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
-            console.log(value)
+            console.log(value);
+            if(value.length == 4)
+            {
+                iPut1 = true;
+                if(iPut1&&iPut2){
+                    $('#btnSubmitPin').attr("disabled",false);
+                }
+            }
         }
     });
 
@@ -1620,7 +1667,14 @@ function showFormSetupPin(element, screen, token) {
         previewDuration: -1,
         inputId: 'pincf',
         onInput: (value) => {
-            console.log(value)
+            console.log(value);
+            if(value.length == 4)
+            {
+                iPut2 = true;
+                if(iPut1&&iPut2){
+                    $('#btnSubmitPin').attr("disabled",false);
+                }
+            }
         }
     });
 
@@ -1892,8 +1946,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
-                    // showCircularProgressbar('#test');
-                    showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
+                    showCircularProgressbar('#test');
+                    // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
@@ -2043,6 +2097,7 @@ function showContract(element) {
 </div>`;
     $(element).html(html);
     showProcessPipeline(3);
+
     $('#btnContinue').click(function () {
         let confirm_contract = $('#confirm_contract').is(":checked");
         let confirm_otp = $('#confirm_otp').is(":checked");
@@ -2208,7 +2263,7 @@ function messageScreen(element, config) {
                         <div class='ico-success'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2220,7 +2275,7 @@ function messageScreen(element, config) {
                         <div class='ico-unsuccess'></div>
                         <h3>Đăng ký không thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2247,6 +2302,18 @@ function messageScreen(element, config) {
     }
     $(element).html(html);
     if (config.pipeline) showProcessPipeline(5);
+    var n = 5;
+    var cInterval = setInterval(function(){
+        $(".coutdown").html(n);
+        console.log("time: ",n);
+        if(n === 0){
+            if(config.screen == 'successScreen'){
+                showAllTenor(element, 3);
+                clearTimeout(cInterval);
+            }
+        }
+        n = n-1; 
+    }, 1000);
 }
 
 // function autoload
