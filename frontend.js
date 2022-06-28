@@ -1510,7 +1510,7 @@ function showFormPincode(element, phone, screen) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1602,7 +1602,7 @@ function showFormSetupPin(element, screen, token) {
         count: 4,
         secure: true,
         pattern: '[0-9]*',
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
             console.log(value)
@@ -1612,7 +1612,7 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
-        previewDuration: 1,
+        previewDuration: -1,
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value)

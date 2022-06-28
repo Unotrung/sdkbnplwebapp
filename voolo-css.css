@@ -481,6 +481,7 @@ input::-webkit-inner-spin-button{
     font: caption;
     font-size: 4.6em;
     position: relative;
+    caret-color: transparent;
 }
 
 .form-otpcode h2{
@@ -502,7 +503,8 @@ input::-webkit-inner-spin-button{
 }
 
 .pincode-input.pincode-input--focused {
-    border-color: #197dde;
+    border-color: #197dde!important;
+    color:#197dde!important;
 }
 
 .pincode-input.pincode-input--filled[type="password"] {
