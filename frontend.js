@@ -101,7 +101,7 @@ function formatStyleCorrectInput(data, errorMessage, btn) {
     errorMessage.innerHTML = '';
     errorMessage.style.visibility = 'hidden';
     errorMessage.style.opacity = '0';
-    btn.style.backgroundColor = '#000000';
+    // btn.style.backgroundColor = '#000000';
     btn.disabled = false;
 }
 
@@ -112,7 +112,7 @@ function formatStyleWrongInput(data, errorMessage, btn, content) {
     errorMessage.style.visibility = 'visible';
     errorMessage.style.opacity = '1';
     btn.disabled = true;
-    btn.style.backgroundColor = 'rgba(154, 147, 147, 0.1)';
+    // btn.style.backgroundColor = 'rgba(154, 147, 147, 0.1)';
 }
 
 // Done +++
@@ -247,6 +247,10 @@ function showUICheckNid(element) {
         if (dataNid.value !== null && dataNid.value !== '' && dataNid.value.length > 8 && dataNid.value.length < 13) {
             // if (btnCapture.clicked === true) {
             formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
+            if(!btnSelActive) 
+            {
+                btnSubmitNid.disabled = true;
+            }
             $('#btnSubmitNid').click(function () {
                 let data = $('#nid').val();
                 localStorage.setItem('nid', data);
@@ -1498,6 +1502,15 @@ function showCapture(base64, eId) {
             $("#btnSubmit").attr("disabled",false);
         }
 
+        if(eId === 'callHP'){
+            btnSelActive = true;
+            console.log($("#nid").val());
+            if($("#nid").val() !== '' && $("#nid").val().length > 8 && $("#nid").val().length < 13 && btnSelActive ){
+                $("#btnSubmitNid").attr("disabled",false);
+            }
+        }
+
+
     }
 }
 
@@ -2309,8 +2322,8 @@ function messageScreen(element, config) {
         if(n === 0){
             if(config.screen == 'successScreen'){
                 showAllTenor(element, 3);
-                clearTimeout(cInterval);
             }
+            clearTimeout(cInterval);
         }
         n = n-1; 
     }, 1000);
