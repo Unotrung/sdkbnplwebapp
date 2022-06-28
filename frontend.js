@@ -795,7 +795,6 @@ function postNationalID(ImageURL) {
             "method": "POST",
             "timeout": 0,
             "headers": {
-                "content-type": 'multipart/formdata',
                 "appId": "abe84d",
                 "appKey": "7d2c0d7e1690c216458c",
                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea"
@@ -928,8 +927,8 @@ function showDataInform(element, personal) {
     let dob = convertDateString(personal.dob);
     let conditionDob = convertDateString(personal.dob) !== null && convertDateString(personal.dob) !== '' && convertDateString(personal.dob) !== undefined;
     let gender = personal.gender;
-    let genM = gender === 'M' ? "selected" : '';
-    let genF = gender === 'F' ? "selected" : '';
+    var genM = (gender === 'M') ? "selected" : '';
+    var genF = (gender === 'F') ? "selected" : '';
     let conditionGender = personal.gender !== null && personal.gender !== '' && personal.gender !== undefined;
     let nid = personal.nid;
     let conditionNid = personal.nid !== null && personal.nid !== '';
@@ -961,7 +960,11 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
+<<<<<<< HEAD
                                     <input class='input-global' type='phone' id="phone" name="phone"  onchange='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+=======
+                                    <input class='input-global' type='phone' id="phone" name="phone" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+>>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
@@ -971,10 +974,17 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
+<<<<<<< HEAD
                                     <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''}>
                                     <option value="" >Vui lòng chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
+=======
+                                    <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
+                                    <option value="" >Vui lòng chọn</option>
+                                    <option value="M" ${genM}>Nam</option>
+                                    <option value="F" ${genF}>Nu</option>
+>>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
@@ -1045,7 +1055,11 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
+<<<<<<< HEAD
                                     <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
+=======
+                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' "/>
+>>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1185,7 +1199,10 @@ function showDataInform(element, personal) {
             "temporaryStreet": street_permanent,
             "expirationDate": doe
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
         if (!isCheckEmpty) {
             if (personal_all_info !== null) {
                 localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
@@ -1976,22 +1993,24 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-    var html = `<div class='box formValue-mt'>
-    <div style = 'display: block'>
-                    <h1>${data.title1}</h1>
-                    <h2>${data.title2}</h2>
-                    <h2>${data.content}</h2>
-                </div>
-            <div style='display: block'>
+    var html = `<div class='box contractForm formValue-mt'>
+    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
+    <div style = 'display: block'  class='contract-detail'>
+                    <h3>${data.title1}</h3>
+                    <h3>${data.title2}</h3>
+                    <p>${data.content}</p>
+            </div>
+            <div style='display: block'  class='contract-term'>
                 <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                <span>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</span>
-                <div/>
-                <div style='display: block'>
+                <label for='confirm_contract'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
+            </div>
+            <div style='display: block'  class='contract-term'>
                 <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                <span>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</span>
-                <div/>
-                <button type='button' id='btnContinue'>Tiếp tục</button>
-                </div></div>`;
+                <label for='confirm_otp'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+            </div>
+            <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+    </div>
+</div>`;
     $(element).html(html);
     showProcessPipeline(3);
     $('#btnContinue').click(function () {

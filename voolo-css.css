@@ -477,6 +477,9 @@ input::-webkit-inner-spin-button{
     text-align: center;
     text-transform: uppercase;
     color: #56CA8B;
+    font: caption;
+    font-size: 4.6em;
+    position: relative;
 }
 
 .form-otpcode h2{
@@ -502,8 +505,9 @@ input::-webkit-inner-spin-button{
 }
 
 .pincode-input.pincode-input--filled[type="password"] {
-    font: small-caption;
-    font-size: 5em;
+    font: caption;
+    font-size: 4.6em;
+    position: relative;
 }
 
 .pincode-input.pincode-input--filled {
@@ -975,4 +979,34 @@ input{
     border: none;
     outline: none;
     background-color: rgba(154, 147, 147, 0.1);
+}
+.contractForm button{
+    margin: 32px 0;
+    width: 200px;
+}
+.contractForm .contract-title{
+    text-align: left;
+    margin: 32px 0;
+}
+.contractForm .contract-detail{
+    margin-bottom: 32px;
+    font-size: 12px;
+    text-align: justify;
+    height: 285px;
+    overflow: auto;
+}
+.contractForm .contract-term{
+    font-size: 12px;
+    line-height: 32px;
+    text-align: left;
+}
+.contractForm .contract-term label{
+    padding-left: 10px;
+}
+.contractForm{
+    background: #FFFFFF;
+    border-radius: 10px;
+    margin-bottom: 32px!important;
+    text-align: center;
+    font-family: 'Montserrat';
 }
