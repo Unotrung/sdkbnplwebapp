@@ -527,17 +527,25 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
 async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
-        hvFaceConfig.setShouldShowInstructionPage(false);
+        hvFaceConfig.setShouldShowInstructionPage(true);
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
+                if (errorCode === '013') {
+                    return
+                }
+                if (errorCode === 401) {
+                    console.error(errorMessage);
+                    return;
+                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                console.log(apiResults);
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
@@ -805,6 +813,7 @@ function postNationalID(ImageURL) {
             "method": "POST",
             "timeout": 0,
             "headers": {
+                "content-type" : 'multipart/formdata',
                 "appId": "abe84d",
                 "appKey": "7d2c0d7e1690c216458c",
                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea"
