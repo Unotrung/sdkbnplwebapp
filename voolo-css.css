@@ -56,9 +56,9 @@ body{
 }
 
 #test .voolo-logo{
-    width: 168px;
-    height: 33px;
-    background: url(assets/img/VOOLO_logo_horizontal.png) no-repeat; 
+    width: 265px;
+    height: 50px;
+    background: url(assets/img/logo-275.png) no-repeat; 
     background-size: contain;
     margin: 20px auto;
     margin-bottom: 32px;
@@ -501,7 +501,7 @@ input::-webkit-inner-spin-button{
 }
 
 .pincode-input.pincode-input--focused {
-    border-color: #000;
+    border-color: #197dde;
 }
 
 .pincode-input.pincode-input--filled[type="password"] {
@@ -726,6 +726,21 @@ body.loading .overlay{
 
 .form-verify div.info{
     font-weight: 600;
+}
+.form-card-pincode .form-pincode{
+    line-height: normal;
+}
+.form-card-pincode h2{
+    margin: 32px 0 23.4px 0;
+}
+.form-card-pincode .voolo-logo{
+    margin: 0 auto 68.87px auto!important;
+}
+.form-card-pincode p{
+    font-size: 12px;
+}
+.form-card-pincode{
+    text-align: center;
 }
 
 /*  and (min-width: 390px)  */

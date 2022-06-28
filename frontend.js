@@ -1504,19 +1504,18 @@ function formatCurrency(money) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
-    showLogo(63);
     var html = `
-        <div class='form-card form-card-pincode'>
+        <div class='box form-card-pincode'>
+        <div class='voolo-logo'></div>
             <form id='formSetupPinCode'>
-                <div class='card'>
-                    <div class='card-head no-line'></div>
-                    <div class='card-body text-center form-pincode'>
-                        <h2>Nhập mã PIN</h2>
+                <div class=''>
+                    <div class='text-center form-pincode'>
+                        <h1>Nhập mã PIN</h1>
                         <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                        <p class='paragraph-text-bold'>Mã PIN</p>
+                        <h2 class=''>Mã PIN</h2>
                         <div id='pincode'></div>
                     </div>
-                    <div class='card-footer ' style='height:32px'></div>
+                    <div class='' style='height:32px'></div>
                 </div>
                 <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
                 <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
@@ -2159,7 +2158,7 @@ function router(element) {
             showContract(element);
             break;
         case "showAllTenor":
-            showAllTenor(element);
+            showAllTenor(element,3);
             break;
 
     }
