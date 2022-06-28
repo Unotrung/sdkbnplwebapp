@@ -527,7 +527,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
 async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
-        hvFaceConfig.setShouldShowInstructionPage(true);
+        hvFaceConfig.setShouldShowInstructionPage(false);
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
