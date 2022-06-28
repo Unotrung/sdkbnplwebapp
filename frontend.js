@@ -960,11 +960,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-<<<<<<< HEAD
                                     <input class='input-global' type='phone' id="phone" name="phone"  onchange='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
-=======
-                                    <input class='input-global' type='phone' id="phone" name="phone" value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
@@ -974,17 +970,10 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-<<<<<<< HEAD
                                     <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''}>
                                     <option value="" >Vui lòng chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
-=======
-                                    <select id='gender' name='gender' class='input-global' ${conditionGender ? 'disabled' : ''}>
-                                    <option value="" >Vui lòng chọn</option>
-                                    <option value="M" ${genM}>Nam</option>
-                                    <option value="F" ${genF}>Nu</option>
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
@@ -1055,11 +1044,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-<<<<<<< HEAD
                                     <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
-=======
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' "/>
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1199,10 +1184,6 @@ function showDataInform(element, personal) {
             "temporaryStreet": street_permanent,
             "expirationDate": doe
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0cfb5f896363ab8553a34a1b0f819e0b28c20c96
         if (!isCheckEmpty) {
             if (personal_all_info !== null) {
                 localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
