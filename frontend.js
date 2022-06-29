@@ -515,6 +515,7 @@ function cutStringData(infomation) {
                             nationality: nationality
                         }
                         localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
+                        showUseGuideBackNid();
                     }
                     else {
                         localStorage.removeItem('front-image');
@@ -678,15 +679,12 @@ async function LaunchDocumentCaptureScreen(side) {
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
-                        showCapture(imageBase64, "btnCaptureFront");
-                        showUseGuideBackNid();
+                        showCapture(imageBase64, "btnCaptureFront")
                         // alert('Lưu mặt trước CMND thà công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (applyBackNid) {
                         localStorage.setItem('back-image', imageBase64);
-                        $('.guideslide').remove();
-                        $("#formValueNid").show();
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureBack");
                         // alert('Lưu mặt sau CMND thành công !');
@@ -2638,27 +2636,3 @@ String.prototype.replaceAt = function(index, replacement) {
 $("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
 })
-
-function matchField(){
-    $.ajax({
-        type: "POST",
-        url: "https://apac.docs.hyperverge.co/v1/matchFields",
-        async: false,
-        headers: {
-            appId: "abe84d",
-            appKey: "7d2c0d7e1690c216458c",
-            transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
-        },
-        data: JSON.stringify({
-            "id_number": {
-                "value1": "030200010423",
-                "value2": "030200010424"
-            }
-        }),
-        contentType: "application/json",
-        complete: function (data) {
-            console.log(data);
-            wait = false;
-        }
-});
-}
