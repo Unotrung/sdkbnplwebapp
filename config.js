@@ -1,5 +1,5 @@
 let baseURL = 'https://apibnpl.voolo.vn/v1/bnpl';
-const DOMAIN = 'http://localhost/sdkbnplwebapp';
+const DOMAIN = 'https://bnpl.voolo.vn';
 let options = {
     'Content-Type': 'application/json',
     'appKey': appKey,
