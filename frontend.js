@@ -679,11 +679,14 @@ async function LaunchDocumentCaptureScreen(side) {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
+                        showUseGuideBackNid();
                         // alert('Lưu mặt trước CMND thà công !');
                         // $("#front_picture").attr("src", imageBase64);
                     }
                     else if (applyBackNid) {
                         localStorage.setItem('back-image', imageBase64);
+                        $('.guideslide').remove();
+                        $("#formValueNid").show();
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureBack");
                         // alert('Lưu mặt sau CMND thành công !');
@@ -2594,10 +2597,72 @@ function showUseGuideNid() {
     $('.guideslide').load('useguidenid.html');
 }
 
+<<<<<<< HEAD
 String.prototype.replaceAt = function (index, replacement) {
+=======
+function showUseGuideBackNid(){
+    $('body').find('.guideslide').remove();
+    $("#formValueNid").hide();
+    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
+    var html = `<div class='box showMessage'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Chụp ảnh mặt trước thành công</h3>
+                        <div class='line'>
+                            <span>Now</span>
+                        </div>
+                        <p style='text-align: center;'>
+                            Lật mặt sau của card để tiếp tục chụp ảnh
+                        </p>
+                        <div class="angled-borders">
+                            <div id="f1_container">
+                                <div id="f1_card" class="shadow">
+                                    <div class="front face">
+                                        <img src='./assets/img/cccd.png' width="115"/>
+                                    </div>
+                                    <div class="back face center">
+                                        <img src='./assets/img/cccd-2.png' width="115"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%">
+                        <button class='payment-button' id="" onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
+                        </div>
+                    </div>
+                </div>`;
+        $('.guideslide').html(html);
+}
+
+String.prototype.replaceAt = function(index, replacement) {
+>>>>>>> 9e53452 (update css)
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
 $("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
 })
+
+function matchField(){
+    $.ajax({
+        type: "POST",
+        url: "https://apac.docs.hyperverge.co/v1/matchFields",
+        async: false,
+        headers: {
+            appId: "abe84d",
+            appKey: "7d2c0d7e1690c216458c",
+            transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
+        },
+        data: JSON.stringify({
+            "id_number": {
+                "value1": "030200010423",
+                "value2": "030200010424"
+            }
+        }),
+        contentType: "application/json",
+        complete: function (data) {
+            console.log(data);
+            wait = false;
+        }
+});
+}

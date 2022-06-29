@@ -966,7 +966,7 @@ input{
 .guideslide{
     position: fixed;
     top: 10px;
-    width: 80%;
+    width:fit-content   ;
     left: 0px;
     right: 0px;
     margin: 120px auto;
@@ -1121,3 +1121,81 @@ input{
 .error_pincode_red, .error_otpcode_red{
     border: 2px solid #EE4D2D !important;
 }
+.angled-borders {
+    border: 10px solid;
+    border-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 11' width='11' height='11'><g fill='%22489fe2'><rect width='1' height='5'/><rect y='6' width='1' height='5'/><rect x='10' y='6' width='1' height='5'/><rect x='10' width='1' height='5'/><rect width='5' height='1'/><rect y='10' width='5' height='1'/><rect x='6' y='10' width='5' height='1'/><rect x='6' width='5' height='1'/></g></svg>") 5;
+  }
+  div.angled-borders {
+    display: inline-block;
+      margin-top:32px;
+  }
+.showMessage .line span{
+    background-color: #f5f5f5;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+    color: #A8A8A8;
+}
+.showMessage .line{
+    margin-top: 32px;
+    position: relative;
+}
+.showMessage .line::after{
+    content: "";
+    height: 1px;
+    background-color: #e8e8e8;
+    width: 100%;
+    max-width: 336px;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 0;
+    margin: 0 auto;
+    z-index: 0;
+}
+
+#f1_container {
+    position: relative;
+    width: 115px;
+    height: 75px;
+    z-index: 1;
+  }
+  #f1_container {
+    perspective: 1000;
+  }
+  #f1_card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: all 1.0s linear;
+    -webkit-animation-name: rotateY;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+    -moz-animation-name: rotateY;
+    -moz-animation-duration:2s;
+    -moz-animation-iteration-count:infinite;
+    -moz-animation-timing-function:linear;
+  }
+  @-webkit-keyframes rotateY {
+    from {-webkit-transform:rotateY(0deg);}
+    to {  -webkit-transform:rotateY(180deg);}
+  }
+
+@-moz-keyframes rotateY {
+    from {-moz-transform:rotateY(0deg);}
+    to {  -moz-transform:rotateY(180deg);}
+  }
+  .face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  .face.back {
+    display: block;
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+  }
