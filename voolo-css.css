@@ -19,7 +19,9 @@ body{
     line-height: 24px;
     color: #000000;
 }
-
+.main-page .card-head h3{
+    font-family: 'Montserrat';
+}
 .main-page{
     background-color: #F4F4F4 !important;
     background: 
