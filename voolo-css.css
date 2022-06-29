@@ -649,13 +649,16 @@ body.loading .overlay{
     left: 0;
     right: 0;
 }
+
 .headrow .voolo-logo{
     margin-bottom: 67.2px!important;
 }
+
 .headrow h3{
     margin-bottom: 53px;
     font-size: 24px;
 }
+
 .headrow .line .Tpipe{
     border-bottom: 1px dashed #ccc;
     width: 23%;
@@ -716,6 +719,7 @@ body.loading .overlay{
 .formValue-mt{
     margin-top: 300px!important;
 }
+
 .formValue-mt-200{
     margin-top: 200px!important;
 }
@@ -739,24 +743,31 @@ body.loading .overlay{
 .form-verify div.info{
     font-weight: 600;
 }
+
 .form-card-pincode .form-pincode{
     line-height: normal;
 }
+
 .form-card-pincode h2{
     margin: 32px 0 23.4px 0;
 }
+
 .form-card-pincode .voolo-logo{
     margin: 0 auto 68.87px auto!important;
 }
+
 .form-card-pincode p{
     font-size: 12px;
 }
+
 .form-card-pincode{
     text-align: center;
 }
+
 .payment-button{
     width: 200px;
 }
+
 .main-page .box .paragraph-text p{
     font-size: 12px;
 }
@@ -850,6 +861,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     line-height: 22px;
     color: #000000;
 }
+
 .btn-previous{
     margin-top: 6px;
     color: #000;
@@ -857,13 +869,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-family: 'Montserrat';
     font-size: 16px;
 }
+
 .showMessage h3{
     font-size: 24px;
     margin-top: 41px;
 }
+
 .showMessage button.payment-button{
     margin-top: 32px;
 }
+
 .showMessage p{
     font-size: 12px;
     line-height: 15px;
@@ -890,9 +905,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     opacity: 0;
 }
 
-.error_message_pin{
+.error_message_otp,.error_message_pin{
     text-align: center;
     margin: 0 auto;
+    margin-top: 8px;
 }
 
 input{
@@ -909,14 +925,17 @@ input{
     color: #fff;
     box-shadow: none;
 }
+
 .contractForm button{
     margin: 32px 0;
     width: 200px;
 }
+
 .contractForm .contract-title{
     text-align: left;
     margin: 32px 0;
 }
+
 .contractForm .contract-detail{
     margin-bottom: 32px;
     font-size: 12px;
@@ -924,14 +943,17 @@ input{
     height: 285px;
     overflow: auto;
 }
+
 .contractForm .contract-term{
     font-size: 12px;
     line-height: 32px;
     text-align: left;
 }
+
 .contractForm .contract-term label{
     padding-left: 10px;
 }
+
 .contractForm{
     background: #FFFFFF;
     border-radius: 10px;
@@ -939,6 +961,7 @@ input{
     text-align: center;
     font-family: 'Montserrat';
 }
+
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
     .main-page{
@@ -1082,10 +1105,10 @@ input{
 }   
 
 
-.error_pincode_gray{
+.error_pincode_gray, .error_otpcode_gray{
     border: 2px solid #8A8A8A !important;
 }
 
-.error_pincode_red{
+.error_pincode_red, .error_otpcode_red{
     border: 2px solid #EE4D2D !important;
 }

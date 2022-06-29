@@ -881,6 +881,7 @@ function postNationalID(ImageURL) {
     }
 }
 
+// Done +++
 function showErrorMessage(input, message) {
     let parent = input.parentElement;
     let inputEle = parent.querySelector('input');
@@ -900,6 +901,7 @@ function showErrorMessage(input, message) {
     spanError.style.opacity = '1';
 }
 
+// Done +++
 function showSuccessMessage(input) {
     let parent = input.parentElement;
     let inputEle = parent.querySelector('input');
@@ -918,6 +920,7 @@ function showSuccessMessage(input) {
     spanError.style.marginLeft = '0px';
 }
 
+// Done +++
 function onChangeValidation(input, message) {
     let element = document.querySelector(input);
     let value = element.value.trim();
@@ -944,6 +947,7 @@ function onChangeValidation(input, message) {
     }
 }
 
+// Done +++
 function checkEmptyError(listInput) {
     let isEmptyError = false;
     listInput.forEach(input => {
@@ -1584,6 +1588,168 @@ function formatCurrency(money) {
 }
 
 // Done +++
+function forgotPinPhone(element, phone) {
+    var html = `<form id='formValuePhone' class='formValue'>
+                    <div class='mobile'>
+
+                        <div class='form__row'>
+                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+
+                    </div>
+                </form>`;
+    $(element).html(html);
+
+    var dataPhone = document.querySelector('#phone_reset');
+    var errorMessage = document.querySelector('.error_message');
+    var btnContinue = document.querySelector('#btnContinue');
+
+    //custom show
+    configUi({
+        element: element,
+        logo: true,
+        intro: false
+    });
+
+    $("#phone_reset").on('input', function () {
+        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+        let isPhoneErr = !regexPhone.test(dataPhone.value);
+        if (dataPhone.value !== null && dataPhone.value !== '') {
+            if (!isPhoneErr) {
+                formatStyleCorrectInput(dataPhone, errorMessage);
+                btnContinue.disabled = false;
+            }
+            else {
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+                btnContinue.disabled = true;
+            }
+        }
+        else {
+            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+            btnContinue.disabled = true;
+        }
+    });
+
+    $('#btnContinue').click(function () {
+        let phone_reset = $('#phone_reset').val().trim();
+        localStorage.setItem('phone_reset', phone_reset);
+        forgotPinNid(element);
+    });
+}
+
+// Done +++
+function forgotPinNid(element) {
+    var html = `<form class='formValue'>
+                    <div class='mobile'>
+
+                        <div class='form__row'>
+                            <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
+                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                            <input type='number' id='nid_reset' class='form__input input-global' />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+
+                    </div>
+                </form>`;
+    $(element).html(html);
+
+    //custom show
+    configUi({
+        element: element,
+        logo: true,
+        intro: false
+    });
+
+    var dataNid = document.querySelector('#nid_reset');
+    var errorMessage = document.querySelector('.error_message');
+    var btnSendOtp = document.querySelector('#btnSendOtp');
+    btnSendOtp.disabled = true;
+
+    $("#nid_reset").on('input', function () {
+        if (dataNid.value !== null && dataNid.value !== '') {
+            const regexNid = /^\d{12}$|^\d{9}$/;
+            let isNidErr = !regexNid.test(dataNid.value);
+            if (!isNidErr) {
+                formatStyleCorrectInput(dataNid, errorMessage);
+                btnSendOtp.disabled = false;
+            }
+            else {
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                btnSendOtp.disabled = true;
+            }
+        }
+        else {
+            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
+            btnSendOtp.disabled = true;
+        }
+    });
+
+    $('#btnSendOtp').click(function () {
+        localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
+        let phone_reset = localStorage.getItem('phone_reset');
+        let nid_reset = localStorage.getItem('nid_reset');
+        let data = sendOtpPin(phone_reset, nid_reset);
+        console.log('Result Send Otp Pin: ', data);
+        if (data.status === true) {
+            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
+        }
+        else if (data.status === false && data.message === 'Send otp failure') {
+            formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1002) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1001) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
+            return;
+        }
+        else if (data.status === false && data.errorCode === 8000) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
+            return;
+        }
+    })
+}
+
+// Done +++
+function addBorderRed(data) {
+    $(".pincode-input").val("");
+    if (data === 'otp') {
+        for (i = 1; i <= 6; i++) {
+            $("#otp" + i).addClass('error_otpcode_red');
+        }
+    }
+    else if (data === 'pin') {
+        for (i = 1; i <= 4; i++) {
+            $("#pin" + i).addClass('error_pincode_red');
+        }
+    }
+    $('.pincode-input').removeClass('pincode-input--filled');
+}
+
+// Done +++
+function addBorderGray(data) {
+    $(".pincode-input").val("");
+    if (data === 'otp') {
+        for (i = 1; i <= 6; i++) {
+            $("#otp" + i).addClass('error_otpcode_gray');
+        }
+    }
+    else if (data === 'pin') {
+        for (i = 1; i <= 4; i++) {
+            $("#pin" + i).addClass('error_pincode_gray');
+        }
+    }
+    $('.pincode-input').removeClass('pincode-input--filled');
+}
+
+// Done +++
 function showFormPincode(element, phone, screen) {
     var html = `
         <div class='box form-card-pincode'>
@@ -1663,29 +1829,22 @@ function showFormPincode(element, phone, screen) {
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
                 formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
-                $(".pincode-input").val("");
-                for (i = 1; i <= 4; i++) {
-                    $("#pin" + i).addClass('error_pincode_gray');
-                }
-                $('.pincode-input').removeClass('pincode-input--filled');
+                addBorderGray('pin');
                 btnSubmitPin.disabled = true;
             }
             else {
                 formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-                $(".pincode-input").val("");
+                addBorderRed('pin');
                 for (i = 1; i <= 4; i++) {
-                    $("#pin" + i).addClass('error_pincode_red');
                     $("#pin" + i).attr('disabled', true);
                 }
-                $('.pincode-input').removeClass('pincode-input--filled');
                 btnSubmitPin.disabled = true;
             }
         }
         else if (result.status === false && result.statusCode === 1004) {
             formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-            $(".pincode-input").val("");
+            addBorderRed('pin');
             for (i = 1; i <= 4; i++) {
-                $("#pin" + i).addClass('error_pincode_red');
                 $("#pin" + i).attr('disabled', true);
             }
             btnSubmitPin.disabled = true;
@@ -1824,136 +1983,6 @@ function showFormSetupPin(element, screen, token) {
 }
 
 // Done +++
-function forgotPinPhone(element, phone) {
-    var html = `<form id='formValuePhone' class='formValue'>
-                    <div class='mobile'>
-
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
-                            <span class='error_message'></span>
-                        </div>
-                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
-
-                    </div>
-                </form>`;
-    $(element).html(html);
-
-    var dataPhone = document.querySelector('#phone_reset');
-    var errorMessage = document.querySelector('.error_message');
-    var btnContinue = document.querySelector('#btnContinue');
-
-    //custom show
-    configUi({
-        element: element,
-        logo: true,
-        intro: false
-    });
-
-    $("#phone_reset").on('input', function () {
-        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-        let isPhoneErr = !regexPhone.test(dataPhone.value);
-        if (dataPhone.value !== null && dataPhone.value !== '') {
-            if (!isPhoneErr) {
-                formatStyleCorrectInput(dataPhone, errorMessage);
-                btnContinue.disabled = false;
-            }
-            else {
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-                btnContinue.disabled = true;
-            }
-        }
-        else {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-            btnContinue.disabled = true;
-        }
-    });
-
-    $('#btnContinue').click(function () {
-        let phone_reset = $('#phone_reset').val().trim();
-        localStorage.setItem('phone_reset', phone_reset);
-        forgotPinNid(element);
-    });
-}
-
-// Done +++
-function forgotPinNid(element) {
-    var html = `<form class='formValue'>
-                    <div class='mobile'>
-
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
-                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                            <input type='number' id='nid_reset' class='form__input input-global' />
-                            <span class='error_message'></span>
-                        </div>
-                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
-
-                    </div>
-                </form>`;
-    $(element).html(html);
-
-    //custom show
-    configUi({
-        element: element,
-        logo: true,
-        intro: false
-    });
-
-    var dataNid = document.querySelector('#nid_reset');
-    var errorMessage = document.querySelector('.error_message');
-    var btnSendOtp = document.querySelector('#btnSendOtp');
-    btnSendOtp.disabled = true;
-
-    $("#nid_reset").on('input', function () {
-        if (dataNid.value !== null && dataNid.value !== '') {
-            const regexNid = /^\d{12}$|^\d{9}$/;
-            let isNidErr = !regexNid.test(dataNid.value);
-            if (!isNidErr) {
-                formatStyleCorrectInput(dataNid, errorMessage);
-                btnSendOtp.disabled = false;
-            }
-            else {
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
-                btnSendOtp.disabled = true;
-            }
-        }
-        else {
-            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
-            btnSendOtp.disabled = true;
-        }
-    });
-
-    $('#btnSendOtp').click(function () {
-        localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
-        let phone_reset = localStorage.getItem('phone_reset');
-        let nid_reset = localStorage.getItem('nid_reset');
-        let data = sendOtpPin(phone_reset, nid_reset);
-        console.log('Result Send Otp Pin: ', data);
-        if (data.status === true) {
-            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
-        }
-        else if (data.status === false && data.message === 'Send otp failure') {
-            formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
-            return;
-        }
-        else if (data.status === false && data.statusCode === 1002) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
-            return;
-        }
-        else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
-            return;
-        }
-        else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
-            return;
-        }
-    })
-}
-
-// Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
     var html = `<div class='form-card card-otpcode'>
@@ -1964,6 +1993,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <h2>Nhập OTP</h2>
                                 <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
                                 <div id='otpcode'></div>
+                                <span class='error_message error_message_otp'></span>
                             </div>
                             <div class='card-footer' style="height:32px"></div>
                         </div>
@@ -1974,6 +2004,13 @@ function showFormVerifyOTP(element, phone, otp, screen) {
 
     $(element).html(html);
     timer(60);
+
+    var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
+    btnSubmitVerifyOTP.disabled = true;
+
+    var otpcode = document.querySelector('#otpcode');
+    var errorMessage = document.querySelector('.error_message');
+
     new PincodeInput("#otpcode", {
         count: 6,
         secure: false,
@@ -1981,6 +2018,13 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         previewDuration: 100,
         inputId: 'otp',
         onInput: (value) => {
+            if (value.length === 6) {
+                btnSubmitVerifyOTP.disabled = false;
+            }
+            else {
+                $('.pincode-input').removeClass('error_otpcode_gray');
+                btnSubmitVerifyOTP.disabled = true;
+            }
         }
     });
 
@@ -2009,15 +2053,35 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
                 }
                 else if (data.status === false && data.statusCode === 4000) {
-                    alert('Mã OTP không hợp lệ !');
-                    return;
+                    if (data?.countFail !== 5) {
+                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        addBorderGray('otp');
+                        btnSubmitVerifyOTP.disabled = true;
+                        return;
+                    }
+                    else {
+                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                        addBorderRed('otp');
+                        for (i = 1; i <= 6; i++) {
+                            $("#otp" + i).attr('disabled', true);
+                        }
+                        btnSubmitVerifyOTP.disabled = true;
+                        return;
+                    }
                 }
                 else if (data.status === false && data.statusCode === 3000) {
-                    alert('Mã OTP đã hết hạn !');
+                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    addBorderGray('otp');
+                    btnSubmitVerifyOTP.disabled = true;
                     return;
                 }
-                else if (data.status === false && data.errorCode === 8000) {
-                    alert('Định dạng số điện thoại không hợp lệ !');
+                else if (data.status === false && data.errorCode === 1004) {
+                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                    addBorderRed('otp');
+                    for (i = 1; i <= 6; i++) {
+                        $("#otp" + i).attr('disabled', true);
+                    }
+                    btnSubmitVerifyOTP.disabled = true;
                     return;
                 }
             }
@@ -2029,18 +2093,37 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
-                    alert("Bạn đã nhập OTP sai " + data?.countFail + " lần");
+                    if (data?.countFail) {
+                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        addBorderGray('otp');
+                        btnSubmitVerifyOTP.disabled = true;
+                    }
+                    else {
+                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                        addBorderRed('otp');
+                        for (i = 1; i <= 6; i++) {
+                            $("#otp" + i).attr('disabled', true);
+                        }
+                        btnSubmitVerifyOTP.disabled = true;
+                    }
                     return;
                 }
                 else if (data.statusCode === 3000 && data.status === false) {
-                    alert("Otp đã hết hạn ! Vui lòng gửi lại OTP");
+                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    addBorderGray('otp');
+                    btnSubmitVerifyOTP.disabled = true;
+                    return;
+                }
+                else if (data.errorCode === 1004 && data.status === false) {
+                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                    addBorderRed('otp');
+                    for (i = 1; i <= 6; i++) {
+                        $("#otp" + i).attr('disabled', true);
+                    }
+                    btnSubmitVerifyOTP.disabled = true;
                     return;
                 }
             }
-        }
-        else {
-            alert('Thiếu số điện thoại hoặc mã otp !');
-            return;
         }
     })
 }
