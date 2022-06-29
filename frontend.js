@@ -374,30 +374,39 @@ function captureNidFrontAndBack(element) {
     })
 }
 
-// function matchField(value1, value2) {
-//     $.ajax({
-//         type: "POST",
-//         url: "https://apac.docs.hyperverge.co/v1/matchFields",
-//         async: false,
-//         headers: {
-//             appId: "abe84d",
-//             appKey: "7d2c0d7e1690c216458c",
-//             transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
-//         },
-//         data: JSON.stringify({
-//             "id_number": {
-//                 "value1": value1,
-//                 "value2": value2
-//             }
-//         }),
-//         contentType: "application/json",
-//         complete: function (data) {
-//             console.log(data);
-//             wait = false;
-//         }
-//     });
-// }
-// matchField('030200010424', '030200010424');
+async function matchField(value1, value2) {
+    let data = $.ajax({
+        type: "POST",
+        url: "https://apac.docs.hyperverge.co/v1/matchFields",
+        async: false,
+        headers: {
+            appId: "abe84d",
+            appKey: "7d2c0d7e1690c216458c",
+            transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
+        },
+        data: JSON.stringify({
+            "id_number": {
+                "value1": value1,
+                "value2": value2
+            }
+        }),
+        contentType: "application/json",
+        // complete: function (data) {
+        //     let result = data.responseJSON.result;
+        //     let idNumber = result?.id_number;
+        //     let all = result?.all;
+        //     console.log('idNumber: ', idNumber);
+        //     console.log('all: ', all);
+        //     if (idNumber && all) {
+        //         return true;
+        //     }
+        //     else {
+        //         return false;
+        //     }
+        // }
+    });
+    return data.responseJSON;
+}
 
 // Done +++
 async function fetchToken() {
@@ -483,21 +492,38 @@ function cutStringData(infomation) {
                 let gender = details?.gender?.value || '';
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
-                front_nid_customer = {
-                    province: province,
-                    idNumber: idNumber,
-                    name: name,
-                    dob: dob,
-                    homeTown: homeTown,
-                    street: street,
-                    ward: ward,
-                    district: district,
-                    city: city,
-                    gender: gender,
-                    doe: doe,
-                    nationality: nationality
-                }
-                localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
+                let nid = localStorage.getItem('nid');
+                matchField(nid, idNumber).then((data) => {
+                    console.log('Data Match Field: ', data);
+                    let idNumberCheck = data?.result?.id_number;
+                    let all = data?.result?.all;
+                    console.log('idNumber: ', idNumberCheck);
+                    console.log('all: ', all);
+                    if (idNumberCheck && all) {
+                        front_nid_customer = {
+                            province: province,
+                            idNumber: idNumber,
+                            name: name,
+                            dob: dob,
+                            homeTown: homeTown,
+                            street: street,
+                            ward: ward,
+                            district: district,
+                            city: city,
+                            gender: gender,
+                            doe: doe,
+                            nationality: nationality
+                        }
+                        localStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
+                    }
+                    else {
+                        localStorage.removeItem('front-image');
+                        $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
+                        $("#btnCaptureFront").removeClass("showImage");
+                        alert('Chứng minh nhân dân mặt trước và chứng minh nhân dân nhập tay không trùng khớp');
+                        runDocumentCaptureScreen('FRONT');
+                    }
+                });
             }
             // BACK NID IMAGE
             if (arrType_back.includes(nidType) && nidType !== null) {
@@ -520,8 +546,6 @@ function cutStringData(infomation) {
 
         let fnc = JSON.parse(localStorage.getItem('front_nid_customer'));
         let bnc = JSON.parse(localStorage.getItem('back_nid_customer'));
-        let nid = localStorage.getItem('nid');
-        let frontNid = JSON.parse(localStorage.getItem('front_nid_customer')).idNumber;
 
         if (fnc !== null && bnc !== null) {
             let allDataNid = {
@@ -529,7 +553,6 @@ function cutStringData(infomation) {
                 back_nid_customer: bnc
             }
             localStorage.setItem('allDataNid', JSON.stringify(allDataNid));
-            return allDataNid;
         }
     }
     catch (error) {
