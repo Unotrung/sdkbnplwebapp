@@ -2,7 +2,8 @@ const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
 let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
-let btnSelActive,btnFrontActive,btnBackActive = false;
+let btnSelActive, btnFrontActive, btnBackActive = false;
+
 // Done +++
 function Personal(fullname, gender, phone, dob, nid, doi, doe, city, district, ward, street) {
     this.fullname = fullname;
@@ -60,20 +61,18 @@ function showCircularProgressbar(element) {
     $(element).html(html);
     showProcessPipeline(4);
     $("body").removeClass("loading");
-    
-    var myInterval = setInterval(function(){
+
+    var myInterval = setInterval(function () {
         let phone = localStorage.getItem('phone');
         let result = checkPhoneExists(phone);
         if (result.errCode === 1000 && result.status === true) {
             let step = result.data.step;
-            console.log(step);
             if (step === 4) {
                 clearInterval(myInterval);
-                messageScreen(element,{screen : "successScreen",pipeline:true});
+                messageScreen(element, { screen: "successScreen", pipeline: true });
             }
         }
     }, 5000);
-
 }
 
 // Done +++
@@ -101,8 +100,8 @@ function formatStyleCorrectInput(data, errorMessage, btn) {
     errorMessage.innerHTML = '';
     errorMessage.style.visibility = 'hidden';
     errorMessage.style.opacity = '0';
+    // btn.disabled = false;
     // btn.style.backgroundColor = '#000000';
-    btn.disabled = false;
 }
 
 // Done +++
@@ -111,7 +110,7 @@ function formatStyleWrongInput(data, errorMessage, btn, content) {
     errorMessage.innerHTML = content;
     errorMessage.style.visibility = 'visible';
     errorMessage.style.opacity = '1';
-    btn.disabled = true;
+    // btn.disabled = true;
     // btn.style.backgroundColor = 'rgba(154, 147, 147, 0.1)';
 }
 
@@ -148,22 +147,30 @@ function showUICheckPhone(element) {
     });
 
     var dataPhone = document.querySelector('#phone');
-
     var errorMessage = document.querySelector('.error_message');
-
     var btnSubmitPhone = document.querySelector('#btnSubmitPhone');
     btnSubmitPhone.disabled = true;
 
-    $("#phone").on('input',function(){
-        if (dataPhone.value !== null && dataPhone.value !== '' && $(this).val().length >9 && $(this).val().length < 12) {
-            formatStyleCorrectInput(dataPhone, errorMessage, btnSubmitPhone);
-            
+    $("#phone").on('input', function () {
+
+        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+        let isPhoneErr = !regexPhone.test(dataPhone.value);
+
+        if (dataPhone.value !== null && dataPhone.value !== '') {
+            if (!isPhoneErr) {
+                btnSubmitPhone.disabled = false;
+                formatStyleCorrectInput(dataPhone, errorMessage, btnSubmitPhone);
+            }
+            else {
+                btnSubmitPhone.disabled = true;
+                formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Số điện thoại không hợp lệ');
+            }
         }
         else {
+            btnSubmitPhone.disabled = true;
             formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Vui lòng nhập số điện thoại');
         }
     });
-    
 
     $('#btnSubmitPhone').click(function () {
         let data = dataPhone.value;
@@ -201,7 +208,6 @@ function showUICheckPhone(element) {
             return;
         }
     });
-
 }
 
 // Done +++
@@ -233,56 +239,64 @@ function showUICheckNid(element) {
     });
 
     var dataNid = document.querySelector('#nid');
-
     var errorMessage = document.querySelector('.error_message');
-
     var btnSubmitNid = document.querySelector('#btnSubmitNid');
     btnSubmitNid.disabled = true;
 
     var checkSelfieImage = localStorage.getItem('selfie-image');
 
-    var btnCapture = document.querySelector('#callHP');
+    let isNidErr = false;
+    let isActive = false;
 
-    dataNid.oninput = function () {
-        if (dataNid.value !== null && dataNid.value !== '' && dataNid.value.length > 8 && dataNid.value.length < 13) {
-            // if (btnCapture.clicked === true) {
-            formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
-            if(!btnSelActive) 
-            {
-                btnSubmitNid.disabled = true;
+    $("#nid").on('input', function () {
+        if (dataNid.value !== null && dataNid.value !== '') {
+            const regexNid = /^\d{12}$|^\d{9}$/;
+            isNidErr = !regexNid.test(dataNid.value);
+            if (!isNidErr) {
+                isActive = true;
+                formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
             }
-            $('#btnSubmitNid').click(function () {
-                let data = $('#nid').val();
-                localStorage.setItem('nid', data);
-                let result = checkNidExists(data);
-                console.log('Check nid exists: ', result);
-                if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
-                    return;
-                }
-                else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
-                    captureNidFrontAndBack(element);
-                    let checkCustomer = {
-                        phone: localStorage.getItem('phone'),
-                        nid: localStorage.getItem('nid'),
-                        selfieImage: localStorage.getItem('selfie-image')
-                    };
-                    localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-                }
-                else if (result.errorCode === 8000 && result.status === false) {
-                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
-                    return;
-                }
-            })
-            // }
-            // else {
-            //     alert('Vui lòng chụp ảnh selfie');
-            // }
+            else {
+                isActive = false;
+                formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Số CMND/CCCD không hợp lệ');
+            }
         }
         else {
+            isActive = false;
             formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng nhập CMND/CCCD');
         }
-    }
+
+        if (isActive && btnSelActive) {
+            btnSubmitNid.disabled = false;
+        }
+        else {
+            btnSubmitNid.disabled = true;
+        }
+    });
+
+    $('#btnSubmitNid').click(function () {
+        let data = $('#nid').val();
+        localStorage.setItem('nid', data);
+        let result = checkNidExists(data);
+        console.log('Check nid exists: ', result);
+        if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
+            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+            return;
+        }
+        else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
+            captureNidFrontAndBack(element);
+            let checkCustomer = {
+                phone: localStorage.getItem('phone'),
+                nid: localStorage.getItem('nid'),
+                selfieImage: localStorage.getItem('selfie-image')
+            };
+            localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+        }
+        else if (result.errorCode === 8000 && result.status === false) {
+            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Số CMND/CCCD không hợp lệ !');
+            return;
+        }
+    })
 }
 
 // Done +++
@@ -332,33 +346,33 @@ function captureNidFrontAndBack(element) {
     let frontImage = localStorage.getItem('front-image');
     let backImage = localStorage.getItem('back-image');
 
-    // if (btnCaptureFront.clicked === true && btnCaptureBack.clicked === true) {
-    // btnSubmit.disabled = false;
+    if (btnFrontActive && btnBackActive) {
+        btnSubmit.disabled = false;
+    }
+    else {
+        btnSubmit.disabled = true;
+    }
+
     $('#btnSubmit').click(function () {
         let adn = JSON.parse(localStorage.getItem('allDataNid'));
         if (adn !== null && adn !== '') {
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
+            let phone = localStorage.getItem('phone');
             if (fn !== null && bn !== null) {
-                let personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
+                let personal = new Personal(fn.name, fn.gender, phone, fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
                 showDataInform('#test', personal);
             }
             else if (fn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt trước !');
+                alert('Không tìm thấy thông tin cmnd mặt trước ! Vui lòng thử lại !');
                 return;
             }
             else if (bn === null) {
-                alert('Không tìm thấy thông tin cmnd mặt sau !');
+                alert('Không tìm thấy thông tin cmnd mặt sau ! Vui lòng thử lại !');
                 return;
             }
         }
     })
-    // }
-    // else {
-    //     btnSubmit.disabled = true;
-    //     alert('Vui lòng chụp đủ 2 mặt chứng minh nhân dân');
-    //     return;
-    // }
 }
 
 // Done +++
@@ -423,7 +437,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 // Done +++
 function cutStringData(infomation) {
     try {
-        if (infomation !== null) {
+        if (infomation !== null && infomation !== '' && infomation !== undefined) {
             const { status, statusCode, result } = infomation;
             const details = result?.details[0]?.fieldsExtracted;
             const nidType = result?.details[0]?.type;
@@ -432,19 +446,19 @@ function cutStringData(infomation) {
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== null) {
                 localStorage.setItem('typeFrontNid', nidType);
-                let province = details?.province?.value;
-                let idNumber = details?.idNumber?.value;
-                let name = details?.name?.value;
-                let dob = details?.dob?.value;
-                let homeTown = details?.homeTown?.value;
+                let province = details?.province?.value || '';
+                let idNumber = details?.idNumber?.value || '';
+                let name = details?.name?.value || '';
+                let dob = details?.dob?.value || '';
+                let homeTown = details?.homeTown?.value || '';
                 let permanentAddress = details?.permanentAddress?.value;
                 let street = details?.permanentAddress?.value.split(',')[0] ? details?.permanentAddress?.value.split(',')[0] : '';
                 let ward = details?.permanentAddress?.value.split(',')[1] ? details?.permanentAddress?.value.split(',')[1] : '';
                 let district = details?.permanentAddress?.value.split(',')[2] ? details?.permanentAddress?.value.split(',')[2] : '';
                 let city = details?.permanentAddress?.value.split(',')[3] ? details?.permanentAddress?.value.split(',')[3] : '';
-                let gender = details?.gender?.value;
-                let doe = details?.doe?.value;
-                let nationality = details?.nationality?.value;
+                let gender = details?.gender?.value || '';
+                let doe = details?.doe?.value || '';
+                let nationality = details?.nationality?.value || '';
                 front_nid_customer = {
                     province: province,
                     idNumber: idNumber,
@@ -465,8 +479,8 @@ function cutStringData(infomation) {
             if (arrType_back.includes(nidType) && nidType !== null) {
                 let typeFrontNid = localStorage.getItem('typeFrontNid');
                 if ((typeFrontNid === 'cccd_chip_front' && nidType === 'cccd_chip_back') || (typeFrontNid === 'cccd_front' && nidType === 'cmnd_new_cccd_back') || (typeFrontNid === 'cmnd_old_front' && nidType === 'cmnd_back_front')) {
-                    let doi = details?.doi?.value;
-                    let placeOfIssue = details?.placeOfIssue?.value;
+                    let doi = details?.doi?.value || '';
+                    let placeOfIssue = details?.placeOfIssue?.value || '';
                     back_nid_customer = {
                         doi: doi,
                         placeOfIssue: placeOfIssue
@@ -474,7 +488,7 @@ function cutStringData(infomation) {
                     localStorage.setItem('back_nid_customer', JSON.stringify(back_nid_customer));
                 }
                 else {
-                    alert('Hai mặt chứng minh nhân dân không phù hợp và trùng khớp !');
+                    alert('Hai mặt chứng minh nhân dân không phù hợp và trùng khớp ! Vui lòng thử lại !');
                     return;
                 }
             }
@@ -536,21 +550,13 @@ async function LaunchFaceCaptureScreen() {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
-                if (errorCode === '013') {
-                    return
-                }
-                if (errorCode === 401) {
-                    console.error(errorMessage);
-                    return;
-                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
-                console.log(apiResults);
-                if (imageBase64 !== '' && imageBase64 !== null) {
+                if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
@@ -750,21 +756,21 @@ function showMessage(element, message, icon) {
 }
 
 // Done +++
-function showStatusPage(element, message, imagePath, desc, step) {
-    $(element).empty();
-    showHeader();
-    showProcessPipeline(step);
-    var html = `<div class='container-status-page'>
-                    <img src='${imagePath}' class='container-status-page-img'/>
-                    <h1 class='container-status-page-title'>${message}</h1>
-                    ${desc !== null && desc !== '' ? `<p class='container-status-page-desc'>${desc}</p>` : ''} 
-                </div> `;
-    $(element).prepend(html);
+// function showStatusPage(element, message, imagePath, desc, step) {
+//     $(element).empty();
+//     showHeader();
+//     showProcessPipeline(step);
+//     var html = `<div class='container-status-page'>
+//                     <img src='${imagePath}' class='container-status-page-img'/>
+//                     <h1 class='container-status-page-title'>${message}</h1>
+//                     ${desc !== null && desc !== '' ? `<p class='container-status-page-desc'>${desc}</p>` : ''} 
+//                 </div> `;
+//     $(element).prepend(html);
 
-    $('body').click(function () {
-        showStatusPage(element, 'Bạn đã đăng ký thành công', './assets/img/Success.png', 'Bấm vào đây để quay trở lại. Tự động trở lại trang mua hàng sau 5s.', 4);
-    })
-}
+//     $('body').click(function () {
+//         showStatusPage(element, 'Bạn đã đăng ký thành công', './assets/img/Success.png', 'Bấm vào đây để quay trở lại. Tự động trở lại trang mua hàng sau 5s.', 4);
+//     })
+// }
 
 // Done +++
 function deleteImage(side) {
@@ -938,11 +944,11 @@ function showDataInform(element, personal) {
             personal = new Personal(fn.name, fn.gender, localStorage.getItem('phone'), fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
         }
         else if (fn === null) {
-            alert('Không tìm thấy thông tin cmnd mặt trước !');
+            alert('Không tìm thấy thông tin cmnd mặt trước ! Vui lòng thử lại !');
             return;
         }
         else if (bn === null) {
-            alert('Không tìm thấy thông tin cmnd mặt sau !');
+            alert('Không tìm thấy thông tin cmnd mặt sau ! Vui lòng thử lại !');
             return;
         }
     }
@@ -1115,12 +1121,6 @@ function showDataInform(element, personal) {
     //show progress bar
     showProcessPipeline(1);
 
-    // var text1 = personal.city;
-    // $("#city").filter(function () {
-    //     //may want to use $.trim in here
-    //     return $(this).text() == text1;
-    // }).prop('selected', true);
-
     const formDataValue = document.querySelector('#formDataValue');
 
     formDataValue.addEventListener('submit', function (e) {
@@ -1213,14 +1213,13 @@ function showDataInform(element, personal) {
             "temporaryStreet": street_permanent,
             "expirationDate": doe
         }
+
         if (!isCheckEmpty) {
-            if (personal_all_info !== null) {
-                localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
-                showConfirmDataInform(element, personal_all_info);
-            }
-            else {
-                alert('Không tìm thấy thông tin người dùng ! Vui lòng kiểm tra lại');
-                return;
+            if (!isPhoneError && !isPhoneRefError && !isNidError) {
+                if (personal_all_info !== null) {
+                    localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
+                    showConfirmDataInform(element, personal_all_info);
+                }
             }
         }
     })
@@ -1285,7 +1284,6 @@ function checkPinValidate(input) {
 
 // Done +++
 function handleChangeCity(ele1, ele2) {
-    // $('body').addClass('loading');
     let districts = getAllDistrict();
     let results = [];
     let value = $(ele1).find(":selected").val();
@@ -1298,12 +1296,10 @@ function handleChangeCity(ele1, ele2) {
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
-    // $('body').removeClass('loading');
 }
 
 // Done +++
 function handleChangeWard(ele1, ele2) {
-    // $('body').addClass('loading');
     let wards = getAllWard();
     let results = [];
     let value = $(ele1).find(":selected").val();
@@ -1316,7 +1312,6 @@ function handleChangeWard(ele1, ele2) {
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
-    // $('body').removeClass('loading');
 }
 
 // Done +++
@@ -1333,35 +1328,35 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='name'>Họ và tên</label>
-                                    <div class="info">${personal_all_info.name}</div>
+                                    <div id='name' class="info">${personal_all_info.name}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <div class="info">${personal_all_info.phone}</div>
+                                    <div id='phone' class="info">${personal_all_info.phone}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='birthday'>Ngày sinh</label>
-                                    <div class="info">${personal_all_info.birthday}</div>
+                                    <div id='birthday' class="info">${personal_all_info.birthday}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='gender'>Giới tính</label>
-                                    <div class="info">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</div>
+                                    <div id='gender' class="info">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='citizenId'>Số CMND/CCCD</label>
-                                    <div class="info">${personal_all_info.citizenId}</div>
+                                    <div id='citizenId' class="info">${personal_all_info.citizenId}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='issueDate'>Ngày cấp</label>
-                                    <div class="info">${personal_all_info.issueDate}</div>
+                                    <div id='issueDate' class="info">${personal_all_info.issueDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div class="info">${personal_all_info.expirationDate}</div>
+                                    <div id='doe' class="info">${personal_all_info.expirationDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='doe'>Địa chỉ hiện tại</label>
-                                    <div class="info">${personal_all_info.street}, ${personal_all_info.ward}, ${personal_all_info.district}, ${personal_all_info.city}</div>
+                                    <label for='address'>Địa chỉ hiện tại</label>
+                                    <div id='address' class="info">${personal_all_info.street}, ${personal_all_info.ward}, ${personal_all_info.district}, ${personal_all_info.city}</div>
                                 </div>
                             </div >
                             <div class="card-footer"></div>
@@ -1373,15 +1368,15 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <div class="info">${personal_all_info.personal_title_ref_ui}</div>
+                                    <div id='relationship' class="info">${personal_all_info.personal_title_ref_ui}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='name_ref'>Họ và tên</label>
-                                    <div class="info">${personal_all_info.name_ref}</div>
+                                    <div id='name_ref' class="info">${personal_all_info.name_ref}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <div class="info">${personal_all_info.phone_ref}</div>
+                                    <div id='phone_ref' class="info">${personal_all_info.phone_ref}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -1394,33 +1389,53 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                    <div class="info">${personal_all_info.temporaryCity}</div>
+                                    <div id='city_permanent' class="info">${personal_all_info.temporaryCity}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='district_permanent'>Quận/Huyện</label>
-                                    <div class="info">${personal_all_info.temporaryDistrict}</div>
+                                    <div id='district_permanent' class="info">${personal_all_info.temporaryDistrict}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='ward_permanent'>Phường</label>
-                                    <div class="info">${personal_all_info.temporaryWard}</div>
+                                    <div id='ward_permanent' class="info">${personal_all_info.temporaryWard}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='street_permanent'>Đường</label>
-                                    <div class="info">${personal_all_info.temporaryStreet}</div>
+                                    <div id='street_permanent' class="info">${personal_all_info.temporaryStreet}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
                         </div>
                         <div class="form-row" style="width: 100%;padding: 0;display: flex;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='button' class='payment-button' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                        <button type='submit' class='payment-button' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
                         </div>
                     </form>
                 </div>`;
     $(element).html(html);
-    //show progress bar
     showProcessPipeline(1);
     $(window).scrollTop(0);
+
+    let name = document.getElementById('name');
+    let phone = document.getElementById('phone');
+    let birthday = document.getElementById('birthday');
+    let gender = document.getElementById('gender');
+    let citizenId = document.getElementById('citizenId');
+    let issueDate = document.getElementById('issueDate');
+    let doe = document.getElementById('doe');
+    let address = document.getElementById('address');
+    let relationship = document.getElementById('relationship');
+    let name_ref = document.getElementById('name_ref');
+    let phone_ref = document.getElementById('phone_ref');
+    let city_permanent = document.getElementById('city_permanent');
+    let district_permanent = document.getElementById('district_permanent');
+    let ward_permanent = document.getElementById(' ward_permanent');
+    let street_permanent = document.getElementById('street_permanent');
+
+    const formConfirmdata = document.querySelector('#form-confirmdata');
+
+    let btnContinueConfirm = document.querySelector('#btnContinueConfirm');
+
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
@@ -1486,31 +1501,42 @@ function listProductions(config) {
 
 // Done +++
 function showCapture(base64, eId) {
-    if (base64) {
+    if (base64 !== null && base64 !== '' && base64 !== undefined) {
         $('#' + eId).addClass("showImage");
         $('#' + eId).css({
             'background': 'url(' + base64 + ') no-repeat center',
             'background-size': 'cover'
         });
-        if(eId === 'btnCaptureFront'){
-            btnFrontActive = true;
-        }
-        if(eId === 'btnCaptureBack'){
-            btnFrontActive = true;
-        }
-        if(btnFrontActive && btnFrontActive){
-            $("#btnSubmit").attr("disabled",false);
-        }
+        if (eId !== null && eId !== '' && eId !== undefined) {
+            if (eId === 'btnCaptureFront') {
+                btnFrontActive = true;
+            }
+            if (eId === 'btnCaptureBack') {
+                btnBackActive = true;
+            }
+            if (btnFrontActive && btnBackActive) {
+                $("#btnSubmit").attr("disabled", false);
+            }
+            else {
+                $("#btnSubmit").attr("disabled", true);
+            }
 
-        if(eId === 'callHP'){
-            btnSelActive = true;
-            console.log($("#nid").val());
-            if($("#nid").val() !== '' && $("#nid").val().length > 8 && $("#nid").val().length < 13 && btnSelActive ){
-                $("#btnSubmitNid").attr("disabled",false);
+            if (eId === 'callHP') {
+                btnSelActive = true;
+                if (btnSelActive) {
+                    $("#btnSubmitNid").attr("disabled", false);
+                }
+                else {
+                    $("#btnSubmitNid").attr("disabled", true);
+                }
             }
         }
-
-
+        else {
+            alert('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
+        }
+    }
+    else {
+        alert('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
     }
 }
 
@@ -1564,7 +1590,7 @@ function showFormPincode(element, phone, screen) {
         inputId: 'pin',
         onInput: (value) => {
             console.log(value);
-            if(value.length == 4){
+            if (value.length == 4) {
                 btnSubmitPin.disabled = false;
             }
         }
@@ -1577,7 +1603,7 @@ function showFormPincode(element, phone, screen) {
 
     $('#btnSubmitPin').click(function () {
         var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
-        if (pin === null || pin === '' || pin === undefined){
+        if (pin === null || pin === '' || pin === undefined) {
             formatStyleWrongInput(pincode, errorMessage, btnSubmitPin, 'Vui lòng nhập mã pin');
             return;
         }
@@ -1623,7 +1649,7 @@ function showFormPincode(element, phone, screen) {
             return;
         }
     });
-    
+
 }
 
 // Done +++
@@ -1653,8 +1679,8 @@ function showFormSetupPin(element, screen, token) {
         showProcessPipeline(2);
     }
 
-    let iPut1,iPut2 = false;
-    $('#btnSubmitPin').attr("disabled",true);
+    let iPut1, iPut2 = false;
+    $('#btnSubmitPin').attr("disabled", true);
 
     new PincodeInput("#pincode", {
         count: 4,
@@ -1664,11 +1690,10 @@ function showFormSetupPin(element, screen, token) {
         inputId: 'pin',
         onInput: (value) => {
             console.log(value);
-            if(value.length == 4)
-            {
+            if (value.length == 4) {
                 iPut1 = true;
-                if(iPut1&&iPut2){
-                    $('#btnSubmitPin').attr("disabled",false);
+                if (iPut1 && iPut2) {
+                    $('#btnSubmitPin').attr("disabled", false);
                 }
             }
         }
@@ -1681,11 +1706,10 @@ function showFormSetupPin(element, screen, token) {
         inputId: 'pincf',
         onInput: (value) => {
             console.log(value);
-            if(value.length == 4)
-            {
+            if (value.length == 4) {
                 iPut2 = true;
-                if(iPut1&&iPut2){
-                    $('#btnSubmitPin').attr("disabled",false);
+                if (iPut1 && iPut2) {
+                    $('#btnSubmitPin').attr("disabled", false);
                 }
             }
         }
@@ -2079,11 +2103,8 @@ function timer(remaining) {
     }
 
     if (!timerOn) {
-        // Do validate stuff here
         return;
     }
-    // Do timeout stuff here
-    // alert('Timeout for otp');
 }
 
 // Done +++
@@ -2091,29 +2112,39 @@ function showContract(element) {
     setRoute("showContract");
     let data = getContract();
     var html = `<div class='box contractForm formValue-mt'>
-    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
-    <div style = 'display: block'  class='contract-detail'>
-                    <h3>${data.title1}</h3>
-                    <h3>${data.title2}</h3>
-                    <p>${data.content}</p>
-            </div>
-            <div style='display: block'  class='contract-term'>
-                <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                <label for='confirm_contract'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
-            </div>
-            <div style='display: block'  class='contract-term'>
-                <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                <label for='confirm_otp'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
-            </div>
-            <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
-    </div>
-</div>`;
+                    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
+                    <div style='display: block'  class='contract-detail'>
+                        <h3>${data.title1}</h3>
+                        <h3>${data.title2}</h3>
+                        <p>${data.content}</p>
+                    </div>
+                    <div style='display: block'  class='contract-term'>
+                        <input type='checkbox' name='confirm_contract' id='confirm_contract' />
+                        <label for='confirm_contract'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
+                    </div>
+                    <div style='display: block'  class='contract-term'>
+                        <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
+                        <label for='confirm_otp'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+                    </div>
+                    <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+                    </div>
+            </div>`;
     $(element).html(html);
     showProcessPipeline(3);
 
+    var btnContinue = document.querySelector('#btnContinue');
+
+    let confirm_contract = $('#confirm_contract').is(":checked");
+    let confirm_otp = $('#confirm_otp').is(":checked");
+
+    if (confirm_contract && confirm_otp) {
+        btnContinue.disabled = false;
+    }
+    else {
+        btnContinue.disabled = true;
+    }
+
     $('#btnContinue').click(function () {
-        let confirm_contract = $('#confirm_contract').is(":checked");
-        let confirm_otp = $('#confirm_otp').is(":checked");
         if (confirm_contract && confirm_otp) {
             let phone = localStorage.getItem('phone');
             var otp = sendOtp(phone);
@@ -2216,17 +2247,17 @@ function showHeader() {
 
 // Done +++
 function showLogo(mb) {
-    var html = `<div id='img-voolo-logo' style='margin-bottom: ' ${mb}'px>
+    var html = `<div id='img-voolo-logo' style='margin-bottom: ${mb}px'>
                 <img src='./assets/img/VOOLO_logo_horizontal.png' />
             </div>`;
     return html;
 };
 
 // Done +++
-function showTitle(mb) {
-    var html = `<h1 id = 'voolo-title' > Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h1> `;
-    return html;
-};
+// function showTitle(mb) {
+//     var html = `<h1 id='voolo-title'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h1> `;
+//     return html;
+// };
 
 function setRoute(func) {
     history.pushState({}, "Voolo Set Url", "#" + func);
@@ -2282,6 +2313,7 @@ function messageScreen(element, config) {
                 </div>`;
 
     }
+
     if (config.screen == 'unsuccessScreen') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
@@ -2293,6 +2325,7 @@ function messageScreen(element, config) {
                     </div> 
                 </div>`;
     }
+
     if (config.screen == 'pincode_unsuccess') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
@@ -2303,6 +2336,7 @@ function messageScreen(element, config) {
                     </div> 
                 </div>`;
     }
+
     if (config.screen == 'pincode_success') {
         html = `<div class='box showMessage formValue-mt'>
                     <div class='paragraph-text text-center margin-bottom-default'>
@@ -2313,19 +2347,20 @@ function messageScreen(element, config) {
                     </div> 
                 </div>`;
     }
+
     $(element).html(html);
     if (config.pipeline) showProcessPipeline(5);
     var n = 5;
-    var cInterval = setInterval(function(){
+    var cInterval = setInterval(function () {
         $(".coutdown").html(n);
-        console.log("time: ",n);
-        if(n === 0){
-            if(config.screen == 'successScreen'){
+        console.log("time: ", n);
+        if (n === 0) {
+            if (config.screen == 'successScreen') {
                 showAllTenor(element, 3);
             }
             clearTimeout(cInterval);
         }
-        n = n-1; 
+        n = n - 1;
     }, 1000);
 }
 
