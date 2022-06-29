@@ -1841,11 +1841,8 @@ function forgotPinPhone(element, phone) {
     $(element).html(html);
 
     var dataPhone = document.querySelector('#phone_reset');
-
     var errorMessage = document.querySelector('.error_message');
-
     var btnContinue = document.querySelector('#btnContinue');
-    btnContinue.disabled = true;
 
     //custom show
     configUi({
@@ -1854,27 +1851,30 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
-    dataPhone.oninput = function () {
+    $("#phone_reset").on('input', function () {
+        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+        let isPhoneErr = !regexPhone.test(dataPhone.value);
         if (dataPhone.value !== null && dataPhone.value !== '') {
-            formatStyleCorrectInput(dataPhone, errorMessage);
-            const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-            let isPhoneErr = !regexPhone.test(dataPhone.value);
             if (!isPhoneErr) {
-                $('#btnContinue').click(function () {
-                    let phone_reset = $('#phone_reset').val().trim();
-                    localStorage.setItem('phone_reset', phone_reset);
-                    forgotPinNid(element);
-                });
+                formatStyleCorrectInput(dataPhone, errorMessage);
+                btnContinue.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataPhone, errorMessage, 'Định dạng số điện thoại không hợp lệ');
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+                btnContinue.disabled = true;
             }
-
         }
         else {
             formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+            btnContinue.disabled = true;
         }
-    }
+    });
+
+    $('#btnContinue').click(function () {
+        let phone_reset = $('#phone_reset').val().trim();
+        localStorage.setItem('phone_reset', phone_reset);
+        forgotPinNid(element);
+    });
 }
 
 // Done +++
@@ -1902,53 +1902,55 @@ function forgotPinNid(element) {
     });
 
     var dataNid = document.querySelector('#nid_reset');
-
     var errorMessage = document.querySelector('.error_message');
-
     var btnSendOtp = document.querySelector('#btnSendOtp');
     btnSendOtp.disabled = true;
 
-    dataNid.oninput = function () {
+    $("#nid_reset").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
-            formatStyleCorrectInput(dataNid, errorMessage);
             const regexNid = /^\d{12}$|^\d{9}$/;
             let isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
-                $('#btnSendOtp').click(function () {
-                    localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
-                    let phone_reset = localStorage.getItem('phone_reset');
-                    let nid_reset = localStorage.getItem('nid_reset');
-                    let data = sendOtpPin(phone_reset, nid_reset);
-                    console.log('Result Send Otp Pin: ', data);
-                    if (data.status === true) {
-                        showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
-                    }
-                    else if (data.status === false && data.message === 'Send otp failure') {
-                        formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
-                        return;
-                    }
-                    else if (data.status === false && data.statusCode === 1002) {
-                        formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
-                        return;
-                    }
-                    else if (data.status === false && data.statusCode === 1001) {
-                        formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
-                        return;
-                    }
-                    else if (data.status === false && data.errorCode === 8000) {
-                        formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
-                        return;
-                    }
-                })
+                formatStyleCorrectInput(dataNid, errorMessage);
+                btnSendOtp.disabled = false;
             }
             else {
                 formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                btnSendOtp.disabled = true;
             }
         }
         else {
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
+            btnSendOtp.disabled = true;
         }
-    }
+    });
+
+    $('#btnSendOtp').click(function () {
+        localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
+        let phone_reset = localStorage.getItem('phone_reset');
+        let nid_reset = localStorage.getItem('nid_reset');
+        let data = sendOtpPin(phone_reset, nid_reset);
+        console.log('Result Send Otp Pin: ', data);
+        if (data.status === true) {
+            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
+        }
+        else if (data.status === false && data.message === 'Send otp failure') {
+            formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1002) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
+            return;
+        }
+        else if (data.status === false && data.statusCode === 1001) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
+            return;
+        }
+        else if (data.status === false && data.errorCode === 8000) {
+            formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
+            return;
+        }
+    })
 }
 
 // Done +++
@@ -1979,7 +1981,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         previewDuration: 100,
         inputId: 'otp',
         onInput: (value) => {
-            console.log(value)
         }
     });
 
@@ -2079,7 +2080,7 @@ var PincodeInput = function () {
                 })), t.addEventListener("focus", (function () {
                     e.focusedCellIdx = s
                 })), t.addEventListener("keydown", (function (t) {
-                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "password")
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && e.cells[s].setAttribute("type", "text")
                 })), t.addEventListener("focus", (function () {
                     t.classList.add("pincode-input--focused")
                 })), t.addEventListener("blur", (function () {
