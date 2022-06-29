@@ -2597,9 +2597,6 @@ function showUseGuideNid() {
     $('.guideslide').load('useguidenid.html');
 }
 
-<<<<<<< HEAD
-String.prototype.replaceAt = function (index, replacement) {
-=======
 function showUseGuideBackNid(){
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
@@ -2635,7 +2632,6 @@ function showUseGuideBackNid(){
 }
 
 String.prototype.replaceAt = function(index, replacement) {
->>>>>>> 9e53452 (update css)
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
