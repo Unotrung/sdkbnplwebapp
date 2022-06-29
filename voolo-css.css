@@ -939,6 +939,14 @@ input{
     text-align: center;
     font-family: 'Montserrat';
 }
+.guideslide{
+    position: fixed;
+    top: 10px;
+    width: 80%;
+    left: 0px;
+    right: 0px;
+    margin: 120px auto;
+}
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
     .main-page{

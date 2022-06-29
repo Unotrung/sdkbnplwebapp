@@ -231,8 +231,9 @@ function showUICheckNid(element) {
     $(element).html(html);
 
     $('#callHP').click(function () {
-        runFaceCaptureScreen();
-    })
+        showUseGuideSelfy();
+        // runFaceCaptureScreen();
+    });
 
     $('#selfie_image').click(function () {
         deleteImage('SELFIE');
@@ -302,7 +303,7 @@ function showUICheckNid(element) {
 // Done +++
 function captureNidFrontAndBack(element) {
     setRoute("captureNidFrontAndBack");
-    var html = `<form class='formValue'>
+    var html = `<form class='formValue' id="formValueNid">
                     <div class='buttons mobile'>
                         <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
                         <div>
@@ -324,7 +325,8 @@ function captureNidFrontAndBack(element) {
     });
 
     $('#btnCaptureFront').click(function () {
-        runDocumentCaptureScreen('FRONT');
+        showUseGuideNid();
+        // runDocumentCaptureScreen('FRONT');
     })
 
     $('#btnCaptureBack').click(function () {
@@ -550,13 +552,23 @@ async function LaunchFaceCaptureScreen() {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
+                if (errorCode === '013') {
+                    return;
+                }
+                if (errorCode === 401) {
+                    console.error(errorMessage);
+                    return;
+                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                console.log(apiResults);
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
+                    $('.guideslide').remove();
+                    $("#formValueNid").show();
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
@@ -626,6 +638,8 @@ async function LaunchDocumentCaptureScreen(side) {
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
+                        $('.guideslide').remove();
+                        $("#formValueNid").show();
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thà công !');
@@ -2431,4 +2445,16 @@ function messageScreen(element, config) {
     }, 1000);
 }
 
-// function autoload
+function showUseGuideSelfy(){
+    $('body').find('.guideslide').remove();
+    $("#formValueNid").hide();
+    $('body').append("<div class='guideslide'></div>");
+    $('.guideslide').load('useguide.html');
+}
+
+function showUseGuideNid(){
+    $('body').find('.guideslide').remove();
+    $("#formValueNid").hide();
+    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
+    $('.guideslide').load('useguidenid.html');
+}
