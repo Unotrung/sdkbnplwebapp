@@ -231,8 +231,9 @@ function showUICheckNid(element) {
     $(element).html(html);
 
     $('#callHP').click(function () {
-        runFaceCaptureScreen();
-    })
+        showUseGuideSelfy();
+        // runFaceCaptureScreen();
+    });
 
     $('#selfie_image').click(function () {
         deleteImage('SELFIE');
@@ -280,7 +281,7 @@ function showUICheckNid(element) {
         let result = checkNidExists(data);
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD đã được đăng ký.');
             return;
         }
         else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
@@ -302,7 +303,7 @@ function showUICheckNid(element) {
 // Done +++
 function captureNidFrontAndBack(element) {
     setRoute("captureNidFrontAndBack");
-    var html = `<form class='formValue'>
+    var html = `<form class='formValue' id="formValueNid">
                     <div class='buttons mobile'>
                         <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
                         <div>
@@ -324,7 +325,8 @@ function captureNidFrontAndBack(element) {
     });
 
     $('#btnCaptureFront').click(function () {
-        runDocumentCaptureScreen('FRONT');
+        showUseGuideNid();
+        // runDocumentCaptureScreen('FRONT');
     })
 
     $('#btnCaptureBack').click(function () {
@@ -550,13 +552,23 @@ async function LaunchFaceCaptureScreen() {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
+                if (errorCode === '013') {
+                    return;
+                }
+                if (errorCode === 401) {
+                    console.error(errorMessage);
+                    return;
+                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                console.log(apiResults);
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
+                    $('.guideslide').remove();
+                    $("#formValueNid").show();
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
@@ -626,6 +638,8 @@ async function LaunchDocumentCaptureScreen(side) {
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
+                        $('.guideslide').remove();
+                        $("#formValueNid").show();
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thà công !');
@@ -775,7 +789,7 @@ function showMessage(element, message, icon) {
                         <div class='${icon}'></div>
                         ${message}
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
                         </p>
                     </div> 
                 </div> `;
@@ -1031,12 +1045,12 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input class='input-global' type='date' id='dob' name='dob' onchange='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} />
+                                    <input class='input-global' type='date' id='dob' name='dob' onchange='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
                                     <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''}>
+                                    <select id='gender' name='gender' class='input-global' onchange='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px'>
                                     <option value="" >Vui lòng chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
@@ -1051,12 +1065,12 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <div class="form-cell">
                                         <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global' type='text' id='doi' name='doi' onchange='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                        <input class='input-global' type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
                                         <span class='error_doi error_message'></span>
                                     </div>
                                     <div class="form-cell">
                                         <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global' type='text' id='doe' name='doe' onchange='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                        <input class='input-global' type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
                                         <span class='error_doe error_message'></span>
                                     </div>
                                 </div>
@@ -1065,27 +1079,27 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3>Địa chỉ hiện tại</h3>
+                                <h3 class='form-showdata-info'>Địa chỉ hiện tại</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row sCity'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <input class='input-global' type='text' id='city' name='city' onchange='onChangeValidation("#city")' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}/>
+                                    <input class='input-global' type='text' id='city' name='city' onchange='onChangeValidation("#city")' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled1' : ''}/>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <input class='input-global' type='text' id='district' name='district' onchange='onChangeValidation("#district")' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}/>
+                                    <input class='input-global' type='text' id='district' name='district' onchange='onChangeValidation("#district")' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled1' : ''}/>
                                     <span class='error_district error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <input class='input-global' type='text' id='ward' name='ward' onchange='onChangeValidation("#ward")' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled' : ''} />
+                                    <input class='input-global' type='text' id='ward' name='ward' onchange='onChangeValidation("#ward")' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled1' : ''} />
                                     <span class='error_ward error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' type='text' id='street' name='street' onchange='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <input class='input-global' type='text' id='street' name='street' onchange='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled1' : ''} />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -1093,7 +1107,7 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3>Thông tin tham chiếu</h3>
+                                <h3 class='form-showdata-info'>Thông tin tham chiếu</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
@@ -1808,7 +1822,7 @@ function showFormPincode(element, phone, screen) {
                     showAllTenor(element, 3);
                     break;
                 case "SHOW_SUCCESS_PAGE":
-                    showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
+                    messageScreen(element, { screen: "pincode_success", pipeline: false });
                     break;
                 case "BUY_SUCCESS":
                     messageScreen(element, { screen: "buy_success", pipeline: false });
@@ -1854,14 +1868,15 @@ function showFormPincode(element, phone, screen) {
 
 // Done +++
 function showFormSetupPin(element, screen, token) {
-    showHeader();
+    // showHeader();
     var html = `
     <div class='form-card'>
+    <div class='voolo-logo'></div>
     <form id='formSetupPinCode'>
         <div class=''>
             <div class=' no-line'></div>
                 <div class='text-center form-pincode'>
-                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Reset lại mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
+                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
                     <p>Mã PIN</p>
                     <div id='pincode'></div>
                     <p>Nhập lại mã PIN</p>
@@ -1967,7 +1982,7 @@ function showFormSetupPin(element, screen, token) {
                 let data = resetPin(phone, pin, token);
                 console.log('Result Reset Pin: ', data);
                 if (data.status === true) {
-                    showMessage(element, "<h3>Cập nhật mã pin thành công</h3>", "ico-success");
+                    messageScreen(element, { screen: "pincode_success", pipeline: false });
                 } else {
                     messageScreen(element, { screen: "pincode_unsuccess", pipeline: false });
                 }
@@ -1991,7 +2006,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <div class='card-head no-line'></div>
                             <div class='card-body text-center form-otpcode'>
                                 <h2>Nhập OTP</h2>
-                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại 090xxxx463</p>
+                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3,"****")}</b></p>
                                 <div id='otpcode'></div>
                                 <span class='error_message error_message_otp'></span>
                             </div>
@@ -2432,7 +2447,7 @@ function messageScreen(element, config) {
                         <div class='ico-success'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2444,7 +2459,7 @@ function messageScreen(element, config) {
                         <div class='ico-unsuccess'></div>
                         <h3>Đăng ký không thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="/" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2466,8 +2481,9 @@ function messageScreen(element, config) {
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
-                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-                        <button class='payment-button' id="tryagain">Thử lại</button>
+                        <p style='text-align: center;'>
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        </p>
                     </div> 
                 </div>`;
     }
@@ -2505,7 +2521,7 @@ function messageScreen(element, config) {
             if (config.screen == 'successScreen') {
                 showAllTenor(element, 3);
             }
-            if (config.screen == 'buy_success') {
+            if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
                 window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
@@ -2514,4 +2530,24 @@ function messageScreen(element, config) {
     }, 1000);
 }
 
-// function autoload
+function showUseGuideSelfy(){
+    $('body').find('.guideslide').remove();
+    $("#formValueNid").hide();
+    $('body').append("<div class='guideslide'></div>");
+    $('.guideslide').load('useguide.html');
+}
+
+function showUseGuideNid(){
+    $('body').find('.guideslide').remove();
+    $("#formValueNid").hide();
+    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
+    $('.guideslide').load('useguidenid.html');
+}
+
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
+
+$("#tryagain").on("click",function(){
+    window.location.href = DOMAIN;
+})
