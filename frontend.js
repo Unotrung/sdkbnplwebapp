@@ -582,15 +582,91 @@ async function LaunchDocumentCaptureScreen(side) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
+            /*
+            if (HVError) {
+                const errorCode = HVError.getErrorCode();
+                const errorMessage = HVError.getErrorMessage();
+                console.log(HVError);
+                if (errorCode) {
+                    console.log(errorCode);
+                }
+                if (errorCode === '013') {
+                    console.log(errorCode)
+                    return
+                }
+                if (errorCode === 401) {
+                        console.error(errorCode);
+                        console.error(errorMessage)
+                    //token expired
+                        this.hvInit$.next(false)
+                        this.openMessageDialog(MessageReason.failOnHVTokenExpired)
+                        // this.router.navigate(['pay-mock/register']).then()
+                        return;
+                }
+                if (side === NCardSide.front) {
+                    this.openMessageDialog(MessageReason.failFrontIdScreenShot)
+                }
+                if (side === NCardSide.back) {
+                    this.openMessageDialog(MessageReason.failBackIdScreenShot)
+                }
+
+            }
+            if (HVResponse) {
+                const apiResults = HVResponse.getApiResult();
+
+                const apiHeaders = HVResponse.getApiHeaders();
+                console.log('screen shot', side, apiResults)
+                console.log(apiHeaders)
+                if (apiResults['result']['summary']['action'] !== 'pass' || this.checkInfoReview(side)) {
+                    if (side === NCardSide.front) {
+                        this.openMessageDialog(MessageReason.failFrontIdScreenShot)
+                    } else if (side === NCardSide.back) {
+                        this.openMessageDialog(MessageReason.failBackIdScreenShot)
+                    }
+                    return
+                }
+
+                const imageBase64 = HVResponse.getImageBase64();
+                const attemptsCount = HVResponse.getAttemptsCount();
+                this.acceptImage(side, imageBase64, apiResults['result']['details'][0]['fieldsExtracted'])
+            }
+            */
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
+                if (errorCode) {
+                    console.log(errorCode);
+                }
+                if (errorCode === '013') {
+                    console.log(errorCode)
+                    return
+                }
+                if (errorCode === 401) {
+                        console.error(errorCode);
+                        console.error(errorMessage)
+                    //token expired
+                        this.hvInit$.next(false)
+                        alert(apiResults.error)
+                        // this.router.navigate(['pay-mock/register']).then()
+                        return;
+                }
+                if (side === NCardSide.front) {
+                    alert(apiResults.error)
+                }
+                if (side === NCardSide.back) {
+                    alert(apiResults.error)
+                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                if (apiResults['result']['summary']['action'] !== 'pass') {
+                    alert(apiResults.error);
+                    return
+                }
+
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);

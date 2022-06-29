@@ -649,8 +649,11 @@ body.loading .overlay{
     left: 0;
     right: 0;
 }
+.headrow .voolo-logo{
+    margin-bottom: 67.2px!important;
+}
 .headrow h3{
-    margin-bottom: 32px;
+    margin-bottom: 53px;
     font-size: 24px;
 }
 .headrow .line .Tpipe{
@@ -711,7 +714,7 @@ body.loading .overlay{
 }
 
 .formValue-mt{
-    margin-top: 220px!important;
+    margin-top: 300px!important;
 }
 
 .card-body .form-verify:first-child{
@@ -754,144 +757,6 @@ body.loading .overlay{
 .main-page .box .paragraph-text p{
     font-size: 12px;
 }
-/*  and (min-width: 390px)  */
-@media only screen and (max-width: 414px){
-    .main-page{
-        display: flow-root;
-    }
-    .main-page .list-items{
-        width: 100%;
-        padding: 0;
-        order: 2;
-    }
-    #test{
-        display: flex;
-        flex-flow: column;
-        background: none; 
-        box-shadow: none;
-    }
-    #test form.formValue{
-        width: 100%;
-        padding: 0;
-        order: 1;
-    }
-    .orderTop{
-        order: 3!important;
-    }
-    .main-page .list-items .card .card-body .list{
-        padding: 20px 15px;
-    }
-    .list .image {
-        width: 16%;
-        padding:0;
-        margin: auto;
-    }
-    .list .info {
-        width: 50%;
-        margin: 0 6px;
-    }
-    .list .price {
-        width: 34%;
-    }
-    .list .info p{
-        line-height: 20px;
-    }
-    .mobile{
-        padding: 20px 5%;
-        background: #F3F3F3;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
-        border-radius: 20px;
-    }
-    #test form.formValue .input-global{
-        width: 95%;
-    }
-    .payment-button{
-        width: 200px;
-    }
-    .list-provider button{
-        height: 100px;
-        width: 100%;
-    }
-    .main-page .box{
-        width: 100%;
-        padding: 0;
-        background: rgba(247, 247, 247, 0.75);
-        /* Highlight */
-
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
-        border-radius: 15px;
-        padding: 24px;
-    }
-    .main-page .box .paragraph-text h2{
-        font-size: 16px;
-    }
-    .main-page .box .paragraph-text p{
-        font-size: 10px;
-    }
-    .imgloading-140{
-        width: 60px;
-        height: 60px;
-    }
-    .form-card{
-        width: 100%;
-    }
-    .form-card .form-row{
-        width: 100%;
-    }
-    .form-verify label{
-        display: inline-block;
-    }
-    .form-verify div.info{
-        float: right;
-    }
-    #customerInfo{
-        margin-bottom: 0;
-    }
-    .headrow{
-        position: relative;
-        width: 100%;
-    }
-    .headrow h3{
-        margin-bottom: 20px;
-        font-size: 14px;
-        padding: 0 40px;
-    }
-    .headrow .line .Tpipe{
-        border-bottom: 1px dashed #ccc;
-        width: 23%;
-        height: 1px;
-    }
-    .headrow .line .Tpipe.active{
-        border-bottom: 1px solid #197DDE;
-        width: 25%;
-        height: 1px;
-    }
-    .headrow .line .Tpipe.last{
-        width: 15%;
-        border: 0;
-    }
-    .headrow .pipeline .pipe{
-        font-size: 10px;
-    }
-    .formValue-mt{
-        margin-top: 0!important;
-    }
-    .alert-box{
-        position: fixed;
-        width: 90%;
-        height: 169px;
-        top: 33%;
-        left: 0;
-        z-index: 2;
-        background-color: #fff;
-        margin: 20px;
-        border-radius: 20px;
-        text-align: center;
-    }
-    #test .voolo-logo{
-        margin-bottom: 18px;
-    }
-}   
 
 /* showDataInform */
 input[type="date"]::-webkit-inner-spin-button,
@@ -900,7 +765,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     -webkit-appearance: none;
 }
 
-.form-showdata{
+.form-showdata, .form-confirmdata{
+    min-width: 700px;
 }
 .form-showdata .card-head, 
 .form-showdata .card-body, 
@@ -1070,3 +936,144 @@ input{
     text-align: center;
     font-family: 'Montserrat';
 }
+/*  and (min-width: 390px)  */
+@media only screen and (max-width: 414px){
+    .main-page{
+        display: flow-root;
+    }
+    .main-page .list-items{
+        width: 100%;
+        padding: 0;
+        order: 2;
+    }
+    #test{
+        display: flex;
+        flex-flow: column;
+        background: none; 
+        box-shadow: none;
+    }
+    #test form.formValue{
+        width: 100%;
+        padding: 0;
+        order: 1;
+    }
+    .orderTop{
+        order: 3!important;
+    }
+    .main-page .list-items .card .card-body .list{
+        padding: 20px 15px;
+    }
+    .list .image {
+        width: 16%;
+        padding:0;
+        margin: auto;
+    }
+    .list .info {
+        width: 50%;
+        margin: 0 6px;
+    }
+    .list .price {
+        width: 34%;
+    }
+    .list .info p{
+        line-height: 20px;
+    }
+    .mobile{
+        padding: 20px 5%;
+        background: #F3F3F3;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 20px;
+    }
+    #test form.formValue .input-global{
+        width: 95%;
+    }
+    .payment-button{
+        width: 200px;
+    }
+    .list-provider button{
+        height: 100px;
+        width: 100%;
+    }
+    .main-page .box{
+        width: 100%;
+        padding: 0;
+        background: rgba(247, 247, 247, 0.75);
+        /* Highlight */
+
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 15px;
+        padding: 24px;
+    }
+    .main-page .box .paragraph-text h2{
+        font-size: 16px;
+    }
+    .main-page .box .paragraph-text p{
+        font-size: 10px;
+    }
+    .imgloading-140{
+        width: 60px;
+        height: 60px;
+    }
+    .form-card{
+        width: 100%;
+    }
+    .form-card .form-row{
+        width: 100%;
+    }
+    .form-verify label{
+        display: inline-block;
+    }
+    .form-verify div.info{
+        float: right;
+    }
+    #customerInfo{
+        margin-bottom: 0;
+    }
+    .headrow{
+        position: relative;
+        width: 100%;
+    }
+    .headrow h3{
+        margin-bottom: 20px;
+        font-size: 14px;
+        padding: 0 40px;
+    }
+    .headrow .line .Tpipe{
+        border-bottom: 1px dashed #ccc;
+        width: 23%;
+        height: 1px;
+    }
+    .headrow .line .Tpipe.active{
+        border-bottom: 1px solid #197DDE;
+        width: 25%;
+        height: 1px;
+    }
+    .headrow .line .Tpipe.last{
+        width: 15%;
+        border: 0;
+    }
+    .headrow .pipeline .pipe{
+        font-size: 10px;
+    }
+    .formValue-mt{
+        margin-top: 0!important;
+    }
+    .alert-box{
+        position: fixed;
+        width: 90%;
+        height: 169px;
+        top: 33%;
+        left: 0;
+        z-index: 2;
+        background-color: #fff;
+        margin: 20px;
+        border-radius: 20px;
+        text-align: center;
+    }
+    #test .voolo-logo{
+        margin-bottom: 18px;
+    }
+    .form-showdata, .form-confirmdata{
+        min-width: auto;
+    }
+}   
