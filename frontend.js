@@ -245,44 +245,45 @@ function showUICheckNid(element) {
 
     dataNid.oninput = function () {
         if (dataNid.value !== null && dataNid.value !== '' && dataNid.value.length > 8 && dataNid.value.length < 13) {
-            // if (btnCapture.clicked === true) {
             formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
             if(!btnSelActive) 
             {
                 btnSubmitNid.disabled = true;
+                return;
             }
-            $('#btnSubmitNid').click(function () {
-                let data = $('#nid').val();
-                localStorage.setItem('nid', data);
-                let result = checkNidExists(data);
-                console.log('Check nid exists: ', result);
-                if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
-                    return;
-                }
-                else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
-                    captureNidFrontAndBack(element);
-                    let checkCustomer = {
-                        phone: localStorage.getItem('phone'),
-                        nid: localStorage.getItem('nid'),
-                        selfieImage: localStorage.getItem('selfie-image')
-                    };
-                    localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
-                }
-                else if (result.errorCode === 8000 && result.status === false) {
-                    formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
-                    return;
-                }
-            })
-            // }
-            // else {
-            //     alert('Vui lòng chụp ảnh selfie');
-            // }
         }
         else {
             formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng nhập CMND/CCCD');
         }
     }
+
+    $('#btnSubmitNid').click(function () {
+        let data = $('#nid').val();
+        localStorage.setItem('nid', data);
+        let result = checkNidExists(data);
+        console.log('Check nid exists: ', result);
+        if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
+            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+            return;
+        }
+        else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
+            captureNidFrontAndBack(element);
+            let checkCustomer = {
+                phone: localStorage.getItem('phone'),
+                nid: localStorage.getItem('nid'),
+                selfieImage: localStorage.getItem('selfie-image')
+            };
+            localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+        }
+        else if (result.errorCode === 8000 && result.status === false) {
+            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Định dạng chứng minh nhân dân không hợp lệ !');
+            return;
+        }
+    })
+    // }
+    // else {
+    //     alert('Vui lòng chụp ảnh selfie');
+    // }
 }
 
 // Done +++
