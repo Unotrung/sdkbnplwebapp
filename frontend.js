@@ -582,55 +582,6 @@ async function LaunchDocumentCaptureScreen(side) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
-            /*
-            if (HVError) {
-                const errorCode = HVError.getErrorCode();
-                const errorMessage = HVError.getErrorMessage();
-                console.log(HVError);
-                if (errorCode) {
-                    console.log(errorCode);
-                }
-                if (errorCode === '013') {
-                    console.log(errorCode)
-                    return
-                }
-                if (errorCode === 401) {
-                        console.error(errorCode);
-                        console.error(errorMessage)
-                    //token expired
-                        this.hvInit$.next(false)
-                        this.openMessageDialog(MessageReason.failOnHVTokenExpired)
-                        // this.router.navigate(['pay-mock/register']).then()
-                        return;
-                }
-                if (side === NCardSide.front) {
-                    this.openMessageDialog(MessageReason.failFrontIdScreenShot)
-                }
-                if (side === NCardSide.back) {
-                    this.openMessageDialog(MessageReason.failBackIdScreenShot)
-                }
-
-            }
-            if (HVResponse) {
-                const apiResults = HVResponse.getApiResult();
-
-                const apiHeaders = HVResponse.getApiHeaders();
-                console.log('screen shot', side, apiResults)
-                console.log(apiHeaders)
-                if (apiResults['result']['summary']['action'] !== 'pass' || this.checkInfoReview(side)) {
-                    if (side === NCardSide.front) {
-                        this.openMessageDialog(MessageReason.failFrontIdScreenShot)
-                    } else if (side === NCardSide.back) {
-                        this.openMessageDialog(MessageReason.failBackIdScreenShot)
-                    }
-                    return
-                }
-
-                const imageBase64 = HVResponse.getImageBase64();
-                const attemptsCount = HVResponse.getAttemptsCount();
-                this.acceptImage(side, imageBase64, apiResults['result']['details'][0]['fieldsExtracted'])
-            }
-            */
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
@@ -1573,9 +1524,9 @@ function showCapture(base64, eId) {
             btnFrontActive = true;
         }
         if(eId === 'btnCaptureBack'){
-            btnFrontActive = true;
+            btnBackActive = true;
         }
-        if(btnFrontActive && btnFrontActive){
+        if(btnFrontActive && btnBackActive){
             $("#btnSubmit").attr("disabled",false);
         }
 
@@ -1679,7 +1630,8 @@ function showFormPincode(element, phone, screen) {
                     showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
                     break;
                 case "BUY_SUCCESS":
-                    showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                    // showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                    messageScreen(element,{screen : "buy_success",pipeline:false});
                     break;
                 case "BUY_UNSUCCESS":
                     showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
@@ -2091,7 +2043,7 @@ var PincodeInput = function () {
                 })), t.addEventListener("focus", (function () {
                     e.focusedCellIdx = s
                 })), t.addEventListener("keydown", (function (t) {
-                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "text")
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "password")
                 })), t.addEventListener("focus", (function () {
                     t.classList.add("pincode-input--focused")
                 })), t.addEventListener("blur", (function () {
@@ -2342,7 +2294,7 @@ function router(element) {
 }
 
 /* 
-* ex : messageScreen(element,{screen : "successScreen",pipeline:true});
+* ex : messageScreen(element,{screen : "buy_success",pipeline:false});
 *
 **/
 
@@ -2371,7 +2323,7 @@ function messageScreen(element, config) {
                 </div>`;
     }
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
@@ -2381,10 +2333,31 @@ function messageScreen(element, config) {
                 </div>`;
     }
     if (config.screen == 'pincode_success') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
+                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
+                        <button class='payment-button' id="tryagain">Thử lại</button>
+                    </div> 
+                </div>`;
+    }
+    if (config.screen == 'buy_success') {
+        html = `<div class='box showMessage formValue-mt-200'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Chúc mừng bạn đã mua hàng thành công</h3>
+                        <p style='text-align: center;'>
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        </p>
+                    </div> 
+                </div>`;
+    }
+    if (config.screen == 'buy_unsuccess') {
+        html = `<div class='box showMessage formValue-mt-200'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-unsuccess'></div>
+                        <h3>Mua hàng không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div> 
@@ -2399,6 +2372,9 @@ function messageScreen(element, config) {
         if(n === 0){
             if(config.screen == 'successScreen'){
                 showAllTenor(element, 3);
+            }
+            if(config.screen == 'buy_success'){
+                window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }

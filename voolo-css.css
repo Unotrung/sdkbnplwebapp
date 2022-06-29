@@ -716,6 +716,9 @@ body.loading .overlay{
 .formValue-mt{
     margin-top: 300px!important;
 }
+.formValue-mt-200{
+    margin-top: 200px!important;
+}
 
 .card-body .form-verify:first-child{
     margin-top: 32px;
