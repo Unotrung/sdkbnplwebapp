@@ -244,8 +244,6 @@ function showUICheckNid(element) {
     var btnSubmitNid = document.querySelector('#btnSubmitNid');
     btnSubmitNid.disabled = true;
 
-    var checkSelfieImage = localStorage.getItem('selfie-image');
-
     let isNidErr = false;
     let isActive = false;
 
@@ -278,11 +276,11 @@ function showUICheckNid(element) {
     $('#btnSubmitNid').click(function () {
         let data = $('#nid').val();
         localStorage.setItem('nid', data);
+        var checkSelfieImage = localStorage.getItem('selfie-image');
         let result = checkNidExists(data);
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
             formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD đã được đăng ký.');
-            return;
         }
         else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
             captureNidFrontAndBack(element);
@@ -295,7 +293,6 @@ function showUICheckNid(element) {
         }
         else if (result.errorCode === 8000 && result.status === false) {
             formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
-            return;
         }
     })
 }
@@ -376,6 +373,31 @@ function captureNidFrontAndBack(element) {
         }
     })
 }
+
+// function matchField(value1, value2) {
+//     $.ajax({
+//         type: "POST",
+//         url: "https://apac.docs.hyperverge.co/v1/matchFields",
+//         async: false,
+//         headers: {
+//             appId: "abe84d",
+//             appKey: "7d2c0d7e1690c216458c",
+//             transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
+//         },
+//         data: JSON.stringify({
+//             "id_number": {
+//                 "value1": value1,
+//                 "value2": value2
+//             }
+//         }),
+//         contentType: "application/json",
+//         complete: function (data) {
+//             console.log(data);
+//             wait = false;
+//         }
+//     });
+// }
+// matchField('030200010424', '030200010424');
 
 // Done +++
 async function fetchToken() {
@@ -498,6 +520,8 @@ function cutStringData(infomation) {
 
         let fnc = JSON.parse(localStorage.getItem('front_nid_customer'));
         let bnc = JSON.parse(localStorage.getItem('back_nid_customer'));
+        let nid = localStorage.getItem('nid');
+        let frontNid = JSON.parse(localStorage.getItem('front_nid_customer')).idNumber;
 
         if (fnc !== null && bnc !== null) {
             let allDataNid = {
@@ -603,26 +627,16 @@ async function LaunchDocumentCaptureScreen(side) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
                 if (errorCode) {
-                    console.log(errorCode);
+                    console.log('errorCode: ', errorCode);
                 }
                 if (errorCode === '013') {
-                    console.log(errorCode)
+                    console.log('errorCode: ', errorCode);
                     return
                 }
                 if (errorCode === 401) {
-                    console.error(errorCode);
-                    console.error(errorMessage)
-                    //token expired
-                    this.hvInit$.next(false)
-                    alert(apiResults.error)
-                    // this.router.navigate(['pay-mock/register']).then()
+                    console.log('errorCode: ', errorCode);
+                    console.log('errorMessage: ', errorMessage);
                     return;
-                }
-                if (side === NCardSide.front) {
-                    alert(apiResults.error)
-                }
-                if (side === NCardSide.back) {
-                    alert(apiResults.error)
                 }
             }
             if (HVResponse) {
@@ -636,10 +650,10 @@ async function LaunchDocumentCaptureScreen(side) {
                 }
 
                 if (imageBase64 !== '' && imageBase64 !== null) {
+                    $('.guideslide').remove();
+                    $("#formValueNid").show();
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
-                        $('.guideslide').remove();
-                        $("#formValueNid").show();
                         postNationalID(imageBase64);
                         showCapture(imageBase64, "btnCaptureFront");
                         // alert('Lưu mặt trước CMND thà công !');
@@ -1707,6 +1721,8 @@ function forgotPinNid(element) {
         localStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = localStorage.getItem('phone_reset');
         let nid_reset = localStorage.getItem('nid_reset');
+        console.log('phone_reset: ', phone_reset);
+        console.log('nid_reset: ', nid_reset);
         let data = sendOtpPin(phone_reset, nid_reset);
         console.log('Result Send Otp Pin: ', data);
         if (data.status === true) {
@@ -2006,7 +2022,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <div class='card-head no-line'></div>
                             <div class='card-body text-center form-otpcode'>
                                 <h2>Nhập OTP</h2>
-                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3,"****")}</b></p>
+                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
                                 <div id='otpcode'></div>
                                 <span class='error_message error_message_otp'></span>
                             </div>
@@ -2273,18 +2289,29 @@ function showContract(element) {
     showProcessPipeline(3);
 
     var btnContinue = document.querySelector('#btnContinue');
+    btnContinue.disabled = true;
 
-    let confirm_contract = $('#confirm_contract').is(":checked");
-    let confirm_otp = $('#confirm_otp').is(":checked");
+    $('#confirm_contract').click(function () {
+        if ($('#confirm_contract').is(":checked") && $('#confirm_otp').is(":checked")) {
+            btnContinue.disabled = false;
+        }
+        else {
+            btnContinue.disabled = true;
+        }
+    })
 
-    if (confirm_contract && confirm_otp) {
-        btnContinue.disabled = false;
-    }
-    else {
-        btnContinue.disabled = true;
-    }
+    $('#confirm_otp').click(function () {
+        if ($('#confirm_contract').is(":checked") && $('#confirm_otp').is(":checked")) {
+            btnContinue.disabled = false;
+        }
+        else {
+            btnContinue.disabled = true;
+        }
+    })
 
     $('#btnContinue').click(function () {
+        let confirm_contract = $('#confirm_contract').is(":checked");
+        let confirm_otp = $('#confirm_otp').is(":checked");
         if (confirm_contract && confirm_otp) {
             let phone = localStorage.getItem('phone');
             var otp = sendOtp(phone);
@@ -2530,24 +2557,24 @@ function messageScreen(element, config) {
     }, 1000);
 }
 
-function showUseGuideSelfy(){
+function showUseGuideSelfy() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
     $('body').append("<div class='guideslide'></div>");
     $('.guideslide').load('useguide.html');
 }
 
-function showUseGuideNid(){
+function showUseGuideNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
     $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
     $('.guideslide').load('useguidenid.html');
 }
 
-String.prototype.replaceAt = function(index, replacement) {
+String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-$("#tryagain").on("click",function(){
+$("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
 })
