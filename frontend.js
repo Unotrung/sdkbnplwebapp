@@ -95,7 +95,7 @@ function updateCircularProgressbar() {
 }
 
 // Done +++
-function formatStyleCorrectInput(data, errorMessage, btn) {
+function formatStyleCorrectInput(data, errorMessage) {
     data.style.borderColor = '#197DDE';
     errorMessage.innerHTML = '';
     errorMessage.style.visibility = 'hidden';
@@ -105,7 +105,7 @@ function formatStyleCorrectInput(data, errorMessage, btn) {
 }
 
 // Done +++
-function formatStyleWrongInput(data, errorMessage, btn, content) {
+function formatStyleWrongInput(data, errorMessage, content) {
     data.style.borderColor = '#EE4D2D';
     errorMessage.innerHTML = content;
     errorMessage.style.visibility = 'visible';
@@ -159,16 +159,16 @@ function showUICheckPhone(element) {
         if (dataPhone.value !== null && dataPhone.value !== '') {
             if (!isPhoneErr) {
                 btnSubmitPhone.disabled = false;
-                formatStyleCorrectInput(dataPhone, errorMessage, btnSubmitPhone);
+                formatStyleCorrectInput(dataPhone, errorMessage);
             }
             else {
                 btnSubmitPhone.disabled = true;
-                formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Số điện thoại không hợp lệ');
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
             }
         }
         else {
             btnSubmitPhone.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Vui lòng nhập số điện thoại');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
         }
     });
 
@@ -196,15 +196,15 @@ function showUICheckPhone(element) {
             showUICheckNid(element);
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Định dạng số điện thoại không hợp lệ');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Định dạng số điện thoại không hợp lệ');
             return;
         }
         else if (result.errCode === 1008 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
             return;
         }
         else if (result.errCode === 1004 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, btnSubmitPhone, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
             return;
         }
     });
@@ -254,16 +254,16 @@ function showUICheckNid(element) {
             isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
                 isActive = true;
-                formatStyleCorrectInput(dataNid, errorMessage, btnSubmitNid);
+                formatStyleCorrectInput(dataNid, errorMessage);
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
             isActive = false;
-            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Vui lòng nhập CMND/CCCD');
+            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
 
         if (isActive && btnSelActive) {
@@ -280,7 +280,7 @@ function showUICheckNid(element) {
         let result = checkNidExists(data);
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
+            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân này đã tồn tại trong hệ thống !');
             return;
         }
         else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
@@ -293,7 +293,7 @@ function showUICheckNid(element) {
             localStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, btnSubmitNid, 'Số CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
             return;
         }
     })
@@ -590,12 +590,39 @@ async function LaunchDocumentCaptureScreen(side) {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
+                if (errorCode) {
+                    console.log(errorCode);
+                }
+                if (errorCode === '013') {
+                    console.log(errorCode)
+                    return
+                }
+                if (errorCode === 401) {
+                    console.error(errorCode);
+                    console.error(errorMessage)
+                    //token expired
+                    this.hvInit$.next(false)
+                    alert(apiResults.error)
+                    // this.router.navigate(['pay-mock/register']).then()
+                    return;
+                }
+                if (side === NCardSide.front) {
+                    alert(apiResults.error)
+                }
+                if (side === NCardSide.back) {
+                    alert(apiResults.error)
+                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                if (apiResults['result']['summary']['action'] !== 'pass') {
+                    alert(apiResults.error);
+                    return
+                }
+
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
@@ -1560,7 +1587,7 @@ function formatCurrency(money) {
 function showFormPincode(element, phone, screen) {
     var html = `
         <div class='box form-card-pincode'>
-        <div class='voolo-logo'></div>
+            <div class='voolo-logo'></div>
             <form id='formSetupPinCode'>
                     <div class=''>
                         <div class='text-center form-pincode'>
@@ -1589,35 +1616,25 @@ function showFormPincode(element, phone, screen) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
-            console.log(value);
-            if (value.length == 4) {
+            if (value.length === 4) {
                 btnSubmitPin.disabled = false;
+            }
+            else {
+                $('.pincode-input').removeClass('error_pincode_gray');
+                btnSubmitPin.disabled = true;
             }
         }
     });
 
-
     var pincode = document.querySelector('#pincode');
-
     var errorMessage = document.querySelector('.error_message');
 
     $('#btnSubmitPin').click(function () {
         var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
-        if (pin === null || pin === '' || pin === undefined) {
-            formatStyleWrongInput(pincode, errorMessage, btnSubmitPin, 'Vui lòng nhập mã pin');
-            return;
-        }
-        formatStyleCorrectInput(pincode, errorMessage, btnSubmitPin);
         let result = login(phone, pin);
         console.log('Result Show Form Pin code: ', result);
-        //set cus info
-        // customer.name = result.data.phone;
-        // customer.limit = result.data.limit;
-        // customer.avatar = result.data.avatar;
-        //end set cus info
 
         if (result.status === true && result.data.step === 4) {
-            // showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
             switch (screen) {
                 default:
                     showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
@@ -1628,7 +1645,7 @@ function showFormPincode(element, phone, screen) {
                     showMessage(element, '<h3>Cập nhật mã PIN thành công</h3>', 'ico-success');
                     break;
                 case "BUY_SUCCESS":
-                    showMessage(element, '<h3>Chúc mừng bạn đã mua hàng thành công</h3>', 'ico-success');
+                    messageScreen(element, { screen: "buy_success", pipeline: false });
                     break;
                 case "BUY_UNSUCCESS":
                     showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
@@ -1640,16 +1657,40 @@ function showFormPincode(element, phone, screen) {
         //     return;
         // }
         else if (result.status === false && result.statusCode === 1002) {
-            alert('Số điện thoại không hợp lệ !');
+            formatStyleWrongInput(pincode, errorMessage, 'Số điện thoại không hợp lệ');
             return;
         }
         else if (result.status === false && result.statusCode === 1003) {
-            alert('Mã pin không hợp lệ !');
+            if (result?.countFail !== 5) {
+                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+                $(".pincode-input").val("");
+                for (i = 1; i <= 4; i++) {
+                    $("#pin" + i).addClass('error_pincode_gray');
+                }
+                $('.pincode-input').removeClass('pincode-input--filled');
+                btnSubmitPin.disabled = true;
+            }
+            else {
+                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+                $(".pincode-input").val("");
+                for (i = 1; i <= 4; i++) {
+                    $("#pin" + i).addClass('error_pincode_red');
+                    $("#pin" + i).attr('disabled', true);
+                }
+                $('.pincode-input').removeClass('pincode-input--filled');
+                btnSubmitPin.disabled = true;
+            }
+        }
+        else if (result.status === false && result.statusCode === 1004) {
+            formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             $(".pincode-input").val("");
-            return;
+            for (i = 1; i <= 4; i++) {
+                $("#pin" + i).addClass('error_pincode_red');
+                $("#pin" + i).attr('disabled', true);
+            }
+            btnSubmitPin.disabled = true;
         }
     });
-
 }
 
 // Done +++
@@ -1815,7 +1856,7 @@ function forgotPinPhone(element, phone) {
 
     dataPhone.oninput = function () {
         if (dataPhone.value !== null && dataPhone.value !== '') {
-            formatStyleCorrectInput(dataPhone, errorMessage, btnContinue);
+            formatStyleCorrectInput(dataPhone, errorMessage);
             const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
             let isPhoneErr = !regexPhone.test(dataPhone.value);
             if (!isPhoneErr) {
@@ -1826,12 +1867,12 @@ function forgotPinPhone(element, phone) {
                 });
             }
             else {
-                formatStyleWrongInput(dataPhone, errorMessage, btnContinue, 'Định dạng số điện thoại không hợp lệ');
+                formatStyleWrongInput(dataPhone, errorMessage, 'Định dạng số điện thoại không hợp lệ');
             }
 
         }
         else {
-            formatStyleWrongInput(dataPhone, errorMessage, btnContinue, 'Vui lòng nhập số điện thoại');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
         }
     }
 }
@@ -1869,7 +1910,7 @@ function forgotPinNid(element) {
 
     dataNid.oninput = function () {
         if (dataNid.value !== null && dataNid.value !== '') {
-            formatStyleCorrectInput(dataNid, errorMessage, btnSendOtp);
+            formatStyleCorrectInput(dataNid, errorMessage);
             const regexNid = /^\d{12}$|^\d{9}$/;
             let isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
@@ -1883,29 +1924,29 @@ function forgotPinNid(element) {
                         showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
                     }
                     else if (data.status === false && data.message === 'Send otp failure') {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Mã Otp không chính xác');
+                        formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
                         return;
                     }
                     else if (data.status === false && data.statusCode === 1002) {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Số điện thoại không chính xác');
+                        formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
                         return;
                     }
                     else if (data.status === false && data.statusCode === 1001) {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Chứng minh nhân dân không chính xác');
+                        formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
                         return;
                     }
                     else if (data.status === false && data.errorCode === 8000) {
-                        formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Định dang data không hợp lệ');
+                        formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
                         return;
                     }
                 })
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
-            formatStyleWrongInput(dataNid, errorMessage, btnSendOtp, 'Vui lòng nhập CMND/CCCD');
+            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
     }
 }
@@ -2038,7 +2079,7 @@ var PincodeInput = function () {
                 })), t.addEventListener("focus", (function () {
                     e.focusedCellIdx = s
                 })), t.addEventListener("keydown", (function (t) {
-                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "text")
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && e.cells[s].setAttribute("type", "password")
                 })), t.addEventListener("focus", (function () {
                     t.classList.add("pincode-input--focused")
                 })), t.addEventListener("blur", (function () {
@@ -2296,7 +2337,7 @@ function router(element) {
 }
 
 /* 
-* ex : messageScreen(element,{screen : "successScreen",pipeline:true});
+* ex : messageScreen(element,{screen : "buy_success",pipeline:false});
 *
 **/
 
@@ -2311,7 +2352,6 @@ function messageScreen(element, config) {
                         </p>
                     </div> 
                 </div>`;
-
     }
 
     if (config.screen == 'unsuccessScreen') {
@@ -2327,7 +2367,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
@@ -2338,13 +2378,36 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_success') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div> 
+                </div>`;
+    }
+
+    if (config.screen == 'buy_success') {
+        html = `<div class='box showMessage formValue-mt-200'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Chúc mừng bạn đã mua hàng thành công</h3>
+                        <p style='text-align: center;'>
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        </p>
+                    </div>
+                </div>`;
+    }
+
+    if (config.screen == 'buy_unsuccess') {
+        html = `<div class='box showMessage formValue-mt-200'>
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-unsuccess'></div>
+                        <h3>Mua hàng không thành công</h3>
+                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
+                        <button class='payment-button' id="tryagain">Thử lại</button>
+                    </div>
                 </div>`;
     }
 
@@ -2357,6 +2420,9 @@ function messageScreen(element, config) {
         if (n === 0) {
             if (config.screen == 'successScreen') {
                 showAllTenor(element, 3);
+            }
+            if (config.screen == 'buy_success') {
+                window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
