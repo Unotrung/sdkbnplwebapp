@@ -2623,7 +2623,7 @@ function showUseGuideNid() {
 function showUseGuideBackNid(){
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
-    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
+    $('#test').prepend("<div class='guideslide' style='margin-top:220px;width:100%;position: unset;'></div>");
     var html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
