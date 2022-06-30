@@ -636,7 +636,7 @@ body.loading .overlay{
 }
 
 #customerInfo .detail{
-    text-align: left;
+    text-align: center;
 }
 
 .form-row select{
@@ -970,6 +970,30 @@ input{
     left: 0px;
     right: 0px;
     margin: 120px auto;
+}
+.tenor-item .tenor-head{
+    display: flex;
+    align-items: center;
+}
+.tenor-item .tenor-head h3{
+    width: 30%;
+}
+.tenor-item .tenor-head .totalprice{
+    width: 70%;
+    text-align: right;
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    color: #197DDE;
+}
+.customer{
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){

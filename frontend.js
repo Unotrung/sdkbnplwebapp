@@ -735,21 +735,28 @@ function runDocumentCaptureScreen(side) {
 function showAllTenor(element, nCount = 0) {
     setRoute("showAllTenor");
     let html = '';
+    if(customer.limit < totalBillNumber){
+        customerInfo(element,false);
+        return;
+    }
+    console.log(totalBillNumber);
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `<form class='formValue orderTop'> `;
+    html += `<form class='formValue orderTop'> <h2 style="margin-bottom:24px">Vui lòng chọn kì hạn thanh toán</h2>`;
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
-            <div class'tenor-item'>
-                <h3>KÌ HẠN 1</h3>
+            <div class='tenor-item'>
+                <div class="tenor-head">
+                    <h3>KÌ HẠN 1</h3>
+                    <div class='totalprice'>${formatCurrency(parseInt(totalBillNumber)+parseInt(tenors[i].convertFee))}</div>
+                </div>
                     <ul>
                         <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
                         <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
                         <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
                     </ul>
-                <p></p>
                 <p></p>
             </div>
         </div>`
@@ -762,14 +769,15 @@ function showAllTenor(element, nCount = 0) {
     var btnSubmitPin = document.querySelector('#btnContinue');
     btnSubmitPin.disabled = true;
 
+    
     // show list productions
     listProductions({
         element: element,
         items: true,
         dataItems: pData
     });
-
     customerInfo(element);
+    
 
     $('#btnContinue').click(function () {
         let phone = localStorage.getItem('phone');
@@ -1542,6 +1550,7 @@ function configUi(config) {
 }
 
 // Done +++
+let totalBillNumber = 0;
 function listProductions(config) {
     //show list items
     var list = "";
@@ -1567,6 +1576,7 @@ function listProductions(config) {
 
         //set total local
         billTotal = sTotal;
+        totalBillNumber = total;
     }
     lItems += `<div class='list-items'>
         <div class='card'>
@@ -2359,22 +2369,37 @@ function showContract(element) {
 }
 
 // Done +++
-function customerInfo(element) {
-    showLogo(56);
-    var str = `<div class='voolo-logo'></div>
+function customerInfo(element,status=true) {
+    var strStatus = ``;
+    if(status){
+        strStatus = `<div class='ico-success'></div>
+        <h3>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</h3>`;
+    }else{
+        strStatus = `<div class='ico-unsuccess'></div>
+        <h3>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</h3>`
+    }
+    var str = `<div class="customer">
+                <div class='voolo-logo'></div>
                 <div id="customerInfo">
                     <div class="avatar"><img src="${customer.avatar}" /></div>
                     <div class='detail'>
-                        <h3>${customer.name} ơi!</h3>
+                        <h3 style="font-weight:700;font-size:20px;">${customer.name} ơi!</h3>
                         <p>Hạn mức tín dụng của bạn là :</p>
                         <h2>${formatCurrency(customer.limit * 1)}</h2>
+                        ${strStatus}
                     </div>
-                </div>`;
+                </div>
+            </div>`;
     if ($(window).width() < 700) {
         $(element).prepend(str);
+        $(element).find(".avatar").css("display","none");
+        $(element).find(".list-items").css("margin-top","350px");
     }
     else {
-        $('.formValue').prepend(str);
+        $(element).prepend(str);
+        $(element).find(".list-items").css("margin-top","350px");
+        $(element).find(".formValue").css("margin-top","350px");
+        $(element).find(".avatar").css("display","none");
     }
 }
 
