@@ -1868,7 +1868,7 @@ function showFormPincode(element, phone, screen) {
                     messageScreen(element, { screen: "buy_success", pipeline: false });
                     break;
                 case "BUY_UNSUCCESS":
-                    showMessage(element, '<h3>Bạn đã mua hàng thất bại</h3>', 'ico-unsuccess');
+                    messageScreen(element, { screen: "buy_unsuccess", pipeline: false });
                     break;
             }
         }
@@ -2498,7 +2498,7 @@ function messageScreen(element, config) {
                         <div class='ico-success'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2510,7 +2510,7 @@ function messageScreen(element, config) {
                         <div class='ico-unsuccess'></div>
                         <h3>Đăng ký không thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2533,7 +2533,7 @@ function messageScreen(element, config) {
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div> 
                 </div>`;
@@ -2545,7 +2545,7 @@ function messageScreen(element, config) {
                         <div class='ico-success'></div>
                         <h3>Chúc mừng bạn đã mua hàng thành công</h3>
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <b class='coutdown'>5</b>s.
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div>
                 </div>`;
