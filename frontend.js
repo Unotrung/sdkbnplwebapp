@@ -121,7 +121,7 @@ function showUICheckPhone(element) {
                     <div class='mobile'>
 
                         <div class='form__row'>
-                            <label for='phone'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để để tiếp tục</label>
                             <input type='phone' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
@@ -222,13 +222,14 @@ function showUICheckNid(element) {
                             <span class='error_message'></span>
                         </div>
 
-                        <h3>Chụp ảnh chân dung</h3>
+                        <label>Chụp ảnh chân dung</label>
                         <button type='button' id='callHP' class='btnCapture'></button>
                         <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
 
                     </div>
                 </form>`;
     $(element).html(html);
+    pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh chân dung</h4>");
 
     $('#callHP').click(function () {
         showUseGuideSelfy();
@@ -312,6 +313,7 @@ function captureNidFrontAndBack(element) {
                 </form> `;
     $(element).html(html);
     showProcessPipeline(1);
+    pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh CMND/CCCD 2 mặt</h4>");
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -360,7 +362,7 @@ function captureNidFrontAndBack(element) {
             let phone = localStorage.getItem('phone');
             if (fn !== null && bn !== null) {
                 let personal = new Personal(fn.name, fn.gender, phone, fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
-                showDataInform('#test', personal);
+                showDataInform('#voolo', personal);
             }
             else if (fn === null) {
                 alert('Không tìm thấy thông tin cmnd mặt trước ! Vui lòng thử lại !');
@@ -617,6 +619,7 @@ async function LaunchFaceCaptureScreen() {
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
                     $("#formValueNid").show();
+                    $('body').find('.pageTitle').text("Chụp ảnh chân dung");
                     localStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                 }
@@ -675,7 +678,9 @@ async function LaunchDocumentCaptureScreen(side) {
 
                 if (imageBase64 !== '' && imageBase64 !== null) {
                     $('.guideslide').remove();
+                    $('.guideslideback').remove();
                     $("#formValueNid").show();
+                    $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
                         localStorage.setItem('front-image', imageBase64);
                         postNationalID(imageBase64);
@@ -787,7 +792,7 @@ function showAllTenor(element, nCount = 0) {
 
 // Done +++
 function showAllProvider(element) {
-    let html = `<div class='box'> <div class='paragraph-text text-center margin-bottom-default'><h3>Chọn nhà cung cấp BNPL</h3><p>Mua trước Trả sau cùng</p></div>`;
+    let html = `<div class='box'> <div class='paragraph-text text-center margin-bottom-default'><h6>Chọn nhà cung cấp BNPL</h6></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
@@ -819,7 +824,7 @@ function selectTenor(el) {
 
 // Done +++
 function selectProvider() {
-    showUICheckPhone('#test');
+    showUICheckPhone('#voolo');
 }
 
 // Done +++
@@ -1071,12 +1076,12 @@ function showDataInform(element, personal) {
     let street = personal.street;
     let conditionStreet = personal.street !== null && personal.street !== '' && personal.street !== undefined;
     var html = `<div class='form-card form-showdata'>
-                    <p class='form-showdata-title'>Nhập thông tin cá nhân</p>
+                    <h4 class='form-showdata-title'>Nhập thông tin cá nhân</h4>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
                     <form class='' id='formDataValue'>
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-showdata-info'>Thông tin cá nhân</h3>
+                                <div class='form-showdata-info sub4'>Thông tin cá nhân</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
@@ -1152,32 +1157,6 @@ function showDataInform(element, personal) {
                             <div class="card-footer"></div>
                         </div >
                         <div class="card">
-                            <div class="card-head">
-                                <h3 class='form-showdata-info'>Thông tin tham chiếu</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class='form-row'>
-                                    <label for='relationship'>Mối quan hệ </label>
-                                    <select class='input-global' type='text' id='relationship' name='relationship'>
-                                        ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
-                                    </select>
-                                    <span class='error_relationship error_message'></span>
-                                </div>
-                                <div class='form-row'>
-                                    <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref")'/>
-                                    <span class='error_fullname_ref error_message'></span>
-                                </div>
-                                <div class='form-row'>
-                                    <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
-                                    <span class='error_phone_ref error_message'></span>
-                                </div>
-                            </div>
-                            <div class="card-footer"></div>
-                        </div>
-
-                    <div class="card">
                         <div class="card-head">
                             <h3>Địa chỉ tạm trú</h3>
                         </div>
@@ -1205,12 +1184,38 @@ function showDataInform(element, personal) {
                         </div>
                         <div class="card-footer"></div>
                     </div>
-                        <button type='submit' class='payment-button' id='btnContinue'>Tiếp tục</button>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3 class='form-showdata-info'>Thông tin tham chiếu</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row'>
+                                    <label for='relationship'>Mối quan hệ </label>
+                                    <select class='input-global' type='text' id='relationship' name='relationship'>
+                                        ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
+                                    </select>
+                                    <span class='error_relationship error_message'></span>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='fullname_ref'>Họ và tên</label>
+                                    <input class='input-global' type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref")'/>
+                                    <span class='error_fullname_ref error_message'></span>
+                                </div>
+                                <div class='form-row'>
+                                    <label for='phone_ref'>Số điện thoại</label>
+                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref")'/>
+                                    <span class='error_phone_ref error_message'></span>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                        <button type='submit' class='payment-button medium' id='btnContinue'>Tiếp tục</button>
                     </form >
                 </div > `;
     $(element).html(html);
     //show progress bar
-    showProcessPipeline(1);
+    showProcessPipeline(1,true);
+    pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh chân dung</h4>",'non-pageTitle');
 
     const formDataValue = document.querySelector('#formDataValue');
 
@@ -1409,12 +1414,12 @@ function handleChangeWard(ele1, ele2) {
 function showConfirmDataInform(element, personal_all_info) {
     showHeader();
     var html = `<div class='form-card form-confirmdata'>
-                    <p class='form-confirmdata-title'>Đối soát thông tin</p>
+                    <h4 class='form-confirmdata-title'>Đối soát thông tin</h4>
                     <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
                     <form class=''>
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-confirmdata-info'>Thông tin cá nhân</h3>
+                                <div class='form-showdata-info sub4'>Thông tin cá nhân</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
@@ -1454,27 +1459,6 @@ function showConfirmDataInform(element, personal_all_info) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3>Thông tin tham chiếu</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class='form-row form-verify'>
-                                    <label for='relationship'>Mối quan hệ </label>
-                                    <div id='relationship' class="info">${personal_all_info.personal_title_ref_ui}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='name_ref'>Họ và tên</label>
-                                    <div id='name_ref' class="info">${personal_all_info.name_ref}</div>
-                                </div>
-                                <div class='form-row form-verify'>
-                                    <label for='phone_ref'>Số điện thoại</label>
-                                    <div id='phone_ref' class="info">${personal_all_info.phone_ref}</div>
-                                </div>
-                            </div>
-                            <div class="card-footer"></div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-head">
                                 <h3>Địa chỉ tạm trú</h3>
                             </div>
                             <div class="card-body">
@@ -1497,14 +1481,35 @@ function showConfirmDataInform(element, personal_all_info) {
                             </div>
                             <div class="card-footer"></div>
                         </div>
-                        <div class="form-row" style="width: 100%;padding: 0;display: flex;">
-                        <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='submit' class='payment-button' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                        <div class="card">
+                            <div class="card-head">
+                                <h3>Thông tin tham chiếu</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class='form-row form-verify'>
+                                    <label for='relationship'>Mối quan hệ </label>
+                                    <div id='relationship' class="info">${personal_all_info.personal_title_ref_ui}</div>
+                                </div>
+                                <div class='form-row form-verify'>
+                                    <label for='name_ref'>Họ và tên</label>
+                                    <div id='name_ref' class="info">${personal_all_info.name_ref}</div>
+                                </div>
+                                <div class='form-row form-verify'>
+                                    <label for='phone_ref'>Số điện thoại</label>
+                                    <div id='phone_ref' class="info">${personal_all_info.phone_ref}</div>
+                                </div>
+                            </div>
+                            <div class="card-footer"></div>
                         </div>
                     </form>
+                    <div class="form-row" style="width: 100%;padding: 0;display: flex;margin-bottom: 36px;margin-top: 12px;">
+                        <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                        </div>
                 </div>`;
     $(element).html(html);
-    showProcessPipeline(1);
+    showProcessPipeline(1,true);
+    pageTitle(element,"<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
     $(window).scrollTop(0);
 
     let name = document.getElementById('name');
@@ -1538,14 +1543,14 @@ function configUi(config) {
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
     <div class='voolo-intro'>
-        <h2 class=''>VOOLO giúp bạn:</h2>
+        <div class='sub4'>VOOLO giúp bạn:</div>
         <ul>
             <li>Mua sắm không giới hạn </li>
             <li>Thanh toán linh hoạt </li>
             <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
         </ul>
     </div>
-    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5'>VOOLO</p> <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5 font-m-a'>VOOLO</p> <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
     $(config.element + " form").prepend(iHtml);
 }
 
@@ -1561,11 +1566,11 @@ function listProductions(config) {
             list += `<div class='list'>
             <div class='image'><img src='`+ e.imgUrl + `'/></div>
             <div class='info'>
-                <p class='head-w-6 ellipsis'>`+ e.product + `</p>
-                <p>`+ e.descript + `</p>
-                <p>`+ e.quantity + `</p>
+                <p class='compact ellipsis'>`+ e.product + `</p>
+                <p class='text-space-gray'>`+ e.descript + `</p>
+                <p class='text-space-black'>`+ e.quantity + `</p>
             </div>
-            <div class='price head-w-6'>`+ e.priceShow + `</div>
+            <div class='price compact'>`+ e.priceShow + `</div>
         </div>`;
             total += parseInt(e.price);
         });
@@ -1580,9 +1585,24 @@ function listProductions(config) {
     }
     lItems += `<div class='list-items'>
         <div class='card'>
-            <div class='card-head'><h2>Thông tin đơn hàng</h2></div>
+            <div class='card-head'><span class='sub4'>Thông tin đơn hàng</span></div>
             <div class='card-body'>
-                `+ list + `
+                ${list}
+                <div class='area-cost'>
+                    <div class='item tag' style=''>
+                        Thêm mã giảm giá hoặc thẻ quà tặng
+                    </div>
+                </div>
+                <div class='area-cost'>
+                    <div class='item' style='margin-bottom: 20px;'>
+                        <span class='pTitle'>Thành tiền</span>
+                        <span class='pPrice compact-16'>${sTotal}</span>
+                    </div>
+                    <div class='item'>
+                        <span class='pTitle'>Phí vận chuyển</span>
+                        <span class='pPrice compact-16'>0 đ</span>
+                    </div>
+                </div>
             </div>
             <div class='card-footer'>
                 <span>Tổng cộng</span>
@@ -1921,12 +1941,11 @@ function showFormSetupPin(element, screen, token) {
     // showHeader();
     var html = `
     <div class='form-card'>
-    <div class='voolo-logo'></div>
     <form id='formSetupPinCode'>
         <div class=''>
             <div class=' no-line'></div>
                 <div class='text-center form-pincode'>
-                    <h2>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h2>
+                    <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
                     <p>Mã PIN</p>
                     <div id='pincode'></div>
                     <p>Nhập lại mã PIN</p>
@@ -1941,8 +1960,9 @@ function showFormSetupPin(element, screen, token) {
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
         //show progress bar
-        showProcessPipeline(2);
+        showProcessPipeline(2,true);
     }
+    pageTitle(element,'<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>','non-pageTitle');
 
     let iPut1, iPut2 = false;
     $('#btnSubmitPin').attr("disabled", true);
@@ -2154,7 +2174,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
-                    showCircularProgressbar('#test');
+                    showCircularProgressbar('#voolo');
                     // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
@@ -2404,7 +2424,7 @@ function customerInfo(element,status=true) {
 }
 
 // Done +++
-function showProcessPipeline(step) {
+function showProcessPipeline(step,logo = false) {
     var s1, s2, s3, s4, s5 = '';
     switch (step) {
         default:
@@ -2426,8 +2446,8 @@ function showProcessPipeline(step) {
     }
     var pipeline = `
         <div class='headrow'>
-        <div class='voolo-logo'></div>
-            <h3>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h3>
+        ${(logo)?'<div class="voolo-logo"></div>':''}
+            <div class='sub2'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</div>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -2444,7 +2464,7 @@ function showProcessPipeline(step) {
             </div>
         </div>`;
 
-    $('#test').prepend(pipeline);
+    $('#voolo').prepend(pipeline);
     $('.formValue').addClass("formValue-mt");
     $('.form-card').addClass("formValue-mt");
     $('.box').addClass("formValue-mt");
@@ -2611,6 +2631,7 @@ function showUseGuideSelfy() {
     $("#formValueNid").hide();
     $('body').append("<div class='guideslide'></div>");
     $('.guideslide').load('useguide.html');
+    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh chân dung");
 }
 
 function showUseGuideNid() {
@@ -2618,18 +2639,22 @@ function showUseGuideNid() {
     $("#formValueNid").hide();
     $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
     $('.guideslide').load('useguidenid.html');
+    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
 }
 
 function showUseGuideBackNid(){
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
-    $('#test').prepend("<div class='guideslide' style='margin-top:220px;width:100%;position: unset;'></div>");
-    var html = `<div class='box showMessage'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
+    $('#voolo').append("<div class='guideslideback' style=''></div>");
+    var html = `<div class='box2 showMessage'>
+                    <div class=''>
                         <div class='ico-success'></div>
-                        <h3>Chụp ảnh mặt trước thành công</h3>
+                        <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
                         <div class='line'>
-                            <span>Now</span>
+                            <span class='font-m'>Now</span>
+                        </div>
+                        <div class='refresh-ico'>
+                            <img src='./assets/img/refresh-ico.png' width="20" height="20" />
                         </div>
                         <p style='text-align: center;'>
                             Lật mặt sau của card để tiếp tục chụp ảnh
@@ -2647,11 +2672,11 @@ function showUseGuideBackNid(){
                             </div>
                         </div>
                         <div style="width:100%">
-                        <button class='payment-button' id="" onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
+                        <button class='payment-button' id="" style='margin-top:38px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
                         </div>
                     </div>
                 </div>`;
-        $('.guideslide').html(html);
+        $('.guideslideback').html(html);
 }
 
 String.prototype.replaceAt = function(index, replacement) {
@@ -2660,4 +2685,13 @@ String.prototype.replaceAt = function(index, replacement) {
 
 $("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
-})
+});
+
+function pageTitle(element,str = '',cls=''){
+    if(str !=='') {
+        $(element).prepend(str);
+        $(element).addClass("non-flex");
+        if(cls != '') $(element).addClass(cls);
+    }
+
+}
