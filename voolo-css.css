@@ -481,6 +481,12 @@ a.ahref{
     margin-top: 6%;
     padding: 20px 5%;
 }
+
+.main-page .box.showMessage{
+    margin: auto;
+    padding: 0;
+}
+
 .main-page .box2{
     display: block;
     margin: 0 auto;

@@ -2568,7 +2568,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage formValue-mt-200'>
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
@@ -2579,7 +2579,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_success') {
-        html = `<div class='box showMessage formValue-mt-200'>
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
@@ -2591,7 +2591,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'buy_success') {
-        html = `<div class='box showMessage formValue-mt-200'>
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Chúc mừng bạn đã mua hàng thành công</h3>
@@ -2603,7 +2603,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'buy_unsuccess') {
-        html = `<div class='box showMessage formValue-mt-200'>
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Mua hàng không thành công</h3>
@@ -2624,7 +2624,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                window.location.href = DOMAIN;
+                // window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
