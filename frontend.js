@@ -49,7 +49,7 @@ function updateProgressbar() {
 
 // Done +++
 function showCircularProgressbar(element) {
-    var html = `<div class='box' style='margin-top:200px'>
+    var html = `<div class='box showCircularProgressbar' style='margin-top:200px'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                     <div class="imgloading-140"></div>
                     <h2 class='sub2'>Đang trong tiến trình xác minh thông tin</h2>
@@ -117,10 +117,10 @@ function formatStyleWrongInput(data, errorMessage, content) {
 // Done +++
 function showUICheckPhone(element) {
     setRoute("showUICheckPhone");
-    var html = `<form id='formValuePhone' class='formValue'>
+    var html = `<form id='formValuePhone' class='formValue showUICheckPhone'>
                     <div class='mobile'>
-
                         <div class='form__row'>
+                            <h5>Số điện thoại</h5>
                             <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để để tiếp tục</label>
                             <input type='phone' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
@@ -312,7 +312,7 @@ function captureNidFrontAndBack(element) {
                     </div>
                 </form> `;
     $(element).html(html);
-    showProcessPipeline(1);
+    showProcessPipeline(1,true,'captureNid');
     pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh CMND/CCCD 2 mặt</h4>");
 
     $('#front_image').click(function () {
@@ -748,7 +748,7 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `<form class='formValue orderTop'> <div style="margin-bottom:24px" class='sub2'>Vui lòng chọn kì hạn thanh toán</div>`;
+    html += `<form class='formValue orderTop box-mobile box-tenor'> <div style="margin-bottom:24px" class='sub2'>Vui lòng chọn kì hạn thanh toán</div>`;
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
@@ -1081,7 +1081,7 @@ function showDataInform(element, personal) {
                     <form class='' id='formDataValue'>
                         <div class="card">
                             <div class="card-head">
-                                <div class='form-showdata-info sub4'>Thông tin cá nhân</div>
+                                <h3 class='form-showdata-info sub4'>Thông tin cá nhân</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
@@ -1158,7 +1158,7 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                         <div class="card-head">
-                            <h3>Địa chỉ tạm trú</h3>
+                            <h3 class='form-showdata-info'>Địa chỉ tạm trú</h3>
                         </div>
                         <div class="card-body">
                             <div class='form-row'>
@@ -1214,7 +1214,7 @@ function showDataInform(element, personal) {
                 </div > `;
     $(element).html(html);
     //show progress bar
-    showProcessPipeline(1,true);
+    showProcessPipeline(1,true,"showDataInform");
     pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh chân dung</h4>",'non-pageTitle');
 
     const formDataValue = document.querySelector('#formDataValue');
@@ -1314,6 +1314,7 @@ function showDataInform(element, personal) {
             if (!isPhoneError && !isPhoneRefError && !isNidError) {
                 if (personal_all_info !== null) {
                     localStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
+                    $(element).removeClass("showDataInform");
                     showConfirmDataInform(element, personal_all_info);
                 }
             }
@@ -1459,7 +1460,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3>Địa chỉ tạm trú</h3>
+                                <div class="form-showdata-info sub4">Địa chỉ tạm trú</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
@@ -1483,7 +1484,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         </div>
                         <div class="card">
                             <div class="card-head">
-                                <h3>Thông tin tham chiếu</h3>
+                                <div class="form-showdata-info sub4">Thông tin tham chiếu</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
@@ -1508,7 +1509,7 @@ function showConfirmDataInform(element, personal_all_info) {
                         </div>
                 </div>`;
     $(element).html(html);
-    showProcessPipeline(1,true);
+    showProcessPipeline(1,true,"showConfirmDataInform");
     pageTitle(element,"<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
     $(window).scrollTop(0);
 
@@ -1783,6 +1784,7 @@ function forgotPinNid(element) {
         console.log('Result Send Otp Pin: ', data);
         if (data.status === true) {
             showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
+            $('body').addClass('popup');
         }
         else if (data.status === false && data.message === 'Send otp failure') {
             formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
@@ -1840,7 +1842,7 @@ function showFormPincode(element, phone, screen) {
     var html = `
         <div class='box form-card-pincode'>
             <div class='voolo-logo'></div>
-            <form id='formSetupPinCode'>
+            <form id='formSetupPinCode' class="box-mobile">
                     <div class=''>
                         <div class='text-center form-pincode'>
                             <h4>Nhập mã PIN</h4>
@@ -2082,7 +2084,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                     <div id='otpcode'></div>
                                     <span class='error_message error_message_otp'></span>
                                 </div>
-                                <div class='card-footer' style="height:16px"></div>
+                                <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
                             <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
@@ -2090,14 +2092,14 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     </div>
             </div>`;
 
-    $('body').append(html);
+    $(element).append(html);
     timer(60);
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
     btnSubmitVerifyOTP.disabled = true;
 
     var otpcode = document.querySelector('#otpcode');
-    var errorMessage = document.querySelector('.error_message');
+    var errorMessage = document.querySelector('.alert-box .error_message');
 
     new PincodeInput("#otpcode", {
         count: 6,
@@ -2123,7 +2125,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     //     intro: false
     // });
     $('span.close').click(function(){
-        $('body').removeClass('popup');
+        close_popup();
     });
     $('#btnSubmitVerifyOTP').click(function () {
         let otp1 = $('#otp1').val().trim();
@@ -2134,13 +2136,13 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         let otp6 = $('#otp6').val().trim();
         let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         if (phone !== null && otp !== null) {
-            $('body').removeClass('popup');
             if (screen === 'RESET_PIN' && screen !== '') {
                 let phone_reset = localStorage.getItem('phone_reset');
                 let nid_reset = localStorage.getItem('nid_reset');
                 const data = verifyOtpPin(phone_reset, nid_reset, otp);
                 console.log('Result Verify Otp Pin: ', data);
                 if (data.status === true && data.token !== null) {
+                    close_popup();
                     showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
                 }
                 else if (data.status === false && data.statusCode === 4000) {
@@ -2180,6 +2182,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 var data = verifyOtp(phone, otp);
                 console.log('Result Verify Phone', data);
                 if (data.status === true) {
+                    close_popup();
                     showCircularProgressbar('#voolo');
                     // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
@@ -2410,7 +2413,7 @@ function customerInfo(element,status=true) {
                 <div id="customerInfo">
                     <div class="avatar"><img src="${customer.avatar}" /></div>
                     <div class='detail'>
-                        <h3 style="font-weight:700;font-size:20px;">${customer.name} ơi!</h3>
+                        <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
                         <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                         ${strStatus}
                     </div>
@@ -2419,18 +2422,20 @@ function customerInfo(element,status=true) {
     if ($(window).width() < 700) {
         $(element).prepend(str);
         $(element).find(".avatar").css("display","none");
-        $(element).find(".list-items").css("margin-top","350px");
+        $(element).find(".list-items").css("margin-top","212px");
+        $(element).find(".detail h3").css({"font-weight":"600","font-size":"18px"});
     }
     else {
         $(element).prepend(str);
         $(element).find(".list-items").css({"margin-top":"410.5px","padding-top":"0"});
         $(element).find(".formValue").css("margin-top","410.5px");
         $(element).find(".avatar").css("display","none");
+        $(element).find(".detail h3").css({"font-weight":"700","font-size":"20px"});
     }
 }
 
 // Done +++
-function showProcessPipeline(step,logo = false) {
+function showProcessPipeline(step,logo = false,formName='') {
     var s1, s2, s3, s4, s5 = '';
     switch (step) {
         default:
@@ -2471,6 +2476,7 @@ function showProcessPipeline(step,logo = false) {
         </div>`;
 
     $('#voolo').prepend(pipeline);
+    if(formName!=='') $('#voolo').addClass(formName);
     $('.formValue').addClass("formValue-mt");
     $('.form-card').addClass("formValue-mt");
     $('.box').addClass("formValue-mt");
@@ -2613,6 +2619,7 @@ function messageScreen(element, config) {
                 </div>`;
     }
 
+    $(element).removeClass("non-flex");
     $(element).html(html);
     if (config.pipeline) showProcessPipeline(5,true);
     var n = 5;
@@ -2624,7 +2631,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                window.location.href = DOMAIN;
+                // window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
@@ -2700,4 +2707,9 @@ function pageTitle(element,str = '',cls=''){
         if(cls != '') $(element).addClass(cls);
     }
 
+}
+
+function close_popup(){
+    $('body').removeClass('popup');
+    $('body .overlay-popup').remove();
 }

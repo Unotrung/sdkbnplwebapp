@@ -70,6 +70,16 @@ body{
     line-height: 39px;
     color: #000000;
 }
+.main-page h5{
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+
+    color: #000000;
+}
 .main-page h6{
     font-family: 'Montserrat Alternates';
     font-style: normal;
@@ -322,6 +332,7 @@ a.ahref{
     width: 50%;
     padding: 20px 5%;
     margin-top: 56px;
+    margin-bottom: 20px;
 }
 .main-page .list-items .card {
     min-width: 461px;
@@ -988,7 +999,6 @@ body.popup .overlay-popup{
 
 .headrow .line{
     width: 100%;
-    /* border-bottom: 1px dashed #ccc; */
     display: flex;
     padding-left: 175px;
 }
@@ -1350,15 +1360,49 @@ input{
 .form-card.showFormSetupPin{
     margin-top:310px!important;
 }
+.showUICheckPhone .mobile h5{
+    display: none;
+}
+.tenor-list .tenor-item li{
+    list-style: disc;
+}
+.captureNid .headrow .voolo-logo{
+    display: none;
+}
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
+    input, select{
+        margin: 6px 0;
+    }
+    .sub4{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 16px;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    .main-page h4, h4{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+    }
     .main-page{
         display: flow-root;
+        padding: 20px;
+        background-color: #F3F3F3!important;
     }
     .main-page .list-items{
         width: 100%;
         padding: 0;
         order: 2;
+        margin-top: 20px;
+    }
+    .main-page .list-items .card{
+        width: 100%;
+        min-width: 335px;
     }
     #voolo{
         display: flex;
@@ -1370,12 +1414,21 @@ input{
         width: 100%;
         padding: 0;
         order: 1;
+        margin: 0 auto;
+    }
+    .main-page .paragraph-text{
+        margin: 24px auto;
+    }
+    .voolo-intro{
+        padding: 16px 26px;
+        height: auto;
     }
     .orderTop{
         order: 3!important;
     }
     .main-page .list-items .card .card-body .list{
         padding: 20px 15px;
+        position: relative;
     }
     .list .image {
         width: 16%;
@@ -1383,26 +1436,42 @@ input{
         margin: auto;
     }
     .list .info {
-        width: 50%;
+        width: 84%;
         margin: 0 6px;
     }
     .list .price {
         width: 34%;
+        position:absolute;
+        right: 20px;
+        bottom: 20px;
     }
     .list .info p{
         line-height: 20px;
     }
     .mobile{
-        padding: 20px 5%;
+        padding: 32px 23px;
         background: #F3F3F3;
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
         border-radius: 20px;
+    }
+    .showUICheckPhone .voolo-intro{
+        margin-bottom: 20px;
+    }
+    .showUICheckPhone .mobile h5{
+        display: block;
+        margin-bottom: 24px;
     }
     #voolo form.formValue .input-global{
         width: 95%;
     }
     .payment-button{
         width: 200px;
+        height: 41px;
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
     }
     .list-provider button{
         height: 100px;
@@ -1410,13 +1479,25 @@ input{
     }
     .main-page .box{
         width: 100%;
-        padding: 0;
+        /* background: rgba(247, 247, 247, 0.75);
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 15px; */
+    }
+    .main-page .box-mobile.box-tenor{
+        padding: 20px!important;
+    }
+    .main-page .box-mobile{
         background: rgba(247, 247, 247, 0.75);
-        /* Highlight */
-
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
         border-radius: 15px;
-        padding: 24px;
+        padding: 32px;
+    }
+    
+    .form-card-pincode .voolo-logo{
+        margin: 0 auto 20px auto!important;
+    }
+    .form-card-pincode{
+        margin-top: 20px!important;
     }
     .main-page .box .paragraph-text h2{
         font-size: 16px;
@@ -1441,16 +1522,20 @@ input{
         float: right;
     }
     #customerInfo{
-        margin-bottom: 0;
+        margin: 0;
     }
     .headrow{
         position: relative;
         width: 100%;
+        min-width: 100%;
+        padding: 0;
+        margin: 0 0 20px 0;
     }
     .headrow .sub2{
-        margin-bottom: 20px;
+        margin-bottom: 21px;
         font-size: 14px;
         padding: 0 40px;
+        line-height: 17px;
     }
     .headrow .line .Tpipe{
         border-bottom: 1px dashed #ccc;
@@ -1459,7 +1544,7 @@ input{
     }
     .headrow .line .Tpipe.active{
         border-bottom: 1px solid #197DDE;
-        width: 155px;
+        width: 23%;
         height: 1px;
     }
     .headrow .line .Tpipe.last{
@@ -1468,6 +1553,21 @@ input{
     }
     .headrow .pipeline .pipe{
         font-size: 10px;
+        width: 25%;
+        padding: 0;
+        margin: 0;
+    }
+    .headrow .pipeline .pipe::before{
+        top: -29px;
+    }
+    .headrow .pipeline{
+        max-width: 100%;
+        margin-top: 17px;
+    }
+    .headrow .line{
+        width: 100%;
+        display: flex;
+        padding-left: 32px;
     }
     .formValue-mt{
         margin-top: 0!important;
@@ -1485,13 +1585,228 @@ input{
         text-align: center;
     }
     #voolo .voolo-logo{
-        margin-bottom: 18px;
+        margin-bottom: 16px!important;
+        width: 132.4px;
+        height: 25px;
+
+    }
+    .customer #customerInfo .ico-success{
+        display: none;
     }
     .form-showdata, .form-confirmdata{
         min-width: auto;
     }
-}   
+    .customer{
+        margin: 0 auto 20px auto;
+    }
+    #customerInfo .limit-text{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: rgba(0, 0, 0, 0.7);
+    }
+    #customerInfo .detail h3{
 
+    }
+    #customerInfo .detail c{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+    }
+    #customerInfo .limit-number{
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        display: block;
+    }
+    #customerInfo b{
+        margin: 20px auto;
+    }
+    .tenor-item .tenor-head .totalprice{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .tenor-list ul li:not(:last-child){
+        margin-bottom: 12px!important;
+    }
+    .tenor-list{
+        padding: 20px 2px!important;
+    }
+    .tenor-item .tenor-head{
+        padding: 0 19px 0 20px;
+    }
+    .tenor-item ul{
+        padding-left: 9px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+    .tenor-item ul li::marker{
+        font-size: 7px;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    .tenor-list .tenor-item li{
+        color: rgba(0, 0, 0, 0.8);
+    }
+    .form-card-pincode p{
+        font-size: 10px;
+    }
+    .form-card-pincode .sub4{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+    }
+    #pincode, #repincode{
+        margin-bottom: 24px;
+    }
+    #voolo.non-flex h4.pageTitle{
+        display: none;
+    }
+    #voolo form.formValue .mobile{
+        margin-top: 0;
+    }
+    .main-page .btnCapture{
+        margin: 8px auto 34px;
+    }
+    .captureNid .headrow .voolo-logo{
+        display: block;
+    }
+    .captureNid .btnCapture{
+        margin-top: 42px!important;
+    }
+    .showDataInform .headrow
+    {
+        margin-bottom: 36px;
+    }
+    .showDataInform .form-showdata > .form-showdata-desc{
+        margin-bottom: 36px;
+    }
+    .form-showdata .form-showdata-info{
+        text-align: center;
+    }
+    .showDataInform .card .card-footer,
+    .showDataInform .card .card-head{
+        border: none;
+        border-radius: 0 0 0 0;
+    }
+    .showDataInform .card {
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        background: rgba(247, 247, 247, 0.75);
+        -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 34px;
+        -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 34px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 34px;
+        overflow: hidden;
+    }
+    .form-showdata .card-body{
+        padding: 24px;
+    }
+    .form-confirmdata-title{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: center;
+
+        color: #000000;
+    }
+    .form-confirmdata .form-showdata-info.sub4{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+    .form-confirmdata .form-card .card-head{
+        border-bottom: 1px solid rgba(7, 32, 55, 0.4);
+    } 
+    .form-confirmdata .card-head, 
+    .form-confirmdata .card-body, 
+    .form-confirmdata .card-footer{
+        background-color: #FFFFFF;
+        border-radius: 0;
+    }
+    .form-confirmdata.form-card .card-head{
+        border-bottom: 1px solid rgba(7, 32, 55, 0.4);
+    }
+    .form-confirmdata .card{
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .form-confirmdata.form-card .card-footer{
+
+    }
+    .form-verify label{
+        max-width: 45%;
+    }
+    .form-verify div.info{
+        max-width: 54%;
+    }
+    .form-card.showFormSetupPin{
+        margin-top: 0!important;
+        padding: 0px;
+    }
+    .overlay-popup .alert-box{
+        width: 90%;
+        height: auto;
+        padding: 11px 22.5px 32px;
+    }
+    .form-otpcode .pincode-input{
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+    }
+    .alert-box button{
+        margin-top: 24px;
+    }
+    .pincode-input:not(:last-child){
+        margin-right: 10px;
+    }
+    .overlay-popup .alert-box h4{
+        margin-top: 37px;
+    }
+    .overlay-popup .close{
+        width: 14.7px;
+        height: 14.7px;
+    }
+    .showCircularProgressbar .paragraph-text{
+        display: grid;
+    }
+    .showCircularProgressbar .paragraph-text .imgloading-140{
+        order: 2;
+    }
+    .showCircularProgressbar .paragraph-text h2{
+        order: 1;
+    }
+    .showCircularProgressbar .paragraph-text p{
+        order: 3;
+    }
+    .showMessage h3{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+    }
+}   
+.hv-modal-footer{
+    display: none;
+}
 
 .error_pincode_gray, .error_otpcode_gray{
     border: 2px solid #8A8A8A !important;
