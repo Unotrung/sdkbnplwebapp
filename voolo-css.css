@@ -32,6 +32,14 @@ body{
     line-height: 20px;
     color: #1B1B1B;
 }
+.compact-12{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #000;
+}
 .compact-16{
     font-family: 'Montserrat';
     font-style: normal;
@@ -54,7 +62,7 @@ body{
     line-height: 24px;
     color: #000000;
 }
-.main-page h4{
+.main-page h4,h4{
     font-family: 'Montserrat Alternates';
     font-style: normal;
     font-weight: 700;
@@ -98,6 +106,19 @@ input:disabled,
 select:disabled{
     background: rgba(154, 147, 147, 0.1);
     color: #000;
+}
+
+input[type=checkbox]{
+    width: 18px;
+    height: 18px;
+    background: #FFFFFF;
+    mix-blend-mode: normal;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+input[type=checkbox]:checked{
+    background: url(./assets/img/checked.png) no-repeat;
+    background-size: contain;
 }
 
 .payment-button{
@@ -542,7 +563,7 @@ a.ahref{
     /* background: #323232; */
     width: 50%;
     padding: 20px 0;
-    margin: 6% auto;
+    margin: 6% auto 0 auto;
 }
 
 .form-card h2{
@@ -652,23 +673,26 @@ input::-webkit-inner-spin-button{
     display: none;
 }
 
-/* .form-row input:read-only,.form-row select:disabled{
-    background: rgba(154, 147, 147, 0.1);
-    color:#000;
-} */
+.showFormSetupPin h4.form-showdata-title{
+    margin-bottom: 32px;
+}
+.showFormSetupPin .sub4{
+    margin-bottom: 16px;
+}
 
 /* pincode ui */
 #pincode, #repincode{
     display: inline-flex;
+    margin-bottom: 27.5px;
 }
 
 .form-pincode{
-    line-height: 64px;
+    /* line-height: 64px; */
 }
 
 .form-pincode .pincode-input {
-    width: 30px;
-    height: 30px;
+    width: 20.13px;
+    height: 20.13px;
     border-radius: 50%;
     border: 2px solid #8A8A8A;
     text-align: center;
@@ -678,6 +702,7 @@ input::-webkit-inner-spin-button{
     font-size: 4.6em;
     position: relative;
     caret-color: transparent;
+    padding: 0;
 }
 
 .form-otpcode h2{
@@ -685,28 +710,32 @@ input::-webkit-inner-spin-button{
 }
 
 .form-otpcode .pincode-input {
-    width: 50px;
-    height: 50px;
+    width: 49px;
+    height: 49px;
     border-radius: 10px;
     border: 2px solid #fff;
     text-align: center;
     text-transform: uppercase;
     color: #000;
+    padding: 0;
 }
 
 .pincode-input:not(:last-child) {
-    margin-right: 1rem;
+    margin-right: 14.88px;
 }
 
 .pincode-input.pincode-input--focused {
-    border-color: #197dde!important;
-    color:#197dde!important;
+    /* border-color: #197dde!important;
+    color:#197dde!important; */
 }
 
 .pincode-input.pincode-input--filled[type="password"] {
     font: caption;
-    font-size: 4.6em;
+    font-size: 0;
     position: relative;
+    border: none;
+    background: url(./assets/img/pincode.png) no-repeat;
+    background-size: contain;
 }
 
 .pincode-input.pincode-input--filled {
@@ -737,6 +766,7 @@ input::-webkit-inner-spin-button{
     border-color:#56CA8B!important;
 }
 
+.overlay-popup,
 .overlay{
     display: none;
     position: fixed;
@@ -747,7 +777,38 @@ input::-webkit-inner-spin-button{
     z-index: 1;
     background-color: rgba(7, 32, 55, 0.4);
 }
+.overlay-popup .alert-box{
+    position: fixed;
+    width: 450px;
+    height: 361px;
+    top: 20%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: #F3F3F3;
+    margin: 20px auto;
+    box-shadow: 0px 10px 100px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    text-align: center;
+}
+.overlay-popup .alert-box #otpcode{
+    margin-top: 17px;
+}
+.overlay-popup .alert-box h4{
+    margin-top: 48px;
+    margin-bottom: 12px;
+}
 
+.overlay-popup .close{
+    width: 30px;
+    height: 30px;
+    background: url(./assets/img/close.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
 .alert-box{
     position: fixed;
     width: 25%;
@@ -811,6 +872,16 @@ body.loading{
 
 /* Make spinner image visible when body element has the loading class */
 body.loading .overlay{
+    display: block;
+}
+
+/* Turn off scrollbar when body element has the loading class */
+body.popup{
+    overflow: hidden;   
+}
+
+/* Make spinner image visible when body element has the loading class */
+body.popup .overlay-popup{
     display: block;
 }
 
@@ -1179,12 +1250,17 @@ input{
 
 .contractForm .contract-term label{
     padding-left: 10px;
+    vertical-align: middle;
+}
+.contractForm .contract-term input{
+    vertical-align: middle;
 }
 
 .contractForm{
     background: #FFFFFF;
     border-radius: 10px;
     margin-bottom: 32px!important;
+    margin-top: 330px!important;
     text-align: center;
     font-family: 'Montserrat';
 }
@@ -1219,6 +1295,9 @@ input{
     left: 0;
     right: 0;
     margin: 0 auto;
+}
+.form-card.showFormSetupPin{
+    margin-top:310px!important;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){

@@ -52,14 +52,14 @@ function showCircularProgressbar(element) {
     var html = `<div class='box' style='margin-top:200px'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                     <div class="imgloading-140"></div>
-                    <h2>Đang trong tiến trình xác minh thông tin</h2>
+                    <h2 class='sub2'>Đang trong tiến trình xác minh thông tin</h2>
                     <p style='text-align: center;'>
                     Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
                     </p> 
                     </div> 
                 </div>`;
     $(element).html(html);
-    showProcessPipeline(4);
+    showProcessPipeline(4,true);
     $("body").removeClass("loading");
 
     var myInterval = setInterval(function () {
@@ -1940,23 +1940,22 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     // showHeader();
     var html = `
-    <div class='form-card'>
+    <div class='form-card showFormSetupPin'>
     <form id='formSetupPinCode'>
         <div class=''>
             <div class=' no-line'></div>
                 <div class='text-center form-pincode'>
                     <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
-                    <p>Mã PIN</p>
+                    <p class='sub4'>Mã PIN</p>
                     <div id='pincode'></div>
-                    <p>Nhập lại mã PIN</p>
+                    <p class='sub4'>Nhập lại mã PIN</p>
                     <div id='repincode'></div>
                 </div>
-            <div class='' style="height: 39px;"></div>
         </div>
-        <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+        <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
     </form>
     </div>`;
-
+    $(element).css("display","grid");
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
         //show progress bar
@@ -2070,24 +2069,27 @@ function showFormSetupPin(element, screen, token) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `<div class='form-card card-otpcode'>
-                    <form id='formSetupPinCode'>
-                        <div class='card'>
-                            <div class='card-head no-line'></div>
-                            <div class='card-body text-center form-otpcode'>
-                                <h2>Nhập OTP</h2>
-                                <p style="margin-bottom:32px">Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
-                                <div id='otpcode'></div>
-                                <span class='error_message error_message_otp'></span>
+    var html = `<div class="overlay-popup card-otpcode">
+                    <div class="alert-box">
+                    <span class='close'></span>
+                        <form id='formSetupPinCode'>
+                            <div class='card'>
+                                <div class='card-head no-line'></div>
+                                <div class='card-body text-center form-otpcode'>
+                                    <h4>Nhập OTP</h4>
+                                    <p class='compact-12'>Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
+                                    <div id='otpcode'></div>
+                                    <span class='error_message error_message_otp'></span>
+                                </div>
+                                <div class='card-footer' style="height:16px"></div>
                             </div>
-                            <div class='card-footer' style="height:32px"></div>
-                        </div>
-                        <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                        <p style='text-align: center;'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
-                    </form>
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                        </form>
+                    </div>
             </div>`;
 
-    $(element).html(html);
+    $('body').append(html);
     timer(60);
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -2114,12 +2116,14 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     });
 
     //custom show
-    configUi({
-        element: element,
-        logo: true,
-        intro: false
+    // configUi({
+    //     element: element,
+    //     logo: true,
+    //     intro: false
+    // });
+    $('span.close').click(function(){
+        $('body').removeClass('popup');
     });
-
     $('#btnSubmitVerifyOTP').click(function () {
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
@@ -2129,6 +2133,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
         let otp6 = $('#otp6').val().trim();
         let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         if (phone !== null && otp !== null) {
+            $('body').removeClass('popup');
             if (screen === 'RESET_PIN' && screen !== '') {
                 let phone_reset = localStorage.getItem('phone_reset');
                 let nid_reset = localStorage.getItem('nid_reset');
@@ -2248,7 +2253,7 @@ var PincodeInput = function () {
                 })), t.addEventListener("focus", (function () {
                     e.focusedCellIdx = s
                 })), t.addEventListener("keydown", (function (t) {
-                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && e.cells[s].setAttribute("type", "text")
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && "Meta" !== t.key && e.cells[s].setAttribute("type", "text")
                 })), t.addEventListener("focus", (function () {
                     t.classList.add("pincode-input--focused")
                 })), t.addEventListener("blur", (function () {
@@ -2330,17 +2335,17 @@ function showContract(element) {
                     </div>
                     <div style='display: block'  class='contract-term'>
                         <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                        <label for='confirm_contract'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
+                        <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
                     </div>
                     <div style='display: block'  class='contract-term'>
                         <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                        <label for='confirm_otp'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+                        <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
                     </div>
-                    <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+                    <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
                     </div>
             </div>`;
     $(element).html(html);
-    showProcessPipeline(3);
+    showProcessPipeline(3,true);
 
     var btnContinue = document.querySelector('#btnContinue');
     btnContinue.disabled = true;
@@ -2371,6 +2376,7 @@ function showContract(element) {
             var otp = sendOtp(phone);
             if (otp !== null) {
                 showFormVerifyOTP(element, phone, otp.otp, 'VERIFY_PHONE');
+                $('body').addClass('popup');
             }
         }
         else if (!confirm_contract && !confirm_otp) {
@@ -2608,7 +2614,7 @@ function messageScreen(element, config) {
     }
 
     $(element).html(html);
-    if (config.pipeline) showProcessPipeline(5);
+    if (config.pipeline) showProcessPipeline(5,true);
     var n = 5;
     var cInterval = setInterval(function () {
         $(".coutdown").html(n);
