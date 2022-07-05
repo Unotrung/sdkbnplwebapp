@@ -748,14 +748,14 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `<form class='formValue orderTop'> <h2 style="margin-bottom:24px">Vui lòng chọn kì hạn thanh toán</h2>`;
+    html += `<form class='formValue orderTop'> <div style="margin-bottom:24px" class='sub2'>Vui lòng chọn kì hạn thanh toán</div>`;
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
-                    <h3>KÌ HẠN 1</h3>
-                    <div class='totalprice'>${formatCurrency(parseInt(totalBillNumber)+parseInt(tenors[i].convertFee))}</div>
+                    <div class='sub4'>KÌ HẠN 1</div class='sub4'>
+                    <h5 class='totalprice'>${formatCurrency(parseInt(totalBillNumber)+parseInt(tenors[i].convertFee))}</h5>
                 </div>
                     <ul>
                         <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
@@ -767,7 +767,7 @@ function showAllTenor(element, nCount = 0) {
         </div>`
     }
     if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
-    html += `<button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button></form>`;
+    html += `<button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button></form>`;
     $(element).html(html);
 
     //validation button
@@ -1542,6 +1542,9 @@ function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
+    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> 
+        <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>
+    </div>
     <div class='voolo-intro'>
         <div class='sub4'>VOOLO giúp bạn:</div>
         <ul>
@@ -1549,8 +1552,7 @@ function configUi(config) {
             <li>Thanh toán linh hoạt </li>
             <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
         </ul>
-    </div>
-    <div _ngcontent-gse-c77="" class="paragraph-text text-center margin-bottom-default"> <p class='font-w-5 font-m-a'>VOOLO</p> <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p></div>`;
+    </div>`;
     $(config.element + " form").prepend(iHtml);
 }
 
@@ -1841,15 +1843,14 @@ function showFormPincode(element, phone, screen) {
             <form id='formSetupPinCode'>
                     <div class=''>
                         <div class='text-center form-pincode'>
-                            <h1>Nhập mã PIN</h1>
+                            <h4>Nhập mã PIN</h4>
                             <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                            <h2 class=''>Mã PIN</h2>
+                            <div class='sub4'>Mã PIN</div>
                             <div id='pincode'></div>
                             <span class='error_message error_message_pin'></span>
                         </div>
-                        <div class='' style='height:32px'></div>
                     </div>
-                    <button type='button' id='btnSubmitPin' class='payment-button'>Tiếp tục</button>
+                    <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
                     <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
         </div>`;
@@ -2399,10 +2400,10 @@ function customerInfo(element,status=true) {
     var strStatus = ``;
     if(status){
         strStatus = `<div class='ico-success'></div>
-        <h3>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</h3>`;
+        <b>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</b>`;
     }else{
         strStatus = `<div class='ico-unsuccess'></div>
-        <h3>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</h3>`
+        <b>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</b>`
     }
     var str = `<div class="customer">
                 <div class='voolo-logo'></div>
@@ -2410,8 +2411,7 @@ function customerInfo(element,status=true) {
                     <div class="avatar"><img src="${customer.avatar}" /></div>
                     <div class='detail'>
                         <h3 style="font-weight:700;font-size:20px;">${customer.name} ơi!</h3>
-                        <p>Hạn mức tín dụng của bạn là :</p>
-                        <h2>${formatCurrency(customer.limit * 1)}</h2>
+                        <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                         ${strStatus}
                     </div>
                 </div>
@@ -2423,8 +2423,8 @@ function customerInfo(element,status=true) {
     }
     else {
         $(element).prepend(str);
-        $(element).find(".list-items").css("margin-top","350px");
-        $(element).find(".formValue").css("margin-top","350px");
+        $(element).find(".list-items").css({"margin-top":"410.5px","padding-top":"0"});
+        $(element).find(".formValue").css("margin-top","410.5px");
         $(element).find(".avatar").css("display","none");
     }
 }
@@ -2593,7 +2593,7 @@ function messageScreen(element, config) {
     if (config.screen == 'buy_success') {
         html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success'></div>
+                        <div class='ico-success ico-150'></div>
                         <h3>Chúc mừng bạn đã mua hàng thành công</h3>
                         <p style='text-align: center;'>
                         Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
@@ -2605,7 +2605,7 @@ function messageScreen(element, config) {
     if (config.screen == 'buy_unsuccess') {
         html = `<div class='box showMessage formValue-mt-200'>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess'></div>
+                        <div class='ico-unsuccess ico-150'></div>
                         <h3>Mua hàng không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>

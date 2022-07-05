@@ -175,6 +175,7 @@ input[type=checkbox]:checked{
     border-radius: 20px;
     min-height: 88vh;
     font-size: 14px;
+    padding-bottom: 50px;
 }
 #voolo.non-flex h4{
     padding:40px;
@@ -199,6 +200,9 @@ input[type=checkbox]:checked{
     padding: 0px 5%;
     margin-bottom:0;
 }
+#voolo form.formValue .mobile{
+    margin-top: 32px;
+}
 
 
 #voolo .voolo-logo{
@@ -214,7 +218,13 @@ input[type=checkbox]:checked{
     padding-left: 15px;
     font-size: 14px;
 }
-
+.tenor-list ul li:not(:last-child){
+    margin-bottom: 19px!important;
+}
+.tenor-list ul li:last-child{
+    margin:0;
+    padding: 0;
+}
 .voolo-intro ul li{
     list-style: circle;
     font-family: 'Montserrat';
@@ -236,8 +246,11 @@ input[type=checkbox]:checked{
 
 .tenor-list{
     margin-bottom: 12px;
-    border: 2px solid #fff;
+    border: 2px solid transparent;
     position: relative;
+    padding: 20px!important;
+    height: auto!important;
+    box-shadow: none!important;
 }
 
 .tenor-list:hover{
@@ -742,20 +755,25 @@ input::-webkit-inner-spin-button{
     border-color: #56CA8B;
 }  
 
+
 .ico-success{
-    width: 120px;
-    height: 120px;
+    width: 55px;
+    height: 55px;
     background: url(./assets/img/Success.png) no-repeat;
     background-size: cover;
-    margin: 0 auto;
+    margin: 18.86px auto 16px;
 }
-
+.ico-success.ico-150,
+.ico-unsuccess.ico-150{
+    width: 150px;
+    height: 150px;
+}
 .ico-unsuccess{
-    width: 120px;
-    height: 120px;
+    width: 55px;
+    height: 55px;
     background: url(./assets/img/Unsuccess.png) no-repeat;
     background-size: cover;
-    margin: 0 auto;
+    margin: 18.86px auto 16px;
 }
 
 #hv-camera-capture-button{
@@ -888,6 +906,7 @@ body.popup .overlay-popup{
 #customerInfo{
     display: inline-flex;
     margin-bottom: 32px;
+    margin-top: 24px;
 }
 
 #customerInfo .avatar{
@@ -896,10 +915,28 @@ body.popup .overlay-popup{
     border-radius: 50%;
 }
 
-#customerInfo h2{
-    color:#56CA8B;
+#customerInfo .limit-text{
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000;
+    margin-top: 10px;
 }
-
+#customerInfo .limit-number{
+    color:#56CA8B;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    vertical-align: middle;
+}
+#customerInfo b{
+    width: 360px;
+    display: block;
+    margin: 0 auto;
+}
 #customerInfo .detail{
     text-align: center;
 }
@@ -1029,24 +1066,32 @@ body.popup .overlay-popup{
     color:#000;
 }
 
+.form-card-pincode .formSetupPinCode{
+    margin-top: 10.13px;
+}
 .form-card-pincode .form-pincode{
     line-height: normal;
 }
 
-.form-card-pincode h2{
-    margin: 32px 0 23.4px 0;
+.form-card-pincode .sub4{
+    margin: 32px 0 16px 0;
 }
 
 .form-card-pincode .voolo-logo{
     margin: 0 auto 68.87px auto!important;
 }
 
+.form-card-pincode .form-card-pincode{
+    margin-bottom : 20px;
+}
 .form-card-pincode p{
     font-size: 12px;
 }
 
 .form-card-pincode{
     text-align: center;
+    padding: 0!important;
+    margin-top: 48px!important;
 }
 
 .main-page .box .paragraph-text p{
@@ -1276,7 +1321,7 @@ input{
     display: flex;
     align-items: center;
 }
-.tenor-item .tenor-head h3{
+.tenor-item .tenor-head .sub4{
     width: 30%;
 }
 .tenor-item .tenor-head .totalprice{
@@ -1294,7 +1339,7 @@ input{
     text-align: center;
     left: 0;
     right: 0;
-    margin: 0 auto;
+    margin: 48px auto;
 }
 .form-card.showFormSetupPin{
     margin-top:310px!important;
