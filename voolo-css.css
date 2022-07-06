@@ -95,6 +95,8 @@ label{
     font-size: 14px;
     line-height: 17px;
     color: #000000;
+    display: block;
+    margin-bottom: 12px;
 }
 .showUICheckPhone .form__row label{
     display: block;
@@ -208,7 +210,7 @@ input[type=checkbox]:checked{
 }
 
 #voolo form.showUICheckNid .form__row{
-    margin:0;
+    margin:0 0 50px 0;
 }
 #voolo form.showUICheckNid{
     margin: 39px auto!important;
