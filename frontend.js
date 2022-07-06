@@ -213,7 +213,7 @@ function showUICheckPhone(element) {
 // Done +++
 function showUICheckNid(element) {
     setRoute("showUICheckNid");
-    var html = `<form id='formValueNid' class='formValue '>
+    var html = `<form id='formValueNid' class='formValue showUICheckNid'>
                     <div class='mobile'>
 
                         <div class='form__row'>
@@ -301,7 +301,7 @@ function showUICheckNid(element) {
 // Done +++
 function captureNidFrontAndBack(element) {
     setRoute("captureNidFrontAndBack");
-    var html = `<form class='formValue' id="formValueNid">
+    var html = `<form class='formValue captureNidFrontAndBack' id="formValueNid">
                     <div class='buttons mobile'>
                         <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
                         <div>
@@ -1596,8 +1596,8 @@ function listProductions(config) {
                         Thêm mã giảm giá hoặc thẻ quà tặng
                     </div>
                 </div>
-                <div class='area-cost'>
-                    <div class='item' style='margin-bottom: 20px;'>
+                <div class='area-cost quote'>
+                    <div class='item' style='margin-bottom: 14px;'>
                         <span class='pTitle'>Thành tiền</span>
                         <span class='pPrice compact-16'>${sTotal}</span>
                     </div>
@@ -1853,7 +1853,7 @@ function showFormPincode(element, phone, screen) {
                         </div>
                     </div>
                     <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                    <p style='text-align: center;'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                    <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
         </div>`;
 
@@ -2601,6 +2601,7 @@ function messageScreen(element, config) {
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Chúc mừng bạn đã mua hàng thành công</h3>
+                        <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
                         <p style='text-align: center;'>
                         Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
@@ -2661,7 +2662,7 @@ function showUseGuideBackNid(){
     $('#voolo').append("<div class='guideslideback' style=''></div>");
     var html = `<div class='box2 showMessage'>
                     <div class=''>
-                        <div class='ico-success'></div>
+                        <div class='ico-success ico-120'></div>
                         <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
                         <div class='line'>
                             <span class='font-m'>Now</span>
@@ -2685,7 +2686,7 @@ function showUseGuideBackNid(){
                             </div>
                         </div>
                         <div style="width:100%">
-                        <button class='payment-button' id="" style='margin-top:38px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
+                        <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
                         </div>
                     </div>
                 </div>`;

@@ -2,7 +2,7 @@
 @import"https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
 
 body{
-    font-family: Montserrat Alternates,sans-serif;
+    font-family: 'Montserrat';
 }
 .sub4{
     font-family: 'Montserrat Alternates';
@@ -67,7 +67,7 @@ body{
     font-style: normal;
     font-weight: 700;
     font-size: 32px;
-    line-height: 39px;
+    line-height: 38px;
     color: #000000;
 }
 .main-page h5{
@@ -104,7 +104,7 @@ input,select{
     background: #FFFFFF;
     border-radius: 50px;
     align-self: stretch;
-    margin: 12px 0;
+    margin: 0 0 12px 0;
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
@@ -203,16 +203,30 @@ input[type=checkbox]:checked{
     display: block!important;
 }
 
+#voolo form.showUICheckNid .form__row{
+    margin:0;
+}
+#voolo form.showUICheckNid{
+    margin: 39px auto!important;
+}
 #voolo form.formValue{
     width: 50%;
-    margin: 56px auto;
+    max-width: 522px;
+    margin: 56px 31px;
     text-align: center;
-    padding: 0px 5%;
+    padding: 0px 5px;
     margin-bottom:0;
 }
 #voolo form.formValue .mobile{
     margin-top: 32px;
 }
+#voolo form.formValue.box-tenor{
+    padding: 0px 22px!important;
+}
+#voolo form.formValue.captureNidFrontAndBack{
+    margin: 39px auto;
+}
+
 
 
 #voolo .voolo-logo{
@@ -225,11 +239,14 @@ input[type=checkbox]:checked{
 }
 
 .voolo-intro ul{
-    padding-left: 15px;
+    padding-left: 21px;
     font-size: 14px;
 }
-.tenor-list ul li:not(:last-child){
-    margin-bottom: 19px!important;
+.tenor-list ul li{
+    margin-bottom: 11px!important;
+}
+.tenor-list ul li::marker{
+    font-size: 6px;
 }
 .tenor-list ul li:last-child{
     margin:0;
@@ -258,9 +275,10 @@ input[type=checkbox]:checked{
     margin-bottom: 12px;
     border: 2px solid transparent;
     position: relative;
-    padding: 20px!important;
+    padding: 22px 20px 4px 20px!important;
     height: auto!important;
     box-shadow: none!important;
+    border-radius: 10px;
 }
 
 .tenor-list:hover{
@@ -276,10 +294,12 @@ input[type=checkbox]:checked{
 .tenor-list.active::after{
     content: url(./assets/img/icon-check.png);
     position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 22px;
-    height: 22px;
+    top: -10px;
+    right: -7px;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background-color: #fff;
 }
 
 a.ahref{
@@ -330,12 +350,12 @@ a.ahref{
 
 .main-page .list-items{
     width: 50%;
-    padding: 20px 5%;
+    padding-left: 125px;
     margin-top: 56px;
     margin-bottom: 20px;
 }
 .main-page .list-items .card {
-    min-width: 461px;
+    max-width: 461px;
     font-size: 16px;
 }
 
@@ -353,8 +373,9 @@ a.ahref{
     display: inline-flex;
     vertical-align: middle;
     width: 100%;
-    padding: 20px 20px 23px 20px;
+    padding: 19px 20px 23px 20px;
     border-bottom: 1px solid #e5e5e5;
+    height: 95px;
 }
 .main-page .list-items .card .card-body .area-cost .tag{
     text-align: center;
@@ -379,8 +400,11 @@ a.ahref{
 .main-page .list-items .card .card-body .area-cost .pTitle{
     float: left;
 }
+.main-page .list-items .card .card-body .area-cost.quote{
+    padding: 16px 20px 10px 23px
+}
 .main-page .list-items .card .card-body .area-cost{
-    padding: 16px 19px 16px 24px;
+    padding: 16px;
     border-bottom: 1px dashed rgba(7, 32, 55, 0.4);
 }
 
@@ -395,29 +419,29 @@ a.ahref{
 
 .list .info{
     width: 60%;
-    padding: 0 10px;
+    padding: 0 8px;
 }
 
 .list .info p{
     padding: 0;
     margin: 0;
-    line-height: 24px;
+    line-height: 22px;
     font-size: 14px;
 }
 .text-space-gray{
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
-    font-size: 12px;
-    line-height: 15px;
+    font-size: 12px!important;
+    /* line-height: 15px!important; */
     color: #666666;
 }
 .text-space-black{
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 10px!important;
+    line-height: 12px!important;
     color: #000;
 }
 
@@ -433,7 +457,7 @@ a.ahref{
 .main-page .list-items .card .card-footer{
     background: #FFFFFF;
     border-radius: 0px 0px 20px 20px;
-    padding: 20px 25px;
+    padding: 24px 19px 24px 24px;
     margin: 0;
 }
 
@@ -444,7 +468,7 @@ a.ahref{
 .main-page .list-items .card .card-head{
     background: #FFFFFF;
     border-radius: 20px 20px 0px 0px;
-    padding: 26px 24px;
+    padding: 25px 24px;
     margin: 0;
     border-bottom: 1px dashed #e5e5e5;
 
@@ -502,7 +526,7 @@ a.ahref{
     display: block;
     margin: 0 auto;
     width: 50%;
-    margin-top: 166px;
+    margin-top: 200px;
     padding: 0 5%;
     text-align: center;
     padding-bottom: 52px;
@@ -521,12 +545,15 @@ a.ahref{
     width: 100px;
     height: 100px;
     display: flex;
-    margin: 16px auto 52px;
+    margin: 20px auto 52px;
     background: url(./assets/img/camera.png) center no-repeat;
     background-color: #FFF;
     border-radius: 30px;
     border: 2px solid #EEEEEE;
     position: relative;
+}
+.main-page .captureNidFrontAndBack .btnCapture{
+    border-radius: 20px;
 }
 
 .main-page .selfie_picture{
@@ -558,6 +585,9 @@ a.ahref{
 .main-page .buttons .payment-button{
     margin-top: 72px;
 }
+.main-page .captureNidFrontAndBack .buttons .payment-button{
+    margin-top: 59px;
+}
 
 .main-page .buttons label.caption {
     top: 76px;
@@ -572,7 +602,7 @@ a.ahref{
 }
 
 .main-page .buttons button{
-    margin: 28px 14px 14px 14px;
+    margin: 31px 14px 14px 14px;
     display: table-cell;
 }
 
@@ -620,6 +650,9 @@ a.ahref{
     border-radius: 15px;
 }
 
+.form-card.form-confirmdata .card-head{
+    padding: 16px 46px;
+}
 .form-card .card-head{
     border-radius: 10px 10px 0px 0px;
     padding: 20px 25px;
@@ -635,6 +668,9 @@ a.ahref{
     text-align: center;
 }
 
+.form-card #formDataValue .card-footer{
+    height: 8px;
+}
 .form-card .card-footer{
     border-radius:  0px 0px 10px 10px;
     height: 16px;
@@ -658,7 +694,7 @@ a.ahref{
 }
 
 .form-row .form-cell:first-child{
-    margin-right: 6%;
+    margin-right: 5%;
 }
 
 .form-row input{
@@ -707,17 +743,24 @@ input::-webkit-inner-spin-button{
     margin-bottom: 32px;
 }
 .showFormSetupPin .sub4{
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
-
+.showFormSetupPin #pincode{
+    margin-bottom: 27.5px;
+}
 /* pincode ui */
 #pincode, #repincode{
     display: inline-flex;
-    margin-bottom: 27.5px;
+    margin-bottom: 8.5px;
 }
 
-.form-pincode{
+.form-pincode h4{
     /* line-height: 64px; */
+    margin-bottom: 4px;
+}
+.txt-note{
+    font-size: 12px!important;
+    margin-top: -2px;
 }
 
 .form-pincode .pincode-input {
@@ -739,6 +782,9 @@ input::-webkit-inner-spin-button{
     margin-bottom: 32px;
 }
 
+.card-otpcode p.compact-12{
+    margin-top: 7px!important;
+}
 .form-otpcode .pincode-input {
     width: 49px;
     height: 49px;
@@ -761,9 +807,9 @@ input::-webkit-inner-spin-button{
 
 .pincode-input.pincode-input--filled[type="password"] {
     font: caption;
-    font-size: 0;
+    color: transparent;
     position: relative;
-    border: none;
+    border-color:transparent ;
     background: url(./assets/img/pincode.png) no-repeat;
     background-size: contain;
 }
@@ -778,12 +824,17 @@ input::-webkit-inner-spin-button{
     height: 55px;
     background: url(./assets/img/Success.png) no-repeat;
     background-size: cover;
-    margin: 18.86px auto 16px;
+    margin: 14.86px auto 16px;
 }
 .ico-success.ico-150,
 .ico-unsuccess.ico-150{
     width: 150px;
     height: 150px;
+}
+.ico-success.ico-120,
+.ico-unsuccess.ico-120{
+    width: 120px;
+    height: 120px;
 }
 .ico-unsuccess{
     width: 55px;
@@ -827,7 +878,7 @@ input::-webkit-inner-spin-button{
     text-align: center;
 }
 .overlay-popup .alert-box #otpcode{
-    margin-top: 17px;
+    margin-top: 30px;
 }
 .overlay-popup .alert-box h4{
     margin-top: 48px;
@@ -977,7 +1028,7 @@ body.popup .overlay-popup{
 }
 
 .headrow .sub2{
-    margin-bottom: 32px;
+    margin-bottom: 30px;
 }
 
 .headrow .line .Tpipe{
@@ -1012,10 +1063,10 @@ body.popup .overlay-popup{
 
 .headrow .pipeline .pipe{
     height: 50px;
-    width: 84px;
-    padding-top: 10px;
+    width: 85px;
+    padding-top: 12px;
     position: relative;
-    margin-right: 75px;
+    margin-right: 81px;
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
@@ -1045,7 +1096,7 @@ body.popup .overlay-popup{
 }
 
 .formValue-mt{
-    margin-top: 214px!important;
+    margin-top: 216px!important;
 }
 
 .formValue-mt-200{
@@ -1053,12 +1104,14 @@ body.popup .overlay-popup{
 }
 
 .card-body .form-verify:first-child{
-    margin-top: 32px;
+    margin-top: 31px;
 }
 
 .form-verify{
     width: 100%;
-    padding:6px 20px 0 20px;
+    padding: 0px 20px 0 45px;
+    height: 34px;
+    margin-bottom: 0px;
 }
 
 .form-verify label{
@@ -1090,18 +1143,18 @@ body.popup .overlay-popup{
 }
 
 .form-card-pincode .sub4{
-    margin: 32px 0 16px 0;
+    margin: 32px 0 12px 0;
 }
 
 .form-card-pincode .voolo-logo{
-    margin: 0 auto 68.87px auto!important;
+    margin: 0 auto 63.87px auto!important;
 }
 
 .form-card-pincode .form-card-pincode{
     margin-bottom : 20px;
 }
 .form-card-pincode p{
-    font-size: 12px;
+    font-size: 12.5px;
 }
 
 .form-card-pincode{
@@ -1121,8 +1174,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     -webkit-appearance: none;
 }
 
-.form-showdata, .form-confirmdata{
-    min-width: 888px;
+.form-showdata{
+    width: 888px;
+    margin-top: 346px!important;
+    padding: 0!important;
+}
+.form-confirmdata{
+    max-width: 663px;
     margin-top: 346px!important;
     padding: 0!important;
 }
@@ -1142,7 +1200,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background: rgba(154, 147, 147, 0.1);
 } 
 .form-showdata .card-head{
-    padding: 20px 30px;
+    padding: 19px 30px;
 }
 .form-showdata .card-body{
     padding: 40px 16px 0;
@@ -1207,7 +1265,7 @@ h4.form-showdata-title{
     font-size: 12px;
     line-height: 15px;
     text-align: center;
-    margin-bottom: 56px;
+    margin-bottom: 53px;
 }
 
 .form-confirmdata .form-confirmdata-info{
@@ -1229,6 +1287,9 @@ h4.form-showdata-title{
 }
 
 .showMessage h3{
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
     font-size: 24px;
     margin-top: 41px;
 }
@@ -1245,7 +1306,7 @@ h4.form-showdata-title{
 
 /* CSS 27/06/2022 */
 .form__row{
-    margin-bottom: 8px;
+    margin-bottom: 15px;
 }
 
 .error_message{
@@ -1317,7 +1378,7 @@ input{
     vertical-align: middle;
 }
 
-.contractForm{
+.main-page .box.contractForm{
     background: #FFFFFF;
     border-radius: 10px;
     margin-bottom: 32px!important;
@@ -1368,6 +1429,30 @@ input{
 }
 .captureNid .headrow .voolo-logo{
     display: none;
+}
+.id_bill{
+    margin-top: 16px;
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+}
+.id_bill .link_id_bill{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-decoration: underline;
+    color: #197DDE;
+}
+.guideslideback .showMessage .line{
+    margin-top: 25px;
+    margin-bottom: 19px;
+}
+.guideslideback .ico-success{
+    margin-bottom: 30px;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
@@ -1449,7 +1534,7 @@ input{
         line-height: 20px;
     }
     .mobile{
-        padding: 32px 23px;
+        padding: 32px 23px 29px;
         background: #F3F3F3;
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
         border-radius: 20px;
@@ -1459,7 +1544,7 @@ input{
     }
     .showUICheckPhone .mobile h5{
         display: block;
-        margin-bottom: 24px;
+        margin-bottom: 28px;
     }
     #voolo form.formValue .input-global{
         width: 95%;
@@ -1784,6 +1869,14 @@ input{
         width: 14.7px;
         height: 14.7px;
     }
+    .box.showCircularProgressbar{
+        background: rgba(247, 247, 247, 0.75);
+        /* Highlight */
+
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 20px;
+        width: 335px;
+    }
     .showCircularProgressbar .paragraph-text{
         display: grid;
     }
@@ -1821,7 +1914,7 @@ input{
 }
 div.angled-borders {
     display: inline-block;
-    margin-top:20px;
+    margin-top:15px;
 }
 .showMessage .line span{
     background-color: #f5f5f5;
