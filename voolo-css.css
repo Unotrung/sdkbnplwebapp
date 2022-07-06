@@ -96,6 +96,10 @@ label{
     line-height: 17px;
     color: #000000;
 }
+.showUICheckPhone .form__row label{
+    display: block;
+    margin-bottom: 12px;
+}
 
 input,select{
     padding: 8px 20px;
