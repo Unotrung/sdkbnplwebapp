@@ -694,12 +694,12 @@ a.ahref{
 
 }
 
-.form-row .form-cell{
+.form-row .mobile-cell{
     width: 47%;
     float: left;
 }
 
-.form-row .form-cell:first-child{
+.form-row .mobile-cell:first-child{
     margin-right: 5%;
 }
 
@@ -815,7 +815,7 @@ input::-webkit-inner-spin-button{
     font: caption;
     color: transparent;
     position: relative;
-    border-color:transparent ;
+    border: none;
     background: url(./assets/img/pincode.png) no-repeat;
     background-size: contain;
 }
@@ -1045,7 +1045,7 @@ body.popup .overlay-popup{
 
 .headrow .line .Tpipe.active{
     border-bottom: 1px solid #197DDE;
-    width: 160px;
+    width: 164px;
     height: 1px;
 }
 
@@ -1379,9 +1379,14 @@ input{
 .contractForm .contract-term label{
     padding-left: 10px;
     vertical-align: middle;
+    float: left;
+}
+.contractForm button.payment-button{
+    margin: 32px auto;
 }
 .contractForm .contract-term input{
     vertical-align: middle;
+    float: left;
 }
 
 .main-page .box.contractForm{
@@ -1391,6 +1396,7 @@ input{
     margin-top: 330px!important;
     text-align: center;
     font-family: 'Montserrat';
+    display: inline-grid;
 }
 .guideslide{
     position: absolute;
@@ -1491,6 +1497,17 @@ input{
         font-size: 14px;
         line-height: 20px;
     }
+    .title{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        width: 220px!important;
+        margin: 0 auto;
+        float: none!important;
+        display: block!important;
+    }
     .main-page h4, h4{
         font-family: 'Montserrat Alternates';
         font-style: normal;
@@ -1530,6 +1547,15 @@ input{
         padding: 0;
         order: 1;
         margin: 0 auto;
+    }
+    #voolo form.showUICheckNid{
+        margin-top: 0!important;
+    }
+    .main-page .showCircularProgressbar .paragraph-text h2{
+        line-height: 21px;
+    }
+    .main-page .showCircularProgressbar .paragraph-text{
+        margin: 15px auto;
     }
     .main-page .paragraph-text{
         margin: 24px auto;
@@ -1579,6 +1605,14 @@ input{
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
         border-radius: 20px;
     }
+    .form-row .mobile-cell{
+        width: 100%;
+        float: left;
+        margin-bottom: 3px;
+    }
+    .form-row .mobile-cell .form-cell{
+        width: 57%;
+    }
     .showUICheckPhone .voolo-intro{
         margin-bottom: 20px;
     }
@@ -1595,6 +1629,19 @@ input{
     #voolo form.formValue .input-global{
         width: 100%;
         height: 45px;
+    }
+    .form-card #formDataValue .card-footer{
+        height: 1px;
+        padding: 0;
+    }
+    .form-card #formDataValue input[name=dob]{
+        width: 158.89px;
+    }
+    .form-card #formDataValue select[name=gender]{
+        width: 100px;
+    }
+    .showDataInform .card-body .form-row:last-child{
+        margin-bottom: -2px;
     }
     .payment-button{
         width: 200px;
@@ -1661,7 +1708,7 @@ input{
         width: 100%;
         min-width: 100%;
         padding: 0;
-        margin: 0 0 20px 0;
+        margin: 0;
     }
     .headrow .sub2{
         margin-bottom: 17px;
@@ -1693,6 +1740,7 @@ input{
         font-weight: 400;
         font-size: 10px;
         line-height: 12px;
+        height: 44px;
     }
     .headrow .pipeline .pipe::before{
         top: -25px;
@@ -1723,7 +1771,7 @@ input{
         text-align: center;
     }
     #voolo .voolo-logo{
-        margin-bottom: 15px!important;
+        margin-bottom: 17px!important;
         width: 132.4px;
         height: 25px;
 
@@ -1808,8 +1856,9 @@ input{
     #voolo.non-flex h4.pageTitle{
         display: none;
     }
-    #voolo form.formValue .mobile{
-        margin-top: 0;
+    #voolo form.captureNidFrontAndBack .mobile{
+        padding-top: 25.5px;
+        margin: 0;
     }
     .main-page .showUICheckNid .btnCapture{
         margin: 13px auto 35px;
@@ -1818,7 +1867,10 @@ input{
         display: block;
     }
     .captureNid .btnCapture{
-        margin-top: 42px!important;
+        margin-top: 45px!important;
+    }
+    .main-page .buttons label.caption{
+        top: 71px;
     }
     .showDataInform .headrow
     {
@@ -1834,6 +1886,7 @@ input{
     .showDataInform .card .card-head{
         border: none;
         border-radius: 0 0 0 0;
+        padding: 14.5px 30px;
     }
     .showDataInform .card {
         border-radius: 15px;
@@ -1845,8 +1898,38 @@ input{
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 34px;
         overflow: hidden;
     }
+    .showFormSetupPin h4.form-showdata-title{
+        margin-bottom: 20px;
+    }
+    .showFormSetupPin .sub4{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 17px;
+        margin-bottom: 16px;
+    }
+    .showFormSetupPin{
+        width: 335px;
+        left: 20px;
+        top: 262px;
+        background: rgba(247, 247, 247, 0.75);
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 15px;
+        padding-top: 34px;
+        padding-bottom: 32px;
+    }
     .form-showdata .card-body{
         padding: 24px;
+    }
+    .showDataInform .form-row{
+        margin-bottom: 3px;
+    }
+    .showDataInform label{
+        margin-bottom: -2px!important;
+    }
+    .showDataInform .card-body{
+        padding: 10px;
     }
     .form-confirmdata-title{
         font-family: 'Montserrat Alternates';
@@ -1869,9 +1952,34 @@ input{
 
         color: #000000;
     }
-    .form-confirmdata .form-card .card-head{
+    .form-confirmdata .form-confirmdata-title{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    .form-confirmdata .form-confirmdata-desc{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
+        margin-bottom: 34px;
+    }
+    .form-card.form-confirmdata .card-head{
+        padding: 16px 24px;
         border-bottom: 1px solid rgba(7, 32, 55, 0.4);
-    } 
+    }
+    .form-card.form-confirmdata .card-body .form-verify:first-child{
+        margin-top: 11px;
+    }
+    .form-card.form-confirmdata .card-body .form-verify{
+        padding: 0px 24px;
+        margin-bottom: 10px;
+        height: auto;
+    }
+
     .form-confirmdata .card-head, 
     .form-confirmdata .card-body, 
     .form-confirmdata .card-footer{
@@ -1890,14 +1998,15 @@ input{
 
     }
     .form-verify label{
-        max-width: 45%;
+        max-width: 40%;
     }
     .form-verify div.info{
-        max-width: 54%;
+        max-width: 60%;
+        text-align: right;
     }
     .form-card.showFormSetupPin{
         margin-top: 0!important;
-        padding: 0px;
+        padding-top: 34px;
     }
     .overlay-popup .alert-box{
         width: 90%;
@@ -1910,13 +2019,21 @@ input{
         margin-bottom: 0;
     }
     .alert-box button{
-        margin-top: 24px;
+        margin-top: 0;
+        margin-bottom: 4px;
+    }
+    .showFormSetupPin .pincode-input:not(:last-child){
+        margin-right: 15px!important;
+    }
+    .showFormSetupPin button{
+        margin-top: 10px;
     }
     .pincode-input:not(:last-child){
         margin-right: 10px;
     }
     .overlay-popup .alert-box h4{
         margin-top: 37px;
+        margin-bottom: 0!important;
     }
     .overlay-popup .close{
         width: 14.7px;
@@ -1935,6 +2052,7 @@ input{
     }
     .showCircularProgressbar .paragraph-text .imgloading-140{
         order: 2;
+        margin-top: 15px;
     }
     .showCircularProgressbar .paragraph-text h2{
         order: 1;
@@ -1948,6 +2066,66 @@ input{
         font-weight: 600;
         font-size: 16px;
         line-height: 20px;
+    }
+    .guideslideback{
+        background: rgba(247, 247, 247, 0.75);
+        /* Highlight */
+
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
+        border-radius: 20px;
+        width: 335px;
+    }
+    .main-page .box2{
+        width: 100%;
+        margin: 0;
+    }
+    .guideslideback .box2{
+        padding-top: 51px;
+    }
+    .guideslideback .showMessage p{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 6px 26px;
+    }
+    .guideslideback div.angled-borders{
+        margin-top: 6px;
+    }
+    .guideslideback .statusTitle{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        margin: 0 26px;
+    }
+    .guideslideback .ico-success.ico-120{
+        width: 64.08px;
+        height: 64.08px;
+        margin-bottom: 18px;
+    }
+    .showMessage .line span{
+        background-color: #efedf4;
+    }
+    .main-page .box.contractForm{
+        margin-top: 20px!important;
+    }
+    .contractForm .contract-term{
+        display: -webkit-box;
+        margin-bottom: 19px;
+    }
+    .card-otpcode p.compact-12{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
+        margin-top: 2px!important;
+    }
+    .overlay-popup .alert-box #otpcode{
+        margin-top: 20px;
     }
 }   
 .hv-modal-footer{

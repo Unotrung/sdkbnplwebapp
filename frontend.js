@@ -303,7 +303,7 @@ function captureNidFrontAndBack(element) {
     setRoute("captureNidFrontAndBack");
     var html = `<form class='formValue captureNidFrontAndBack' id="formValueNid">
                     <div class='buttons mobile'>
-                        <label for=''>Chụp ảnh CMND/CCCD 2 mặt</label>
+                        <label for='' class='title'>Chụp ảnh CMND/CCCD</label>
                         <div>
                         <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
                         <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
@@ -313,7 +313,7 @@ function captureNidFrontAndBack(element) {
                 </form> `;
     $(element).html(html);
     showProcessPipeline(1,true,'captureNid');
-    pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh CMND/CCCD 2 mặt</h4>");
+    pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh CMND/CCCD</h4>");
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -1122,15 +1122,19 @@ function showDataInform(element, personal) {
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <div class="form-cell">
-                                        <label for='doi'>Ngày cấp</label>
-                                        <input class='input-global' type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
-                                        <span class='error_doi error_message'></span>
+                                    <div class='mobile-cell'>
+                                        <div class="form-cell">
+                                            <label for='doi'>Ngày cấp</label>
+                                            <input class='input-global' type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                            <span class='error_doi error_message'></span>
+                                        </div>
                                     </div>
-                                    <div class="form-cell">
-                                        <label for='doe'>Ngày hết hạn</label>
-                                        <input class='input-global' type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
-                                        <span class='error_doe error_message'></span>
+                                    <div class='mobile-cell'>
+                                        <div class="form-cell">
+                                            <label for='doe'>Ngày hết hạn</label>
+                                            <input class='input-global' type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <span class='error_doe error_message'></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div >
@@ -2345,11 +2349,11 @@ function showContract(element) {
                         <h3>${data.title2}</h3>
                         <p>${data.content}</p>
                     </div>
-                    <div style='display: block'  class='contract-term'>
+                    <div  class='contract-term'>
                         <input type='checkbox' name='confirm_contract' id='confirm_contract' />
                         <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
                     </div>
-                    <div style='display: block'  class='contract-term'>
+                    <div  class='contract-term'>
                         <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
                         <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
                     </div>
