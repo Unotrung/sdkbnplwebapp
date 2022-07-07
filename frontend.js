@@ -121,7 +121,7 @@ function showUICheckPhone(element) {
                     <div class='mobile'>
                         <div class='form__row'>
                             <h5>Số điện thoại</h5>
-                            <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để tiếp tục</label>
                             <input type='phone' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
@@ -598,6 +598,14 @@ async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
+        hvFaceConfig.faceTextConfig.setFaceCaptureTitle('Chụp ảnh chân dung');
+        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
+        hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription('Vui lòng KHÔNG đội nón, đeo kính, khẩu trang, chọn nơi có đủ ánh sáng để chụp ảnh');
+        hvFaceConfig.faceTextConfig.setFaceTooBigDescription('Cách xa camera');
+        hvFaceConfig.faceTextConfig.setFaceDetectedDescription('Chụp ảnh ngay');
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle('faceCaptureReviewTitle');
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
+
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
@@ -1547,7 +1555,7 @@ function configUi(config) {
         <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>
     </div>
     <div class='voolo-intro'>
-        <div class='sub4'>VOOLO giúp bạn:</div>
+        <div class='sub4 sub3-mobile'>VOOLO giúp bạn:</div>
         <ul>
             <li>Mua sắm không giới hạn </li>
             <li>Thanh toán linh hoạt </li>
@@ -1588,7 +1596,7 @@ function listProductions(config) {
     }
     lItems += `<div class='list-items'>
         <div class='card'>
-            <div class='card-head'><span class='sub4'>Thông tin đơn hàng</span></div>
+            <div class='card-head'><span class='sub4 sub4-mobile'>Thông tin đơn hàng</span></div>
             <div class='card-body'>
                 ${list}
                 <div class='area-cost'>
@@ -1679,7 +1687,7 @@ function forgotPinPhone(element, phone) {
 
                         <div class='form__row'>
                             <h2 style="margin-bottom:40px">Số điện thoại</h2>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
                             <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
                             <span class='error_message'></span>
                         </div>

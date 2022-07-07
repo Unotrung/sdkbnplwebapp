@@ -596,7 +596,7 @@ a.ahref{
 }
 
 .main-page .buttons label.caption {
-    top: 76px;
+    top: 80px;
     position: relative;
     font-family: 'Montserrat';
     font-style: normal;
@@ -608,7 +608,7 @@ a.ahref{
 }
 
 .main-page .buttons button{
-    margin: 31px 14px 14px 14px;
+    margin: 20px 14px 14px 14px;
     display: table-cell;
 }
 
@@ -1039,7 +1039,7 @@ body.popup .overlay-popup{
 
 .headrow .line .Tpipe{
     border-bottom: 1px dashed #ccc;
-    width: 160px;
+    width: 165px;
     height: 1px;
 }
 
@@ -1464,6 +1464,10 @@ input{
 @media only screen and (max-width: 414px){
     input, select{
         margin: 6px 0;
+        padding: 8px 17px;
+    }
+    label{
+        margin-bottom: -2px;
     }
     .sub4{
         font-family: 'Montserrat Alternates';
@@ -1472,6 +1476,20 @@ input{
         font-size: 12px;
         line-height: 16px;
         color: rgba(0, 0, 0, 0.8);
+    }
+    .sub4-mobile{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .sub3-mobile{
+        font-family: 'Montserrat Alternates';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 20px;
     }
     .main-page h4, h4{
         font-family: 'Montserrat Alternates';
@@ -1495,6 +1513,12 @@ input{
         width: 100%;
         min-width: 335px;
     }
+    .main-page .list-items .card .card-head{
+        padding: 22.86px 0 13.71px 14.76px;
+    }
+    .main-page .list-items .card .card-footer{
+        padding: 23px 20px 22px 19px;
+    }
     #voolo{
         display: flex;
         flex-flow: column;
@@ -1514,12 +1538,22 @@ input{
         padding: 16px 26px;
         height: auto;
     }
+    .voolo-intro ul li{
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+    }
     .orderTop{
         order: 3!important;
     }
     .main-page .list-items .card .card-body .list{
         padding: 20px 15px;
         position: relative;
+    }
+    #voolo form.showUICheckNid .form__row{
+        margin: 0 0 13px 0;
     }
     .list .image {
         width: 16%;
@@ -1548,12 +1582,19 @@ input{
     .showUICheckPhone .voolo-intro{
         margin-bottom: 20px;
     }
+    .showUICheckPhone .form__row{
+        margin-bottom: 14px;
+    }
+    .showUICheckPhone .form__row label{
+        margin-bottom: 0;
+    }
     .showUICheckPhone .mobile h5{
         display: block;
         margin-bottom: 28px;
     }
     #voolo form.formValue .input-global{
-        width: 95%;
+        width: 100%;
+        height: 45px;
     }
     .payment-button{
         width: 200px;
@@ -1623,7 +1664,7 @@ input{
         margin: 0 0 20px 0;
     }
     .headrow .sub2{
-        margin-bottom: 21px;
+        margin-bottom: 17px;
         font-size: 14px;
         padding: 0 40px;
         line-height: 17px;
@@ -1647,18 +1688,24 @@ input{
         width: 25%;
         padding: 0;
         margin: 0;
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
     }
     .headrow .pipeline .pipe::before{
-        top: -29px;
+        top: -25px;
+        font-size: 24px;
     }
     .headrow .pipeline{
-        max-width: 100%;
+        max-width: 92.4%;
         margin-top: 17px;
     }
     .headrow .line{
         width: 100%;
         display: flex;
-        padding-left: 32px;
+        padding-left: 40px;
     }
     .formValue-mt{
         margin-top: 0!important;
@@ -1676,7 +1723,7 @@ input{
         text-align: center;
     }
     #voolo .voolo-logo{
-        margin-bottom: 16px!important;
+        margin-bottom: 15px!important;
         width: 132.4px;
         height: 25px;
 
@@ -1764,8 +1811,8 @@ input{
     #voolo form.formValue .mobile{
         margin-top: 0;
     }
-    .main-page .btnCapture{
-        margin: 8px auto 34px;
+    .main-page .showUICheckNid .btnCapture{
+        margin: 13px auto 35px;
     }
     .captureNid .headrow .voolo-logo{
         display: block;
