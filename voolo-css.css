@@ -98,6 +98,9 @@ label{
     display: block;
     margin-bottom: 12px;
 }
+label[for=phone_reset]{
+
+}
 .showUICheckPhone .form__row label{
     display: block;
     margin-bottom: 12px;
@@ -226,6 +229,9 @@ input[type=checkbox]:checked{
     padding: 0px 5px;
     margin-bottom:0;
 }
+#voolo form.formValue.forgotPinPhone{
+    margin: 48px auto;
+}
 #voolo form.formValue .mobile{
     margin-top: 32px;
 }
@@ -244,7 +250,7 @@ input[type=checkbox]:checked{
     background: url(assets/img/logo-275.png) no-repeat; 
     background-size: contain;
     margin: 0px auto;
-    margin-bottom: 32px;
+    margin-bottom: 63.87px;
 }
 
 .voolo-intro ul{
@@ -1152,12 +1158,12 @@ body.popup .overlay-popup{
 }
 
 .form-card-pincode .sub4{
-    margin: 32px 0 12px 0;
+    margin: 32px 0 24px 0;
 }
 
-.form-card-pincode .voolo-logo{
+/* .form-card-pincode .voolo-logo{
     margin: 0 auto 63.87px auto!important;
-}
+} */
 
 .form-card-pincode .form-card-pincode{
     margin-bottom : 20px;
@@ -1443,6 +1449,12 @@ input{
 .form-card.showFormSetupPin{
     margin-top:310px!important;
 }
+.form-card.showFormSetupPin.SHOW_RESET_PIN{
+    margin-top:32px!important;
+}
+.form-card.showFormSetupPin.SHOW_RESET_PIN #repincode{
+    margin-bottom: 26.5px;
+}
 .showUICheckPhone .mobile h5{
     display: none;
 }
@@ -1476,8 +1488,8 @@ input{
 .guideslideback .ico-success{
     margin-bottom: 30px;
 }
-.nid-front{
-
+.m-top-16{
+    padding-top: 16px;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){

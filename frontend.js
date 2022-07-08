@@ -1686,11 +1686,11 @@ function formatCurrency(money) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `<form id='formValuePhone' class='formValue'>
+    var html = `<form id='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
 
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
+                        <div class='form__row m-top-16'>
+                            <h4 style="margin-bottom:40px">Số điện thoại</h4>
                             <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
                             <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
                             <span class='error_message'></span>
@@ -1740,11 +1740,11 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `<form class='formValue'>
+    var html = `<form class='formValue forgotPinPhone' >
                     <div class='mobile'>
 
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
+                        <div class='form__row m-top-16'>
+                            <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
                             <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
                             <input type='number' id='nid_reset' class='form__input input-global' />
                             <span class='error_message'></span>
@@ -1854,7 +1854,7 @@ function showFormPincode(element, phone, screen) {
     var html = `
         <div class='box form-card-pincode'>
             <div class='voolo-logo'></div>
-            <form id='formSetupPinCode' class="box-mobile">
+            <form id='formSetupPinCode' class="box-mobile m-top-16">
                     <div class=''>
                         <div class='text-center form-pincode'>
                             <h4>Nhập mã PIN</h4>
@@ -1955,11 +1955,12 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     // showHeader();
     var html = `
-    <div class='form-card showFormSetupPin'>
+    <div class='form-card showFormSetupPin ${screen}'>
     <form id='formSetupPinCode'>
+    ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>":''}
         <div class=''>
             <div class=' no-line'></div>
-                <div class='text-center form-pincode'>
+                <div class='text-center form-pincode m-top-16'>
                     <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
                     <p class='sub4'>Mã PIN</p>
                     <div id='pincode'></div>
@@ -2644,7 +2645,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                // window.location.href = DOMAIN;
+                window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
