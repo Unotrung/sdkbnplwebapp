@@ -11,7 +11,7 @@
 		
 		/* Image-container design */
 		.image-container {
-			max-width: 800px;
+			max-width: 900px;
 			position: relative;
 			margin: auto;
 		}
@@ -68,10 +68,10 @@
 		
 		.footerdot {
 			cursor: pointer;
-			height: 15px;
-			width: 15px;
+			height: 8px;
+			width: 8px;
 			margin: 0 2px;
-			background-color: #bbbbbb;
+			background-color: #a8a8a8;
 			border-radius: 50%;
 			display: inline-block;
 			transition: background-color 0.5s ease;
@@ -79,11 +79,13 @@
 		
 		.active,
 		.footerdot:hover {
-			background-color: black;
+			background-color: #197DDE;
 		}
         .slide{
             width: 33%;
             float: left;
+			margin-bottom: 0;
+			padding: 15px;
         }
         .dot,.previous,.next{
             display: none;
@@ -91,39 +93,124 @@
         .bnpl-area{
             text-align: center;
         }
+		.slide-title{
+			display: none;
+		}
+		.desc span.none{
+			color: #ee4d2d;
+			font-family: 'Montserrat Alternates';
+			font-style: normal;
+			font-weight: 700;
+			font-size: 26px;
+			line-height: 32px;
+			margin-bottom: 14px;
+		}
+		.desc span.done{
+			color: #56CA8B;
+			font-size: 26px;
+			font-weight: 700;
+			font-family: 'Montserrat Alternates';
+			margin-bottom: 14px;
+		}
+		.desc{
+			display: grid;
+			width: 100%;
+			text-align: center;
+			font-family: 'Montserrat';
+			font-style: normal;
+			font-weight: 400;
+			font-size: 16px;
+			line-height: 20px;
+		}
+		.bnpl-area{
+				margin-top: 35px;
+			}
+		.btn.ignore{
+			display: none;
+		}
         @media only screen and (max-width: 414px){
             .slide{
                 width: auto;
                 float: none;
             }
             .slide img{
-                width: 300px;
+				width: 100%;
+				margin-bottom: 30px;
             }
             .dot,.previous,.next{
                 display: block;
+				margin-top: 5px;
             }
+			.slide-title{
+				text-align: center;
+				margin-top: 30px;
+				margin-bottom: 22px;
+				max-width: 295px;
+
+			}
+			.desc{
+				display: grid;
+				width: 100%;
+				text-align: center;
+			}
+			.desc span{
+				width: 70%;
+    			margin: 0 auto;
+				font-size: 16px;
+				line-height: 20px;
+			}
+			.desc span.none{
+				color: #ee4d2d;
+				font-size: 26px;
+				font-weight: 700;
+				font-family: 'Montserrat Alternates';
+				margin-bottom: 14px;
+			}
+			.desc span.done{
+				color: #56CA8B;
+				font-size: 26px;
+				font-weight: 700;
+				font-family: 'Montserrat Alternates';
+				margin-bottom: 14px;
+			}
+			.bnpl-area{
+				margin-top: 35px;
+			}
+			.ignore{
+				background: transparent;
+				color: #000000;
+			}
+			.btn.start{
+				display: none;
+			}
+
         }
 	</style>
 	
 	<!-- Image container of the image slider -->
+	<div class="title slide-title">Hướng dẫn <br/>chụp ảnh chân dung</div>
 	<div class="image-container">
 		<div class="slide">
-			<img src="./assets/img/frame_3.png">
+			<img src="./assets/img/pic1.png">
+			<div class="desc">
+				<span class="none">Không nên</span>
+				<span>Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong></span>
+			</div>
 		</div>
 		<div class="slide">
-			<img src="./assets/img/frame_5.png">
+			<img src="./assets/img/pic2.png">
+			<div class="desc">
+				<span class="none">Không nên</span>
+				<span>Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh</span>
+			</div>
 		</div>
 		<div class="slide">
-			<img src="./assets/img/frame_6.png">
+			<img src="./assets/img/pic3.png">
+			<div class="desc">
+				<span class="done">Tốt lắm</span>
+				<span>Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn</span>
+			</div>
 		</div>
-
-		<!-- Next and Previous icon to change images -->
-		<a class="previous" onclick="moveSlides(-1)">
-			<i class="fa fa-chevron-circle-left"></i>
-		</a>
-		<a class="next" onclick="moveSlides(1)">
-			<i class="fa fa-chevron-circle-right"></i>
-		</a>
 	</div>
 	<br>
 
@@ -140,7 +227,8 @@
 	</div>
 
     <div class="bnpl-area">
-        <button class='payment-button' id="callFaceCapture">Bắt đầu</button>
+        <button class='payment-button btn ignore' id="lastimg">Bỏ qua \003E</button>
+        <button class='payment-button btn start' id="callFaceCapture">Bắt đầu</button>
     </div>
 	
 	<script>
@@ -149,6 +237,27 @@
         });
 		var slideIndex = 1;
 		displaySlide(slideIndex);
+		$('.slide').on({
+			'click': function (e) {
+				slideIndex = slideIndex+ 1;
+				displaySlide(slideIndex);
+				// $(this).on('touchmove mousemove', );
+				// move(e);
+				
+			},
+			'touchend mouseup': function (e) {
+				$(this).off('touchmove mousemove');
+			}
+		});
+
+		function move(e) {
+			$('.slide').css({
+				left: (e.pageX - 10) + 'px',
+				top: (e.pageY - 10) + 'px',
+				cursor: 'pointer'
+			});
+		}
+		
 
 		function moveSlides(n) {
 			displaySlide(slideIndex += n);
@@ -158,6 +267,7 @@
 			displaySlide(slideIndex = n);
 		}
 
+		var isAct = false;
 		/* Main function */
 		function displaySlide(n) {
             var width = document.body.clientWidth;
@@ -184,5 +294,12 @@
 			}
 			totalslides[slideIndex - 1].style.display = "block";
 			totaldots[slideIndex - 1].className += " active";
+			if(n == 3) isAct = true;
+			if (n < 3 && !isAct){
+				$('.payment-button.start').css('display','none');	
+			}else{
+				$('.payment-button.start').css('display','initial');	
+				$('.payment-button.ignore').css('display','none');
+			}
 		}
 	</script>

@@ -152,6 +152,9 @@ input[type=checkbox]:checked{
     border: none;
     cursor: pointer;
 }
+.payment-button:disabled{
+    background: red;
+}
 .payment-button.medium{
     width: 200px;
     height: 41px;
@@ -1344,6 +1347,7 @@ input{
 
 #btnSubmitPhone:disabled, 
 #btnSubmitNid:disabled, 
+.payment-button:disabled, 
 #btnSubmit:disabled{
     border: none;
     outline: none;
@@ -1404,7 +1408,13 @@ input{
     width: fit-content;
     left: 0px;
     right: 0px;
-    margin: 220px auto;
+    margin: 180px auto;
+    display: grid;
+}
+.guideslide.nid-front{
+    margin: 222px auto;
+    margin-bottom: 0;
+    position: relative;
 }
 .tenor-item .tenor-head{
     display: flex;
@@ -1465,6 +1475,9 @@ input{
 }
 .guideslideback .ico-success{
     margin-bottom: 30px;
+}
+.nid-front{
+
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
@@ -2106,6 +2119,11 @@ input{
         height: 64.08px;
         margin-bottom: 18px;
     }
+
+    .guideslide.nid-front {
+        position: absolute;
+        margin: 0 auto;
+    }
     .showMessage .line span{
         background-color: #efedf4;
     }
@@ -2126,6 +2144,16 @@ input{
     }
     .overlay-popup .alert-box #otpcode{
         margin-top: 20px;
+    }
+    .guideslide{
+        background: rgb(245 244 245);
+        box-shadow: 0px 4px 34px rgb(0 0 0 / 10%);
+        border-radius: 20px;
+        top: 20px;
+        bottom: 20px;
+        margin: 0 auto;
+        width: 90%;
+        display: initial;
     }
 }   
 .hv-modal-footer{

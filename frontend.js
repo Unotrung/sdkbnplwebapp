@@ -2663,7 +2663,7 @@ function showUseGuideSelfy() {
 function showUseGuideNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
-    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
+    $('#voolo').append("<div class='guideslide nid-front' style=''></div>");
     $('.guideslide').load('useguidenid.html');
     $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
 }
