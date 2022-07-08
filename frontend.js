@@ -649,13 +649,19 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
+        // hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chụp ảnh mặt trước')
+        hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
+        // hvDocConfig.docTextConfig.setDocReviewBottomDescription(this.translate.instant('hv.doc.docReviewBottomDescription'))
+
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
         let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
         if (applyFrontNid) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
+            hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt trước');
         }
         else if (applyBackNid) {
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
+            hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt sau');
         }
         callback = (HVError, HVResponse) => {
             if (HVError) {
@@ -1224,7 +1230,8 @@ function showDataInform(element, personal) {
                         <button type='submit' class='payment-button medium' id='btnContinue'>Tiếp tục</button>
                     </form >
                 </div > `;
-    $(element).html(html);
+    $(element).html(html).removeClass('captureNid');
+
     //show progress bar
     showProcessPipeline(1,true,"showDataInform");
     pageTitle(element,"<h4 class='pageTitle'>Chụp ảnh chân dung</h4>",'non-pageTitle');
@@ -2361,7 +2368,7 @@ function showContract(element) {
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
                     </div>
             </div>`;
-    $(element).html(html);
+    $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3,true);
 
     var btnContinue = document.querySelector('#btnContinue');
