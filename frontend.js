@@ -2572,8 +2572,8 @@ function messageScreen(element, config) {
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                        <p style='text-align: center;' class='text-message'>
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
                 </div>`;
@@ -2584,8 +2584,8 @@ function messageScreen(element, config) {
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Đăng ký không thành công</h3>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                        <p style='text-align: center;' class='text-message'>
+                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại.<span> Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
                 </div>`;

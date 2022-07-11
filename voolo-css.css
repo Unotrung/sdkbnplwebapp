@@ -2191,6 +2191,29 @@ input{
         width: 90%;
         display: initial;
     }
+    .ico-success.ico-150,
+    .ico-unsuccess.ico-150{
+        width: 64px;
+        height: 64px;
+    }
+    .ico-success.ico-120,
+    .ico-unsuccess.ico-120{
+        width: 64px;
+        height: 64px;
+    }
+    .ico-unsuccess{
+        width: 55px;
+        height: 55px;
+        background: url(./assets/img/Unsuccess.png) no-repeat;
+        background-size: cover;
+        margin: 18.86px auto 16px;
+    }   
+    .text-message a.ahref{
+        line-height: normal;
+    }
+    .text-message span{
+        display: inline-block;
+    }
 }   
 .hv-modal-footer{
     display: none;
