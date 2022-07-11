@@ -2568,9 +2568,9 @@ function router(element) {
 
 function messageScreen(element, config) {
     if (config.screen == 'successScreen') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-315 '>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success'></div>
+                        <div class='ico-success ico-150'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
                         <p style='text-align: center;'>
                         Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
@@ -2580,9 +2580,9 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'unsuccessScreen') {
-        html = `<div class='box showMessage formValue-mt'>
+        html = `<div class='box showMessage formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess'></div>
+                        <div class='ico-unsuccess ico-150'></div>
                         <h3>Đăng ký không thành công</h3>
                         <p style='text-align: center;'>
                         Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
@@ -2594,7 +2594,7 @@ function messageScreen(element, config) {
     if (config.screen == 'pincode_unsuccess') {
         html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess'></div>
+                        <div class='ico-unsuccess ico-150'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
@@ -2647,7 +2647,7 @@ function messageScreen(element, config) {
         console.log("time: ", n);
         if (n === 0) {
             if (config.screen == 'successScreen') {
-                showAllTenor(element, 3);
+                // showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
                 window.location.href = DOMAIN;
