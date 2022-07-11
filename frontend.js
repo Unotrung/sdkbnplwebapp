@@ -2647,7 +2647,7 @@ function messageScreen(element, config) {
         console.log("time: ", n);
         if (n === 0) {
             if (config.screen == 'successScreen') {
-                // showAllTenor(element, 3);
+                showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
                 window.location.href = DOMAIN;
