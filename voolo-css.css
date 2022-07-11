@@ -1404,14 +1404,19 @@ input{
     float: left;
 }
 
-.main-page .box.contractForm{
+.main-page .contractForm .form-card-2{
     background: #FFFFFF;
     border-radius: 10px;
+    display: grid;
+    margin-top: 0!important;
+}
+.main-page .contractForm{
+
     margin-bottom: 32px!important;
     margin-top: 330px!important;
     text-align: center;
     font-family: 'Montserrat';
-    display: inline-grid;
+    
 }
 .guideslide{
     position: absolute;
@@ -2144,7 +2149,7 @@ input{
     .showMessage .line span{
         background-color: #efedf4;
     }
-    .main-page .box.contractForm{
+    .main-page .contractForm{
         margin-top: 20px!important;
     }
     .contractForm .contract-term{

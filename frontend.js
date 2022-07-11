@@ -2347,23 +2347,24 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-    var html = `<div class='box contractForm formValue-mt'>
-                    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
-                    <div style='display: block'  class='contract-detail'>
-                        <h3>${data.title1}</h3>
-                        <h3>${data.title2}</h3>
-                        <p>${data.content}</p>
-                    </div>
-                    <div  class='contract-term'>
-                        <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                        <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
-                    </div>
-                    <div  class='contract-term'>
-                        <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                        <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+    var html = `<div class='contractForm'>
+                    <div class='box form-card-2'>
+                        <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
+                        <div style='display: block'  class='contract-detail'>
+                            <h3>${data.title1}</h3>
+                            <h3>${data.title2}</h3>
+                            <p>${data.content}</p>
+                        </div>
+                        <div  class='contract-term'>
+                            <input type='checkbox' name='confirm_contract' id='confirm_contract' />
+                            <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
+                        </div>
+                        <div  class='contract-term'>
+                            <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
+                            <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+                        </div>
                     </div>
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
-                    </div>
             </div>`;
     $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3,true);
