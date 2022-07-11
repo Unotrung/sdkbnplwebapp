@@ -1351,8 +1351,6 @@ h4.form-showdata-title{
     opacity: 0;
     min-height: 12px;
     text-align: left;
-    float: left;
-    margin-top: 7px;
 }
 
 .error_message_otp,.error_message_pin{
@@ -1430,12 +1428,12 @@ input{
     
 }
 .guideslide{
-    position: absolute;
+    position: initial;
     top: 0;
     width: fit-content;
     left: 0px;
     right: 0px;
-    margin: 180px auto;
+    margin: 0 auto;
     display: grid;
 }
 .guideslide.nid-front{

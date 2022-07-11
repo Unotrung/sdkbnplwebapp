@@ -351,6 +351,7 @@ async function getHV() {
 
 // Done +++
 function cutStringData(infomation) {
+    console.log("cutStringData : ",infomation);
     try {
         if (infomation !== null && infomation !== '' && infomation !== undefined) {
             const { result } = infomation;
@@ -548,7 +549,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
                     $('.guideslideback').remove();
-                    $("#formValueNid").show();
+                    $("#formValueNid").show();  
                     $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
                         sessionStorage.setItem('front-image', imageBase64);
@@ -734,6 +735,10 @@ function deleteImage(side) {
 
 // Done +++
 function postNationalID(ImageURL) {
+    HyperSnapSDK.extractExifData((hvExifData)=>{
+        console.log(hvExifData);
+    });
+    /*
     try {
         var block = ImageURL.split(";");
         var contentType = block[0].split(":")[1];
@@ -750,26 +755,26 @@ function postNationalID(ImageURL) {
             "headers": {
                 "appId": "abe84d",
                 "appKey": "7d2c0d7e1690c216458c",
-                "transactionId": "6bdec326-5eff-4492-b045-160816e61cea"
+                "transactionId": "test_postman",
             },
+            "content-type" : "multipart/form-data;",
             "async": false,
-            "processData": false,
-            "contentType": false,
-            "mimeType": "multipart/form-data",
             "data": formDataToUpload
         };
-
         $.ajax(settings).done(function (response) {
             const data = JSON.parse(response);
             cutStringData(data);
+            
         });
     }
     catch (error) {
+        console.log(error);
         return {
             errorCode: error.status || 500,
             errorMessage: error.message
         }
     }
+    */
 }
 
 // Done +++
@@ -2291,7 +2296,7 @@ function messageScreen(element, config) {
 function showUseGuideSelfy() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
-    $('body').append("<div class='guideslide'></div>");
+    $('#voolo').append("<div class='guideslide'></div>");
     $('.guideslide').load('useguide.html');
     $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh chân dung");
 }
