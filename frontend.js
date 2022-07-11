@@ -973,9 +973,6 @@ function showErrorMessage(input, message) {
     }
     let spanError = parent.querySelector('span');
     spanError.innerText = message;
-    spanError.style.marginTop = '10px';
-    spanError.style.textAlign = 'left';
-    spanError.style.marginLeft = '0px';
     spanError.style.visibility = 'visible';
     spanError.style.opacity = '1';
 }
