@@ -1,0 +1,23 @@
+// Done +++
+* icon : "ico-success", "ico-unsuccess"
+* message : html "<h3>Cập nhật mã PIN không thành công</h3><p>Vui lòng thử lại hoặc liên hệ 1900xxx để được hỗ trợ.</p>"
+
+// Done +++
+function showStatusPage(element, message, imagePath, desc, step) {
+    $(element).empty();
+    showHeader();
+    showProcessPipeline(step);
+    var html = `<div class='container-status-page'>
+                    <img src='${imagePath}' class='container-status-page-img'/>
+                    <h1 class='container-status-page-title'>${message}</h1>
+                    ${desc !== null && desc !== '' ? `<p class='container-status-page-desc'>${desc}</p>` : ''} 
+                </div> `;
+    $(element).prepend(html);
+
+    $('body').click(function () {
+        showStatusPage(element, 'Bạn đã đăng ký thành công', './assets/img/Success.png', 'Bấm vào đây để quay trở lại. Tự động trở lại trang mua hàng sau 5s.', 4);
+    })
+}
+
+// Done +++
+ex : messageScreen(element,{screen : "buy_success",pipeline:false});

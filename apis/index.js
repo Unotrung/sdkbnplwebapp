@@ -69,14 +69,6 @@ function updatePin(phone, pin, new_pin) {
     return callAjax({ phone: phone, pin: pin, new_pin: new_pin }, 'user/updatePin', 'PUT');
 }
 
-function getAllUserCustomer() {
-    return callAjax({}, 'user/getAllUser', 'GET');
-}
-
-function getAllUserPersonal() {
-    return callAjax({}, 'user/getAllBNPLInformation', 'GET');
-}
-
 function getAllTenor() {
     return callAjax({}, 'common/getAllTenor', 'GET');
 }
@@ -148,3 +140,24 @@ function getContract() {
         }
     }
 }
+
+function callAjax($data, $url, $type, $token = '') {
+    options.Authorization = `Bearer ` + $token;
+    try {
+        let data = $.ajax({
+            url: `${baseURL}/` + $url,
+            method: $type,
+            data: JSON.stringify($data),
+            headers: options,
+            async: false,
+            dataType: 'json',
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+};
