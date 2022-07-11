@@ -651,17 +651,17 @@ async function LaunchDocumentCaptureScreen(side) {
         hvDocConfig.setShouldShowDocReviewScreen(false);
         // hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chụp ảnh mặt trước')
         hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
-        // hvDocConfig.docTextConfig.setDocReviewBottomDescription(this.translate.instant('hv.doc.docReviewBottomDescription'))
+        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa cmnd/cccd trong khung hình');
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
         let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
         if (applyFrontNid) {
-            hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
             hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt trước');
+            hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
         }
         else if (applyBackNid) {
-            hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
             hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt sau');
+            hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
             if (HVError) {
