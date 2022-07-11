@@ -773,7 +773,6 @@ function postNationalID(ImageURL) {
 }
 
 // Done +++
-<<<<<<< HEAD:frontend.js
 function showErrorMessage(input, message) {
     let parent = input.parentElement;
     let inputEle = parent.querySelector('input');
@@ -854,8 +853,6 @@ function checkEmptyError(listInput) {
 }
 
 // Done +++
-=======
->>>>>>> origin/kienv2:frontend/index.js
 function showDataInform(element, personal) {
     setRoute("showDataInform");
     let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
@@ -1826,7 +1823,6 @@ function showFormSetupPin(element, screen, token) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-<<<<<<< HEAD:frontend.js
     var html = `<div class="overlay-popup card-otpcode">
                     <div class="alert-box">
                     <span class='close'></span>
@@ -1844,19 +1840,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
                             <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
-=======
-    var html = `<div div div class="overlay-popup card-otpcode" >
-        <div class="alert-box">
-            <span class='close'></span>
-            <form id='formSetupPinCode'>
-                <div class='card'>
-                    <div class='card-head no-line'></div>
-                    <div class='card-body text-center form-otpcode'>
-                        <h4>Nhập OTP</h4>
-                        <p class='compact-12'>Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
-                        <div id='otpcode'></div>
-                        <span class='error_message error_message_otp'></span>
->>>>>>> origin/kienv2:frontend/index.js
                     </div>
                     <div class='card-footer' style="height:4px"></div>
                 </div>
@@ -2024,7 +2007,6 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-<<<<<<< HEAD:frontend.js
     var html = `<div class='contractForm'>
                     <div class='box form-card-2'>
                         <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
@@ -2044,26 +2026,6 @@ function showContract(element) {
                     </div>
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
             </div>`;
-=======
-    var html = `<div div div class='box contractForm formValue-mt' >
-                    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
-                    <div style='display: block'  class='contract-detail'>
-                        <h3>${data.title1}</h3>
-                        <h3>${data.title2}</h3>
-                        <p>${data.content}</p>
-                    </div>
-                    <div  class='contract-term'>
-                        <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                        <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
-                    </div>
-                    <div  class='contract-term'>
-                        <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                        <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
-                    </div>
-                    <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
-                    </div >
-            </div > `;
->>>>>>> origin/kienv2:frontend/index.js
     $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3, true);
 
@@ -2236,7 +2198,6 @@ function router(element) {
 
 function messageScreen(element, config) {
     if (config.screen == 'successScreen') {
-<<<<<<< HEAD:frontend.js
         html = `<div class='box showMessage formValue-mt-315 '>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
@@ -2269,40 +2230,6 @@ function messageScreen(element, config) {
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div> 
                 </div>`;
-=======
-        html = `<div div div class='box showMessage formValue-mt' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-success'></div>
-            <h3>Bạn đã đăng ký thành công</h3>
-            <p style='text-align: center;'>
-                Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-            </p>
-        </div> 
-                </div > `;
-    }
-
-    if (config.screen == 'unsuccessScreen') {
-        html = `<div div div class='box showMessage formValue-mt' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-unsuccess'></div>
-            <h3>Đăng ký không thành công</h3>
-            <p style='text-align: center;'>
-                Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-            </p>
-        </div> 
-                </div > `;
-    }
-
-    if (config.screen == 'pincode_unsuccess') {
-        html = `<div div div class='box showMessage' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-unsuccess'></div>
-            <h3>Cập nhật mã PIN không thành công</h3>
-            <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-            <button class='payment-button' id="tryagain">Thử lại</button>
-        </div> 
-                </div > `;
->>>>>>> origin/kienv2:frontend/index.js
     }
 
     if (config.screen == 'pincode_success') {
