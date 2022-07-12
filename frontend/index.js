@@ -367,10 +367,10 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value || '';
                 let homeTown = details?.homeTown?.value || '';
                 let permanentAddress = details?.permanentAddress?.value;
-                let street = details?.permanentAddress?.value.split(',')[0] ? details?.permanentAddress?.value.split(',')[0] : '';
-                let ward = details?.permanentAddress?.value.split(',')[1] ? details?.permanentAddress?.value.split(',')[1] : '';
-                let district = details?.permanentAddress?.value.split(',')[2] ? details?.permanentAddress?.value.split(',')[2] : '';
-                let city = details?.permanentAddress?.value.split(',')[3] ? details?.permanentAddress?.value.split(',')[3] : '';
+                let street = details?.permanentAddress?.value.split(',')[-4] ? details?.permanentAddress?.value.split(',')[-4] : '';
+                let ward = details?.permanentAddress?.value.split(',')[-3] ? details?.permanentAddress?.value.split(',')[-3] : '';
+                let district = details?.permanentAddress?.value.split(',')[-2] ? details?.permanentAddress?.value.split(',')[-2] : '';
+                let city = details?.permanentAddress?.value.split(',')[-1] ? details?.permanentAddress?.value.split(',')[-1] : '';
                 let gender = details?.gender?.value || '';
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
@@ -866,6 +866,11 @@ function showDataInform(element, personal) {
         }
     }
     let cities = getAllCity();
+    console.log('cities: ', cities);
+    let districts = getAllDistrict();
+    console.log('districts: ', districts);
+    let wards = getAllWard();
+    console.log('wards: ', wards);
     let referencesRelation = getAllReferenceRelation();
     showHeader();
     let fullname = personal.fullname || '';
@@ -892,6 +897,31 @@ function showDataInform(element, personal) {
     let conditionWard = personal.ward !== null && personal.ward !== '' && personal.ward !== undefined;
     let street = personal.street || '';
     let conditionStreet = personal.street !== null && personal.street !== '' && personal.street !== undefined;
+
+    let cityName = '';
+    let cityValue = '';
+    let districtName = '';
+    let districtValue = '';
+    let wardName = '';
+    let wardValue = '';
+    if (conditionCity && conditionDistrict && conditionWard) {
+        let dataAddress = handleGetDataAddress(city, district, ward);
+        cityName = dataAddress.city.name;
+        cityValue = dataAddress.city.value;
+        districtName = dataAddress.district.name;
+        districtValue = dataAddress.district.value;
+        wardName = dataAddress.ward.name;
+        wardValue = dataAddress.ward.value;
+    }
+    else {
+        cityName = '';
+        cityValue = '';
+        districtName = '';
+        districtValue = '';
+        wardName = '';
+        wardValue = '';
+    }
+
     var html = `<div class='form-card form-showdata'>
                     <h4 class='form-showdata-title'>Nhập thông tin cá nhân</h4>
                     <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
@@ -956,19 +986,22 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select id='city' name='city' class='input-global' onchange='onChangeValidation("#city")' value="${conditionCity ? city : ''}" ${conditionCity ? 'disabled' : ''}>
+                                    <select id='city' name='city' class='input-global' oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && cityValue) ? cityValue : ''}">
+                                        ${!cityValue ? cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>')) : cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '" ' + cityValue === city.Value ? 'selected' : '' + '>' + city.UI_Show + '</option>'))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <select id='district' name='district' class='input-global' onchange='onChangeValidation("#district")' value="${conditionDistrict ? district : ''}" ${conditionDistrict ? 'disabled' : ''}>
+                                    <select id='district' name='district' class='input-global' oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && districtValue) ? districtValue : ''}">
+                                        ${!districtValue ? districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>')) : districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '" ' + districtValue === district.Value ? 'selected' : '' + '>' + district.UI_Show + '</option>'))}
                                     </select>
                                     <span class='error_district error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <select id='ward' name='ward' class='input-global' onchange='onChangeValidation("#ward")' value="${conditionWard ? ward : ''}" ${conditionWard ? 'disabled1' : ''}>
+                                    <select id='ward' name='ward' class='input-global' oninput='onChangeValidation("#ward")'  value="${(conditionWard && wardValue) ? wardValue : ''}">
+                                        ${!wardValue ? wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>')) : wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '" ' + wardValue === ward.Value ? 'selected' : '' + '>' + ward.UI_Show + '</option>'))}
                                     </select>
                                     <span class='error_ward error_message'></span>
                                 </div>
@@ -978,7 +1011,7 @@ function showDataInform(element, personal) {
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
-        <div class="card-footer"></div>
+                            <div class="card-footer"></div>
                         </div >
                         <div class="card">
                         <div class="card-head">
@@ -987,17 +1020,23 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <input class='input-global' type='text' id='city_permanent' name='city_permanent' oninput='onChangeValidation("#city_permanent")'/>
+                                <select id='city_permanent' name='city_permanent' class='input-global' oninput='onChangeValidation("#city_permanent")' onchange='handleChangeCity("#city_permanent", "#district_permanent")'>
+                                    ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
+                                </select>
                                 <span class='error_city_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <input class='input-global' type='text' id='district_permanent' name='district_permanent' oninput='onChangeValidation("#district_permanent")'/>
+                                <select id='district_permanent' name='district_permanent' class='input-global' oninput='onChangeValidation("#district_permanent")' onchange='handleChangeWard("#district_permanent", "#ward_permanent")'>
+                                    ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
+                                </select>
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường</label>
-                                <input class='input-global' type='text' id='ward_permanent' name='ward_permanent' oninput='onChangeValidation("#ward_permanent")'/>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' oninput='onChangeValidation("#ward_permanent")'>
+                                    ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
+                                </select>
                                 <span class='error_ward_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
@@ -1054,7 +1093,6 @@ function showDataInform(element, personal) {
     let wardEle = document.getElementById('ward');
     let streetEle = document.getElementById('street');
     let relationshipEle = document.getElementById('relationship');
-    let fieldRelationship = document.getElementById('relationship');
     let fullname_refEle = document.getElementById('fullname_ref');
     let phone_refEle = document.getElementById('phone_ref');
     let city_permanentEle = document.getElementById('city_permanent');
@@ -1123,23 +1161,29 @@ function showDataInform(element, personal) {
         e.preventDefault();
 
         let fullnameVal = fullnameEle.value.trim();
-        let genderVal = genderEle.value.trim();
+        let genderVal = genderEle.options[genderEle.selectedIndex].value;
         let phoneVal = phoneEle.value.trim();
         let dobVal = dobEle.value.trim();
         let nidVal = nidEle.value.trim();
         let doiVal = doiELe.value.trim();
         let doeVal = doeEle.value.trim();
-        let cityVal = cityEle.value.trim();
-        let districtVal = districtEle.value.trim();
-        let wardVal = wardEle.value.trim();
+        let cityVal = cityEle.options[cityEle.selectedIndex].value;
+        let districtVal = districtEle.options[districtEle.selectedIndex].value;
+        let wardVal = wardEle.options[wardEle.selectedIndex].value;
+        let cityText = cityEle.options[cityEle.selectedIndex].text;
+        let districtText = districtEle.options[districtEle.selectedIndex].text;
+        let wardText = wardEle.options[wardEle.selectedIndex].text;
         let streetVal = streetEle.value.trim();
-        let relationshipVal = relationshipEle.value.trim();
-        var relationshipUIVal = fieldRelationship.options[fieldRelationship.selectedIndex].text;
+        var relationshipVal = relationshipEle.options[relationshipEle.selectedIndex].value;
+        var relationshipText = relationshipEle.options[relationshipEle.selectedIndex].text;
         let fullname_refVal = fullname_refEle.value.trim();
         let phone_refVal = phone_refEle.value.trim();
-        let city_permanentVal = city_permanentEle.value.trim();
-        let district_permanentVal = district_permanentEle.value.trim();
-        let ward_permanentVal = ward_permanentEle.value.trim();
+        let city_permanentVal = city_permanentEle.options[city_permanentEle.selectedIndex].value;
+        let district_permanentVal = district_permanentEle.options[district_permanentEle.selectedIndex].value;
+        let ward_permanentVal = ward_permanentEle.options[ward_permanentEle.selectedIndex].value;
+        let city_permanentText = city_permanentEle.options[city_permanentEle.selectedIndex].text;
+        let district_permanentText = district_permanentEle.options[district_permanentEle.selectedIndex].text;
+        let ward_permanentText = ward_permanentEle.options[ward_permanentEle.selectedIndex].text;
         let street_permanentVal = street_permanentEle.value.trim();
 
         let isCheckEmpty = checkEmptyError([fullnameEle, genderEle, phoneEle, dobEle, nidEle, doiELe, doeEle, cityEle, districtEle, wardEle, streetEle, relationshipEle, fullname_refEle, phone_refEle, city_permanentEle, district_permanentEle, ward_permanentEle, street_permanentEle])
@@ -1177,34 +1221,55 @@ function showDataInform(element, personal) {
             showMessageStatus(nidEle, '', 'SUCCESS');
         }
 
-        let personal_all_info = {
+        let personal_all_infoConfirm = {
             name: fullnameVal,
             sex: genderVal,
             birthday: dobVal,
             phone: phoneVal,
             citizenId: nidVal,
             issueDate: doiVal,
-            city: cityVal,
-            district: districtVal,
-            ward: wardVal,
+            city: {
+                cityVal: cityVal,
+                cityText: cityText
+            },
+            district: {
+                districtVal: districtVal,
+                districtText: districtText
+            },
+            ward: {
+                wardVal: wardVal,
+                wardText: wardText
+            },
             street: streetVal,
-            "personal_title_ref": relationshipVal,
-            "personal_title_ref_ui": relationshipUIVal,
+            "personal_title_ref": {
+                relationshipVal: relationshipVal,
+                relationshipText: relationshipText
+            },
             "name_ref": fullname_refVal,
             "phone_ref": phone_refVal,
-            "temporaryCity": city_permanentVal,
-            "temporaryDistrict": district_permanentVal,
-            "temporaryWard": ward_permanentVal,
+            "temporaryCity": {
+                city_permanentVal: city_permanentVal,
+                city_permanentText: city_permanentText,
+            },
+            "temporaryDistrict": {
+                district_permanentVal: district_permanentVal,
+                district_permanentText: district_permanentText
+            },
+            "temporaryWard": {
+                ward_permanentVal: ward_permanentVal,
+                ward_permanentText: ward_permanentText
+            },
             "temporaryStreet": street_permanentVal,
             "expirationDate": doeVal
         }
 
+
         if (!isCheckEmpty) {
             if (!isPhoneError && !isPhoneRefError && !isNidError && (phone_refVal !== phoneVal)) {
-                if (personal_all_info !== null) {
-                    sessionStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
+                if (personal_all_infoConfirm !== null) {
+                    sessionStorage.setItem('personal_all_infoConfirm', JSON.stringify(personal_all_infoConfirm));
                     $(element).removeClass("showDataInform");
-                    showConfirmDataInform(element, personal_all_info);
+                    showConfirmDataInform(element, personal_all_infoConfirm);
                 }
             }
         }
@@ -1212,9 +1277,9 @@ function showDataInform(element, personal) {
 }
 
 // Done +++
-function showConfirmDataInform(element, personal_all_info) {
+function showConfirmDataInform(element, personal_all_infoConfirm) {
     showHeader();
-    var html = `<div div div class='form-card form-confirmdata' >
+    var html = `<div class='form-card form-confirmdata'>
                     <h4 class='form-confirmdata-title'>Đối soát thông tin</h4>
                     <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
                     <form class=''>
@@ -1225,35 +1290,35 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='name'>Họ và tên</label>
-                                    <div id='name' class="info">${personal_all_info.name}</div>
+                                    <div id='name' class="info">${personal_all_infoConfirm.name}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <div id='phone' class="info">${personal_all_info.phone}</div>
+                                    <div id='phone' class="info">${personal_all_infoConfirm.phone}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='birthday'>Ngày sinh</label>
-                                    <div id='birthday' class="info">${personal_all_info.birthday}</div>
+                                    <div id='birthday' class="info">${personal_all_infoConfirm.birthday}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='gender'>Giới tính</label>
-                                    <div id='gender' class="info">${personal_all_info.sex === 'M' ? 'Nam' : 'Nữ'}</div>
+                                    <div id='gender' class="info">${personal_all_infoConfirm.sex === 'M' ? 'Nam' : 'Nữ'}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='citizenId'>Số CMND/CCCD</label>
-                                    <div id='citizenId' class="info">${personal_all_info.citizenId}</div>
+                                    <div id='citizenId' class="info">${personal_all_infoConfirm.citizenId}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='issueDate'>Ngày cấp</label>
-                                    <div id='issueDate' class="info">${personal_all_info.issueDate}</div>
+                                    <div id='issueDate' class="info">${personal_all_infoConfirm.issueDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div id='doe' class="info">${personal_all_info.expirationDate}</div>
+                                    <div id='doe' class="info">${personal_all_infoConfirm.expirationDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='address'>Địa chỉ hiện tại</label>
-                                    <div id='address' class="info">${personal_all_info.street}, ${personal_all_info.ward}, ${personal_all_info.district}, ${personal_all_info.city}</div>
+                                    <div id='address' class="info">${personal_all_infoConfirm.street}, ${personal_all_infoConfirm.ward.wardText}, ${personal_all_infoConfirm.district.districtText}, ${personal_all_infoConfirm.city.cityText}</div>
                                 </div>
                             </div >
                             <div class="card-footer"></div>
@@ -1265,19 +1330,19 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                    <div id='city_permanent' class="info">${personal_all_info.temporaryCity}</div>
+                                    <div id='city_permanent' class="info">${personal_all_infoConfirm.temporaryCity.city_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='district_permanent'>Quận/Huyện</label>
-                                    <div id='district_permanent' class="info">${personal_all_info.temporaryDistrict}</div>
+                                    <div id='district_permanent' class="info">${personal_all_infoConfirm.temporaryDistrict.district_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='ward_permanent'>Phường</label>
-                                    <div id='ward_permanent' class="info">${personal_all_info.temporaryWard}</div>
+                                    <div id='ward_permanent' class="info">${personal_all_infoConfirm.temporaryWard.ward_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='street_permanent'>Đường</label>
-                                    <div id='street_permanent' class="info">${personal_all_info.temporaryStreet}</div>
+                                    <div id='street_permanent' class="info">${personal_all_infoConfirm.temporaryStreet}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -1289,15 +1354,15 @@ function showConfirmDataInform(element, personal_all_info) {
                             <div class="card-body">
                                 <div class='form-row form-verify'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <div id='relationship' class="info">${personal_all_info.personal_title_ref_ui}</div>
+                                    <div id='relationship' class="info">${personal_all_infoConfirm.personal_title_ref.relationshipText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='name_ref'>Họ và tên</label>
-                                    <div id='name_ref' class="info">${personal_all_info.name_ref}</div>
+                                    <div id='name_ref' class="info">${personal_all_infoConfirm.name_ref}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <div id='phone_ref' class="info">${personal_all_info.phone_ref}</div>
+                                    <div id='phone_ref' class="info">${personal_all_infoConfirm.phone_ref}</div>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
@@ -1307,31 +1372,34 @@ function showConfirmDataInform(element, personal_all_info) {
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
                         </div>
-                </div > `;
+                </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
     $(window).scrollTop(0);
 
-    let name = document.getElementById('name');
-    let phone = document.getElementById('phone');
-    let birthday = document.getElementById('birthday');
-    let gender = document.getElementById('gender');
-    let citizenId = document.getElementById('citizenId');
-    let issueDate = document.getElementById('issueDate');
-    let doe = document.getElementById('doe');
-    let address = document.getElementById('address');
-    let relationship = document.getElementById('relationship');
-    let name_ref = document.getElementById('name_ref');
-    let phone_ref = document.getElementById('phone_ref');
-    let city_permanent = document.getElementById('city_permanent');
-    let district_permanent = document.getElementById('district_permanent');
-    let ward_permanent = document.getElementById(' ward_permanent');
-    let street_permanent = document.getElementById('street_permanent');
+    let personal_all_info = {
+        name: personal_all_infoConfirm.name,
+        sex: personal_all_infoConfirm.sex,
+        birthday: personal_all_infoConfirm.birthday,
+        phone: personal_all_infoConfirm.phone,
+        citizenId: personal_all_infoConfirm.citizenId,
+        issueDate: personal_all_infoConfirm.issueDate,
+        city: personal_all_infoConfirm.city.cityVal,
+        district: personal_all_infoConfirm.district.districtVal,
+        ward: personal_all_infoConfirm.ward.wardVal,
+        street: personal_all_infoConfirm.street,
+        "personal_title_ref": personal_all_infoConfirm.personal_title_ref.relationshipVal,
+        "name_ref": personal_all_infoConfirm.name_ref,
+        "phone_ref": personal_all_infoConfirm.phone_ref,
+        "temporaryCity": personal_all_infoConfirm.temporaryCity.city_permanentVal,
+        "temporaryDistrict": personal_all_infoConfirm.temporaryDistrict.district_permanentVal,
+        "temporaryWard": personal_all_infoConfirm.temporaryWard.ward_permanentVal,
+        "temporaryStreet": personal_all_infoConfirm.street_permanentVal,
+        "expirationDate": personal_all_infoConfirm.expirationDate
+    }
 
-    const formConfirmdata = document.querySelector('#form-confirmdata');
-
-    let btnContinueConfirm = document.querySelector('#btnContinueConfirm');
+    sessionStorage.setItem('personal_all_info', JSON.stringify(personal_all_info));
 
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');

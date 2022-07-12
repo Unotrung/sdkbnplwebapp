@@ -29,3 +29,87 @@ function handleChangeWard(ele1, ele2) {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
 }
+
+// Done +++
+function findCity(search) {
+    let cities = getAllCity();
+    let data = cities.data;
+    let result = data.find(city => city.UI_Show.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+    return result;
+}
+
+// Done +++
+function findDistrict(search) {
+    let districts = getAllDistrict();
+    let data = districts.data;
+    let result = data.find(district => district.UI_Show.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+    return result;
+}
+
+// Done +++
+function findWard(search) {
+    let wards = getAllWard();
+    let data = wards.data;
+    let result = data.find(ward => ward.UI_Show.toLowerCase().indexOf(search.toLowerCase()) !== -1);
+    return result;
+}
+
+function findDistrictById(idParent) {
+    try {
+        let district = getDetailDistrict(idParent);
+        return district;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+}
+
+function findWardById(idParent) {
+    try {
+        let ward = getDetailWard(idParent);
+        return ward;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
+}
+
+function handleGetDataAddress(searchCity, searchDistrict, searchWard) {
+    let cityName = '';
+    let cityValue = '';
+    let districtName = '';
+    let districtValue = '';
+    let wardName = '';
+    let wardValue = '';
+    let resultCity = findCity(searchCity);
+    if (resultCity) {
+        let { Value, UI_Show } = resultCity;
+        cityValue = Value;
+        cityName = UI_Show;
+        let district = findDistrictById(cityValue);
+        let resultDistrict = findDistrict(searchDistrict);
+        if (district && resultDistrict) {
+            let { Value, UI_Show } = resultDistrict;
+            districtValue = Value;
+            districtName = UI_Show;
+            let ward = findWardById(districtValue);
+            let resultWard = findWard(searchWard);
+            if (ward && resultWard) {
+                let { Value, UI_Show } = resultWard;
+                wardValue = Value;
+                wardName = UI_Show;
+            }
+        }
+    }
+    return {
+        city: { name: cityName, value: cityValue },
+        district: { name: districtName, value: districtValue },
+        ward: { name: wardName, value: wardValue },
+    }
+}

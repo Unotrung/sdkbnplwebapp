@@ -85,6 +85,14 @@ function getAllWard() {
     return callAjax({}, 'common/getAllWard', 'GET');
 }
 
+function getDetailWard(idParent) {
+    return callAjax({ idParent: idParent }, 'common/getWard', 'POST');
+}
+
+function getDetailDistrict(idParent) {
+    return callAjax({ idParent: idParent }, 'common/getDistrict', 'POST');
+}
+
 function getAllReferenceRelation() {
     return callAjax({}, 'common/getAllReferenceRelation', 'GET');
 }

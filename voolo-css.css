@@ -1350,10 +1350,15 @@ h4.form-showdata-title{
     opacity: 0;
     min-height: 12px;
     text-align: left;
+<<<<<<< HEAD
 }
 .forgotPinPhone .error_message,
 .showUICheckPhone .error_message{
     padding: 0 11%;
+=======
+    float: left;
+    margin-top: 7px;
+>>>>>>> e3dba85 (Upđate ShowDataInForm & ShowDataInConfirmForm)
 }
 .error_message_otp,.error_message_pin{
     text-align: center;
@@ -2234,6 +2239,29 @@ input{
     .forgotPinPhone .error_message,
     .showUICheckPhone .error_message{
         padding: 0;
+    }
+    .ico-success.ico-150,
+    .ico-unsuccess.ico-150{
+        width: 64px;
+        height: 64px;
+    }
+    .ico-success.ico-120,
+    .ico-unsuccess.ico-120{
+        width: 64px;
+        height: 64px;
+    }
+    .ico-unsuccess{
+        width: 55px;
+        height: 55px;
+        background: url(./assets/img/Unsuccess.png) no-repeat;
+        background-size: cover;
+        margin: 18.86px auto 16px;
+    }   
+    .text-message a.ahref{
+        line-height: normal;
+    }
+    .text-message span{
+        display: inline-block;
     }
 }   
 .hv-modal-footer{

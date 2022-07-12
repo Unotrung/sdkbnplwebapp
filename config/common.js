@@ -46,4 +46,5 @@ function deleteStorageData() {
     sessionStorage.removeItem('back_nid_customer');
     sessionStorage.removeItem('allDataNid');
     sessionStorage.removeItem('personal_all_info');
+    sessionStorage.removeItem('personal_all_infoConfirm');
 }
