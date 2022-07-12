@@ -1913,8 +1913,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     </div>
                     <div class='card-footer' style="height:4px"></div>
                 </div>
-                <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
             </form>
         </div>
             </div > `;
