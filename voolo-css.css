@@ -2184,6 +2184,7 @@ input{
     }
     .contractForm .contract-term{
         display: -webkit-box;
+        display: flex;
         margin-bottom: 19px;
     }
     .card-otpcode p.compact-12{
