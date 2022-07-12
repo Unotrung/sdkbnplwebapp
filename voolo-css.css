@@ -1936,7 +1936,8 @@ input{
     .main-page .buttons label.caption{
         top: 71px;
     }
-    .showDataInform .headrow
+    .showDataInform .headrow,
+    .showConfirmDataInform .headrow,
     {
         margin-bottom: 36px;
     }
