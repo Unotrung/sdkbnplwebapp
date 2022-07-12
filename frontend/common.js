@@ -70,7 +70,8 @@ var PincodeInput = function () {
                 })), t.addEventListener("keydown", (function (t) {
                     e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && "Meta" !== t.key && e.cells[s].setAttribute("type", "text")
                 })), t.addEventListener("focus", (function () {
-                    t.classList.add("pincode-input--focused")
+                    t.classList.add("pincode-input--focused");
+                    t.classList.remove("error_pincode_red");
                 })), t.addEventListener("blur", (function () {
                     t.classList.remove("pincode-input--focused")
                 }))

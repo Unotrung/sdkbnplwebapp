@@ -1594,7 +1594,7 @@ function showFormPincode(element, phone, screen) {
         <div div div class='box form-card-pincode' >
             <div class='voolo-logo'></div>
             <form id='formSetupPinCode' class="box-mobile m-top-16">
-                    <div class=''>
+                    <div class='${screen}'>
                         <div class='text-center form-pincode'>
                             <h4>Nhập mã PIN</h4>
                             <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
@@ -1661,17 +1661,17 @@ function showFormPincode(element, phone, screen) {
         //     return;
         // }
         else if (result.status === false && result.statusCode === 1002) {
-            formatStyleWrongInput(pincode, errorMessage, 'Số điện thoại không hợp lệ');
+            formatStyleWrongPincode(pincode, errorMessage, 'Số điện thoại không hợp lệ');
             return;
         }
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
-                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
-                addBorderGray('pin');
+                formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+                addBorderStyle('pin',"RED");
                 btnSubmitPin.disabled = true;
             }
             else {
-                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+                formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
                 addBorderRed('pin');
                 for (i = 1; i <= 4; i++) {
                     $("#pin" + i).attr('disabled', true);
@@ -1680,7 +1680,7 @@ function showFormPincode(element, phone, screen) {
             }
         }
         else if (result.status === false && result.statusCode === 1004) {
-            formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             addBorderRed('pin');
             for (i = 1; i <= 4; i++) {
                 $("#pin" + i).attr('disabled', true);
@@ -1906,7 +1906,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 else if (data.status === false && data.statusCode === 4000) {
                     if (data?.countFail !== 5) {
                         formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderGray('otp');
+                        addBorderStyle('otp');
                         btnSubmitVerifyOTP.disabled = true;
                         return;
                     }
@@ -1922,7 +1922,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
                 else if (data.status === false && data.statusCode === 3000) {
                     formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderGray('otp');
+                    addBorderStyle('otp');
                     btnSubmitVerifyOTP.disabled = true;
                     return;
                 }
@@ -1947,7 +1947,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 else if (data.statusCode === 4000 && data.status === false) {
                     if (data?.countFail) {
                         formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderGray('otp');
+                        addBorderStyle('otp');
                         btnSubmitVerifyOTP.disabled = true;
                     }
                     else {
@@ -1962,7 +1962,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
                 else if (data.statusCode === 3000 && data.status === false) {
                     formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderGray('otp');
+                    addBorderStyle('otp');
                     btnSubmitVerifyOTP.disabled = true;
                     return;
                 }

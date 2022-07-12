@@ -50,6 +50,13 @@ function formatStyleWrongInput(data, errorMessage, content) {
 }
 
 // Done +++
+function formatStyleWrongPincode(data, errorMessage, content) {
+    errorMessage.innerHTML = content;
+    errorMessage.style.visibility = 'visible';
+    errorMessage.style.opacity = '1';
+}
+
+// Done +++
 function addBorderStyle(data, color) {
     $(".pincode-input").val("");
 

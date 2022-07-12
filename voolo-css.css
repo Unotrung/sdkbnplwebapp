@@ -1351,6 +1351,7 @@ h4.form-showdata-title{
     min-height: 12px;
     text-align: left;
 }
+.forgotPinPhone .error_message,
 .showUICheckPhone .error_message{
     padding: 0 11%;
 }
@@ -1510,6 +1511,9 @@ input{
 }
 .m-top-16{
     padding-top: 16px;
+}
+.VERIFY_PIN{
+    margin-bottom: 20px;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
