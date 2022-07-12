@@ -2224,6 +2224,9 @@ input{
     .text-message span{
         display: inline-block;
     }
+    .error_message{{
+        padding: 0;
+    }
 }   
 .hv-modal-footer{
     display: none;
