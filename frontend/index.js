@@ -375,10 +375,9 @@ function cutStringData(infomation) {
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
                 let nid = sessionStorage.getItem('nid');
-                matchField(nid, idNumber).then((data) => {
-                    let idNumberCheck = data?.result?.id_number;
-                    let all = data?.result?.all;
-                    if (idNumberCheck && all) {
+                makeFaceMatchCall(sessionStorage.getItem('selfie-image'),sessionStorage.getItem('front-image')).then((data)=>{
+                    console.log("verifyMatchImage : ",data);
+                    if(data){
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -395,8 +394,7 @@ function cutStringData(infomation) {
                         }
                         sessionStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
                         showUseGuideBackNid();
-                    }
-                    else {
+                    }else{
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
@@ -440,6 +438,7 @@ function cutStringData(infomation) {
 
 // Done +++
 function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
+    $('body').addClass('loading');
     callback = (HVError, HVResponse) => {
         if (HVError) {
             var errorCode = HVError.getErrorCode();
@@ -452,17 +451,17 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
                 if (matchFace === 'no') {
-                    alert('The face and the image of the identity card on the front side do not match');
+                    alert('The face and the image of the identity card on the front side do not match');   
                     return false;
                 }
                 else {
-                    alert('The face and the image of the identity card on the front side match');
                     return true;
                 }
             }
         }
     };
-    HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
+    $('body').removeClass('loading');
+    return HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
 }
 
 // Done +++
@@ -551,13 +550,15 @@ async function LaunchDocumentCaptureScreen(side) {
                     $("#formValueNid").show();
                     $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
+                        console.log("apiResults : ",apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('front-image', imageBase64);
-                        postNationalID(imageBase64);
+                        cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureFront")
                     }
                     else if (applyBackNid) {
                         sessionStorage.setItem('back-image', imageBase64);
-                        postNationalID(imageBase64);
+                        // postNationalID(imageBase64);
+                        cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureBack");
                     }
                 }
