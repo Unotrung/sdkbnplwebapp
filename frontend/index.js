@@ -2086,12 +2086,16 @@ function showContract(element) {
                             <p>${data.content}</p>
                         </div>
                         <div  class='contract-term'>
-                            <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                            <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
+                            <label for='confirm_contract' class='compact-12'>
+                                <input type='checkbox' name='confirm_contract' id='confirm_contract' />
+                                Tôi đồng ý với Điều kiện và Điều khoản hợp đồng
+                            </label>
                         </div>
                         <div  class='contract-term'>
-                            <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                            <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
+                            <label for='confirm_otp' class='compact-12'>
+                                <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
+                                Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi
+                            </label>
                         </div>
                     </div>
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>

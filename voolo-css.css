@@ -134,6 +134,7 @@ input[type=checkbox]{
     mix-blend-mode: normal;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 3px;
+    margin-right: 10px;
 }
 input[type=checkbox]:checked{
     background: url(./assets/img/checked.png) no-repeat;
@@ -1402,8 +1403,7 @@ input{
     text-align: left;
 }
 
-.contractForm .contract-term label{
-    padding-left: 10px;
+.contractForm .contract-term label{ 
     vertical-align: middle;
     float: left;
 }
