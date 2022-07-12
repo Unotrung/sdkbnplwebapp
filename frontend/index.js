@@ -351,7 +351,6 @@ async function getHV() {
 
 // Done +++
 function cutStringData(infomation) {
-    console.log("cutStringData : ",infomation);
     try {
         if (infomation !== null && infomation !== '' && infomation !== undefined) {
             const { result } = infomation;
@@ -521,7 +520,7 @@ async function LaunchDocumentCaptureScreen(side) {
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
         hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
-        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa cmnd/cccd trong khung hình');
+        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình');
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
         let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
@@ -549,7 +548,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
                     $('.guideslideback').remove();
-                    $("#formValueNid").show();  
+                    $("#formValueNid").show();
                     $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
                         sessionStorage.setItem('front-image', imageBase64);
@@ -735,10 +734,6 @@ function deleteImage(side) {
 
 // Done +++
 function postNationalID(ImageURL) {
-    HyperSnapSDK.extractExifData((hvExifData)=>{
-        console.log(hvExifData);
-    });
-    /*
     try {
         var block = ImageURL.split(";");
         var contentType = block[0].split(":")[1];
@@ -755,16 +750,18 @@ function postNationalID(ImageURL) {
             "headers": {
                 "appId": "abe84d",
                 "appKey": "7d2c0d7e1690c216458c",
-                "transactionId": "test_postman",
+                "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
             },
-            "content-type" : "multipart/form-data;",
             "async": false,
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
             "data": formDataToUpload
         };
+
         $.ajax(settings).done(function (response) {
             const data = JSON.parse(response);
             cutStringData(data);
-            
         });
     }
     catch (error) {
@@ -774,7 +771,6 @@ function postNationalID(ImageURL) {
             errorMessage: error.message
         }
     }
-    */
 }
 
 // Done +++
