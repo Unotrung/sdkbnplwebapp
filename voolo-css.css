@@ -2227,6 +2227,10 @@ input{
     .error_message{
         padding: 0;
     }
+    .forgotPinPhone .error_message,
+    .showUICheckPhone .error_message{
+        padding: 0;
+    }
 }   
 .hv-modal-footer{
     display: none;
