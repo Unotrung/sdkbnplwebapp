@@ -1074,13 +1074,14 @@ body.popup .overlay-popup{
 .headrow .line{
     width: 100%;
     display: flex;
-    padding-left: 175px;
+    padding-left: 140px;
+    justify-content: center;
 }
 
 .headrow .pipeline{
     width: 100%;
     max-width: 746px;
-    margin: 0 auto;
+    margin: 1px auto;
     display: inline-flex;
 }
 
