@@ -2224,7 +2224,7 @@ input{
     .text-message span{
         display: inline-block;
     }
-    .error_message{{
+    .error_message{
         padding: 0;
     }
 }   
