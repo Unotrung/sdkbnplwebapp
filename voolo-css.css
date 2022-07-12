@@ -2167,8 +2167,9 @@ input{
     }
 
     .guideslide.nid-front {
-        position: absolute;
         margin: 0 auto;
+        width: 100%;
+
     }
     .showMessage .line span{
         background-color: #efedf4;
@@ -2198,8 +2199,7 @@ input{
         top: 20px;
         bottom: 20px;
         margin: 0 auto;
-        width: 90%;
-        display: initial;
+        padding-bottom: 20px;
     }
     .ico-success.ico-150,
     .ico-unsuccess.ico-150{

@@ -77,7 +77,7 @@
 			transition: background-color 0.5s ease;
 		}
 		
-		.active,
+		.footerdot.active,
 		.footerdot:hover {
 			background-color: #197DDE;
 		}
@@ -179,11 +179,19 @@
 				margin-top: 35px;
 			}
 			.ignore{
-				background: transparent;
+				font-family: 'Montserrat';
+				font-style: normal;
+				font-weight: 400;
+				font-size: 16px;
+				line-height: 20px;
 				color: #000000;
+				background: transparent;
 			}
 			.btn.start{
 				display: none;
+			}
+			.btn.ignore{
+				display: initial;
 			}
 
         }
@@ -229,7 +237,7 @@
 	</div>
 
     <div class="bnpl-area">
-        <button class='payment-button btn ignore' id="lastimg">Bỏ qua \003E</button>
+        <button class='payment-button btn ignore' id="lastimg">Bỏ qua ></button>
         <button class='payment-button btn start' id="callFaceCapture">Bắt đầu</button>
     </div>
 	
