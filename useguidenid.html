@@ -277,7 +277,7 @@
 			displaySlide(slideIndex = n);
 		}
 
-		var isAct = false;
+		var isAct2 = false;
 		/* Main function */
 		function displaySlide(n) {
             var width = document.body.clientWidth;
@@ -304,8 +304,8 @@
 			}
 			totalslides[slideIndex - 1].style.display = "block";
 			totaldots[slideIndex - 1].className += " active";
-			if(n == 2) isAct = true;
-			if (n < 2 && !isAct){
+			if(n == 2) isAct2 = true;
+			if (n < 2 && !isAct2){
 				$('.payment-button.start').css('display','none');	
 			}else{
 				$('.payment-button.start').css('display','initial');	
