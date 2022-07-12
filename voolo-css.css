@@ -1799,7 +1799,7 @@ input{
         font-weight: 400;
         font-size: 10px;
         line-height: 12px;
-        height: 44px;
+        height: auto;
     }
     .headrow .pipeline .pipe::before{
         top: -25px;
@@ -1937,6 +1937,7 @@ input{
     }
     .showDataInform .form-showdata > .form-showdata-desc{
         margin-bottom: 36px;
+        font-size: 10px;
     }
     .form-showdata .form-showdata-info{
         text-align: center;
@@ -1981,11 +1982,14 @@ input{
     .form-showdata .card-body{
         padding: 24px;
     }
-    .showDataInform .form-row{
-        margin-bottom: 3px;
+    .showDataInform .form-row .form-cell{
+        margin-bottom: 7px;
     }
-    .showDataInform label{
-        /* margin-bottom: -2px!important; */
+    .showDataInform .form-row{
+        margin-bottom: 7px;
+    }
+    .showDataInform .form-showdata label{
+        margin-bottom: 6px!important;
     }
     .showDataInform .card-body{
         padding: 10px;
