@@ -1812,7 +1812,7 @@ input{
     .headrow .line{
         width: 100%;
         display: flex;
-        padding-left: 40px;
+        padding-left: 47px;
     }
     .formValue-mt{
         margin-top: 0!important;
@@ -2137,6 +2137,7 @@ input{
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.12);
         border-radius: 20px;
         width: 335px;
+        margin: 0 auto;
     }
     .main-page .box2{
         width: 100%;
