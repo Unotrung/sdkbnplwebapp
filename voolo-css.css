@@ -1985,7 +1985,7 @@ input{
         margin-bottom: 3px;
     }
     .showDataInform label{
-        margin-bottom: -2px!important;
+        /* margin-bottom: -2px!important; */
     }
     .showDataInform .card-body{
         padding: 10px;
