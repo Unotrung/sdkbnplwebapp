@@ -1254,7 +1254,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='birthday'>Ngày sinh</label>
-                                    <div id='birthday' class="info">${personal_all_infoConfirm.birthday}</div>
+                                    <div id='birthday' class="info">${convertDateString2(personal_all_infoConfirm.birthday)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='gender'>Giới tính</label>
@@ -1266,11 +1266,11 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='issueDate'>Ngày cấp</label>
-                                    <div id='issueDate' class="info">${personal_all_infoConfirm.issueDate}</div>
+                                    <div id='issueDate' class="info">${convertDateString2(personal_all_infoConfirm.issueDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div id='doe' class="info">${personal_all_infoConfirm.expirationDate}</div>
+                                    <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='address'>Địa chỉ hiện tại</label>
@@ -1328,11 +1328,11 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                             <div class="card-footer"></div>
                         </div>
                     </form>
-                    <div class="form-row" style="width: 100%;padding: 0;display: flex;margin-bottom: 36px;margin-top: 12px;">
+                </div> 
+                <div class="form-row" style="width: 100%;padding: 32px 40px;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
-                        </div>
-                </div> `;
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px; float:right">Xác nhận</button>
+                        </div>`;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
@@ -2129,7 +2129,7 @@ function customerInfo(element, status = true) {
                     <div class="avatar"><img src="${customer.avatar}" /></div>
                     <div class='detail'>
                         <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
-                        <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
+                        <p class='limit-text'>Hạn mức tín dụng của bạn là: <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                         ${strStatus}
                     </div>
                 </div>

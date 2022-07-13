@@ -1274,6 +1274,9 @@ h4.form-showdata-title{
 }
 
 /* showConfirmDataInform */
+.showConfirmDataInform {
+    padding-bottom: 100px!important;
+}
 .form-confirmdata{
     display: grid;
 }
@@ -1518,6 +1521,16 @@ input{
 }
 .VERIFY_PIN{
     margin-bottom: 20px;
+}
+.showCircularProgressbar .paragraph-text h2{
+    font-size: 24px;
+    line-height: 29px;
+}
+.showCircularProgressbar.formValue-mt h2.sub2{
+    margin-top: 60px;
+}
+.showCircularProgressbar.formValue-mt{
+    margin-top: 279px!important;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
@@ -2126,6 +2139,12 @@ input{
     }
     .showCircularProgressbar .paragraph-text p{
         order: 3;
+    }
+    .showCircularProgressbar.formValue-mt h2.sub2{
+        margin-top: 0;
+    }
+    .showCircularProgressbar.formValue-mt{
+        margin-top: 0!important;
     }
     .showMessage h3{
         font-family: 'Montserrat Alternates';
