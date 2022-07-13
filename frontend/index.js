@@ -811,50 +811,6 @@ function showSuccessMessage(input) {
 }
 
 // Done +++
-function onChangeValidation(input, message) {
-    let element = document.querySelector(input);
-    let value = element.value.trim();
-    let parent = element.parentElement;
-    let span = parent.querySelector('span');
-    console.log('Input: ', input);
-    console.log('Element: ', element);
-    console.log('Value: ', value);
-    console.log('Span: ', span);
-    if (value) {
-        element.style.border = '1px solid #197DDE';
-        span.innerText = '';
-        span.style.marginTop = '0px';
-        span.style.visibility = 'hidden';
-        span.style.opacity = '0';
-    }
-    else {
-        element.style.border = '1px solid #EE4D2D';
-        span.innerText = message;
-        span.style.visibility = 'visible';
-        span.style.opacity = '1';
-        span.style.marginTop = '0px';
-        span.style.marginLeft = '0px';
-    }
-}
-
-// Done +++
-function checkEmptyError(listInput) {
-    let isEmptyError = false;
-    listInput.forEach(input => {
-        input.value = input.value.trim();
-        if (input.value) {
-            isEmptyError = false;
-            showSuccessMessage(input);
-        }
-        else {
-            isEmptyError = true;
-            showErrorMessage(input, 'Vui lòng nhập thông tin');
-        }
-    });
-    return isEmptyError;
-}
-
-// Done +++
 function showDataInform(element, personal) {
     setRoute("showDataInform");
     let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
@@ -1041,7 +997,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
-                                <input class='input-global' type='text' id='street_permanent' name='street_permanent' oninput='onChangeValidation("#street_permanent")'/>
+                                <input class='input-global' type='text' id='street_permanent' name='street_permanent' oninput="onChangeValidation('#street_permanent')"/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>

@@ -1074,7 +1074,7 @@ body.popup .overlay-popup{
 .headrow .line{
     width: 100%;
     display: flex;
-    padding-left: 140px;
+    padding-left: 10%;
     justify-content: center;
 }
 
@@ -1201,7 +1201,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     -webkit-appearance: none;
 }
 .showDataInform input,.showDataInform select{
-    margin: 0;
+    
 }
 .form-showdata{
     width: 888px;
