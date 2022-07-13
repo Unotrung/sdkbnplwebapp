@@ -1774,6 +1774,7 @@ function showFormSetupPin(element, screen, token) {
                         <div id='pincode'></div>
                         <p class='sub4'>Nhập lại mã PIN</p>
                         <div id='repincode'></div>
+                        <span class='error_message error_message_pin'></span>
                     </div>
                 </div>
                 <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
@@ -1884,7 +1885,9 @@ function showFormSetupPin(element, screen, token) {
         }
         else {
             // alert('Mã pin không trùng khớp vui lòng thử lại !');
-            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+            var pincode = document.querySelector('#pincode');
+            var errorMessage = document.querySelector('.error_message');
+            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không trùng khớp vui lòng thử lại !');
             addBorderStyle('pin',"RED");
             $("body").removeClass("loading");
             return;

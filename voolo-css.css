@@ -1468,6 +1468,9 @@ input{
     right: 0;
     margin: 48px auto;
 }
+.form-card.showFormSetupPin button{
+    margin-top: 24px;
+}
 .form-card.showFormSetupPin{
     margin-top:310px!important;
 }
