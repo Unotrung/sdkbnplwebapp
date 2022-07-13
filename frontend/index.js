@@ -904,7 +904,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px'>
+                                    <select id='gender' name='gender' class='input-global' oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px; text-align:center'>
                                     <option value="" >Vui lòng chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
@@ -1276,10 +1276,14 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                     <label for='address'>Địa chỉ hiện tại</label>
                                     <div id='address' class="info">${personal_all_infoConfirm.street}, ${personal_all_infoConfirm.ward.wardText}, ${personal_all_infoConfirm.district.districtText}, ${personal_all_infoConfirm.city.cityText}</div>
                                 </div>
+                                <div class='form-row form-verify'>
+                                    <label for='address'>Địa chỉ tạm trú</label>
+                                    <div id='address' class="info">${personal_all_infoConfirm.temporaryStreet}, ${personal_all_infoConfirm.temporaryWard.ward_permanentText}, ${personal_all_infoConfirm.temporaryDistrict.district_permanentText}, ${personal_all_infoConfirm.temporaryCity.city_permanentText}</div>
+                                </div>
                             </div >
                             <div class="card-footer"></div>
                         </div >
-                        <div class="card">
+                        <div class="card" style="display:none">
                             <div class="card-head">
                                 <div class="form-showdata-info sub4">Địa chỉ tạm trú</div>
                             </div>
