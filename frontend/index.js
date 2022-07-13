@@ -1883,7 +1883,9 @@ function showFormSetupPin(element, screen, token) {
             $("body").removeClass("loading");
         }
         else {
-            alert('Mã pin không trùng khớp vui lòng thử lại !');
+            // alert('Mã pin không trùng khớp vui lòng thử lại !');
+            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+            addBorderStyle('pin',"RED");
             $("body").removeClass("loading");
             return;
         }
