@@ -2,7 +2,7 @@ const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
 let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
-let btnSelActive, btnFrontActive, btnBackActive = false;
+let btnSelActive, fillInd, btnFrontActive, btnBackActive = false;
 
 // Chỉ cho nhập số
 // document.querySelector(".only-number").addEventListener("keypress", function (e) {
@@ -192,7 +192,8 @@ function showUICheckNid(element) {
             isActive = false;
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
-
+        fillInd = isActive;
+        console.log(fillInd + " " + btnSelActive);
         if (isActive === true && btnSelActive === true) {
             btnSubmitNid.disabled = false;
         }
@@ -1445,6 +1446,12 @@ function showCapture(base64, eId) {
 
             if (eId === 'callHP') {
                 btnSelActive = true;
+                if (fillInd === true && btnSelActive === true) {
+                    $("#btnSubmitNid").attr("disabled", false);
+                }
+                else {
+                    $("#btnSubmitNid").attr("disabled", true);
+                }
             }
         }
         else {
