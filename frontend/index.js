@@ -1489,24 +1489,27 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
-    $("#phone_reset").on('input', function () {
-        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-        let isPhoneErr = !regexPhone.test(dataPhone.value);
-        if (dataPhone.value !== null && dataPhone.value !== '') {
-            if (!isPhoneErr) {
-                formatStyleCorrectInput(dataPhone, errorMessage);
-                btnContinue.disabled = false;
-            }
-            else {
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-                btnContinue.disabled = true;
-            }
-        }
-        else {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-            btnContinue.disabled = true;
-        }
-    });
+    $("#phone_reset").disabled();
+
+    // $("#phone_reset").on('input', function () {
+    //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+    //     dataPhone.value = dataPhone.value.slice(0, 10);
+    //     let isPhoneErr = !regexPhone.test(dataPhone.value);
+    //     if (dataPhone.value !== null && dataPhone.value !== '') {
+    //         if (!isPhoneErr) {
+    //             formatStyleCorrectInput(dataPhone, errorMessage);
+    //             btnContinue.disabled = false;
+    //         }
+    //         else {
+    //             formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+    //             btnContinue.disabled = true;
+    //         }
+    //     }
+    //     else {
+    //         formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+    //         btnContinue.disabled = true;
+    //     }
+    // });
 
     $('#btnContinue').click(function () {
         let phone_reset = $('#phone_reset').val().trim();
@@ -1541,6 +1544,10 @@ function forgotPinNid(element) {
     var errorMessage = document.querySelector('.error_message');
     var btnSendOtp = document.querySelector('#btnSendOtp');
     btnSendOtp.disabled = true;
+
+    $("#nid_reset").on('focus', function () {
+        formatStyleFocus(dataNid);
+    })
 
     $("#nid_reset").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
@@ -1594,23 +1601,22 @@ function forgotPinNid(element) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
-    var html = `
-        <div class='box form-card-pincode'>
-            <div class='voolo-logo'></div>
-            <form id='formSetupPinCode' class="box-mobile m-top-16">
-                    <div class='${screen}'>
-                        <div class='text-center form-pincode'>
-                            <h4>Nhập mã PIN</h4>
-                            <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                            <div class='sub4'>Mã PIN</div>
-                            <div id='pincode'></div>
-                            <span class='error_message error_message_pin'></span>
-                        </div>
-                    </div>
-                    <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                    <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
-            </form>
-        </div>`;
+    var html = `<div class='box form-card-pincode'>
+                    <div class='voolo-logo'></div>
+                    <form id='formSetupPinCode' class="box-mobile m-top-16">
+                            <div class='${screen}'>
+                                <div class='text-center form-pincode'>
+                                    <h4>Nhập mã PIN</h4>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
+                                    <div class='sub4'>Mã PIN</div>
+                                    <div id='pincode'></div>
+                                    <span class='error_message error_message_pin'></span>
+                                </div>
+                            </div>
+                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                    </form>
+                </div>`;
 
     $(element).html(html);
 
@@ -1666,7 +1672,6 @@ function showFormPincode(element, phone, screen) {
         // }
         else if (result.status === false && result.statusCode === 1002) {
             formatStyleWrongPincode(pincode, errorMessage, 'Số điện thoại không hợp lệ');
-            return;
         }
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
@@ -1676,7 +1681,7 @@ function showFormPincode(element, phone, screen) {
             }
             else {
                 formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-                addBorderRed('pin');
+                addBorderStyle('pin', "RED");
                 for (i = 1; i <= 4; i++) {
                     $("#pin" + i).attr('disabled', true);
                 }
@@ -1685,7 +1690,7 @@ function showFormPincode(element, phone, screen) {
         }
         else if (result.status === false && result.statusCode === 1004) {
             formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-            addBorderRed('pin');
+            addBorderStyle('pin', "RED");
             for (i = 1; i <= 4; i++) {
                 $("#pin" + i).attr('disabled', true);
             }
@@ -1697,27 +1702,25 @@ function showFormPincode(element, phone, screen) {
 // Done +++
 function showFormSetupPin(element, screen, token) {
     // showHeader();
-    var html = `
-    <div class='form-card showFormSetupPin ${screen}' >
-        <form id='formSetupPinCode'>
-            ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
-            <div class=''>
-                <div class=' no-line'></div>
-                <div class='text-center form-pincode m-top-16'>
-                    <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
-                    <p class='sub4'>Mã PIN</p>
-                    <div id='pincode'></div>
-                    <p class='sub4'>Nhập lại mã PIN</p>
-                    <div id='repincode'></div>
-                </div>
-            </div>
-            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-        </form>
-    </div>`;
+    var html = `<div class='form-card showFormSetupPin ${screen}' >
+                    <form id='formSetupPinCode'>
+                        ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
+                        <div class=''>
+                            <div class=' no-line'></div>
+                            <div class='text-center form-pincode m-top-16'>
+                                <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
+                                <p class='sub4'>Mã PIN</p>
+                                <div id='pincode'></div>
+                                <p class='sub4'>Nhập lại mã PIN</p>
+                                <div id='repincode'></div>
+                            </div>
+                        </div>
+                        <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+                    </form>
+                </div>`;
     $(element).css("display", "grid");
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
-        //show progress bar
         showProcessPipeline(2, true);
     }
     pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
@@ -1732,11 +1735,14 @@ function showFormSetupPin(element, screen, token) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
-            console.log(value);
             if (value.length == 4) {
                 iPut1 = true;
                 if (iPut1 && iPut2) {
                     $('#btnSubmitPin').attr("disabled", false);
+                }
+                else {
+                    $('.pincode-input').removeClass('error_pincode_gray');
+                    $('#btnSubmitPin').attr("disabled", true);
                 }
             }
         }
@@ -1745,14 +1751,18 @@ function showFormSetupPin(element, screen, token) {
     new PincodeInput("#repincode", {
         count: 4,
         secure: true,
+        pattern: '[0-9]*',
         previewDuration: -1,
         inputId: 'pincf',
         onInput: (value) => {
-            console.log(value);
             if (value.length == 4) {
                 iPut2 = true;
                 if (iPut1 && iPut2) {
                     $('#btnSubmitPin').attr("disabled", false);
+                }
+                else {
+                    $('.pincode-input').removeClass('error_pincode_gray');
+                    $('#btnSubmitPin').attr("disabled", true);
                 }
             }
         }
@@ -1773,7 +1783,7 @@ function showFormSetupPin(element, screen, token) {
         let pin = pin1 + pin2 + pin3 + pin4;
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
-        if (pin === pincf) {
+        if (pin === pincf && pin !== null && pincf !== null) {
             if (screen === 'SHOW_LOGIN') {
                 const data = JSON.parse(sessionStorage.getItem('personal_all_info'));
                 const front_nid_image = sessionStorage.getItem('front-image');
@@ -1793,7 +1803,6 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-                console.log('Result Set Up Pin: ', result);
                 if (result.status === true) {
                     alert('Add Infomation Personal Success');
                     $("body").removeClass("loading");
@@ -1802,7 +1811,6 @@ function showFormSetupPin(element, screen, token) {
                 else {
                     alert('Add Infomation Personal Failure');
                     $("body").removeClass("loading");
-                    return;
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {
@@ -1818,13 +1826,11 @@ function showFormSetupPin(element, screen, token) {
             $("body").removeClass("loading");
         }
         else {
-            // alert('Mã pin không trùng khớp vui lòng thử lại !');
             var pincode = document.querySelector('#pincode');
             var errorMessage = document.querySelector('.error_message');
             formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không trùng khớp vui lòng thử lại !');
             addBorderStyle('pin', "RED");
             $("body").removeClass("loading");
-            return;
         }
     })
 }
@@ -1919,32 +1925,28 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                         formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
                         addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
-                        return;
                     }
                     else {
-                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
                         addBorderStyle('otp', 'RED');
                         for (i = 1; i <= 6; i++) {
                             $("#otp" + i).attr('disabled', true);
                         }
                         btnSubmitVerifyOTP.disabled = true;
-                        return;
                     }
                 }
                 else if (data.status === false && data.statusCode === 3000) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderStyle('otp');
+                    formatWrongOTP(errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
-                    return;
                 }
                 else if (data.status === false && data.errorCode === 1004) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                    addBorderRed('otp');
+                    formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                    addBorderStyle('otp', 'RED');
                     for (i = 1; i <= 6; i++) {
                         $("#otp" + i).attr('disabled', true);
                     }
                     btnSubmitVerifyOTP.disabled = true;
-                    return;
                 }
             }
             else if (screen === 'VERIFY_PHONE' && screen !== '') {
@@ -1953,38 +1955,31 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 if (data.status === true) {
                     close_popup();
                     showCircularProgressbar('#voolo');
-                    // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     if (data?.countFail) {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderStyle('otp');
+                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
                     }
                     else {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                        addBorderRed('otp');
-                        for (i = 1; i <= 6; i++) {
-                            $("#otp" + i).attr('disabled', true);
-                        }
+                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                        addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
                     }
-                    return;
                 }
                 else if (data.statusCode === 3000 && data.status === false) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderStyle('otp');
+                    formatWrongOTP(errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
-                    return;
                 }
                 else if (data.errorCode === 1004 && data.status === false) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                    addBorderRed('otp');
+                    formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                    addBorderStyle('otp', 'RED');
                     for (i = 1; i <= 6; i++) {
                         $("#otp" + i).attr('disabled', true);
                     }
                     btnSubmitVerifyOTP.disabled = true;
-                    return;
                 }
             }
         }
@@ -2019,7 +2014,7 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-    var html = `<div class='contractForm' >
+    var html = `<div class='contractForm'>
                     <div class='box form-card-2'>
                         <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
                         <div style='display: block'  class='contract-detail'>
@@ -2027,13 +2022,13 @@ function showContract(element) {
                             <h3>${data.title2}</h3>
                             <p>${data.content}</p>
                         </div>
-                        <div  class='contract-term'>
+                        <div class='contract-term'>
                             <label for='confirm_contract' class='compact-12'>
                                 <input type='checkbox' name='confirm_contract' id='confirm_contract' />
                                 Tôi đồng ý với Điều kiện và Điều khoản hợp đồng
                             </label>
                         </div>
-                        <div  class='contract-term'>
+                        <div class='contract-term'>
                             <label for='confirm_otp' class='compact-12'>
                                 <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
                                 Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi
@@ -2076,18 +2071,6 @@ function showContract(element) {
                 showFormVerifyOTP(element, phone, otp.otp, 'VERIFY_PHONE');
                 $('body').addClass('popup');
             }
-        }
-        else if (!confirm_contract && !confirm_otp) {
-            alert('Vui lòng check 2 ô check box');
-            return;
-        }
-        else if (!confirm_contract) {
-            alert('Vui lòng check ô check box thứ 1');
-            return;
-        }
-        else if (!confirm_otp) {
-            alert('Vui lòng check ô check box thứ 2');
-            return;
         }
     })
 }
@@ -2181,10 +2164,12 @@ function showProcessPipeline(step, logo = false, formName = '') {
     $('.box').addClass("formValue-mt");
 }
 
+// Done +++
 function setRoute(func) {
     history.pushState({}, "Voolo Set Url", "#" + func);
 }
 
+// Done +++
 function router(element) {
     var url = window.location.href;
     route = url.split('#')[1];
@@ -2212,14 +2197,13 @@ function router(element) {
         case "showAllTenor":
             showAllTenor(element, 3);
             break;
-
     }
-
 }
 
+// Done +++
 function messageScreen(element, config) {
     if (config.screen == 'successScreen') {
-        html = `<div class='box showMessage formValue-mt-315 ' >
+        html = `<div class='box showMessage formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
@@ -2227,11 +2211,11 @@ function messageScreen(element, config) {
                             Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
-                </div> `;
+                </div>`;
     }
 
     if (config.screen == 'unsuccessScreen') {
-        html = `<div class='box showMessage formValue-mt-315' >
+        html = `<div class='box showMessage formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Đăng ký không thành công</h3>
@@ -2243,18 +2227,18 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage' >
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div> 
-                </div> `;
+                </div>`;
     }
 
     if (config.screen == 'pincode_success') {
-        html = `<div class='box showMessage' >
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
@@ -2262,11 +2246,11 @@ function messageScreen(element, config) {
                             Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div> 
-                </div> `;
+                </div>`;
     }
 
     if (config.screen == 'buy_success') {
-        html = `<div class='box showMessage' >
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Chúc mừng bạn đã mua hàng thành công</h3>
@@ -2275,18 +2259,18 @@ function messageScreen(element, config) {
                             Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
                         </p>
                     </div>
-                </div> `;
+                </div>`;
     }
 
     if (config.screen == 'buy_unsuccess') {
-        html = `<div class='box showMessage' >
+        html = `<div class='box showMessage'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Mua hàng không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div>
-                </div> `;
+                </div>`;
     }
 
     $(element).removeClass("non-flex");
@@ -2295,7 +2279,6 @@ function messageScreen(element, config) {
     var n = 5;
     var cInterval = setInterval(function () {
         $(".coutdown").html(n);
-        console.log("time: ", n);
         if (n === 0) {
             if (config.screen == 'successScreen') {
                 showAllTenor(element, 3);
@@ -2309,15 +2292,17 @@ function messageScreen(element, config) {
     }, 1000);
 };
 
-
+// Done +++
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
+// Done +++
 $("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
 });
 
+// Done +++
 function close_popup() {
     $('body').removeClass('popup');
     $('body .overlay-popup').remove();
