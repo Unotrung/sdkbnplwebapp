@@ -244,7 +244,7 @@ input[type=checkbox]:checked{
     margin-top: 32px;
 }
 #voolo form.formValue.box-tenor{
-    padding: 0px 22px!important;
+    padding: 0px 9px 0 34px!important;
 }
 #voolo form.formValue.captureNidFrontAndBack{
     margin: 39px auto;
@@ -372,14 +372,15 @@ a.ahref{
 }
 
 .main-page .list-items{
-    width: 50%;
-    padding-left: 125px;
+    width: 49.5%;
+    padding-right: 93px;
     margin-top: 56px;
     margin-bottom: 20px;
 }
 .main-page .list-items .card {
     max-width: 461px;
     font-size: 16px;
+    float: right;
 }
 
 .main-page .list-items .card .card-body{

@@ -924,7 +924,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px; text-align:center'>
+                                    <select id='gender' name='gender' class='input-global' oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
                                     <option value="" >Chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
