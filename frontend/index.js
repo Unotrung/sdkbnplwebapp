@@ -48,12 +48,10 @@ function showUICheckPhone(element) {
                         <div class='form__row'>
                             <h5>Số điện thoại</h5>
                             <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                            <input type='phone' id='phone' class='form__input input-global' />
+                            <input type='number' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
-
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
-
                     </div>
                 </form>`;
     $(element).html(html);
@@ -83,6 +81,7 @@ function showUICheckPhone(element) {
 
     $("#phone").on('input', function () {
         const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+        dataPhone.value = dataPhone.value.slice(0, 10);
         let isPhoneErr = !regexPhone.test(dataPhone.value);
 
         if (dataPhone.value !== null && dataPhone.value !== '') {
@@ -141,17 +140,14 @@ function showUICheckNid(element) {
     setRoute("showUICheckNid");
     var html = `<form id='formValueNid' class='formValue showUICheckNid'>
                     <div class='mobile'>
-
                         <div class='form__row'>
                             <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
                             <input type='number' id='nid' class='input-global' />
                             <span class='error_message'></span>
                         </div>
-
                         <label>Chụp ảnh chân dung</label>
                         <button type='button' id='callHP' class='btnCapture'></button>
                         <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
-
                     </div>
                 </form>`;
     $(element).html(html);
@@ -181,6 +177,7 @@ function showUICheckNid(element) {
     $("#nid").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
             const regexNid = /^\d{12}$|^\d{9}$/;
+            dataNid.value = dataNid.value.slice(0, 12);
             isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
                 isActive = true;
@@ -196,7 +193,7 @@ function showUICheckNid(element) {
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
 
-        if (isActive && btnSelActive) {
+        if (isActive === true && btnSelActive === true) {
             btnSubmitNid.disabled = false;
         }
         else {
@@ -264,13 +261,8 @@ function captureNidFrontAndBack(element) {
         }
     })
 
-    let btnCaptureFront = document.querySelector('#btnCaptureFront');
-    let btnCaptureBack = document.querySelector('#btnCaptureBack');
     let btnSubmit = document.querySelector('#btnSubmit');
     btnSubmit.disabled = true;
-
-    let frontImage = sessionStorage.getItem('front-image');
-    let backImage = sessionStorage.getItem('back-image');
 
     if (btnFrontActive && btnBackActive) {
         btnSubmit.disabled = false;
@@ -375,8 +367,12 @@ function cutStringData(infomation) {
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
                 let nid = sessionStorage.getItem('nid');
+                console.log('City: ', city);
+                console.log('District: ', district);
+                console.log('Ward: ', ward);
+                console.log('Street: ', street);
+                console.log('Permanent Address: ', permanentAddress);
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
-                    console.log("verifyMatchImage : ", data);
                     if (data) {
                         front_nid_customer = {
                             province: province,
@@ -394,18 +390,25 @@ function cutStringData(infomation) {
                         }
                         sessionStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
                         showUseGuideBackNid();
-                    } else {
+                    }
+                    else {
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
                         runDocumentCaptureScreen('FRONT');
                     }
+                    if (nid !== idNumber) {
+                        alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
+                        return;
+                    }
                 });
             }
             // BACK NID IMAGE
             if (arrType_back.includes(nidType) && nidType !== null) {
+                sessionStorage.setItem('typeBackNid', nidType);
+                let typeBackNid = sessionStorage.getItem('typeBackNid');
                 let typeFrontNid = sessionStorage.getItem('typeFrontNid');
-                if ((typeFrontNid === 'cccd_chip_front' && nidType === 'cccd_chip_back') || (typeFrontNid === 'cccd_front' && nidType === 'cmnd_new_cccd_back') || (typeFrontNid === 'cmnd_old_front' && nidType === 'cmnd_back_front')) {
+                if ((typeFrontNid === 'cccd_chip_front' && typeBackNid === 'cccd_chip_back') || (typeFrontNid === 'cccd_front' && typeBackNid === 'cmnd_new_cccd_back') || (typeFrontNid === 'cmnd_old_front' && typeBackNid === 'cmnd_back_front')) {
                     let doi = details?.doi?.value || '';
                     let placeOfIssue = details?.placeOfIssue?.value || '';
                     back_nid_customer = {
@@ -481,12 +484,6 @@ async function LaunchFaceCaptureScreen() {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
                 var errorMessage = HVError.getErrorMessage();
-                if (errorCode === '013') {
-                    return;
-                }
-                if (errorCode === 401) {
-                    return;
-                }
             }
             if (HVResponse) {
                 var apiResults = HVResponse.getApiResult();
@@ -542,7 +539,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    return
+                    return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
@@ -550,14 +547,14 @@ async function LaunchDocumentCaptureScreen(side) {
                     $("#formValueNid").show();
                     $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
-                        console.log("apiResults : ", apiResults['result']['details'][0]['fieldsExtracted']);
+                        console.log("apiResults front: ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('front-image', imageBase64);
                         cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureFront")
                     }
                     else if (applyBackNid) {
+                        console.log("apiResults back: ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('back-image', imageBase64);
-                        // postNationalID(imageBase64);
                         cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureBack");
                     }
@@ -614,7 +611,7 @@ function showAllTenor(element, nCount = 0) {
     //calculator bill
     let sumBill = 0;
     pData.forEach(e => { sumBill = sumBill + parseInt(e.price) })
-    
+
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
@@ -627,11 +624,11 @@ function showAllTenor(element, nCount = 0) {
                     <div class='sub4'>KÌ HẠN 1</div class='sub4'>
                     <h5 class='totalprice'>${formatCurrency(parseInt(sumBill) + parseInt(tenors[i].convertFee))}</h5>
                 </div>
-                    <ul>
-                        <li>Giá sản phẩm: ${formatCurrency(sumBill)}</li>
-                        <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
-                        <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
-                    </ul>
+                <ul>
+                    <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
+                    <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
+                    <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
+                </ul>
                 <p></p>
             </div>
         </div>`
@@ -739,81 +736,42 @@ function deleteImage(side) {
 }
 
 // Done +++
-function postNationalID(ImageURL) {
-    try {
-        var block = ImageURL.split(";");
-        var contentType = block[0].split(":")[1];
-        var realData = block[1].split(",")[1];
-        var blob = b64toBlob(realData, contentType);
-
-        var formDataToUpload = new FormData();
-        formDataToUpload.append("image", blob);
-
-        var settings = {
-            "url": "https://vnm-docs.hyperverge.co/v2/nationalID",
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-                "appId": "abe84d",
-                "appKey": "7d2c0d7e1690c216458c",
-                "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
-            },
-            "async": false,
-            "processData": false,
-            "contentType": false,
-            "mimeType": "multipart/form-data",
-            "data": formDataToUpload
-        };
-
-        $.ajax(settings).done(function (response) {
-            const data = JSON.parse(response);
-            cutStringData(data);
-        });
-    }
-    catch (error) {
-        console.log(error);
-        return {
-            errorCode: error.status || 500,
-            errorMessage: error.message
-        }
-    }
-}
-
-// Done +++
-function showErrorMessage(input, message) {
-    let parent = input.parentElement;
-    let inputEle = parent.querySelector('input');
-    let selectEle = parent.querySelector('select');
-    if (inputEle) {
-        inputEle.style.border = '1px solid #EE4D2D';
-    }
-    if (selectEle) {
-        selectEle.style.border = '1px solid #EE4D2D';
-    }
-    let spanError = parent.querySelector('span');
-    spanError.innerText = message;
-    spanError.style.visibility = 'visible';
-    spanError.style.opacity = '1';
-}
-
-// Done +++
-function showSuccessMessage(input) {
-    let parent = input.parentElement;
-    let inputEle = parent.querySelector('input');
-    let selectEle = parent.querySelector('select');
-    if (inputEle) {
-        inputEle.style.border = '1px solid #e4e2e2';
-    }
-    if (selectEle) {
-        selectEle.style.border = '1px solid #e4e2e2';
-    }
-    let spanError = parent.querySelector('span');
-    spanError.innerText = '';
-    spanError.style.visibility = 'hidden';
-    spanError.style.opacity = '0';
-    spanError.style.marginTop = '0px';
-    spanError.style.marginLeft = '0px';
-}
+// function postNationalID(ImageURL) {
+//     try {
+//         var block = ImageURL.split(";");
+//         var contentType = block[0].split(":")[1];
+//         var realData = block[1].split(",")[1];
+//         var blob = b64toBlob(realData, contentType);
+//         var formDataToUpload = new FormData();
+//         formDataToUpload.append("image", blob);
+//         var settings = {
+//             "url": "https://vnm-docs.hyperverge.co/v2/nationalID",
+//             "method": "POST",
+//             "timeout": 0,
+//             "headers": {
+//                 "appId": "abe84d",
+//                 "appKey": "7d2c0d7e1690c216458c",
+//                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
+//             },
+//             "async": false,
+//             "processData": false,
+//             "contentType": false,
+//             "mimeType": "multipart/form-data",
+//             "data": formDataToUpload
+//         };
+//         $.ajax(settings).done(function (response) {
+//             const data = JSON.parse(response);
+//             cutStringData(data);
+//         });
+//     }
+//     catch (error) {
+//         console.log(error);
+//         return {
+//             errorCode: error.status || 500,
+//             errorMessage: error.message
+//         }
+//     }
+// }
 
 // Done +++
 function showDataInform(element, personal) {
@@ -827,11 +785,8 @@ function showDataInform(element, personal) {
         }
     }
     let cities = getAllCity();
-    console.log('cities: ', cities);
     let districts = getAllDistrict();
-    console.log('districts: ', districts);
     let wards = getAllWard();
-    console.log('wards: ', wards);
     let referencesRelation = getAllReferenceRelation();
     showHeader();
     let fullname = personal.fullname || '';
@@ -877,7 +832,6 @@ function showDataInform(element, personal) {
     console.log('ward: ', ward);
     if (conditionCity && conditionDistrict && conditionWard) {
         let dataAddress = handleGetDataAddress(city, district, ward);
-        console.log('dataAddress: ', dataAddress);
         cityName = dataAddress.city.name;
         cityValue = dataAddress.city.value;
         districtName = dataAddress.district.name;
@@ -1042,7 +996,7 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global ' type='phone' id='phone_ref' name='phone_ref' oninput='onChangeValidation("#phone_ref")'/>
+                                    <input class='input-global' type='number' id='phone_ref' name='phone_ref' oninput='onChangeValidation("#phone_ref")'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1050,7 +1004,7 @@ function showDataInform(element, personal) {
                         </div>
                         <button type='submit' class='payment-button medium' id='btnContinue'>Tiếp tục</button>
                     </form >
-                </div > `;
+                </div> `;
     $(element).html(html).removeClass('captureNid');
 
     //show progress bar
@@ -1087,11 +1041,11 @@ function showDataInform(element, personal) {
         let phone = '';
         let phone_ref = '';
         if ($(this).attr("id") === 'phone') {
-            phone = $(this).val();
+            phone = $(this).val().slice(0, 10);
         }
         if ($(this).attr("id") === 'phone_ref') {
-            phone_ref = $(this).val();
-            if (phone_ref.length < 10 && phone_ref > 10) {
+            phone_ref = $(this).val().slice(0, 10);
+            if (phone_ref.length < 10) {
                 isActivePhone = false;
                 showMessageStatus(phone_refEle, 'Số điện thoại không hợp lệ', 'ERROR');
             }
@@ -1255,6 +1209,7 @@ function showDataInform(element, personal) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_infoConfirm) {
+    setRoute("showConfirmDataInform");
     showHeader();
     var html = `<div class='form-card form-confirmdata'>
                     <h4 class='form-confirmdata-title'>Đối soát thông tin</h4>
@@ -1353,7 +1308,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 <div class="form-row" style="width: 100%;padding: 32px 40px;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
-                </div>`;
+                </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
@@ -1416,14 +1371,14 @@ function listProductions(config) {
         var total = 0;
         config.dataItems.forEach(e => {
             list += `<div class='list'>
-            <div class='image'><img src='`+ e.imgUrl + `'/></div>
-            <div class='info'>
-                <p class='compact ellipsis'>`+ e.product + `</p>
-                <p class='text-space-gray'>`+ e.descript + `</p>
-                <p class='text-space-black'>`+ e.quantity + `</p>
-            </div>
-            <div class='price compact'>`+ e.priceShow + `</div>
-        </div>`;
+                        <div class='image'><img src='`+ e.imgUrl + `'/></div>
+                        <div class='info'>
+                            <p class='compact ellipsis'>`+ e.product + `</p>
+                            <p class='text-space-gray'>`+ e.descript + `</p>
+                            <p class='text-space-black'>`+ e.quantity + `</p>
+                        </div>
+                        <div class='price compact'>`+ e.priceShow + `</div>
+                    </div>`;
             total += parseInt(e.price);
         });
         var sTotal = total.toLocaleString('vi-VN', {
@@ -1489,12 +1444,6 @@ function showCapture(base64, eId) {
 
             if (eId === 'callHP') {
                 btnSelActive = true;
-                if (btnSelActive) {
-                    $("#btnSubmitNid").attr("disabled", false);
-                }
-                else {
-                    $("#btnSubmitNid").attr("disabled", true);
-                }
             }
         }
         else {
@@ -1874,8 +1823,9 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
+    var otp = sendOtp(phone);
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `<div class="overlay-popup card-otpcode" >
+    var html = `<div class="overlay-popup card-otpcode">
                     <div class="alert-box">
                     <span class='close'></span>
                         <form id='formSetupPinCode'>
@@ -1890,9 +1840,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
-                        </form>
-                    <div class='card-footer' style="height:4px"></div>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='showFormVerifyOTP(${element},${phone},${otp},${screen === 'RESET_PIN' ? 'RESET_PIN' : 'VERIFY_PHONE'})' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
@@ -1929,9 +1877,11 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     //     logo: true,
     //     intro: false
     // });
+
     $('span.close').click(function () {
         close_popup();
     });
+
     $('#btnSubmitVerifyOTP').click(function () {
         let otp1 = $('#otp1').val().trim();
         let otp2 = $('#otp2').val().trim();
@@ -1952,14 +1902,14 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
                 else if (data.status === false && data.statusCode === 4000) {
                     if (data?.countFail !== 5) {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderStyle('otp');
+                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
                         return;
                     }
                     else {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                        addBorderRed('otp');
+                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
+                        addBorderStyle('otp', 'RED');
                         for (i = 1; i <= 6; i++) {
                             $("#otp" + i).attr('disabled', true);
                         }
@@ -2343,59 +2293,6 @@ function messageScreen(element, config) {
         }
         n = n - 1;
     }, 1000);
-}
-
-function showUseGuideSelfy() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('#voolo').append("<div class='guideslide'></div>");
-    $('.guideslide').load('useguide.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh chân dung");
-}
-
-function showUseGuideNid() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('#voolo').append("<div class='guideslide nid-front' style=''></div>");
-    $('.guideslide').load('useguidenid.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
-}
-
-function showUseGuideBackNid() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('#voolo').append("<div class='guideslideback' style=''></div>");
-    var html = `< div class='box2 showMessage' >
-        <div class=''>
-            <div class='ico-success ico-120'></div>
-            <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
-            <div class='line'>
-                <span class='font-m'>Now</span>
-            </div>
-            <div class='refresh-ico'>
-                <img src='./assets/img/refresh-ico.png' width="20" height="20" />
-            </div>
-            <p style='text-align: center;'>
-                Lật mặt sau của card để tiếp tục chụp ảnh
-            </p>
-            <div class="angled-borders">
-                <div id="f1_container">
-                    <div id="f1_card" class="shadow">
-                        <div class="front face">
-                            <img src='./assets/img/cccd.png' width="115" />
-                        </div>
-                        <div class="back face center">
-                            <img src='./assets/img/cccd-2.png' width="115" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="width:100%">
-                <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
-            </div>
-        </div>
-                </div> `;
-    $('.guideslideback').html(html);
 }
 
 String.prototype.replaceAt = function (index, replacement) {

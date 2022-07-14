@@ -113,3 +113,10 @@ function addBorderStyle(data, color) {
 function formatStyleFocus(data) {
     data.style.border = '1px solid #197DDE';
 }
+
+// Done +++
+function formatWrongOTP(errorMessage, message) {
+    errorMessage.innerHTML = message;
+    errorMessage.style.visibility = 'visible';
+    errorMessage.style.opacity = '1';
+}
