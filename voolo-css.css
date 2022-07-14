@@ -1488,6 +1488,7 @@ input{
 }
 .tenor-list .tenor-item li{
     list-style: disc;
+    font-size: 14px;
 }
 .captureNid .headrow .voolo-logo{
     display: none;
@@ -2282,6 +2283,9 @@ input{
     }
     .text-message span{
         display: inline-block;
+    }
+    .main-page .list-items .card .card-footer .total-price{
+        font-size: 20px;
     }
 }   
 .hv-modal-footer{

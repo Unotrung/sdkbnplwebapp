@@ -1857,15 +1857,10 @@ function showFormSetupPin(element, screen, token) {
         }
         else {
             // alert('Mã pin không trùng khớp vui lòng thử lại !');
-<<<<<<< HEAD
             var pincode = document.querySelector('#pincode');
             var errorMessage = document.querySelector('.error_message');
             formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không trùng khớp vui lòng thử lại !');
             addBorderStyle('pin', "RED");
-=======
-            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
-            addBorderStyle('pin', "RED");
->>>>>>> e6b6b8b (Update)
             $("body").removeClass("loading");
             return;
         }
