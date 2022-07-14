@@ -1307,7 +1307,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 </div> 
                 <div class="form-row" style="width: 100%;padding: 32px 40px;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px;float:right">Xác nhận</button>
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
