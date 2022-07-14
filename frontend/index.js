@@ -602,6 +602,7 @@ function runDocumentCaptureScreen(side) {
 // Done +++
 function showAllTenor(element, nCount = 0) {
     setRoute("showAllTenor");
+    $(element).removeClass().removeAttr('style');
     let html = '';
     if (customer.limit < totalBillNumber) {
         customerInfo(element, false);
