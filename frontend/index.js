@@ -375,9 +375,9 @@ function cutStringData(infomation) {
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
                 let nid = sessionStorage.getItem('nid');
-                makeFaceMatchCall(sessionStorage.getItem('selfie-image'),sessionStorage.getItem('front-image')).then((data)=>{
-                    console.log("verifyMatchImage : ",data);
-                    if(data){
+                makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
+                    console.log("verifyMatchImage : ", data);
+                    if (data) {
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -394,7 +394,7 @@ function cutStringData(infomation) {
                         }
                         sessionStorage.setItem('front_nid_customer', JSON.stringify(front_nid_customer));
                         showUseGuideBackNid();
-                    }else{
+                    } else {
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
@@ -451,7 +451,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
                 if (matchFace === 'no') {
-                    alert('The face and the image of the identity card on the front side do not match');   
+                    alert('The face and the image of the identity card on the front side do not match');
                     return false;
                 }
                 else {
@@ -550,7 +550,7 @@ async function LaunchDocumentCaptureScreen(side) {
                     $("#formValueNid").show();
                     $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
                     if (applyFrontNid) {
-                        console.log("apiResults : ",apiResults['result']['details'][0]['fieldsExtracted']);
+                        console.log("apiResults : ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('front-image', imageBase64);
                         cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureFront")
@@ -860,8 +860,19 @@ function showDataInform(element, personal) {
     let districtValue = '';
     let wardName = '';
     let wardValue = '';
+    let dtCity = null;
+    let dtDistrict = null;
+    let dtWard = null;
+    console.log('conditionCity && conditionDistrict && conditionWard: ', conditionCity && conditionDistrict && conditionWard);
+    console.log('conditionCity: ', conditionCity);
+    console.log('conditionDistrict: ', conditionDistrict);
+    console.log('conditionWard: ', conditionWard);
+    console.log('city: ', city);
+    console.log('district: ', district);
+    console.log('ward: ', ward);
     if (conditionCity && conditionDistrict && conditionWard) {
         let dataAddress = handleGetDataAddress(city, district, ward);
+        console.log('dataAddress: ', dataAddress);
         cityName = dataAddress.city.name;
         cityValue = dataAddress.city.value;
         districtName = dataAddress.district.name;
@@ -869,13 +880,17 @@ function showDataInform(element, personal) {
         wardName = dataAddress.ward.name;
         wardValue = dataAddress.ward.value;
     }
-    else {
-        cityName = '';
-        cityValue = '';
-        districtName = '';
-        districtValue = '';
-        wardName = '';
-        wardValue = '';
+    if (city) {
+        dtCity = findCity(city);
+        console.log('dtCity: ', dtCity);
+    }
+    if (district) {
+        dtDistrict = findDistrict(district);
+        console.log('dtDistrict: ', dtDistrict);
+    }
+    if (ward) {
+        dtWard = findWard(ward);
+        console.log('dtWard: ', dtWard);
     }
 
     var html = `<div class='form-card form-showdata'>
@@ -932,7 +947,7 @@ function showDataInform(element, personal) {
                                         </div>
                                     </div>
                                 </div>
-                            </div >
+                            </div>
                             <div class="card-footer"></div>
                         </div >
                         <div class="card">
@@ -942,25 +957,25 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select id='city' name='city' class='input-global' oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && cityValue) ? cityValue : ''}">
-                                        ${!cityValue ? cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>')) : cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '" ' + cityValue === city.Value ? 'selected' : '' + '>' + city.UI_Show + '</option>'))}
+                                    <select id='city' name='city' class='input-global' oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}">
+                                        ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <select id='district' name='district' class='input-global' oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && districtValue) ? districtValue : ''}">
-                                        ${!districtValue ? districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>')) : districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '" ' + districtValue === district.Value ? 'selected' : '' + '>' + district.UI_Show + '</option>'))}
-                                    </select>
+                                    <select id='district' name='district' class='input-global' oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
+                                        ${districts.data.map((district, index) => (`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
+                                    </select >
                                     <span class='error_district error_message'></span>
-                                </div >
+                                </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường</label>
-                                    <select id='ward' name='ward' class='input-global' oninput='onChangeValidation("#ward")'  value="${(conditionWard && wardValue) ? wardValue : ''}">
-                                        ${!wardValue ? wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>')) : wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '" ' + wardValue === ward.Value ? 'selected' : '' + '>' + ward.UI_Show + '</option>'))}
-                                    </select>
+                                    <select id='ward' name='ward' class='input-global' oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
+                                        ${wards.data.map((ward, index) => (`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
+                                    </select >
                                     <span class='error_ward error_message'></span>
-                                </div>
+                                </div >
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
                                     <input class='input-global' type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
@@ -1103,6 +1118,7 @@ function showDataInform(element, personal) {
                 break;
             }
         }
+
         if (isActiveData === true && isActivePhone === true) {
             btnContinue.disabled = false;
         }
@@ -1331,8 +1347,8 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 </div> 
                 <div class="form-row" style="width: 100%;padding: 32px 40px;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px; float:right">Xác nhận</button>
-                        </div>`;
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
+                </div > `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
@@ -1371,9 +1387,9 @@ function configUi(config) {
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
-        <div div div _ngcontent - gse - c77="" class="paragraph-text text-center margin-bottom-default" > 
-        <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>
-    </div >
+        <div class="paragraph-text text-center margin-bottom-default" > 
+            <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>
+        </div>
         <div class='voolo-intro'>
             <div class='sub4 sub3-mobile'>VOOLO giúp bạn:</div>
             <ul>
@@ -1394,7 +1410,7 @@ function listProductions(config) {
         var lItems = "";
         var total = 0;
         config.dataItems.forEach(e => {
-            list += `<div div div class='list' >
+            list += `<div class='list'>
             <div class='image'><img src='`+ e.imgUrl + `'/></div>
             <div class='info'>
                 <p class='compact ellipsis'>`+ e.product + `</p>
@@ -1414,32 +1430,33 @@ function listProductions(config) {
         billTotal = sTotal;
         totalBillNumber = total;
     }
-    lItems += `<div div div class='list-items' >
-        <div class='card'>
-            <div class='card-head'><span class='sub4 sub4-mobile'>Thông tin đơn hàng</span></div>
-            <div class='card-body'>
-                ${list}
-                <div class='area-cost'>
-                    <div class='item tag' style=''>
-                        Thêm mã giảm giá hoặc thẻ quà tặng
+    lItems += `<div class='list-items'>
+                    <div class='card'>
+                        <div class='card-head'><span class='sub4 sub4-mobile'>Thông tin đơn hàng</span></div>
+                        <div class='card-body'>
+                            ${list}
+                            <div class='area-cost'>
+                                <div class='item tag' style=''>
+                                    Thêm mã giảm giá hoặc thẻ quà tặng
+                                </div>
+                            </div>
+                            <div class='area-cost quote'>
+                                <div class='item' style='margin-bottom: 14px;'>
+                                    <span class='pTitle'>Thành tiền</span>
+                                    <span class='pPrice compact-16'>${sTotal}</span>
+                                </div>
+                                <div class='item'>
+                                    <span class='pTitle'>Phí vận chuyển</span>
+                                    <span class='pPrice compact-16'>0 đ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='card-footer'>
+                            <span>Tổng cộng</span>
+                            <span class='total-price'>`+ sTotal + ` </span>
+                        </div>
                     </div>
-                </div>
-                <div class='area-cost quote'>
-                    <div class='item' style='margin-bottom: 14px;'>
-                        <span class='pTitle'>Thành tiền</span>
-                        <span class='pPrice compact-16'>${sTotal}</span>
-                    </div>
-                    <div class='item'>
-                        <span class='pTitle'>Phí vận chuyển</span>
-                        <span class='pPrice compact-16'>0 đ</span>
-                    </div>
-                </div>
-            </div>
-            <div class='card-footer'>
-                <span>Tổng cộng</span>
-                <span class='total-price'>`+ sTotal + ` </span></div>
-        </div>
-    </div > `;
+                </div> `;
     if (config.items) $(config.element).prepend(lItems);
 }
 
@@ -1486,18 +1503,16 @@ function showCapture(base64, eId) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `<form form form id = 'formValuePhone' class='formValue forgotPinPhone' >
-        <div class='mobile'>
-
-            <div class='form__row m-top-16'>
-                <h4 style="margin-bottom:40px">Số điện thoại</h4>
-                <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
-                <span class='error_message'></span>
-            </div>
-            <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
-
-        </div>
+    var html = `<form id = 'formValuePhone' class='formValue forgotPinPhone' >
+                    <div class='mobile'>
+                        <div class='form__row m-top-16'>
+                            <h4 style="margin-bottom:40px">Số điện thoại</h4>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
+                            <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+                    </div>
                 </form > `;
     $(element).html(html);
 
@@ -1540,18 +1555,16 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `<form form form class='formValue forgotPinPhone' >
-        <div class='mobile'>
-
-            <div class='form__row m-top-16'>
-                <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
-                <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                <input type='number' id='nid_reset' class='form__input input-global' />
-                <span class='error_message'></span>
-            </div>
-            <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
-
-        </div>
+    var html = `<form class='formValue forgotPinPhone' >
+                    <div class='mobile'>
+                        <div class='form__row m-top-16'>
+                            <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
+                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                            <input type='number' id='nid_reset' class='form__input input-global' />
+                            <span class='error_message'></span>
+                        </div>
+                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+                    </div>
                 </form > `;
     $(element).html(html);
 
@@ -1620,7 +1633,7 @@ function forgotPinNid(element) {
 // Done +++
 function showFormPincode(element, phone, screen) {
     var html = `
-        <div div div class='box form-card-pincode' >
+        <div class='box form-card-pincode' >
             <div class='voolo-logo'></div>
             <form id='formSetupPinCode' class="box-mobile m-top-16">
                     <div class='${screen}'>
@@ -1635,7 +1648,7 @@ function showFormPincode(element, phone, screen) {
                     <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
                     <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
-        </div > `;
+        </div> `;
 
     $(element).html(html);
 
@@ -1696,7 +1709,7 @@ function showFormPincode(element, phone, screen) {
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
                 formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
-                addBorderStyle('pin',"RED");
+                addBorderStyle('pin', "RED");
                 btnSubmitPin.disabled = true;
             }
             else {
@@ -1723,23 +1736,22 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     // showHeader();
     var html = `
-        <div div div class='form-card showFormSetupPin ${screen}' >
-            <form id='formSetupPinCode'>
-                ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
-                <div class=''>
-                    <div class=' no-line'></div>
-                    <div class='text-center form-pincode m-top-16'>
-                        <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
-                        <p class='sub4'>Mã PIN</p>
-                        <div id='pincode'></div>
-                        <p class='sub4'>Nhập lại mã PIN</p>
-                        <div id='repincode'></div>
-                        <span class='error_message error_message_pin'></span>
-                    </div>
+    <div class='form-card showFormSetupPin ${screen}' >
+        <form id='formSetupPinCode'>
+            ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
+            <div class=''>
+                <div class=' no-line'></div>
+                <div class='text-center form-pincode m-top-16'>
+                    <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
+                    <p class='sub4'>Mã PIN</p>
+                    <div id='pincode'></div>
+                    <p class='sub4'>Nhập lại mã PIN</p>
+                    <div id='repincode'></div>
                 </div>
-                <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-            </form>
-    </div > `;
+            </div>
+            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+        </form>
+    </div> `;
     $(element).css("display", "grid");
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
@@ -1845,10 +1857,15 @@ function showFormSetupPin(element, screen, token) {
         }
         else {
             // alert('Mã pin không trùng khớp vui lòng thử lại !');
+<<<<<<< HEAD
             var pincode = document.querySelector('#pincode');
             var errorMessage = document.querySelector('.error_message');
             formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không trùng khớp vui lòng thử lại !');
-            addBorderStyle('pin',"RED");
+            addBorderStyle('pin', "RED");
+=======
+            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+            addBorderStyle('pin', "RED");
+>>>>>>> e6b6b8b (Update)
             $("body").removeClass("loading");
             return;
         }
@@ -1858,7 +1875,7 @@ function showFormSetupPin(element, screen, token) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
-    var html = `<div class="overlay-popup card-otpcode">
+    var html = `<div class="overlay-popup card-otpcode" >
                     <div class="alert-box">
                     <span class='close'></span>
                         <form id='formSetupPinCode'>
@@ -1875,12 +1892,10 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
                             <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
-                    </div>
                     <div class='card-footer' style="height:4px"></div>
-                </div>
-            </form>
-        </div>
-            </div > `;
+                        </form>
+                    </div>
+                </div>`;
 
     $(element).append(html);
     timer(60);
@@ -2040,7 +2055,7 @@ function timer(remaining) {
 function showContract(element) {
     setRoute("showContract");
     let data = getContract();
-    var html = `<div class='contractForm'>
+    var html = `<div class='contractForm' >
                     <div class='box form-card-2'>
                         <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
                         <div style='display: block'  class='contract-detail'>
@@ -2062,7 +2077,7 @@ function showContract(element) {
                         </div>
                     </div>
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
-            </div>`;
+            </div > `;
     $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3, true);
 
@@ -2117,23 +2132,28 @@ function showContract(element) {
 function customerInfo(element, status = true) {
     var strStatus = ``;
     if (status) {
-        strStatus = `<div div div class='ico-success' ></div >
-        <b>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</b>`;
-    } else {
-        strStatus = `<div div div class='ico-unsuccess' ></div >
-        <b>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</b>`
+        strStatus = `
+        <div class='ico-success'></div >
+        <b>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</b>
+        `;
     }
-    var str = `<div div div class="customer" >
-                <div class='voolo-logo'></div>
-                <div id="customerInfo">
-                    <div class="avatar"><img src="${customer.avatar}" /></div>
-                    <div class='detail'>
-                        <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
-                        <p class='limit-text'>Hạn mức tín dụng của bạn là: <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
-                        ${strStatus}
+    else {
+        strStatus = `
+            <div class='ico-unsuccess'></div>
+            <b>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</b>
+        `;
+    }
+    var str = `<div class="customer" >
+                    <div class='voolo-logo'></div>
+                    <div id="customerInfo">
+                        <div class="avatar"><img src="${customer.avatar}" /></div>
+                        <div class='detail'>
+                            <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
+                            <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
+                            ${strStatus}
+                        </div>
                     </div>
-                </div>
-            </div > `;
+                </div> `;
     if ($(window).width() < 700) {
         $(element).prepend(str);
         $(element).find(".avatar").css("display", "none");
@@ -2171,7 +2191,7 @@ function showProcessPipeline(step, logo = false, formName = '') {
             break;
     }
     var pipeline = `
-        <div div div class='headrow' >
+        <div class='headrow' >
             ${(logo) ? '<div class="voolo-logo"></div>' : ''}
             <div class='sub2'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</div>
             <div class='line'>
@@ -2188,7 +2208,7 @@ function showProcessPipeline(step, logo = false, formName = '') {
                 <span class='pipe ${s4}'>Xác minh thông tin</span>
                 <span class='pipe ${s5}'>Hoàn thành</span>
             </div>
-        </div > `;
+        </div> `;
 
     $('#voolo').prepend(pipeline);
     if (formName !== '') $('#voolo').addClass(formName);
@@ -2235,74 +2255,74 @@ function router(element) {
 
 function messageScreen(element, config) {
     if (config.screen == 'successScreen') {
-        html = `<div class='box showMessage formValue-mt-315 '>
+        html = `<div class='box showMessage formValue-mt-315 ' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
                         <p style='text-align: center;' class='text-message'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
-                </div>`;
+                </div> `;
     }
 
     if (config.screen == 'unsuccessScreen') {
-        html = `<div class='box showMessage formValue-mt-315'>
+        html = `<div class='box showMessage formValue-mt-315' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Đăng ký không thành công</h3>
                         <p style='text-align: center;' class='text-message'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại.<span> Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại.<span> Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
                 </div>`;
     }
 
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage'>
+        html = `<div class='box showMessage' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
                         <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
                         <button class='payment-button' id="tryagain">Thử lại</button>
                     </div> 
-                </div>`;
+                </div> `;
     }
 
     if (config.screen == 'pincode_success') {
-        html = `<div div div class='box showMessage' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-success'></div>
-            <h3>Cập nhật mã PIN thành công</h3>
-            <p style='text-align: center;'>
-                Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-            </p>
-        </div> 
-                </div > `;
+        html = `<div class='box showMessage' >
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success'></div>
+                        <h3>Cập nhật mã PIN thành công</h3>
+                        <p style='text-align: center;'>
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                        </p>
+                    </div> 
+                </div> `;
     }
 
     if (config.screen == 'buy_success') {
-        html = `<div div div class='box showMessage' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-success ico-150'></div>
-            <h3>Chúc mừng bạn đã mua hàng thành công</h3>
-            <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
-            <p style='text-align: center;'>
-                Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-            </p>
-        </div>
-                </div > `;
+        html = `<div class='box showMessage' >
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-success ico-150'></div>
+                        <h3>Chúc mừng bạn đã mua hàng thành công</h3>
+                        <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
+                        <p style='text-align: center;'>
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                        </p>
+                    </div>
+                </div> `;
     }
 
     if (config.screen == 'buy_unsuccess') {
-        html = `<div div div class='box showMessage' >
-        <div class='paragraph-text text-center margin-bottom-default'>
-            <div class='ico-unsuccess ico-150'></div>
-            <h3>Mua hàng không thành công</h3>
-            <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-            <button class='payment-button' id="tryagain">Thử lại</button>
-        </div>
-                </div > `;
+        html = `<div class='box showMessage' >
+                    <div class='paragraph-text text-center margin-bottom-default'>
+                        <div class='ico-unsuccess ico-150'></div>
+                        <h3>Mua hàng không thành công</h3>
+                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
+                        <button class='payment-button' id="tryagain">Thử lại</button>
+                    </div>
+                </div> `;
     }
 
     $(element).removeClass("non-flex");
@@ -2345,7 +2365,7 @@ function showUseGuideBackNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
     $('#voolo').append("<div class='guideslideback' style=''></div>");
-    var html = `<div div div class='box2 showMessage' >
+    var html = `< div class='box2 showMessage' >
         <div class=''>
             <div class='ico-success ico-120'></div>
             <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
@@ -2374,7 +2394,7 @@ function showUseGuideBackNid() {
                 <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
             </div>
         </div>
-                </div > `;
+                </ > `;
     $('.guideslideback').html(html);
 }
 
