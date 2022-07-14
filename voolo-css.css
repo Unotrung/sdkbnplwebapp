@@ -2287,6 +2287,15 @@ input{
     .main-page .list-items .card .card-footer .total-price{
         font-size: 20px;
     }
+    .label-span{
+        width: 80%;
+        display: block;
+        margin: 0 auto;
+    }
+    .headrow .pipeline .pipe:first-child > .label-span{
+        width: 100%;
+        display: inline-block;
+    }
 }   
 .hv-modal-footer{
     display: none;

@@ -610,6 +610,11 @@ function showAllTenor(element, nCount = 0) {
         customerInfo(element, false);
         return;
     }
+
+    //calculator bill
+    let sumBill = 0;
+    pData.forEach(e => { sumBill = sumBill + parseInt(e.price) })
+    
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
@@ -620,10 +625,10 @@ function showAllTenor(element, nCount = 0) {
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>KÌ HẠN 1</div class='sub4'>
-                    <h5 class='totalprice'>${formatCurrency(parseInt(totalBillNumber) + parseInt(tenors[i].convertFee))}</h5>
+                    <h5 class='totalprice'>${formatCurrency(parseInt(sumBill) + parseInt(tenors[i].convertFee))}</h5>
                 </div>
                     <ul>
-                        <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
+                        <li>Giá sản phẩm: ${formatCurrency(sumBill)}</li>
                         <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
                         <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
                     </ul>
@@ -920,7 +925,7 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global' oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px; text-align:center'>
-                                    <option value="" >Vui lòng chọn</option>
+                                    <option value="" >Chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
                                     </select>
@@ -2197,11 +2202,11 @@ function showProcessPipeline(step, logo = false, formName = '') {
                 <span class='Tpipe last'></span>
             </div>
             <div class='pipeline'>
-                <span class='pipe ${s1}'>Thông tin khách hàng</span>
-                <span class='pipe ${s2}'>Cài đặt PIN</span>
-                <span class='pipe ${s3}'>Ký điện tử</span>
-                <span class='pipe ${s4}'>Xác minh thông tin</span>
-                <span class='pipe ${s5}'>Hoàn thành</span>
+                <span class='pipe ${s1}'><span class='label-span'>Thông tin khách hàng</span></span>
+                <span class='pipe ${s2}'><span class='label-span'>Cài đặt PIN</span></span>
+                <span class='pipe ${s3}'><span class='label-span'>Ký điện tử</span></span>
+                <span class='pipe ${s4}'><span class='label-span'>Xác minh thông tin</span></span>
+                <span class='pipe ${s5}'><span class='label-span'>Hoàn thành</span></span>
             </div>
         </div>`;
 
