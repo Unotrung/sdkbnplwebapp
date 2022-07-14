@@ -1348,7 +1348,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 <div class="form-row" style="width: 100%;padding: 32px 40px;">
                         <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px">Xác nhận</button>
-                </div > `;
+                </div>`;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
@@ -1418,7 +1418,7 @@ function listProductions(config) {
                 <p class='text-space-black'>`+ e.quantity + `</p>
             </div>
             <div class='price compact'>`+ e.priceShow + `</div>
-        </div > `;
+        </div>`;
             total += parseInt(e.price);
         });
         var sTotal = total.toLocaleString('vi-VN', {
@@ -1513,7 +1513,7 @@ function forgotPinPhone(element, phone) {
                         </div>
                         <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
                     </div>
-                </form > `;
+                </form>`;
     $(element).html(html);
 
     var dataPhone = document.querySelector('#phone_reset');
@@ -1555,7 +1555,7 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    var html = `<form class='formValue forgotPinPhone' >
+    var html = `<form class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
@@ -1565,7 +1565,7 @@ function forgotPinNid(element) {
                         </div>
                         <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
                     </div>
-                </form > `;
+                </form>`;
     $(element).html(html);
 
     //custom show
@@ -1633,7 +1633,7 @@ function forgotPinNid(element) {
 // Done +++
 function showFormPincode(element, phone, screen) {
     var html = `
-        <div class='box form-card-pincode' >
+        <div class='box form-card-pincode'>
             <div class='voolo-logo'></div>
             <form id='formSetupPinCode' class="box-mobile m-top-16">
                     <div class='${screen}'>
@@ -1648,7 +1648,7 @@ function showFormPincode(element, phone, screen) {
                     <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
                     <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
             </form>
-        </div> `;
+        </div>`;
 
     $(element).html(html);
 
@@ -1751,7 +1751,7 @@ function showFormSetupPin(element, screen, token) {
             </div>
             <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
         </form>
-    </div> `;
+    </div>`;
     $(element).css("display", "grid");
     $(element).html(html);
     if (screen !== '' && screen === 'SHOW_LOGIN') {
@@ -2072,7 +2072,7 @@ function showContract(element) {
                         </div>
                     </div>
                     <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
-            </div > `;
+            </div>`;
     $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3, true);
 
@@ -2203,7 +2203,7 @@ function showProcessPipeline(step, logo = false, formName = '') {
                 <span class='pipe ${s4}'>Xác minh thông tin</span>
                 <span class='pipe ${s5}'>Hoàn thành</span>
             </div>
-        </div> `;
+        </div>`;
 
     $('#voolo').prepend(pipeline);
     if (formName !== '') $('#voolo').addClass(formName);
@@ -2389,7 +2389,7 @@ function showUseGuideBackNid() {
                 <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
             </div>
         </div>
-                </ > `;
+                </div> `;
     $('.guideslideback').html(html);
 }
 
