@@ -1360,6 +1360,8 @@ h4.form-showdata-title{
 .forgotPinPhone .error_message,
 .showUICheckPhone .error_message{
     padding: 0 11%;
+    width: 90%;
+    max-width: 600px;
 }
 .error_message_otp,.error_message_pin{
     text-align: center;
