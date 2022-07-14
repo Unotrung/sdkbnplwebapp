@@ -358,11 +358,11 @@ function cutStringData(infomation) {
                 let name = details?.name?.value || '';
                 let dob = details?.dob?.value || '';
                 let homeTown = details?.homeTown?.value || '';
-                let permanentAddress = details?.permanentAddress?.value;
-                let street = details?.permanentAddress?.value.split(',')[-4] ? details?.permanentAddress?.value.split(',')[-4] : '';
-                let ward = details?.permanentAddress?.value.split(',')[-3] ? details?.permanentAddress?.value.split(',')[-3] : '';
-                let district = details?.permanentAddress?.value.split(',')[-2] ? details?.permanentAddress?.value.split(',')[-2] : '';
-                let city = details?.permanentAddress?.value.split(',')[-1] ? details?.permanentAddress?.value.split(',')[-1] : '';
+                let permanentAddress = details?.permanentAddress?.value.split(',');
+                let street = permanentAddress[-4] ? permanentAddress[-4] : '';
+                let ward = permanentAddress[-3] ? permanentAddress[-3] : '';
+                let district = permanentAddress[-2] ? permanentAddress[-2] : '';
+                let city = permanentAddress[-1] ? permanentAddress[-1] : '';
                 let gender = details?.gender?.value || '';
                 let doe = details?.doe?.value || '';
                 let nationality = details?.nationality?.value || '';
@@ -1413,7 +1413,7 @@ function listProductions(config) {
                         </div>
                         <div class='card-footer'>
                             <span>Tổng cộng</span>
-                            <span class='total-price'>`+ sTotal + ` </span>
+                            <span class='total-price'>`+ sTotal + `</span>
                         </div>
                     </div>
                 </div> `;
@@ -1457,12 +1457,12 @@ function showCapture(base64, eId) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
-    var html = `<form id = 'formValuePhone' class='formValue forgotPinPhone' >
+    var html = `<form id ='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">Số điện thoại</h4>
                             <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                            <input type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <input type='number' id='phone_reset' class='form__input input-global' value="${phone}" />
                             <span class='error_message'></span>
                         </div>
                         <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
@@ -1821,9 +1821,15 @@ function showFormSetupPin(element, screen, token) {
     })
 }
 
+function resendOTP(phone) {
+    let otp = sendOtp(phone);
+    if (otp !== null) {
+        console.log('Mã OTP của bạn là: ' + otp.otp);
+    }
+}
+
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
-    var otp = sendOtp(phone);
     console.log('Mã OTP của bạn là: ' + otp);
     var html = `<div class="overlay-popup card-otpcode">
                     <div class="alert-box">
@@ -1840,7 +1846,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='showFormVerifyOTP(${element},${phone},${otp},${screen === 'RESET_PIN' ? 'RESET_PIN' : 'VERIFY_PHONE'})' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
@@ -1974,7 +1980,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
             }
         }
-    })
+    });
 }
 
 /* countdown */
@@ -2293,7 +2299,8 @@ function messageScreen(element, config) {
         }
         n = n - 1;
     }, 1000);
-}
+};
+
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
