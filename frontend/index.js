@@ -1335,9 +1335,9 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                         </div>
                     </form>
                 </div> 
-                <div class="form-row" style="width: 100%;padding: 32px 40px;">
-                        <a href='#' class="btn-previous" onclick='showDataInform("${element}")'><c style="font-size:1.3em">&#8249;</c> Quay lại</a>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' style="margin-right:0;width:149px;float:right">Xác nhận</button>
+                <div class="form-row">
+                        <button type='button' class='payment-button btn-previous' onclick='showDataInform("${element}")'>Quay lại</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
@@ -2293,20 +2293,20 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'buy_success') {
-        html = `<div class='box showMessage'>
+        html = `<div class='box box-mobile showMessage ${config.screen}' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
-                        <h3>Chúc mừng bạn đã mua hàng thành công</h3>
+                        <h3>Chúc mừng bạn đã <span>mua hàng thành công</span></h3>
                         <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
                         <p style='text-align: center;'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div>
                 </div>`;
     }
 
     if (config.screen == 'buy_unsuccess') {
-        html = `<div class='box showMessage'>
+        html = `<div class='box box-mobile showMessage' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Mua hàng không thành công</h3>
@@ -2327,7 +2327,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                window.location.href = DOMAIN;
+                // window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
