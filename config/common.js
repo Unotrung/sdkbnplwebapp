@@ -43,3 +43,21 @@ function formatCurrency(money) {
 function deleteStorageData() {
     sessionStorage.clear();
 }
+
+// Done +++
+function disableEnterKey() {
+    document.addEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+        }
+    })
+}
+
+// Done +++
+function disabledEKey() {
+    document.addEventListener('keydown', function (e) {
+        if (e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
+}
