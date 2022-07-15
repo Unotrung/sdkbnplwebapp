@@ -348,6 +348,7 @@ a.ahref{
     font-size: 16px;
     line-height: 20px;
     text-align: center;
+    min-width: 520px;
 }
 
 .margin-bottom-default{
