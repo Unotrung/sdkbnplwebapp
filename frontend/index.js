@@ -369,6 +369,7 @@ function cutStringData(infomation) {
             let front_nid_customer = '';
             let back_nid_customer = '';
             // FRONT NID IMAGE
+            console.log('cutStringData');
             if (arrType_front.includes(nidType) && nidType !== null) {
                 sessionStorage.setItem('typeFrontNid', nidType);
                 let province = details?.province?.value.trim() || '';
@@ -393,6 +394,7 @@ function cutStringData(infomation) {
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
                     console.log(data);
                     if (data) {
+                        console.log('Data Cutting String: ', data);
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -411,6 +413,7 @@ function cutStringData(infomation) {
                         showUseGuideBackNid();
                     }
                     else {
+                        alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
@@ -418,9 +421,12 @@ function cutStringData(infomation) {
                         showPopupMessage('Chụp mặt trước không đúng','Vui lòng chụp lại');
                         runDocumentCaptureScreen('FRONT');
                     }
+
                     if (nid !== idNumber) {
+                        console.log('nid && idNumber: ', nid !== idNumber);
                         $('body').addClass('popup')
-                        showPopup('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
+                        alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
+                        return;
                     }
                 });
             }
@@ -473,9 +479,9 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
             if (apiResults !== null) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
+                console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    $('body').addClass('popup')
-                    showPopup('Ảnh selfie với ảnh chụp mặt trước CMND không trùng khớp');
+                    alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
                     return false;
                 }
                 else {
@@ -1512,12 +1518,12 @@ function showCapture(base64, eId) {
         }
         else {
             $('body').addClass('popup');
-            showPopup('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
+            alert('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
         }
     }
     else {
         $('body').addClass('popup');
-        showPopup('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
+        alert('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
     }
 }
 
@@ -1869,6 +1875,7 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
                 if (result.status === true) {
+<<<<<<< HEAD
                     // alert('Add Infomation Personal Success');
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
@@ -1879,6 +1886,18 @@ function showFormSetupPin(element, screen, token) {
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
                     showPopupMessage('Không thành công', 'Lỗi gửi thông tin, vui lòng thử lại!');
+=======
+                    deleteStorageData();
+                    $("body").addClass("popup");
+                    alert('Thêm thông tin người dùng thành công');
+                    $("body").removeClass("loading");
+                    showContract(element);
+                }
+                else {
+                    $("body").addClass("popup");
+                    alert('Thêm thông tin người dùng thất bại');
+                    $("body").removeClass("loading");
+>>>>>>> 10b8a02 (Update 15/07/2022)
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {

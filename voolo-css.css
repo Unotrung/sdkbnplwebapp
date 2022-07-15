@@ -1705,7 +1705,7 @@ input{
     }
     .main-page .paragraph-text{
         margin: 24px auto;
-        min-width: 100%;
+        min-width: auto;
     }
     .voolo-intro{
         padding: 16px 26px;
