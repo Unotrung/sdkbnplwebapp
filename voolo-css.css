@@ -261,6 +261,9 @@ input[type=checkbox]:checked{
     margin-bottom: 63.87px;
 }
 
+.showUICheckPhone .voolo-intro ul{
+    margin-top: 13px;
+}
 .voolo-intro ul{
     padding-left: 21px;
     font-size: 14px;
@@ -1535,6 +1538,17 @@ input{
 }
 .showCircularProgressbar.formValue-mt{
     margin-top: 279px!important;
+}
+#voolo .showUICheckPhone .voolo-logo{
+    margin-bottom: 32px;
+}
+#voolo .showUICheckPhone .paragraph-text p{
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
 }
 /*  and (min-width: 390px)  */
 @media only screen and (max-width: 414px){
