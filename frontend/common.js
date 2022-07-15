@@ -114,3 +114,12 @@ var PincodeInput = function () {
     }()
 }();
 
+// Done +++
+function showPopup(content) {
+    var html = `<div class="overlay">
+                    <div class="alert-box" >
+                        <p>${content}</p>
+                    </div>
+                </div>`;
+    return html;
+}

@@ -375,19 +375,19 @@ function cutStringData(infomation) {
             // FRONT NID IMAGE
             if (arrType_front.includes(nidType) && nidType !== null) {
                 sessionStorage.setItem('typeFrontNid', nidType);
-                let province = details?.province?.value || '';
-                let idNumber = details?.idNumber?.value || '';
-                let name = details?.name?.value || '';
-                let dob = details?.dob?.value || '';
-                let homeTown = details?.homeTown?.value || '';
-                let permanentAddress = details?.permanentAddress?.value.split(',');
-                let street = permanentAddress[-4] ? permanentAddress[-4] : '';
-                let ward = permanentAddress[-3] ? permanentAddress[-3] : '';
-                let district = permanentAddress[-2] ? permanentAddress[-2] : '';
-                let city = permanentAddress[-1] ? permanentAddress[-1] : '';
-                let gender = details?.gender?.value || '';
-                let doe = details?.doe?.value || '';
-                let nationality = details?.nationality?.value || '';
+                let province = details?.province?.value.trim() || '';
+                let idNumber = details?.idNumber?.value.trim() || '';
+                let name = details?.name?.value.trim() || '';
+                let dob = details?.dob?.value.trim() || '';
+                let homeTown = details?.homeTown?.value.trim() || '';
+                let permanentAddress = details?.permanentAddress?.value.trim().split(',');
+                let street = permanentAddress[permanentAddress.length - 4].trim() ? permanentAddress[permanentAddress.length - 4].trim() : '';
+                let ward = permanentAddress[permanentAddress.length - 3].trim() ? permanentAddress[permanentAddress.length - 3].trim() : '';
+                let district = permanentAddress[permanentAddress.length - 2].trim() ? permanentAddress[permanentAddress.length - 2].trim() : '';
+                let city = permanentAddress[permanentAddress.length - 1].trim() ? permanentAddress[permanentAddress.length - 1].trim() : '';
+                let gender = details?.gender?.value.trim() || '';
+                let doe = details?.doe?.value.trim() || '';
+                let nationality = details?.nationality?.value.trim() || '';
                 let nid = sessionStorage.getItem('nid');
                 console.log('City: ', city);
                 console.log('District: ', district);
@@ -420,8 +420,8 @@ function cutStringData(infomation) {
                         runDocumentCaptureScreen('FRONT');
                     }
                     if (nid !== idNumber) {
-                        alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
-                        return;
+                        $('body').addClass('popup')
+                        showPopup('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
                     }
                 });
             }
@@ -431,8 +431,8 @@ function cutStringData(infomation) {
                 let typeBackNid = sessionStorage.getItem('typeBackNid');
                 let typeFrontNid = sessionStorage.getItem('typeFrontNid');
                 if ((typeFrontNid === 'cccd_chip_front' && typeBackNid === 'cccd_chip_back') || (typeFrontNid === 'cccd_front' && typeBackNid === 'cmnd_new_cccd_back') || (typeFrontNid === 'cmnd_old_front' && typeBackNid === 'cmnd_back_front')) {
-                    let doi = details?.doi?.value || '';
-                    let placeOfIssue = details?.placeOfIssue?.value || '';
+                    let doi = details?.doi?.value.trim() || '';
+                    let placeOfIssue = details?.placeOfIssue?.value.trim() || '';
                     back_nid_customer = {
                         doi: doi,
                         placeOfIssue: placeOfIssue
@@ -476,7 +476,8 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
                 if (matchFace === 'no') {
-                    alert('The face and the image of the identity card on the front side do not match');
+                    $('body').addClass('popup')
+                    showPopup('Ảnh selfie với ảnh chụp mặt trước CMND không trùng khớp');
                     return false;
                 }
                 else {
@@ -1486,11 +1487,13 @@ function showCapture(base64, eId) {
             }
         }
         else {
-            alert('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
+            $('body').addClass('popup');
+            showPopup('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
         }
     }
     else {
-        alert('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
+        $('body').addClass('popup');
+        showPopup('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
     }
 }
 
@@ -1840,12 +1843,14 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
                 if (result.status === true) {
-                    alert('Add Infomation Personal Success');
+                    $("body").addClass("popup");
+                    showPopup('Thêm thông tin người dùng thành công');
                     $("body").removeClass("loading");
                     showContract(element);
                 }
                 else {
-                    alert('Add Infomation Personal Failure');
+                    $("body").addClass("popup");
+                    showPopup('Thêm thông tin người dùng thất bại');
                     $("body").removeClass("loading");
                 }
             }
@@ -1871,6 +1876,7 @@ function showFormSetupPin(element, screen, token) {
     })
 }
 
+// Done +++
 function resendOTP(phone) {
     let otp = sendOtp(phone);
     if (otp !== null) {
@@ -2001,7 +2007,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     }
                     else {
                         formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
-                        addBorderStyle('otp', 'RED');
                         addBorderStyle('otp', 'RED');
                         for (i = 1; i <= 6; i++) {
                             $("#otp" + i).attr('disabled', true);
