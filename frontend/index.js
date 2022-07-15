@@ -210,6 +210,7 @@ function showUICheckNid(element) {
     });
 
     $('#btnSubmitNid').click(function () {
+        showLoading();
         let data = $('#nid').val();
         sessionStorage.setItem('nid', data);
         var checkSelfieImage = sessionStorage.getItem('selfie-image');
@@ -218,6 +219,7 @@ function showUICheckNid(element) {
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
             formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD đã được đăng ký.');
             btnSubmitNid.disabled = true;
+            close_popup();
         }
         else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
             captureNidFrontAndBack(element);
@@ -227,10 +229,12 @@ function showUICheckNid(element) {
                 selfieImage: sessionStorage.getItem('selfie-image')
             };
             sessionStorage.setItem('checkCustomer', JSON.stringify(checkCustomer));
+            close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
             formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
             btnSubmitNid.disabled = true;
+            close_popup();
         }
     })
 }
@@ -285,6 +289,7 @@ function captureNidFrontAndBack(element) {
     }
 
     $('#btnSubmit').click(function () {
+        showLoading();
         let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
         if (adn !== null && adn !== '') {
             let fn = adn?.front_nid_customer;
@@ -386,6 +391,7 @@ function cutStringData(infomation) {
                 console.log('Street: ', street);
                 console.log('Permanent Address: ', permanentAddress);
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
+                    console.log(data);
                     if (data) {
                         front_nid_customer = {
                             province: province,
@@ -408,6 +414,8 @@ function cutStringData(infomation) {
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
+                        close_popup();
+                        showPopupMessage('Chụp mặt trước không đúng','Vui lòng chụp lại');
                         runDocumentCaptureScreen('FRONT');
                     }
                     if (nid !== idNumber) {
@@ -454,7 +462,6 @@ function cutStringData(infomation) {
 
 // Done +++
 function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
-    $('body').addClass('loading');
     callback = (HVError, HVResponse) => {
         if (HVError) {
             var errorCode = HVError.getErrorCode();
@@ -477,7 +484,6 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
             }
         }
     };
-    $('body').removeClass('loading');
     return HVNetworkHelper.makeFaceMatchCall(faceImageBase64String, docImageBase64String, {}, {}, callback);
 }
 
@@ -510,6 +516,7 @@ async function LaunchFaceCaptureScreen() {
                     $('body').find('.pageTitle').text("Chụp ảnh chân dung");
                     sessionStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
+                    close_popup();
                 }
             }
         };
@@ -552,7 +559,9 @@ async function LaunchDocumentCaptureScreen(side) {
                 var apiHeaders = HVResponse.getApiHeaders();
                 var imageBase64 = HVResponse.getImageBase64();
                 var attemptsCount = HVResponse.getAttemptsCount();
+                console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
+                    showPopupMessage("Không đúng","Vui lòng chụp lại");
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
@@ -563,14 +572,15 @@ async function LaunchDocumentCaptureScreen(side) {
                     if (applyFrontNid) {
                         console.log("apiResults front: ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('front-image', imageBase64);
+                        showCapture(imageBase64, "btnCaptureFront");
                         cutStringData(apiResults);
-                        showCapture(imageBase64, "btnCaptureFront")
                     }
                     else if (applyBackNid) {
                         console.log("apiResults back: ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('back-image', imageBase64);
                         cutStringData(apiResults);
                         showCapture(imageBase64, "btnCaptureBack");
+                        close_popup();
                     }
                 }
             }
@@ -587,6 +597,7 @@ async function LaunchDocumentCaptureScreen(side) {
 
 // Done +++
 function runFaceCaptureScreen() {
+    showLoading();
     try {
         getHV()
             .then(() => LaunchFaceCaptureScreen());
@@ -601,6 +612,7 @@ function runFaceCaptureScreen() {
 
 // Done +++
 function runDocumentCaptureScreen(side) {
+    showLoading();
     try {
         getHV()
             .then(() => LaunchDocumentCaptureScreen(side))
@@ -1028,6 +1040,7 @@ function showDataInform(element, personal) {
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
+    close_popup();
 
     let fullnameEle = document.getElementById('fullname');
     let genderEle = document.getElementById('gender');
@@ -1626,7 +1639,6 @@ function forgotPinNid(element) {
         console.log('Result Send Otp Pin: ', data);
         if (data.status === true) {
             showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
-            $('body').addClass('popup');
         }
         else if (data.status === false && data.message === 'Send otp failure') {
             formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
@@ -1823,7 +1835,6 @@ function showFormSetupPin(element, screen, token) {
     });
 
     $('#btnSubmitPin').click(function () {
-        // $("body").addClass("loading");
         let pin1 = $('#pin1').val().trim();
         let pin2 = $('#pin2').val().trim();
         let pin3 = $('#pin3').val().trim();
@@ -1858,29 +1869,30 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
                 if (result.status === true) {
-                    deleteStorageData();
-                    $("body").addClass("popup");
-                    showPopup('Thêm thông tin người dùng thành công');
-                    $("body").removeClass("loading");
+                    // alert('Add Infomation Personal Success');
+                    $('body .overlay-popup').remove();
+                    $('body .overlay').remove();
+                    showPopupMessage('Thành công', 'Đã gửi thông tin thành công');
                     showContract(element);
+                    deleteStorageData();
                 }
                 else {
-                    $("body").addClass("popup");
-                    showPopup('Thêm thông tin người dùng thất bại');
-                    $("body").removeClass("loading");
+                    $('body .overlay-popup').remove();
+                    $('body .overlay').remove();
+                    showPopupMessage('Không thành công', 'Lỗi gửi thông tin, vui lòng thử lại!');
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {
                 let phone = sessionStorage.getItem('phone');
                 let data = resetPin(phone, pin, token);
                 console.log('Result Reset Pin: ', data);
+                close_popup();
                 if (data.status === true) {
                     messageScreen(element, { screen: "pincode_success", pipeline: false });
                 } else {
                     messageScreen(element, { screen: "pincode_unsuccess", pipeline: false });
                 }
             }
-            $("body").removeClass("loading");
         }
         else {
             var repincode = document.querySelector('#repincode');
@@ -2136,7 +2148,8 @@ function showContract(element) {
                 $('body').addClass('popup');
             }
         }
-    })
+    });
+    // close_popup();
 }
 
 // Done +++
@@ -2362,13 +2375,4 @@ String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-// Done +++
-$("#tryagain").on("click", function () {
-    window.location.href = DOMAIN;
-});
 
-// Done +++
-function close_popup() {
-    $('body').removeClass('popup');
-    $('body .overlay-popup').remove();
-}

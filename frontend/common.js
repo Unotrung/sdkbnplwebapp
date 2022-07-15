@@ -114,12 +114,52 @@ var PincodeInput = function () {
     }()
 }();
 
+
 // Done +++
-function showPopup(content) {
-    var html = `<div class="overlay">
-                    <div class="alert-box" >
-                        <p>${content}</p>
+$("#tryagain").on("click", function () {
+    window.location.href = DOMAIN;
+});
+
+// Done +++
+function close_popup() {
+    $('body').removeClass('loading');
+    $('body').removeClass('popup');
+    $('body .overlay-popup').remove();
+}
+
+function showLoading(){
+    $('body').addClass('loading');
+}
+
+$('.close').on('click',function(){
+    $('body').removeClass('loading');
+    $('body').removeClass('popup');
+});
+
+function showPopupMessage(title,message){
+    $('body').removeClass('loading');
+    $('body').removeClass('popup');
+    var html = `<div class="overlay-popup card-otpcode">
+                    <div class="alert-box" style="height:auto">
+                    <span class='close'></span>
+                        <form id='formSetupPinCode'>
+                            <div class='card'>
+                                <div class='card-head no-line'></div>
+                                <div class='card-body text-center form-otpcode'>
+                                    <h4>${title}</h4>
+                                    <p class='compact-12'>${message}</p>
+                                </div>
+                                <div class='card-footer' style="height:4px"></div>
+                            </div>
+                            <button type='button' id="okpopup" class='payment-button' style="margin:32px 0">OK</button>
+                        </form>
                     </div>
                 </div>`;
-    return html;
+
+    $('body').append(html);
+    $('body').addClass('popup');
+    $('#okpopup').on('click',function(){
+        close_popup();
+        return true;
+    });
 }

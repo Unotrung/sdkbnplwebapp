@@ -18,6 +18,7 @@ function showUseGuideBackNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
     $('#voolo').append("<div class='guideslideback' style=''></div>");
+    close_popup();
     var html = `<div class='box2 showMessage'>
                     <div class=''>
                         <div class='ico-success ico-120'></div>
