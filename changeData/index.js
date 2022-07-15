@@ -54,6 +54,7 @@ function findWard(search) {
     return result;
 }
 
+// Done +++
 function findDistrictById(idParent) {
     try {
         let district = getDetailDistrict(idParent);
@@ -67,6 +68,7 @@ function findDistrictById(idParent) {
     }
 }
 
+// Done +++
 function findWardById(idParent) {
     try {
         let ward = getDetailWard(idParent);
@@ -80,6 +82,7 @@ function findWardById(idParent) {
     }
 }
 
+// Done +++
 function handleGetDataAddress(searchCity, searchDistrict, searchWard) {
     let cityName = '';
     let cityValue = '';

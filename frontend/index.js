@@ -13,6 +13,15 @@ let btnSelActive, fillInd, btnFrontActive, btnBackActive = false;
 // 0 for null values, 8 for backspace, 48-57 for 0-9 numbers
 
 // Done +++
+function disableEnterKey() {
+    document.addEventListener('keydown', function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+        }
+    })
+}
+
+// Done +++
 function showCircularProgressbar(element) {
     var html = `<div class='box showCircularProgressbar' style='margin-top:200px'>
                     <div class='paragraph-text text-center margin-bottom-default'>
@@ -48,13 +57,15 @@ function showUICheckPhone(element) {
                         <div class='form__row'>
                             <h5>Số điện thoại</h5>
                             <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                            <input type='number' id='phone' class='form__input input-global' />
+                            <input autocomplete="off" type='number' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
                         <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
                     </div>
                 </form>`;
     $(element).html(html);
+
+    disableEnterKey();
 
     //custom show
     configUi({
@@ -125,12 +136,15 @@ function showUICheckPhone(element) {
         }
         else if (result.errorCode === 8000 && result.status === false) {
             formatStyleWrongInput(dataPhone, errorMessage, 'Định dạng số điện thoại không hợp lệ');
+            btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1008 && result.status === false) {
             formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1004 && result.status === false) {
             formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            btnSubmitPhone.disabled = true;
         }
     });
 }
@@ -142,7 +156,7 @@ function showUICheckNid(element) {
                     <div class='mobile'>
                         <div class='form__row'>
                             <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
-                            <input type='number' id='nid' class='input-global' />
+                            <input autocomplete="off" type='number' id='nid' class='input-global' />
                             <span class='error_message'></span>
                         </div>
                         <label>Chụp ảnh chân dung</label>
@@ -151,6 +165,8 @@ function showUICheckNid(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+
+    disableEnterKey();
 
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>");
 
@@ -210,6 +226,7 @@ function showUICheckNid(element) {
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
             formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD đã được đăng ký.');
+            btnSubmitNid.disabled = true;
         }
         else if (result.statusCode === 900 && result.status === false && checkSelfieImage !== null) {
             captureNidFrontAndBack(element);
@@ -222,6 +239,7 @@ function showUICheckNid(element) {
         }
         else if (result.errorCode === 8000 && result.status === false) {
             formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
+            btnSubmitNid.disabled = true;
         }
     })
 }
@@ -240,6 +258,9 @@ function captureNidFrontAndBack(element) {
                     </div>
                 </form> `;
     $(element).html(html);
+
+    disableEnterKey();
+
     showProcessPipeline(1, true, 'captureNid');
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh CMND/CCCD</h4>");
 
@@ -639,6 +660,8 @@ function showAllTenor(element, nCount = 0) {
     html += `<button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button></form>`;
     $(element).html(html);
 
+    disableEnterKey();
+
     //validation button
     var btnSubmitPin = document.querySelector('#btnContinue');
     btnSubmitPin.disabled = true;
@@ -673,6 +696,8 @@ function showAllProvider(element) {
     html += `</div>`;
     $(element).html(html);
 
+    disableEnterKey();
+
     // show list productions
     listProductions({
         element: element,
@@ -688,11 +713,13 @@ function selectTenor(el) {
     //validation button
     var btnSubmitPin = document.querySelector('#btnContinue');
     btnSubmitPin.disabled = false;
+    disableEnterKey();
 }
 
 // Done +++
 function selectProvider() {
     showUICheckPhone('#voolo');
+    disableEnterKey();
 }
 
 // Done +++
@@ -777,6 +804,7 @@ function deleteImage(side) {
 
 // Done +++
 function showDataInform(element, personal) {
+    disableEnterKey();
     setRoute("showDataInform");
     let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
     if (adn !== null && adn !== '') {
@@ -931,7 +959,7 @@ function showDataInform(element, personal) {
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='ward'>Phường</label>
+                                    <label for='ward'>Phường/Xã</label>
                                     <select id='ward' name='ward' class='input-global' oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
                                         ${wards.data.map((ward, index) => (`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
@@ -965,7 +993,7 @@ function showDataInform(element, personal) {
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='ward_permanent'>Phường</label>
+                                <label for='ward_permanent'>Phường/Xã</label>
                                 <select id='ward_permanent' name='ward_permanent' class='input-global' oninput='onChangeValidation("#ward_permanent")'>
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
@@ -1211,7 +1239,7 @@ function showDataInform(element, personal) {
 
 // Done +++
 function showConfirmDataInform(element, personal_all_infoConfirm) {
-    setRoute("showConfirmDataInform");
+    disableEnterKey();
     showHeader();
     var html = `<div class='form-card form-confirmdata'>
                     <h4 class='form-confirmdata-title'>Đối soát thông tin</h4>
@@ -1346,6 +1374,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
 
 // Done +++
 function configUi(config) {
+    disableEnterKey();
     var iHtml = "";
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
@@ -1366,6 +1395,7 @@ function configUi(config) {
 // Done +++
 let totalBillNumber = 0;
 function listProductions(config) {
+    disableEnterKey();
     //show list items
     var list = "";
     if (config.dataItems != null) {
@@ -1424,6 +1454,7 @@ function listProductions(config) {
 
 // Done +++
 function showCapture(base64, eId) {
+    disableEnterKey();
     if (base64 !== null && base64 !== '' && base64 !== undefined) {
         $('#' + eId).addClass("showImage");
         $('#' + eId).css({
@@ -1465,12 +1496,13 @@ function showCapture(base64, eId) {
 
 // Done +++
 function forgotPinPhone(element, phone) {
+    disableEnterKey();
     var html = `<form id ='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">Số điện thoại</h4>
                             <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                            <input type='number' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone}" />
                             <span class='error_message'></span>
                         </div>
                         <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
@@ -1520,12 +1552,13 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
+    disableEnterKey();
     var html = `<form class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
                             <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                            <input type='number' id='nid_reset' class='form__input input-global' />
+                            <input autocomplete="off" type='number' id='nid_reset' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
                         <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
@@ -1601,6 +1634,7 @@ function forgotPinNid(element) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
+    disableEnterKey();
     var html = `<div class='box form-card-pincode'>
                     <div class='voolo-logo'></div>
                     <form id='formSetupPinCode' class="box-mobile m-top-16">
@@ -1672,6 +1706,7 @@ function showFormPincode(element, phone, screen) {
         // }
         else if (result.status === false && result.statusCode === 1002) {
             formatStyleWrongPincode(pincode, errorMessage, 'Số điện thoại không hợp lệ');
+            btnSubmitPin.disabled = true;
         }
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
@@ -1701,6 +1736,7 @@ function showFormPincode(element, phone, screen) {
 
 // Done +++
 function showFormSetupPin(element, screen, token) {
+    disableEnterKey();
     // showHeader();
     var html = `<div class='form-card showFormSetupPin ${screen}' >
                     <form id='formSetupPinCode'>
@@ -1844,6 +1880,7 @@ function resendOTP(phone) {
 
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
+    disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
     var html = `<div class="overlay-popup card-otpcode">
                     <div class="alert-box">
@@ -1957,7 +1994,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     showCircularProgressbar('#voolo');
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
-                    if (data?.countFail) {
+                    if (data?.countFail !== 5) {
                         formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
                         addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
@@ -1965,6 +2002,10 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     else {
                         formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
                         addBorderStyle('otp', 'RED');
+                        addBorderStyle('otp', 'RED');
+                        for (i = 1; i <= 6; i++) {
+                            $("#otp" + i).attr('disabled', true);
+                        }
                         btnSubmitVerifyOTP.disabled = true;
                     }
                 }
@@ -2012,6 +2053,7 @@ function timer(remaining) {
 
 // Done +++
 function showContract(element) {
+    disableEnterKey();
     setRoute("showContract");
     let data = getContract();
     var html = `<div class='contractForm'>
@@ -2077,6 +2119,7 @@ function showContract(element) {
 
 // Done +++
 function customerInfo(element, status = true) {
+    disableEnterKey();
     var strStatus = ``;
     if (status) {
         strStatus = `
