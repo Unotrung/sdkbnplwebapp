@@ -1647,7 +1647,7 @@ input{
         width: 100%;
         padding: 0;
         order: 1;
-        margin: 0 auto;
+        margin: 0 auto!important;
     }
     #voolo form.showUICheckNid{
         margin-top: 0!important;
@@ -1951,6 +1951,9 @@ input{
         font-weight: 600;
         font-size: 14px;
         line-height: 17px;
+    }
+    #formSetupPinCode #pincode{
+        /* margin-bottom: 0; */
     }
     #pincode, #repincode{
         margin-bottom: 24px;

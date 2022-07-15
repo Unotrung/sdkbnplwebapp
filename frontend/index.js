@@ -1874,7 +1874,6 @@ function showFormSetupPin(element, screen, token) {
                     $('body .overlay').remove();
                     showPopupMessage('Thành công', 'Đã gửi thông tin thành công');
                     showContract(element);
-                    deleteStorageData();
                 }
                 else {
                     $('body .overlay-popup').remove();
@@ -1917,6 +1916,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     disabledEKey();
     disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
+    $('body .overlay').remove();
+    $('body .overlay-popup').remove();
     var html = `<div class="overlay-popup card-otpcode">
                     <div class="alert-box">
                     <span class='close'></span>
@@ -1936,8 +1937,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                         </form>
                     </div>
                 </div>`;
-
     $(element).append(html);
+    $('body').addClass('popup');
     timer(60);
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -2027,6 +2028,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 if (data.status === true) {
                     close_popup();
                     showCircularProgressbar('#voolo');
+                    deleteStorageData();
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     if (data?.countFail !== 5) {
