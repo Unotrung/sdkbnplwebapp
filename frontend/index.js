@@ -2364,7 +2364,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                // window.location.href = DOMAIN;
+                window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }

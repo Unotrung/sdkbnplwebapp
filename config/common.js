@@ -41,7 +41,7 @@ function formatCurrency(money) {
 
 // Done +++
 function deleteStorageData() {
-    sessionStorage.clear();
+    // sessionStorage.clear();
 }
 
 // Done +++
