@@ -840,6 +840,8 @@ input::-webkit-inner-spin-button{
     border: none;
     background: url(./assets/img/pincode.png) no-repeat;
     background-size: contain;
+    width: 20.13px;
+    height: 20.13px;
 }
 
 .pincode-input.pincode-input--filled {
@@ -2384,6 +2386,9 @@ input{
     #voolo .showUICheckPhone .paragraph-text p{
         font-size: 14px;
         font-weight: 600;
+    }
+    .form-card-pincode #formSetupPinCode #pincode{
+        margin-bottom: 0px;
     }
 }  
 button.payment-button.btn-previous:before {

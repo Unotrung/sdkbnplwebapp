@@ -2308,7 +2308,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_unsuccess') {
-        html = `<div class='box showMessage'>
+        html = `<div class='box showMessage box-mobile'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Cập nhật mã PIN không thành công</h3>
@@ -2319,12 +2319,12 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'pincode_success') {
-        html = `<div class='box showMessage'>
+        html = `<div class='box showMessage box-mobile'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
                         <p style='text-align: center;'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
+                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
                         </p>
                     </div> 
                 </div>`;
@@ -2365,7 +2365,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                window.location.href = DOMAIN;
+                // window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }
