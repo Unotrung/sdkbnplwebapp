@@ -1918,7 +1918,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     console.log('Mã OTP của bạn là: ' + otp);
     $('body .overlay').remove();
     $('body .overlay-popup').remove();
-    var html = `<div class="overlay-popup card-otpcode">
+    var html = `<div class="overlay-pincode card-otpcode">
                     <div class="alert-box">
                     <span class='close'></span>
                         <form id='formSetupPinCode'>
@@ -1938,7 +1938,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     </div>
                 </div>`;
     $(element).append(html);
-    $('body').addClass('popup');
+    $('body').addClass('pinalert');
     timer(60);
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -1972,7 +1972,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     // });
 
     $('span.close').click(function () {
-        close_popup();
+        $('body .overlay-pincode').remove();
+        $('body').removeClass('pinalert');
     });
 
     $('#btnSubmitVerifyOTP').click(function () {

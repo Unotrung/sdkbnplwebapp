@@ -880,6 +880,7 @@ input::-webkit-inner-spin-button{
     border-color:#56CA8B!important;
 }
 
+.overlay-pincode,
 .overlay-popup,
 .overlay{
     display: none;
@@ -914,6 +915,38 @@ input::-webkit-inner-spin-button{
 }
 
 .overlay-popup .close{
+    width: 30px;
+    height: 30px;
+    background: url(./assets/img/close.png) no-repeat;
+    background-size: contain;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+}
+.overlay-pincode .alert-box{
+    position: fixed;
+    width: 450px;
+    height: 361px;
+    top: 20%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: #F3F3F3;
+    margin: 20px auto;
+    box-shadow: 0px 10px 100px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    text-align: center;
+}
+.overlay-pincode .alert-box #otpcode{
+    margin-top: 30px;
+}
+.overlay-pincode .alert-box h4{
+    margin-top: 48px;
+    margin-bottom: 12px;
+}
+
+.overlay-pincode .close{
     width: 30px;
     height: 30px;
     background: url(./assets/img/close.png) no-repeat;
@@ -996,6 +1029,16 @@ body.popup{
 
 /* Make spinner image visible when body element has the loading class */
 body.popup .overlay-popup{
+    display: block;
+}
+
+/* Turn off scrollbar when body element has the loading class */
+body.pinalert{
+    overflow: hidden;   
+}
+
+/* Make spinner image visible when body element has the loading class */
+body.pinalert .overlay-pincode{
     display: block;
 }
 
@@ -2117,6 +2160,7 @@ input{
         margin-top: 0!important;
         padding-top: 34px;
     }
+    .overlay-pincode .alert-box,
     .overlay-popup .alert-box{
         width: 90%;
         height: auto;
@@ -2140,10 +2184,12 @@ input{
     .pincode-input:not(:last-child){
         margin-right: 10px;
     }
+    .overlay-pincode .alert-box h4,
     .overlay-popup .alert-box h4{
         margin-top: 37px;
         margin-bottom: 0!important;
     }
+    .overlay-pincode .close,
     .overlay-popup .close{
         width: 14.7px;
         height: 14.7px;
