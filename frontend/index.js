@@ -1521,7 +1521,7 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
-    $("#phone_reset").disabled();
+    $("#phone_reset").prop("disabled", true);
 
     // $("#phone_reset").on('input', function () {
     //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
@@ -1615,19 +1615,19 @@ function forgotPinNid(element) {
         }
         else if (data.status === false && data.message === 'Send otp failure') {
             formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
-            return;
+            btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1002) {
             formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
-            return;
+            btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
             formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
-            return;
+            btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
             formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
-            return;
+            btnSendOtp.disabled = true;
         }
     })
 }
