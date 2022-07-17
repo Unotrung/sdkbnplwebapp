@@ -4,14 +4,6 @@ let billTotal = 0;
 let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
 let btnSelActive, fillInd, btnFrontActive, btnBackActive = false;
 
-// Chỉ cho nhập số
-// document.querySelector(".only-number").addEventListener("keypress", function (e) {
-//     if (e.which != 8 && e.which != 0 && e.which < 48 || e.which > 57) {
-//         e.preventDefault();
-//     }
-// });
-// 0 for null values, 8 for backspace, 48-57 for 0-9 numbers
-
 // Done +++
 function showCircularProgressbar(element) {
     var html = `<div class='box showCircularProgressbar' style='margin-top:200px'>
@@ -126,15 +118,15 @@ function showUICheckPhone(element) {
             showUICheckNid(element);
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Định dạng số điện thoại không hợp lệ');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1008 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã nhập sai otp 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Mã OTP không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1004 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Bạn đã đăng nhập thất bại 5 lần. Vui lòng đợi 60 phút để thử lại !');
+            formatStyleWrongInput(dataPhone, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             btnSubmitPhone.disabled = true;
         }
     });
@@ -369,7 +361,6 @@ function cutStringData(infomation) {
             let front_nid_customer = '';
             let back_nid_customer = '';
             // FRONT NID IMAGE
-            console.log('cutStringData');
             if (arrType_front.includes(nidType) && nidType !== null) {
                 sessionStorage.setItem('typeFrontNid', nidType);
                 let province = details?.province?.value.trim() || '';
@@ -386,15 +377,8 @@ function cutStringData(infomation) {
                 let doe = details?.doe?.value.trim() || '';
                 let nationality = details?.nationality?.value.trim() || '';
                 let nid = sessionStorage.getItem('nid');
-                console.log('City: ', city);
-                console.log('District: ', district);
-                console.log('Ward: ', ward);
-                console.log('Street: ', street);
-                console.log('Permanent Address: ', permanentAddress);
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
-                    console.log(data);
                     if (data) {
-                        console.log('Data Cutting String: ', data);
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -418,10 +402,9 @@ function cutStringData(infomation) {
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
                         close_popup();
-                        showPopupMessage('Chụp mặt trước không đúng','Vui lòng chụp lại');
+                        showPopupMessage('Chụp mặt trước không đúng', 'Vui lòng chụp lại');
                         runDocumentCaptureScreen('FRONT');
                     }
-
                     if (nid !== idNumber) {
                         console.log('nid && idNumber: ', nid !== idNumber);
                         $('body').addClass('popup')
@@ -567,7 +550,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 var attemptsCount = HVResponse.getAttemptsCount();
                 console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    showPopupMessage("Không đúng","Vui lòng chụp lại");
+                    showPopupMessage("Không đúng", "Vui lòng chụp lại");
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
@@ -863,9 +846,6 @@ function showDataInform(element, personal) {
     let dtCity = null;
     let dtDistrict = null;
     let dtWard = null;
-    console.log('city: ', city);
-    console.log('district: ', district);
-    console.log('ward: ', ward);
     if (conditionCity && conditionDistrict && conditionWard) {
         let dataAddress = handleGetDataAddress(city, district, ward);
         cityName = dataAddress.city.name;
@@ -1087,7 +1067,7 @@ function showDataInform(element, personal) {
                 phone = $(this).val().slice(0, 10);
             }
             else {
-                showMessageStatus(phone_refEle, 'Định dạng số điện thoại không hợp lệ', 'ERROR');
+                showMessageStatus(phone_refEle, 'Số điện thoại không hợp lệ', 'ERROR');
             }
         }
         if ($(this).attr("id") === 'phone_ref') {
@@ -1096,13 +1076,14 @@ function showDataInform(element, personal) {
                 isActivePhone = true;
                 phone_ref = $(this).val().slice(0, 10);
             }
-            else if (phone_ref.length === 0) {
-                isActivePhone = false;
-                showMessageStatus(phone_refEle, 'Vui lòng nhập thông tin', 'ERROR');
-            }
             else {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, 'Định dạng CMND/CCCD không hợp lệ', 'ERROR');
+                showMessageStatus(phone_refEle, 'CMND/CCCD không hợp lệ', 'ERROR');
+            }
+
+            if (phone_ref.length === 0) {
+                isActivePhone = false;
+                showMessageStatus(phone_refEle, 'Vui lòng nhập thông tin', 'ERROR');
             }
         }
 
@@ -1111,7 +1092,7 @@ function showDataInform(element, personal) {
         if (phoneData.length === 10 && phoneRefData.length === 10) {
             if (phoneRefData === phoneData) {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, 'Số điện thoại tham chiếu không được trùng với số điện thoại người dùng', 'ERROR');
+                showMessageStatus(phone_refEle, 'Số điện thoại tham chiếu trùng số điện thoại đăng ký', 'ERROR');
             }
             else {
                 isActivePhone = true;
@@ -1137,8 +1118,8 @@ function showDataInform(element, personal) {
         }
     });
 
-    phone_refEle.addEventListener('keydown', function (e) {
-        if (e.keyCode === 69) {
+    $("#phone_ref").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
             e.preventDefault();
         }
     })
@@ -1207,7 +1188,7 @@ function showDataInform(element, personal) {
             showMessageStatus(nidEle, 'Vui lòng nhập thông tin', 'ERROR');
         }
         if (isNidError) {
-            showMessageStatus(nidEle, 'Định dạng CMND/CCCD không hợp lệ', 'ERROR');
+            showMessageStatus(nidEle, 'CMND/CCCD không hợp lệ', 'ERROR');
         }
         else {
             showMessageStatus(nidEle, '', 'SUCCESS');
@@ -1543,10 +1524,6 @@ function forgotPinPhone(element, phone) {
                 </form>`;
     $(element).html(html);
 
-    var dataPhone = document.querySelector('#phone_reset');
-    var errorMessage = document.querySelector('.error_message');
-    var btnContinue = document.querySelector('#btnContinue');
-
     //custom show
     configUi({
         element: element,
@@ -1555,6 +1532,10 @@ function forgotPinPhone(element, phone) {
     });
 
     $("#phone_reset").prop("disabled", true);
+
+    // var dataPhone = document.querySelector('#phone_reset');
+    // var errorMessage = document.querySelector('.error_message');
+    // var btnContinue = document.querySelector('#btnContinue');
 
     // $("#phone_reset").on('input', function () {
     //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
@@ -1639,27 +1620,25 @@ function forgotPinNid(element) {
         sessionStorage.setItem('nid_reset', $('#nid_reset').val().trim());
         let phone_reset = sessionStorage.getItem('phone_reset');
         let nid_reset = sessionStorage.getItem('nid_reset');
-        console.log('phone_reset: ', phone_reset);
-        console.log('nid_reset: ', nid_reset);
         let data = sendOtpPin(phone_reset, nid_reset);
         console.log('Result Send Otp Pin: ', data);
         if (data.status === true) {
             showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
         }
         else if (data.status === false && data.message === 'Send otp failure') {
-            formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
+            formatStyleWrongInput(dataNid, errorMessage, 'Mã OTP không chính xác');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1002) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
+            formatStyleWrongInput(dataNid, errorMessage, 'Tài khoản chưa tồn tại. Vui lòng đăng ký');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không khớp với số điện thoại đã đăng ký');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
             btnSendOtp.disabled = true;
         }
     })
@@ -1698,11 +1677,11 @@ function showFormPincode(element, phone, screen) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
+            $('.pincode-input').removeClass('error_pincode_red');
             if (value.length === 4) {
                 btnSubmitPin.disabled = false;
             }
             else {
-                $('.pincode-input').removeClass('error_pincode_gray');
                 btnSubmitPin.disabled = true;
             }
         }
@@ -1744,12 +1723,12 @@ function showFormPincode(element, phone, screen) {
         }
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
-                formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
+                formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (' + result?.countFail + '/5)');
                 addBorderStyle('pin', "RED");
                 btnSubmitPin.disabled = true;
             }
             else {
-                formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+                formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
                 addBorderStyle('pin', "RED");
                 for (i = 1; i <= 4; i++) {
                     $("#pin" + i).attr('disabled', true);
@@ -1758,7 +1737,7 @@ function showFormPincode(element, phone, screen) {
             }
         }
         else if (result.status === false && result.statusCode === 1004) {
-            formatStyleWrongPincode(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+            formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             addBorderStyle('pin', "RED");
             for (i = 1; i <= 4; i++) {
                 $("#pin" + i).attr('disabled', true);
@@ -1777,7 +1756,7 @@ function showFormSetupPin(element, screen, token) {
                     <form id='formSetupPinCode'>
                         ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
                         <div class=''>
-                            <div class=' no-line'></div>
+                            <div class='no-line'></div>
                             <div class='text-center form-pincode m-top-16'>
                                 <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
                                 <p class='sub4'>Mã PIN</p>
@@ -1813,9 +1792,13 @@ function showFormSetupPin(element, screen, token) {
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
-                    $('.pincode-input').removeClass('error_pincode_gray');
+                    $('.pincode-input').removeClass('error_pincode_red');
                     $('#btnSubmitPin').attr("disabled", true);
                 }
+            }
+            else {
+                $('.pincode-input').removeClass('error_pincode_red');
+                $('#btnSubmitPin').attr("disabled", true);
             }
         }
     });
@@ -1833,9 +1816,13 @@ function showFormSetupPin(element, screen, token) {
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
-                    $('.pincode-input').removeClass('error_pincode_gray');
+                    $('.pincode-input').removeClass('error_pincode_red');
                     $('#btnSubmitPin').attr("disabled", true);
                 }
+            }
+            else {
+                $('.pincode-input').removeClass('error_pincode_red');
+                $('#btnSubmitPin').attr("disabled", true);
             }
         }
     });
@@ -1875,8 +1862,6 @@ function showFormSetupPin(element, screen, token) {
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
                     all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
                 if (result.status === true) {
-<<<<<<< HEAD
-                    // alert('Add Infomation Personal Success');
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
                     showPopupMessage('Thành công', 'Đã gửi thông tin thành công');
@@ -1886,18 +1871,6 @@ function showFormSetupPin(element, screen, token) {
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
                     showPopupMessage('Không thành công', 'Lỗi gửi thông tin, vui lòng thử lại!');
-=======
-                    deleteStorageData();
-                    $("body").addClass("popup");
-                    alert('Thêm thông tin người dùng thành công');
-                    $("body").removeClass("loading");
-                    showContract(element);
-                }
-                else {
-                    $("body").addClass("popup");
-                    alert('Thêm thông tin người dùng thất bại');
-                    $("body").removeClass("loading");
->>>>>>> 10b8a02 (Update 15/07/2022)
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {
@@ -1913,10 +1886,12 @@ function showFormSetupPin(element, screen, token) {
             }
         }
         else {
+            var pincode = document.querySelector('#pincode');
             var repincode = document.querySelector('#repincode');
             var errorMessage = document.querySelector('.error_message');
-            formatStyleWrongPincode(repincode, errorMessage, 'Mã pin không trùng khớp vui lòng thử lại !');
-            addBorderStyle('pin', "RED");
+            formatStyleWrongPincode(repincode, errorMessage, 'Mã PIN không trùng khớp');
+            addBorderStyle('setuppin', "RED");
+            addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
         }
     })
@@ -1924,6 +1899,8 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function resendOTP(phone) {
+    var inputs = document.querySelectorAll('.pincode-input');
+    inputs.forEach(input => input.value = '');
     let otp = sendOtp(phone);
     if (otp !== null) {
         console.log('Mã OTP của bạn là: ' + otp.otp);
@@ -1977,7 +1954,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 btnSubmitVerifyOTP.disabled = false;
             }
             else {
-                $('.pincode-input').removeClass('error_otpcode_gray');
+                $('.pincode-input').removeClass('error_otpcode_red');
                 btnSubmitVerifyOTP.disabled = true;
             }
         }
@@ -2029,7 +2006,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     }
                 }
                 else if (data.status === false && data.statusCode === 3000) {
-                    formatWrongOTP(errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    formatWrongOTP(errorMessage, 'Mã OTP hết hiệu lực');
                     addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
                 }
@@ -2066,7 +2043,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     }
                 }
                 else if (data.statusCode === 3000 && data.status === false) {
-                    formatWrongOTP(errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
+                    formatWrongOTP(errorMessage, 'Mã OTP hết hiệu lực');
                     addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
                 }

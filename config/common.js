@@ -46,8 +46,8 @@ function deleteStorageData() {
 
 // Done +++
 function disableEnterKey() {
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
         }
     })
@@ -55,9 +55,15 @@ function disableEnterKey() {
 
 // Done +++
 function disabledEKey() {
-    document.addEventListener('keydown', function (e) {
-        if (e.keyCode === 69) {
+    document.addEventListener('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
             e.preventDefault();
         }
     })
+}
+
+// Done +++
+function resetPinCode() {
+    var inputs = document.querySelectorAll('.pincode-input');
+    inputs.forEach(input => input.value = '');
 }
