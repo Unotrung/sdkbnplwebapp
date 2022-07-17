@@ -34,7 +34,6 @@ function showCircularProgressbar(element) {
 
 // Done +++
 function showUICheckPhone(element) {
-    disabledEKey();
     disableEnterKey();
     setRoute("showUICheckPhone");
     var html = `<form id='formValuePhone' class='formValue showUICheckPhone'>
@@ -68,6 +67,12 @@ function showUICheckPhone(element) {
     var errorMessage = document.querySelector('.error_message');
     var btnSubmitPhone = document.querySelector('#btnSubmitPhone');
     btnSubmitPhone.disabled = true;
+
+    $("#phone").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     $("#phone").on('focus', function () {
         formatStyleFocus(dataPhone);
@@ -134,7 +139,6 @@ function showUICheckPhone(element) {
 
 // Done +++
 function showUICheckNid(element) {
-    disabledEKey();
     disableEnterKey();
     setRoute("showUICheckNid");
     var html = `<form id='formValueNid' class='formValue showUICheckNid'>
@@ -168,6 +172,12 @@ function showUICheckNid(element) {
 
     let isNidErr = false;
     let isActive = false;
+
+    $("#nid").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     $("#nid").on('focus', function () {
         formatStyleFocus(dataNid);
@@ -1566,7 +1576,6 @@ function forgotPinPhone(element, phone) {
 
 // Done +++
 function forgotPinNid(element) {
-    disabledEKey();
     disableEnterKey();
     var html = `<form class='formValue forgotPinPhone'>
                     <div class='mobile'>
@@ -1592,6 +1601,12 @@ function forgotPinNid(element) {
     var errorMessage = document.querySelector('.error_message');
     var btnSendOtp = document.querySelector('#btnSendOtp');
     btnSendOtp.disabled = true;
+
+    $("#nid_reset").on('keypress', function () {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     $("#nid_reset").on('focus', function () {
         formatStyleFocus(dataNid);
@@ -1646,7 +1661,6 @@ function forgotPinNid(element) {
 
 // Done +++
 function showFormPincode(element, phone, screen) {
-    disabledEKey();
     disableEnterKey();
     var html = `<div class='box form-card-pincode'>
                     <div class='voolo-logo'></div>
@@ -1664,7 +1678,6 @@ function showFormPincode(element, phone, screen) {
                             <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
                     </form>
                 </div>`;
-
     $(element).html(html);
 
     var btnSubmitPin = document.querySelector('#btnSubmitPin');
@@ -1686,6 +1699,12 @@ function showFormPincode(element, phone, screen) {
             }
         }
     });
+
+    $("#pincode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     var pincode = document.querySelector('#pincode');
     var errorMessage = document.querySelector('.error_message');
@@ -1749,7 +1768,6 @@ function showFormPincode(element, phone, screen) {
 
 // Done +++
 function showFormSetupPin(element, screen, token) {
-    disabledEKey();
     disableEnterKey();
     // showHeader();
     var html = `<div class='form-card showFormSetupPin ${screen}' >
@@ -1774,7 +1792,14 @@ function showFormSetupPin(element, screen, token) {
     if (screen !== '' && screen === 'SHOW_LOGIN') {
         showProcessPipeline(2, true);
     }
+
     pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
+
+    $("#repincode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     let iPut1, iPut2 = false;
     $('#btnSubmitPin').attr("disabled", true);
@@ -1909,7 +1934,6 @@ function resendOTP(phone) {
 
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
-    disabledEKey();
     disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
     $('body .overlay').remove();
@@ -1966,6 +1990,12 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     //     logo: true,
     //     intro: false
     // });
+
+    $("#otpcode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69) {
+            e.preventDefault();
+        }
+    })
 
     $('span.close').click(function () {
         $('body .overlay-pincode').remove();
