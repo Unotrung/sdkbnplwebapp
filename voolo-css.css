@@ -746,6 +746,7 @@ input::-webkit-inner-spin-button{
     background-position: calc(100% - 20px) calc(1em + 4px), calc(100% - 15px) calc(1em + 6px), calc(100% - 2.5em) 0.5em;
     background-size: 0.85em;
   background-repeat: no-repeat;
+  color: #000;
 }
 
 /* .form-row select:focus{
