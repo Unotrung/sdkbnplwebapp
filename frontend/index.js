@@ -1068,6 +1068,8 @@ function showDataInform(element, personal) {
     let isActiveData = false;
     let isActivePhone = false;
 
+    $('#dob').datepicker({ dateFormat: 'dd/mm/yyyy' });
+
     let fields = document.querySelectorAll('.input-global');
     $('.input-global').on('input', function () {
         let phone = '';

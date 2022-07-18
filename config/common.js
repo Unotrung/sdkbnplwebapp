@@ -1,5 +1,3 @@
-document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>');
-
 // Done +++
 function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
@@ -23,8 +21,7 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 function convertDateString(dateString) {
     if (dateString === '' || dateString === null) return '';
     const dateParts = dateString.split("-");
-    today = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-    return moment(dateString, "DD-MM-YYYY").format("YYYY-MM-DD");
+    return `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
 }
 
 // Done +++
@@ -70,14 +67,3 @@ function resetPinCode() {
     var inputs = document.querySelectorAll('.pincode-input');
     inputs.forEach(input => input.value = '');
 }
-
-/* by Uno 18-07-2022 */
-function parseDate(input, format) {
-    format = format || 'yyyy-mm-dd'; // default format
-    var parts = input.match(/(\d+)/g), 
-        i = 0, fmt = {};
-    // extract date-part indexes from the format
-    format.replace(/(yyyy|dd|mm)/g, function(part) { fmt[part] = i++; });
-  
-    return new Date(parts[fmt['yyyy']], parts[fmt['mm']]-1, parts[fmt['dd']]);
-  }
