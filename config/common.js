@@ -32,6 +32,13 @@ function convertDateString2(dateString) {
 }
 
 // Done +++
+function convertDateString3(dateString) {
+    if (dateString === '' || dateString === null) return '';
+    const dateParts = dateString.split("-");
+    return `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
+}
+
+// Done +++
 function formatCurrency(money) {
     return money.toLocaleString('vi-VN', {
         style: 'currency',

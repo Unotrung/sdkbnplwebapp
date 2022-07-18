@@ -1042,6 +1042,16 @@ function showDataInform(element, personal) {
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
     close_popup();
+    var ua = navigator.userAgent.toLowerCase(); 
+    console.log("navigator : ", ua);
+    if (ua.indexOf('safari') != -1) { 
+        if (ua.indexOf('chrome') > -1) {
+             // Chrome
+        } else {
+            // Safari
+            $('input[name=dob]').attr('type','text').val(convertDateString3(personal.dob));
+        }
+    }
 
     let fullnameEle = document.getElementById('fullname');
     let genderEle = document.getElementById('gender');
@@ -1067,8 +1077,6 @@ function showDataInform(element, personal) {
 
     let isActiveData = false;
     let isActivePhone = false;
-
-    $('#dob').datepicker({ dateFormat: 'dd/mm/yyyy' });
 
     let fields = document.querySelectorAll('.input-global');
     $('.input-global').on('input', function () {
