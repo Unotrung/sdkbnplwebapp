@@ -117,7 +117,7 @@ function showUICheckPhone(element) {
                 showCircularProgressbar(element);
             }
             else if (step === 0) {
-                showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
+                messageScreen(element,{ screen: "unsuccessScreen", pipeline: false });
             }
         }
         else if (result.errCode === 1003 && result.status === false) {
@@ -944,8 +944,7 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}">
-                                        <option value=''></option>  
+                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
                                         ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
@@ -953,7 +952,6 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
                                     <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
-                                        <option value=''></option>
                                         ${districts.data.map((district, index) => (`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
@@ -961,7 +959,6 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
                                     <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
-                                        <option value=''></option>
                                         ${wards.data.map((ward, index) => (`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
@@ -982,6 +979,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#city_permanent")' onchange='handleChangeCity("#city_permanent", "#district_permanent")'>
+                                    <option value=''></option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_city_permanent error_message'></span>
@@ -989,6 +987,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#district_permanent")' onchange='handleChangeWard("#district_permanent", "#ward_permanent")'>
+                                    <option value=''></option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_district_permanent error_message'></span>
@@ -996,6 +995,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường/Xã</label>
                                 <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward_permanent")'>
+                                    <option value=''></option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
@@ -2318,7 +2318,7 @@ function router(element) {
 // Done +++
 function messageScreen(element, config) {
     if (config.screen == 'successScreen') {
-        html = `<div class='box showMessage formValue-mt-315'>
+        html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
                         <h3>Bạn đã đăng ký thành công</h3>
@@ -2330,7 +2330,7 @@ function messageScreen(element, config) {
     }
 
     if (config.screen == 'unsuccessScreen') {
-        html = `<div class='box showMessage formValue-mt-315'>
+        html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
                         <h3>Đăng ký không thành công</h3>
@@ -2399,7 +2399,7 @@ function messageScreen(element, config) {
                 showAllTenor(element, 3);
             }
             if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                // window.location.href = DOMAIN;
+                window.location.href = DOMAIN;
             }
             clearTimeout(cInterval);
         }

@@ -2013,6 +2013,9 @@ input{
     #pincode, #repincode{
         margin-bottom: 24px;
     }
+    .showFormSetupPin #repincode{
+        margin-bottom: 0!important;
+    }
     #voolo.non-flex h4.pageTitle{
         display: none;
     }
@@ -2508,3 +2511,7 @@ div.angled-borders {
     color: white;
     text-align: center;
   }
+
+.hv-modal-content{
+    max-width: 415px;
+}
