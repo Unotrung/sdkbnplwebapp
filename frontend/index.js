@@ -1042,6 +1042,8 @@ function showDataInform(element, personal) {
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
     close_popup();
+
+    /* fix error safari input[type=date] - by UNO 19/07 */
     var ua = navigator.userAgent.toLowerCase(); 
     console.log("navigator : ", ua);
     if (ua.indexOf('safari') != -1) { 
@@ -1049,7 +1051,9 @@ function showDataInform(element, personal) {
              // Chrome
         } else {
             // Safari
-            $('input[name=dob]').attr('type','text').val(convertDateString3(personal.dob));
+            $('input[name=dob]').attr('type','text');
+            $('input[name=doi]').attr('type','text');
+            $('input[name=doe]').attr('type','text');
         }
     }
 
