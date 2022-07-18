@@ -125,6 +125,13 @@ input:disabled,
 select:disabled{
     background: rgba(154, 147, 147, 0.1);
     color: #000;
+    -webkit-text-fill-color: #000;
+    opacity: 1; /* required on iOS */
+    font-family: 'Montserrat';
+}
+input:is([type="date"], [type="time"], [type="datetime-local"], [type="month"], [type="week"])
+{
+    font-family: 'Montserrat';
 }
 
 input[type=checkbox]{
