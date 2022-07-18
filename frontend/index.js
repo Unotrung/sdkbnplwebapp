@@ -2026,6 +2026,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 console.log('Result Verify Otp Pin: ', data);
                 if (data.status === true && data.token !== null) {
                     close_popup();
+                    $('body').removeClass('pinalert');
                     showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
                 }
                 else if (data.status === false && data.statusCode === 4000) {

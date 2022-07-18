@@ -1549,7 +1549,7 @@ input{
     margin-top:32px!important;
 }
 .form-card.showFormSetupPin.SHOW_RESET_PIN #repincode{
-    margin-bottom: 26.5px;
+    margin-bottom: 0px;
 }
 .showUICheckPhone .mobile h5{
     display: none;
