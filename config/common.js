@@ -29,8 +29,7 @@ function convertDateString(dateString) {
 function convertDateString2(dateString) {
     if (dateString === '' || dateString === null) return '';
     const dateParts = dateString.split("-");
-    today = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
-    return today.format('yyyy/mm/dd');
+    return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
 }
 
 // Done +++
