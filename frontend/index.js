@@ -1937,6 +1937,9 @@ function resendOTP(phone) {
 function showFormVerifyOTP(element, phone, otp, screen) {
     disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
+    if($( window ).width() < 415){
+        alert('Mã OTP của bạn là: ' + otp);
+    }
     $('body .overlay').remove();
     $('body .overlay-popup').remove();
     var html = `<div class="overlay-pincode card-otpcode">
