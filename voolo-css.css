@@ -592,7 +592,7 @@ a.ahref{
 }
 
 .main-page .btnCapture.showImage::after {
-    content: url(./assets/img/icon-check.png);
+    content: url(./assets/img/icon-check-20.png);
     position: absolute;
     bottom: 0;
     right: 0;
@@ -1376,7 +1376,7 @@ h4.form-showdata-title{
 
 .showMessage h3{
     font-family: 'Montserrat Alternates';
-    font-style: normal;
+    font-style: normal;-20
     font-weight: 600;
     font-size: 24px;
     margin-top: 41px;
