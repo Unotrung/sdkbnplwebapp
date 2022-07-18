@@ -246,6 +246,10 @@
         $("#callNidCapture").on('click',function(){
             runDocumentCaptureScreen('FRONT');
         });
+		$(".ignore").on('click',function(){
+			$('.payment-button.start').css('display','initial');	
+			$('.payment-button.ignore').css('display','none');
+		});
 		var slideIndex = 1;
 		displaySlide(slideIndex);
 		$('.slide').on({

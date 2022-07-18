@@ -15,9 +15,10 @@ function showCircularProgressbar(element) {
                     </p> 
                     </div> 
                 </div>`;
-    $(element).html(html);
+    $(element).html(html).removeAttr('style');
     showProcessPipeline(4, true);
     $("body").removeClass("loading");
+    $("body").removeClass("pinalert");
 
     var myInterval = setInterval(function () {
         let phone = sessionStorage.getItem('phone');
