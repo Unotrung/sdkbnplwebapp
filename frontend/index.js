@@ -407,18 +407,19 @@ function cutStringData(infomation) {
                         showUseGuideBackNid();
                     }
                     else {
-                        alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
+                        // alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
                         close_popup();
-                        showPopupMessage('Chụp mặt trước không đúng', 'Vui lòng chụp lại');
+                        showPopupMessage('Thông báo', 'Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại');
                         runDocumentCaptureScreen('FRONT');
                     }
                     if (nid !== idNumber) {
                         console.log('nid && idNumber: ', nid !== idNumber);
-                        $('body').addClass('popup')
-                        alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
+                        $('body').addClass('popup');
+                        showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại');
+                        // alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
                         return;
                     }
                 });
@@ -560,7 +561,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 var attemptsCount = HVResponse.getAttemptsCount();
                 console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    showPopupMessage("Không đúng", "Vui lòng chụp lại");
+                    showPopupMessage("Thông báo", "Lỗi chụp CMND/CCCD<br/>Vui lòng chụp lại");
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
