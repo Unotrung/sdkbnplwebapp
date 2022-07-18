@@ -131,7 +131,9 @@ select:disabled{
 }
 input:is([type="date"], [type="time"], [type="datetime-local"], [type="month"], [type="week"])
 {
-    font-family: 'Montserrat';
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    font-variant-numeric: unset;
 }
 
 input[type=checkbox]{
