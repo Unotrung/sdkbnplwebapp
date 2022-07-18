@@ -122,15 +122,18 @@ function close_popup() {
     $('body .overlay-popup').remove();
 }
 
+// Done +++
 function showLoading() {
     $('body').addClass('loading');
 }
 
+// Done +++
 $('.close').on('click', function () {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
 });
 
+// Done +++
 function showPopupMessage(title, message) {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
