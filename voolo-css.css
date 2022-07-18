@@ -131,10 +131,11 @@ select:disabled{
 }
 input:is([type="date"], [type="time"], [type="datetime-local"], [type="month"], [type="week"])
 {
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
     font-variant-numeric: unset;
 }
+
 input[type=checkbox]{
     width: 18px;
     height: 18px;
