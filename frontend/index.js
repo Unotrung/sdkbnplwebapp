@@ -1623,7 +1623,7 @@ function forgotPinNid(element) {
     var btnSendOtp = document.querySelector('#btnSendOtp');
     btnSendOtp.disabled = true;
 
-    $("#nid_reset").on('keypress', function () {
+    $("#nid_reset").on('keypress', function (e) {
         if (e.key === 'e' || e.keyCode === 69) {
             e.preventDefault();
         }
@@ -1844,6 +1844,7 @@ function showFormSetupPin(element, screen, token) {
                 }
             }
             else {
+                iPut1 = false;
                 $('.pincode-input').removeClass('error_pincode_red');
                 $('#btnSubmitPin').attr("disabled", true);
             }
@@ -1868,6 +1869,7 @@ function showFormSetupPin(element, screen, token) {
                 }
             }
             else {
+                iPut2 = false;
                 $('.pincode-input').removeClass('error_pincode_red');
                 $('#btnSubmitPin').attr("disabled", true);
             }
