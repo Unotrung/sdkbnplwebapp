@@ -15,6 +15,7 @@ function showCircularProgressbar(element) {
                     </p> 
                     </div> 
                 </div>`;
+
     $(element).html(html).removeAttr('style');
     showProcessPipeline(4, true);
     $("body").removeClass("loading");
@@ -70,8 +71,9 @@ function showUICheckPhone(element) {
     btnSubmitPhone.disabled = true;
 
     $("#phone").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -93,6 +95,11 @@ function showUICheckPhone(element) {
                 btnSubmitPhone.disabled = true;
                 formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
             }
+
+            if (checkAllDataSame(dataPhone.value)) {
+                btnSubmitPhone.disabled = true;
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+            }
         }
         else {
             btnSubmitPhone.disabled = true;
@@ -104,7 +111,7 @@ function showUICheckPhone(element) {
         let data = dataPhone.value;
         sessionStorage.setItem('phone', data);
         let result = checkPhoneExists(data);
-        console.log('Check Phone Exists: ', result);
+        console.log('Check phone exists: ', result);
         if (result.errCode === 1000 && result.status === true) {
             let step = result?.data?.step;
             if (step === 4) {
@@ -117,7 +124,7 @@ function showUICheckPhone(element) {
                 showCircularProgressbar(element);
             }
             else if (step === 0) {
-                messageScreen(element, { screen: "unsuccessScreen", pipeline: false });
+                showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
             }
         }
         else if (result.errCode === 1003 && result.status === false) {
@@ -146,7 +153,7 @@ function showUICheckNid(element) {
                     <div class='mobile'>
                         <div class='form__row'>
                             <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
-                            <input autocomplete="off" type='number' id='nid' class='input-global' />
+                            <input autocomplete="off" type='number' id='nid' class='input-global' autocomplete="off" />
                             <span class='error_message'></span>
                         </div>
                         <label>Chụp ảnh chân dung</label>
@@ -157,6 +164,7 @@ function showUICheckNid(element) {
     $(element).html(html);
 
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>");
+    $(window).scrollTop(0);
 
     $('#callHP').click(function () {
         showUseGuideSelfy();
@@ -175,8 +183,9 @@ function showUICheckNid(element) {
     let isActive = false;
 
     $("#nid").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -195,7 +204,13 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+            }
+
+            if (checkAllDataSame(dataNid.value)) {
+                isActive = false;
+                btnSubmitNid.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -203,7 +218,6 @@ function showUICheckNid(element) {
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
         fillInd = isActive;
-        console.log(fillInd + " " + btnSelActive);
         if (isActive === true && btnSelActive === true) {
             btnSubmitNid.disabled = false;
         }
@@ -235,7 +249,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -261,6 +275,7 @@ function captureNidFrontAndBack(element) {
 
     showProcessPipeline(1, true, 'captureNid');
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh CMND/CCCD</h4>");
+    $(window).scrollTop(0);
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -380,16 +395,27 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value.trim() || '';
                 let homeTown = details?.homeTown?.value.trim() || '';
                 let permanentAddress = details?.permanentAddress?.value.trim().split(',');
-                let street = permanentAddress[permanentAddress.length - 4] ? permanentAddress[permanentAddress.length - 4] : '';
-                let ward = permanentAddress[permanentAddress.length - 3] ? permanentAddress[permanentAddress.length - 3] : '';
-                let district = permanentAddress[permanentAddress.length - 2] ? permanentAddress[permanentAddress.length - 2] : '';
-                let city = permanentAddress[permanentAddress.length - 1] ? permanentAddress[permanentAddress.length - 1] : '';
+                let street = permanentAddress[permanentAddress.length - 4].trim() ? permanentAddress[permanentAddress.length - 4].trim() : '';
+                let ward = permanentAddress[permanentAddress.length - 3].trim() ? permanentAddress[permanentAddress.length - 3].trim() : '';
+                let district = permanentAddress[permanentAddress.length - 2].trim() ? permanentAddress[permanentAddress.length - 2].trim() : '';
+                let city = permanentAddress[permanentAddress.length - 1].trim() ? permanentAddress[permanentAddress.length - 1].trim() : '';
                 let gender = details?.gender?.value.trim() || '';
                 let doe = details?.doe?.value.trim() || '';
                 let nationality = details?.nationality?.value.trim() || '';
                 let nid = sessionStorage.getItem('nid');
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
                     if (data) {
+                        if (nid !== idNumber) {
+                            sessionStorage.removeItem('front-image');
+                            $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
+                            $("#btnCaptureFront").removeClass("showImage");
+                            close_popup();
+                            if (showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')) {
+                                runDocumentCaptureScreen('FRONT');
+                            }
+                            return;
+                        }
+
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -408,19 +434,12 @@ function cutStringData(infomation) {
                         showUseGuideBackNid();
                     }
                     else {
-                        // alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
                         close_popup();
                         showPopupMessage('Thông báo', 'Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại');
                         runDocumentCaptureScreen('FRONT');
-                    }
-                    if (nid !== idNumber) {
-                        console.log('nid && idNumber: ', nid !== idNumber);
-                        $('body').addClass('popup');
-                        showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại');
-                        // alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
                         return;
                     }
                 });
@@ -474,9 +493,8 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
             if (apiResults !== null) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
-                console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
+                    showPopupMessage('Thông báo', 'Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh.');
                     return false;
                 }
                 else {
@@ -680,6 +698,7 @@ function showAllTenor(element, nCount = 0) {
 
     customerInfo(element);
 
+
     $('#btnContinue').click(function () {
         let phone = sessionStorage.getItem('phone');
         showFormPincode(element, phone, 'BUY_SUCCESS');
@@ -767,44 +786,6 @@ function deleteImage(side) {
         }
     }
 }
-
-// Done +++
-// function postNationalID(ImageURL) {
-//     try {
-//         var block = ImageURL.split(";");
-//         var contentType = block[0].split(":")[1];
-//         var realData = block[1].split(",")[1];
-//         var blob = b64toBlob(realData, contentType);
-//         var formDataToUpload = new FormData();
-//         formDataToUpload.append("image", blob);
-//         var settings = {
-//             "url": "https://vnm-docs.hyperverge.co/v2/nationalID",
-//             "method": "POST",
-//             "timeout": 0,
-//             "headers": {
-//                 "appId": "abe84d",
-//                 "appKey": "7d2c0d7e1690c216458c",
-//                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
-//             },
-//             "async": false,
-//             "processData": false,
-//             "contentType": false,
-//             "mimeType": "multipart/form-data",
-//             "data": formDataToUpload
-//         };
-//         $.ajax(settings).done(function (response) {
-//             const data = JSON.parse(response);
-//             cutStringData(data);
-//         });
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return {
-//             errorCode: error.status || 500,
-//             errorMessage: error.message
-//         }
-//     }
-// }
 
 // Done +++
 function showDataInform(element, personal) {
@@ -921,14 +902,14 @@ function showDataInform(element, personal) {
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doi'>Ngày cấp</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' oninput='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' oninput='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}"  />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -951,20 +932,20 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
                                     <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
-                                        ${districts.data.map((district, index) => (`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
+                                        ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
                                     <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
-                                        ${wards.data.map((ward, index) => (`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
+                                        ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}"  />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -1042,6 +1023,11 @@ function showDataInform(element, personal) {
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
     close_popup();
 
+    $("#doe").flatpickr({
+        dateFormat: 'd/m/Y',
+        minDate: "today"
+    });
+
     /* fix error safari input[type=date] - by UNO 19/07 */
     var ua = navigator.userAgent.toLowerCase();
     console.log("navigator : ", ua);
@@ -1052,9 +1038,9 @@ function showDataInform(element, personal) {
             // Safari
             $('input[name=dob]').attr('type', 'text');
             $('input[name=doi]').attr('type', 'text');
-            $('input[name=doe]').attr('type', 'text');
         }
     }
+    $(window).scrollTop(0);
 
     let fullnameEle = document.getElementById('fullname');
     let genderEle = document.getElementById('gender');
@@ -1137,6 +1123,7 @@ function showDataInform(element, personal) {
                 break;
             }
         }
+
         if (isActiveData === true && isActivePhone === true) {
             btnContinue.disabled = false;
         }
@@ -1315,7 +1302,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
+                                    <div id='doe' class="info">${personal_all_infoConfirm.expirationDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='address'>Địa chỉ hiện tại</label>
@@ -1375,8 +1362,8 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-                        <button type='button' class='payment-button btn-previous' onclick='showDataInform("${element}")'>Quay lại</button>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
+                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm'>Xác nhận</button>
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
@@ -1409,994 +1396,6 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
     $('#btnContinueConfirm').click(function () {
         showFormSetupPin(element, 'SHOW_LOGIN');
     });
-}
-
-// Done +++
-function showCapture(base64, eId) {
-    if (base64 !== null && base64 !== '' && base64 !== undefined) {
-        $('#' + eId).addClass("showImage");
-        $('#' + eId).css({
-            'background': 'url(' + base64 + ') no-repeat center',
-            'background-size': 'cover'
-        });
-        if (eId !== null && eId !== '' && eId !== undefined) {
-            if (eId === 'btnCaptureFront') {
-                btnFrontActive = true;
-            }
-            if (eId === 'btnCaptureBack') {
-                btnBackActive = true;
-            }
-            if (btnFrontActive && btnBackActive) {
-                $("#btnSubmit").attr("disabled", false);
-            }
-            else {
-                $("#btnSubmit").attr("disabled", true);
-            }
-
-            if (eId === 'callHP') {
-                btnSelActive = true;
-                if (btnSelActive) {
-                    $("#btnSubmitNid").attr("disabled", false);
-                }
-                else {
-                    $("#btnSubmitNid").attr("disabled", true);
-                }
-            }
-        }
-        else {
-            alert('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
-        }
-    }
-    else {
-        alert('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
-    }
-}
-
-// Done +++
-function forgotPinPhone(element, phone) {
-    var html = `<form id='formValuePhone' class='formValue'>
-                    <div class='mobile'>
-
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số điện thoại</h2>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để để tiếp tục</label>
-                            <input autocomplete="off" type='phone' id='phone_reset' class='form__input input-global' value="${phone}" />
-                            <span class='error_message'></span>
-                        </div>
-                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
-
-                    </div>
-                </form>`;
-    $(element).html(html);
-
-    var dataPhone = document.querySelector('#phone_reset');
-    var errorMessage = document.querySelector('.error_message');
-    var btnContinue = document.querySelector('#btnContinue');
-
-    //custom show
-    configUi({
-        element: element,
-        logo: true,
-        intro: false
-    });
-
-    $("#phone_reset").on('input', function () {
-        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-        let isPhoneErr = !regexPhone.test(dataPhone.value);
-        if (dataPhone.value !== null && dataPhone.value !== '') {
-            if (!isPhoneErr) {
-                formatStyleCorrectInput(dataPhone, errorMessage);
-                btnContinue.disabled = false;
-            }
-            else {
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-                btnContinue.disabled = true;
-            }
-        }
-        else {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-            btnContinue.disabled = true;
-        }
-    });
-
-    $('#btnContinue').click(function () {
-        let phone_reset = $('#phone_reset').val().trim();
-        sessionStorage.setItem('phone_reset', phone_reset);
-        forgotPinNid(element);
-    });
-}
-
-// Done +++
-function forgotPinNid(element) {
-    var html = `<form class='formValue'>
-                    <div class='mobile'>
-
-                        <div class='form__row'>
-                            <h2 style="margin-bottom:40px">Số CMND/CCCD</h2>
-                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
-                            <input autocomplete="off" type='number' id='nid_reset' class='form__input input-global' />
-                            <span class='error_message'></span>
-                        </div>
-                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
-
-                    </div>
-                </form>`;
-    $(element).html(html);
-
-    //custom show
-    configUi({
-        element: element,
-        logo: true,
-        intro: false
-    });
-
-    var dataNid = document.querySelector('#nid_reset');
-    var errorMessage = document.querySelector('.error_message');
-    var btnSendOtp = document.querySelector('#btnSendOtp');
-    btnSendOtp.disabled = true;
-
-    $("#nid_reset").on('input', function () {
-        if (dataNid.value !== null && dataNid.value !== '') {
-            const regexNid = /^\d{12}$|^\d{9}$/;
-            let isNidErr = !regexNid.test(dataNid.value);
-            if (!isNidErr) {
-                formatStyleCorrectInput(dataNid, errorMessage);
-                btnSendOtp.disabled = false;
-            }
-            else {
-                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
-                btnSendOtp.disabled = true;
-            }
-        }
-        else {
-            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
-            btnSendOtp.disabled = true;
-        }
-    });
-
-    $('#btnSendOtp').click(function () {
-        sessionStorage.setItem('nid_reset', $('#nid_reset').val().trim());
-        let phone_reset = sessionStorage.getItem('phone_reset');
-        let nid_reset = sessionStorage.getItem('nid_reset');
-        console.log('phone_reset: ', phone_reset);
-        console.log('nid_reset: ', nid_reset);
-        let data = sendOtpPin(phone_reset, nid_reset);
-        console.log('Result Send Otp Pin: ', data);
-        if (data.status === true) {
-            showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
-            $('body').addClass('popup');
-        }
-        else if (data.status === false && data.message === 'Send otp failure') {
-            formatStyleWrongInput(dataNid, errorMessage, 'Mã Otp không chính xác');
-            return;
-        }
-        else if (data.status === false && data.statusCode === 1002) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số điện thoại không chính xác');
-            return;
-        }
-        else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Chứng minh nhân dân không chính xác');
-            return;
-        }
-        else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Định dang data không hợp lệ');
-            return;
-        }
-    })
-}
-
-// Done +++
-function showFormPincode(element, phone, screen) {
-    var html = `
-        <div class='box form-card-pincode'>
-            <div class='voolo-logo'></div>
-            <form id='formSetupPinCode' class="box-mobile">
-                    <div class=''>
-                        <div class='text-center form-pincode'>
-                            <h4>Nhập mã PIN</h4>
-                            <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
-                            <div class='sub4'>Mã PIN</div>
-                            <div id='pincode'></div>
-                            <span class='error_message error_message_pin'></span>
-                        </div>
-                    </div>
-                    <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                    <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
-            </form>
-        </div>`;
-
-    $(element).html(html);
-
-    var pincode = document.querySelector('#pincode');
-    var errorMessage = document.querySelector('.error_message');
-
-    var btnSubmitPin = document.querySelector('#btnSubmitPin');
-    btnSubmitPin.disabled = true;
-
-    new PincodeInput("#pincode", {
-        count: 4,
-        secure: true,
-        pattern: '[0-9]*',
-        previewDuration: -1,
-        inputId: 'pin',
-        onInput: (value) => {
-            console.log('Length Value: ', value.length);
-            if (value.length === 4) {
-                btnSubmitPin.disabled = false;
-            }
-            else if (value.length === 0) {
-                formatStyleWrongInput(pincode, errorMessage, 'Vui lòng nhập mã PIN');
-                btnSubmitPin.disabled = true;
-            }
-            else {
-                $('.pincode-input').removeClass('error_pincode_gray');
-                btnSubmitPin.disabled = true;
-            }
-        }
-    });
-
-    $('#btnSubmitPin').click(function () {
-        var pin = $('#pin1').val().trim() + $('#pin2').val().trim() + $('#pin3').val().trim() + $('#pin4').val().trim();
-        let result = login(phone, pin);
-        console.log('Result Show Form Pin code: ', result);
-
-        if (result.status === true && result.data.step === 4) {
-            switch (screen) {
-                default:
-                    showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
-                case "SHOW_TENOR":
-                    showAllTenor(element, 3);
-                    break;
-                case "SHOW_SUCCESS_PAGE":
-                    messageScreen(element, { screen: "pincode_success", pipeline: false });
-                    break;
-                case "BUY_SUCCESS":
-                    messageScreen(element, { screen: "buy_success", pipeline: false });
-                    break;
-                case "BUY_UNSUCCESS":
-                    messageScreen(element, { screen: "buy_unsuccess", pipeline: false });
-                    break;
-            }
-        }
-        // else if (result.status === true && result.data.step === 3) {
-        //     showCircularProgressbar(element);
-        //     return;
-        // }
-        else if (result.status === false && result.statusCode === 1002) {
-            formatStyleWrongInput(pincode, errorMessage, 'Số điện thoại không hợp lệ');
-        }
-        else if (result.status === false && result.statusCode === 1003) {
-            if (result?.countFail !== 5) {
-                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (' + result?.countFail + '/5)');
-                addBorderStyle('pin', 'GRAY');
-                btnSubmitPin.disabled = true;
-            }
-            else {
-                formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-                addBorderStyle('pin', 'RED');
-                for (i = 1; i <= 4; i++) {
-                    $("#pin" + i).attr('disabled', true);
-                }
-                btnSubmitPin.disabled = true;
-            }
-        }
-        else if (result.status === false && result.statusCode === 1004) {
-            formatStyleWrongInput(pincode, errorMessage, 'Mã pin không chính xác (5/5).\nTài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
-            addBorderStyle('pin', 'RED');
-            for (i = 1; i <= 4; i++) {
-                $("#pin" + i).attr('disabled', true);
-            }
-            btnSubmitPin.disabled = true;
-        }
-    });
-}
-
-// Done +++
-function showFormSetupPin(element, screen, token) {
-    var html = `
-    <div class='form-card showFormSetupPin'>
-    <form id='formSetupPinCode'>
-        <div class=''>
-            <div class=' no-line'></div>
-                <div class='text-center form-pincode'>
-                    <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
-                    <p class='sub4'>Mã PIN</p>
-                    <div id='pincode'></div>
-                    <p class='sub4'>Nhập lại mã PIN</p>
-                    <div id='repincode'></div>
-                    <span class='error_message error_message_setuppin'></span>
-                </div>
-        </div>
-        <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-    </form>
-    </div>`;
-    $(element).css("display", "grid");
-    $(element).html(html);
-
-    var repincode = document.querySelector('#repincode');
-    var errorMessage = document.querySelector('.error_message');
-
-    var btnSubmitPin = document.querySelector('#btnSubmitPin');
-    btnSubmitPin.disabled = true;
-
-    if (screen !== '' && screen === 'SHOW_LOGIN') {
-        //show progress bar
-        showProcessPipeline(2, true);
-    }
-    pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
-
-    let iPut1, iPut2 = false;
-
-    new PincodeInput("#pincode", {
-        count: 4,
-        secure: true,
-        pattern: '[0-9]*',
-        previewDuration: -1,
-        inputId: 'pin',
-        onInput: (value) => {
-            if (value.length === 4) {
-                iPut1 = true;
-                if (iPut1 && iPut2) {
-                    btnSubmitPin.disabled = false;
-                }
-                else {
-                    btnSubmitPin.disabled = true;
-                }
-            }
-            else if (value.length === 0) {
-                iPut1 = false;
-                formatStyleWrongInput(repincode, errorMessage, 'Vui lòng nhập mã PIN');
-                btnSubmitPin.disabled = true;
-            }
-            else {
-                iPut1 = false;
-                $('.pincode-input').removeClass('error_pincode_red');
-                btnSubmitPin.disabled = true;
-            }
-        }
-    });
-
-    new PincodeInput("#repincode", {
-        count: 4,
-        secure: true,
-        previewDuration: -1,
-        inputId: 'pincf',
-        onInput: (value) => {
-            if (value.length === 4) {
-                iPut2 = true;
-                if (iPut1 && iPut2) {
-                    btnSubmitPin.disabled = false;
-                }
-                else {
-                    btnSubmitPin.disabled = true;
-                }
-            }
-            else if (value.length === 0) {
-                iPut2 = false;
-                formatStyleWrongInput(repincode, errorMessage, 'Vui lòng nhập mã PIN');
-                btnSubmitPin.disabled = true;
-            }
-            else {
-                iPut2 = false;
-                $('.pincode-input').removeClass('error_pincode_red');
-                btnSubmitPin.disabled = true;
-            }
-        }
-    });
-
-    $('#btnSubmitPin').click(function () {
-        let pin1 = $('#pin1').val().trim();
-        let pin2 = $('#pin2').val().trim();
-        let pin3 = $('#pin3').val().trim();
-        let pin4 = $('#pin4').val().trim();
-
-        let pincf1 = $('#pincf1').val().trim();
-        let pincf2 = $('#pincf2').val().trim();
-        let pincf3 = $('#pincf3').val().trim();
-        let pincf4 = $('#pincf4').val().trim();
-
-        let pin = pin1 + pin2 + pin3 + pin4;
-        let pincf = pincf1 + pincf2 + pincf3 + pincf4;
-
-        if (pin === pincf && pin !== null && pincf !== null) {
-            if (screen === 'SHOW_LOGIN') {
-                const data = JSON.parse(sessionStorage.getItem('personal_all_info'));
-                const front_nid_image = sessionStorage.getItem('front-image');
-                const back_nid_image = sessionStorage.getItem('back-image');
-                const selfie_image = sessionStorage.getItem('selfie-image');
-                let all_data_info = {
-                    ...data,
-                    pin: pin,
-                    nid_front_image: front_nid_image,
-                    nid_back_image: back_nid_image,
-                    selfie_image: selfie_image
-                }
-                let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
-                    all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                    all_data_info.expirationDate, all_data_info.city, all_data_info.district,
-                    all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
-                    all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
-                    all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
-                    all_data_info.pin, all_data_info.nid_front_image, all_data_info.nid_back_image, all_data_info.selfie_image);
-                console.log('Result Set Up Pin: ', result);
-                if (result.status === true) {
-                    showContract(element);
-                }
-                else if (result.status === false && result.statusCode === 4000) {
-                    formatStyleWrongInput(repincode, errorMessage, 'Số điện thoại và số điện thoại tham chiếu không được trùng nhau');
-                }
-                else if (result.status === false) {
-                    messageScreen(element, { screen: "unsuccessScreen", pipeline: false });
-                }
-                sessionStorage.removeItem('personal_all_info');
-                sessionStorage.removeItem('front-image');
-                sessionStorage.removeItem('back-image');
-                sessionStorage.removeItem('selfie-image');
-
-                sessionStorage.removeItem('back_nid_customer');
-                sessionStorage.removeItem('front_nid_customer');
-                sessionStorage.removeItem('checkCustomer');
-                sessionStorage.removeItem('allDataNid');
-            }
-            else if (screen === 'SHOW_RESET_PIN') {
-                let phone = sessionStorage.getItem('phone');
-                let data = resetPin(phone, pin, token);
-                console.log('Result Reset Pin: ', data);
-                if (data.status === true) {
-                    messageScreen(element, { screen: "pincode_success", pipeline: false });
-                } else {
-                    messageScreen(element, { screen: "pincode_unsuccess", pipeline: false });
-                }
-            }
-        }
-        else {
-            formatStyleWrongInput(repincode, errorMessage, 'Mã PIN không trùng khớp');
-            addBorderStyle('setuppin', 'RED');
-            addBorderStyle('setupcfpin', 'RED');
-            btnSubmitPin.disabled = true;
-        }
-    })
-}
-
-// Done +++
-function showFormVerifyOTP(element, phone, otp, screen) {
-    console.log('Mã OTP của bạn là: ' + otp);
-    var html = `<div class="overlay-popup card-otpcode">
-                    <div class="alert-box">
-                    <span class='close'></span>
-                        <form id='formSetupPinCode'>
-                            <div class='card'>
-                                <div class='card-head no-line'></div>
-                                <div class='card-body text-center form-otpcode'>
-                                    <h4>Nhập OTP</h4>
-                                    <p class='compact-12'>Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
-                                    <div id='otpcode'></div>
-                                    <span class='error_message error_message_otp'></span>
-                                </div>
-                                <div class='card-footer' style="height:4px"></div>
-                            </div>
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
-                        </form>
-                    </div>
-            </div>`;
-
-    $(element).append(html);
-    timer(60);
-
-    var otpcode = document.querySelector('#otpcode');
-    var errorMessage = document.querySelector('.alert-box .error_message');
-
-    var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
-    btnSubmitVerifyOTP.disabled = true;
-
-    new PincodeInput("#otpcode", {
-        count: 6,
-        secure: false,
-        pattern: '[0-9]*',
-        previewDuration: 100,
-        inputId: 'otp',
-        onInput: (value) => {
-            console.log('Length Value: ', value.length);
-            if (value.length === 6) {
-                btnSubmitVerifyOTP.disabled = false;
-            }
-            else if (value.length === 0) {
-                formatStyleWrongInput(otpcode, errorMessage, 'Vui lòng nhập mã OTP');
-                btnSubmitVerifyOTP.disabled = true;
-            }
-            else {
-                $('.pincode-input').removeClass('error_otpcode_gray');
-                btnSubmitVerifyOTP.disabled = true;
-            }
-        }
-    });
-
-    //custom show
-    // configUi({
-    //     element: element,
-    //     logo: true,
-    //     intro: false
-    // });
-    $('span.close').click(function () {
-        close_popup();
-    });
-    $('#btnSubmitVerifyOTP').click(function () {
-        let otp1 = $('#otp1').val().trim();
-        let otp2 = $('#otp2').val().trim();
-        let otp3 = $('#otp3').val().trim();
-        let otp4 = $('#otp4').val().trim();
-        let otp5 = $('#otp5').val().trim();
-        let otp6 = $('#otp6').val().trim();
-        let otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        if (phone !== null && otp !== null) {
-            if (screen === 'RESET_PIN' && screen !== '') {
-                let phone_reset = sessionStorage.getItem('phone_reset');
-                let nid_reset = sessionStorage.getItem('nid_reset');
-                const data = verifyOtpPin(phone_reset, nid_reset, otp);
-                console.log('Result Verify Otp Pin: ', data);
-                if (data.status === true && data.token !== null) {
-                    close_popup();
-                    showFormSetupPin(element, 'SHOW_RESET_PIN', data.token);
-                }
-                else if (data.status === false && data.statusCode === 4000) {
-                    if (data?.countFail !== 5) {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderStyle('otp', 'GRAY');
-                        btnSubmitVerifyOTP.disabled = true;
-                    }
-                    else {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                        addBorderStyle('otp', 'RED');
-                        for (i = 1; i <= 6; i++) {
-                            $("#otp" + i).attr('disabled', true);
-                        }
-                        btnSubmitVerifyOTP.disabled = true;
-                    }
-                }
-                else if (data.status === false && data.statusCode === 3000) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderStyle('otp', 'GRAY');
-                    btnSubmitVerifyOTP.disabled = true;
-                }
-                else if (data.status === false && data.errorCode === 1004) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                    addBorderStyle('otp', 'RED');
-                    for (i = 1; i <= 6; i++) {
-                        $("#otp" + i).attr('disabled', true);
-                    }
-                    btnSubmitVerifyOTP.disabled = true;
-                }
-            }
-            else if (screen === 'VERIFY_PHONE' && screen !== '') {
-                var data = verifyOtp(phone, otp);
-                console.log('Result Verify Phone', data);
-                if (data.status === true) {
-                    close_popup();
-                    showCircularProgressbar('#voolo');
-                    // showStatusPage(element, 'Đang trong tiến trình xác minh thông tin', './assets/img/Loading.png', '', 3);
-                }
-                else if (data.statusCode === 4000 && data.status === false) {
-                    if (data?.countFail) {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
-                        addBorderStyle('otp', 'GRAY');
-                        btnSubmitVerifyOTP.disabled = true;
-                    }
-                    else {
-                        formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                        addBorderStyle('otp', 'RED');
-                        for (i = 1; i <= 6; i++) {
-                            $("#otp" + i).attr('disabled', true);
-                        }
-                        btnSubmitVerifyOTP.disabled = true;
-                    }
-                }
-                else if (data.statusCode === 3000 && data.status === false) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP đã hết hiệu lực. Vui lòng gửi lại OTP');
-                    addBorderStyle('otp', 'GRAY');
-                    btnSubmitVerifyOTP.disabled = true;
-                }
-                else if (data.errorCode === 1004 && data.status === false) {
-                    formatStyleWrongInput(otpcode, errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 24 giờ');
-                    addBorderStyle('otp', 'RED');
-                    for (i = 1; i <= 6; i++) {
-                        $("#otp" + i).attr('disabled', true);
-                    }
-                    btnSubmitVerifyOTP.disabled = true;
-                }
-            }
-        }
-    })
-}
-
-// Done +++
-/* countdown */
-function timer(remaining) {
-    let timerOn = true;
-    var m = Math.floor(remaining / 60);
-    var s = remaining % 60;
-
-    m = m < 10 ? '0' + m : m;
-    s = s < 10 ? '0' + s : s;
-    // m + ':' + s
-    document.getElementById('timer').innerHTML = s + 's';
-    remaining -= 1;
-
-    if (remaining >= 0 && timerOn) {
-        setTimeout(function () {
-            timer(remaining);
-        }, 1000);
-        return;
-    }
-
-    if (!timerOn) {
-        return;
-    }
-}
-
-// Done +++
-function showContract(element) {
-    setRoute("showContract");
-    let data = getContract();
-    var html = `<div class='box contractForm formValue-mt'>
-                    <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
-                    <div style='display: block'  class='contract-detail'>
-                        <h3>${data.title1}</h3>
-                        <h3>${data.title2}</h3>
-                        <p>${data.content}</p>
-                    </div>
-                    <div style='display: block'  class='contract-term'>
-                        <input autocomplete="off" type='checkbox' name='confirm_contract' id='confirm_contract' />
-                        <label for='confirm_contract' class='compact-12'>Tôi đồng ý với Điều kiện và Điều khoản hợp đồng</label>
-                    </div>
-                    <div style='display: block'  class='contract-term'>
-                        <input autocomplete="off" type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                        <label for='confirm_otp' class='compact-12'>Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi</label>
-                    </div>
-                    <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
-                    </div>
-            </div>`;
-    $(element).html(html);
-    showProcessPipeline(3, true);
-
-    var btnContinue = document.querySelector('#btnContinue');
-    btnContinue.disabled = true;
-
-    $('#confirm_contract').click(function () {
-        if ($('#confirm_contract').is(":checked") && $('#confirm_otp').is(":checked")) {
-            btnContinue.disabled = false;
-        }
-        else {
-            btnContinue.disabled = true;
-        }
-    })
-
-    $('#confirm_otp').click(function () {
-        if ($('#confirm_contract').is(":checked") && $('#confirm_otp').is(":checked")) {
-            btnContinue.disabled = false;
-        }
-        else {
-            btnContinue.disabled = true;
-        }
-    })
-
-    $('#btnContinue').click(function () {
-        let confirm_contract = $('#confirm_contract').is(":checked");
-        let confirm_otp = $('#confirm_otp').is(":checked");
-        if (confirm_contract && confirm_otp) {
-            let phone = sessionStorage.getItem('phone');
-            var otp = sendOtp(phone);
-            if (otp !== null) {
-                showFormVerifyOTP(element, phone, otp.otp, 'VERIFY_PHONE');
-                $('body').addClass('popup');
-            }
-        }
-        else if (!confirm_contract && !confirm_otp) {
-            alert('Vui lòng check 2 ô check box');
-            return;
-        }
-        else if (!confirm_contract) {
-            alert('Vui lòng check ô check box thứ 1');
-            return;
-        }
-        else if (!confirm_otp) {
-            alert('Vui lòng check ô check box thứ 2');
-            return;
-        }
-    })
-}
-
-// Done +++
-function customerInfo(element, status = true) {
-    var strStatus = ``;
-    if (status) {
-        strStatus = `<div class='ico-success'></div>
-        <b>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</b>`;
-    } else {
-        strStatus = `<div class='ico-unsuccess'></div>
-        <b>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</b>`
-    }
-    var str = `<div class="customer">
-                <div class='voolo-logo'></div>
-                <div id="customerInfo">
-                    <div class="avatar"><img src="${customer.avatar}" /></div>
-                    <div class='detail'>
-                        <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
-                        <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
-                        ${strStatus}
-                    </div>
-                </div>
-            </div>`;
-    if ($(window).width() < 700) {
-        $(element).prepend(str);
-        $(element).find(".avatar").css("display", "none");
-        $(element).find(".list-items").css("margin-top", "212px");
-        $(element).find(".detail h3").css({ "font-weight": "600", "font-size": "18px" });
-    }
-    else {
-        $(element).prepend(str);
-        $(element).find(".list-items").css({ "margin-top": "410.5px", "padding-top": "0" });
-        $(element).find(".formValue").css("margin-top", "410.5px");
-        $(element).find(".avatar").css("display", "none");
-        $(element).find(".detail h3").css({ "font-weight": "700", "font-size": "20px" });
-    }
-}
-
-// Done +++
-function showProcessPipeline(step, logo = false, formName = '') {
-    var s1, s2, s3, s4, s5 = '';
-    switch (step) {
-        default:
-        case 1:
-            s1 = 'active';
-            break;
-        case 2:
-            s1 = s2 = 'active';
-            break;
-        case 3:
-            s1 = s2 = s3 = 'active';
-            break;
-        case 4:
-            s1 = s2 = s3 = s4 = 'active';
-            break;
-        case 5:
-            s5 = s1 = s2 = s3 = s4 = 'active';
-            break;
-    }
-    var pipeline = `
-        <div class='headrow'>
-        ${(logo) ? '<div class="voolo-logo"></div>' : ''}
-            <div class='sub2'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</div>
-            <div class='line'>
-                <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
-                <span class='Tpipe ${s3}'></span>
-                <span class='Tpipe ${s4}'></span>
-                <span class='Tpipe ${s5}'></span>
-                <span class='Tpipe last'></span>
-            </div>
-            <div class='pipeline'>
-                <span class='pipe ${s1}'>Thông tin khách hàng</span>
-                <span class='pipe ${s2}'>Cài đặt PIN</span>
-                <span class='pipe ${s3}'>Ký điện tử</span>
-                <span class='pipe ${s4}'>Xác minh thông tin</span>
-                <span class='pipe ${s5}'>Hoàn thành</span>
-            </div>
-        </div>`;
-
-    $('#voolo').prepend(pipeline);
-    if (formName !== '') $('#voolo').addClass(formName);
-    $('.formValue').addClass("formValue-mt");
-    $('.form-card').addClass("formValue-mt");
-    $('.box').addClass("formValue-mt");
-}
-
-// Done +++
-function setRoute(func) {
-    history.pushState({}, "Voolo Set Url", "#" + func);
-}
-
-// Done +++
-function router(element) {
-    var url = window.location.href;
-    route = url.split('#')[1];
-    switch (route) {
-        default:
-            showAllProvider(element);
-        case undefined:
-            showAllProvider(element);
-            break;
-        case "showUICheckPhone":
-            showUICheckPhone(element);
-            break;
-        case "showUICheckNid":
-            showUICheckNid(element);
-            break;
-        case "captureNidFrontAndBack":
-            captureNidFrontAndBack(element);
-            break;
-        case "showDataInform":
-            showDataInform(element);
-            break;
-        case "showConfirmDataInform":
-            showConfirmDataInform(element, JSON.parse(sessionStorage.getItem('personal_all_info')));
-            break;
-        case "showContract":
-            showContract(element);
-            break;
-        case "showAllTenor":
-            showAllTenor(element, 3);
-            break;
-    }
-}
-
-/* 
-* ex : messageScreen(element,{screen : "buy_success",pipeline:false});
-*
-**/
-
-// Done +++
-function messageScreen(element, config) {
-    if (config.screen === 'successScreen') {
-        html = `<div class='box showMessage formValue-mt'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success'></div>
-                        <h3>Bạn đã đăng ký thành công</h3>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-                        </p>
-                    </div> 
-                </div>`;
-    }
-
-    if (config.screen === 'unsuccessScreen') {
-        html = `<div class='box showMessage formValue-mt'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess'></div>
-                        <h3>Đăng ký không thành công</h3>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-                        </p>
-                    </div> 
-                </div>`;
-    }
-
-    if (config.screen === 'pincode_unsuccess') {
-        html = `<div class='box showMessage'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess'></div>
-                        <h3>Cập nhật mã PIN không thành công</h3>
-                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-                        <button class='payment-button' id="tryagain">Thử lại</button>
-                    </div> 
-                </div>`;
-    }
-
-    if (config.screen === 'pincode_success') {
-        html = `<div class='box showMessage'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success'></div>
-                        <h3>Cập nhật mã PIN thành công</h3>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-                        </p>
-                    </div> 
-                </div>`;
-    }
-
-    if (config.screen === 'buy_success') {
-        html = `<div class='box showMessage'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success ico-150'></div>
-                        <h3>Chúc mừng bạn đã mua hàng thành công</h3>
-                        <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
-                        <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.
-                        </p>
-                    </div>
-                </div>`;
-    }
-
-    if (config.screen === 'buy_unsuccess') {
-        html = `<div class='box showMessage'>
-                    <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-unsuccess ico-150'></div>
-                        <h3>Mua hàng không thành công</h3>
-                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-                        <button class='payment-button' id="tryagain">Thử lại</button>
-                    </div>
-                </div>`;
-    }
-
-    $(element).removeClass("non-flex");
-    $(element).html(html);
-    if (config.pipeline) showProcessPipeline(5, true);
-    var n = 5;
-    var cInterval = setInterval(function () {
-        $(".coutdown").html(n);
-        console.log("time: ", n);
-        if (n === 0) {
-            if (config.screen == 'successScreen') {
-                showAllTenor(element, 3);
-            }
-            if (config.screen == 'buy_success' || config.screen == 'pincode_success') {
-                // window.location.href = DOMAIN;
-            }
-            clearTimeout(cInterval);
-        }
-        n = n - 1;
-    }, 1000);
-}
-
-// Done +++
-function showUseGuideSelfy() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('body').append("<div class='guideslide'></div>");
-    $('.guideslide').load('useguide.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh chân dung");
-}
-
-// Done +++
-function showUseGuideNid() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('body').append("<div class='guideslide' style='max-width:500px; margin-top:300px;'></div>");
-    $('.guideslide').load('useguidenid.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
-}
-
-// Done +++
-function showUseGuideBackNid() {
-    $('body').find('.guideslide').remove();
-    $("#formValueNid").hide();
-    $('#voolo').append("<div class='guideslideback' style=''></div>");
-    var html = `<div class='box2 showMessage'>
-                    <div class=''>
-                        <div class='ico-success ico-120'></div>
-                        <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
-                        <div class='line'>
-                            <span class='font-m'>Now</span>
-                        </div>
-                        <div class='refresh-ico'>
-                            <img src='./assets/img/refresh-ico.png' width="20" height="20" />
-                        </div>
-                        <p style='text-align: center;'>
-                            Lật mặt sau của card để tiếp tục chụp ảnh
-                        </p>
-                        <div class="angled-borders">
-                            <div id="f1_container">
-                                <div id="f1_card" class="shadow">
-                                    <div class="front face">
-                                        <img src='./assets/img/cccd.png' width="115"/>
-                                    </div>
-                                    <div class="back face center">
-                                        <img src='./assets/img/cccd-2.png' width="115"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%">
-                        <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
-                        </div>
-                    </div>
-                </div>`;
-    $('.guideslideback').html(html);
-}
-
-// Done +++
-String.prototype.replaceAt = function (index, replacement) {
-    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-}
-
-// Done +++
-$("#tryagain").on("click", function () {
-    window.location.href = DOMAIN;
-});
-
-// Done +++
-function close_popup() {
-    $('body').removeClass('popup');
-    $('body .overlay-popup').remove();
 }
 
 // Done +++
@@ -2548,30 +1547,6 @@ function forgotPinPhone(element, phone) {
 
     $("#phone_reset").prop("disabled", true);
 
-    // var dataPhone = document.querySelector('#phone_reset');
-    // var errorMessage = document.querySelector('.error_message');
-    // var btnContinue = document.querySelector('#btnContinue');
-
-    // $("#phone_reset").on('input', function () {
-    //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-    //     dataPhone.value = dataPhone.value.slice(0, 10);
-    //     let isPhoneErr = !regexPhone.test(dataPhone.value);
-    //     if (dataPhone.value !== null && dataPhone.value !== '') {
-    //         if (!isPhoneErr) {
-    //             formatStyleCorrectInput(dataPhone, errorMessage);
-    //             btnContinue.disabled = false;
-    //         }
-    //         else {
-    //             formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-    //             btnContinue.disabled = true;
-    //         }
-    //     }
-    //     else {
-    //         formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-    //         btnContinue.disabled = true;
-    //     }
-    // });
-
     $('#btnContinue').click(function () {
         let phone_reset = $('#phone_reset').val().trim();
         sessionStorage.setItem('phone_reset', phone_reset);
@@ -2607,9 +1582,10 @@ function forgotPinNid(element) {
     var btnSendOtp = document.querySelector('#btnSendOtp');
     btnSendOtp.disabled = true;
 
-    $("#nid_reset").on('keypress', function () {
-        if (e.key === 'e' || e.keyCode === 69) {
+    $("#nid_reset").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
         }
     })
 
@@ -2620,14 +1596,20 @@ function forgotPinNid(element) {
     $("#nid_reset").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
             const regexNid = /^\d{12}$|^\d{9}$/;
+            dataNid.value = dataNid.value.slice(0, 12);
             let isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
                 formatStyleCorrectInput(dataNid, errorMessage);
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
+            }
+
+            if (checkAllDataSame(dataNid.value)) {
+                btnSubmitNid.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -2658,7 +1640,7 @@ function forgotPinNid(element) {
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             btnSendOtp.disabled = true;
         }
     })
@@ -2684,7 +1666,7 @@ function showFormPincode(element, phone, screen) {
                     </form>
                 </div>`;
     $(element).html(html);
-
+    $(window).scrollTop(0);
     var btnSubmitPin = document.querySelector('#btnSubmitPin');
     btnSubmitPin.disabled = true;
 
@@ -2706,8 +1688,9 @@ function showFormPincode(element, phone, screen) {
     });
 
     $("#pincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -2774,8 +1757,7 @@ function showFormPincode(element, phone, screen) {
 // Done +++
 function showFormSetupPin(element, screen, token) {
     disableEnterKey();
-    // showHeader();
-    var html = `<div class='form-card showFormSetupPin ${screen}'>
+    var html = `<div class='form-card showFormSetupPin ${screen}' >
                     <form id='formSetupPinCode'>
                         ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
                         <div class=''>
@@ -2799,10 +1781,12 @@ function showFormSetupPin(element, screen, token) {
     }
 
     pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
+    $(window).scrollTop(0);
 
     $("#repincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
         }
     })
 
@@ -2818,8 +1802,7 @@ function showFormSetupPin(element, screen, token) {
         onInput: (value) => {
             if (value.length == 4) {
                 iPut1 = true;
-                if (iPut1 === true && iPut2 === true) {
-                    console.log('iPut1 && iPut2 => 1: ', iPut1 && iPut2);
+                if (iPut1 && iPut2) {
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
@@ -2844,8 +1827,7 @@ function showFormSetupPin(element, screen, token) {
         onInput: (value) => {
             if (value.length == 4) {
                 iPut2 = true;
-                if (iPut1 === true && iPut2 === true) {
-                    console.log('iPut1 && iPut2 => 2: ', iPut1 && iPut2);
+                if (iPut1 && iPut2) {
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
@@ -2890,7 +1872,7 @@ function showFormSetupPin(element, screen, token) {
                 }
                 let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
                     all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                    all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                    new Date(all_data_info.expirationDate), all_data_info.city, all_data_info.district,
                     all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
                     all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
@@ -2927,7 +1909,6 @@ function showFormSetupPin(element, screen, token) {
             addBorderStyle('setuppin', "RED");
             addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
-            $('#btnSubmitPin').attr("disabled", true);
         }
     })
 }
@@ -3006,8 +1987,9 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     // });
 
     $("#otpcode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -3106,8 +2088,8 @@ function showFormVerifyOTP(element, phone, otp, screen) {
 }
 
 /* countdown */
+let timerOn = true;
 function timer(remaining) {
-    let timerOn = true;
     var m = Math.floor(remaining / 60);
     var s = remaining % 60;
 
@@ -3418,3 +2400,5 @@ function messageScreen(element, config) {
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
+
+

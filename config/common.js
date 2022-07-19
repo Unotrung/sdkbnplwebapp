@@ -54,7 +54,7 @@ function deleteStorageData() {
 // Done +++
 function disableEnterKey() {
     document.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13 || e.code === 'Enter') {
+        if (e.key === 'Enter' || e.keyCode === 13) {
             e.preventDefault();
             return false;
         }
@@ -64,7 +64,7 @@ function disableEnterKey() {
 // Done +++
 function disabledEKey() {
     document.addEventListener('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'e') {
+        if (e.key === 'e' || e.keyCode === 69) {
             e.preventDefault();
             return false;
         }
@@ -83,7 +83,7 @@ function checkAllDataSame(data) {
     while (data) {
         if (data % 10 !== first) {
             return false;
-        }
+        };
         data = Math.floor(data / 10);
     }
     return true;
