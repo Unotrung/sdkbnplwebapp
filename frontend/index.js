@@ -1700,7 +1700,7 @@ function showFormPincode(element, phone, screen) {
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
                                     <h4>Nhập mã PIN</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : 'Vui lòng nhập mã PIN để xác thực thông tin'}</p>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : (screen==='VERIFY_PIN'?'Vui lòng nhập mã PIN để xác thực thông tin':'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
                                     <div class='sub4'>Mã PIN</div>
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
