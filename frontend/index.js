@@ -1916,7 +1916,7 @@ function showFormSetupPin(element, screen, token) {
                 }
                 let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
                     all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                    all_data_info.expirationDate, all_data_info.city, all_data_info.district,
+                    new Date(all_data_info.expirationDate), all_data_info.city, all_data_info.district,
                     all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
                     all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
