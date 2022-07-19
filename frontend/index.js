@@ -639,14 +639,14 @@ function showAllTenor(element, nCount = 0) {
     setRoute("showAllTenor");
     $(element).removeClass().removeAttr('style');
     let html = '';
-    if (customer.limit < totalBillNumber) {
+    //calculator bill
+    let sumBill = 0;
+    pData.forEach(e => { sumBill = sumBill + parseInt(e.price) });
+    if (parseInt(customer.limit) < parseInt(sumBill)) {
+        $(element).html('');
         customerInfo(element, false);
         return;
     }
-
-    //calculator bill
-    let sumBill = 0;
-    pData.forEach(e => { sumBill = sumBill + parseInt(e.price) })
 
     const data = getAllTenor();
     let tenors = data.data;
@@ -1746,9 +1746,11 @@ function showFormPincode(element, phone, screen) {
         console.log('Result Show Form Pin code: ', result);
 
         if (result.status === true && result.data.step === 4) {
+            console.log(screen);
             switch (screen) {
                 default:
-                    showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
+                    // showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
+                    // showPopupMessage('Thông báo', '<h3>something wrong...</h3>');
                 case "SHOW_TENOR":
                     showAllTenor(element, 3);
                     break;

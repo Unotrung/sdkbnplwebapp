@@ -1225,6 +1225,12 @@ body.pinalert .overlay-pincode{
 .form-card-pincode .formSetupPinCode{
     margin-top: 10.13px;
 }
+#formSetupPinCode button#btnSubmitVerifyOTP{
+    margin-top: 15px;
+}
+#formSetupPinCode #otpcode input{
+    margin-bottom: 0px!important;
+}
 .form-card-pincode .form-pincode{
     line-height: normal;
 }
