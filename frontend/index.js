@@ -1,7 +1,7 @@
 const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
-let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
+let customer = { avatar: './assets/img/avatar.png', limit: '10000000', name: 'Trung' };
 let btnSelActive, fillInd, btnFrontActive, btnBackActive = false;
 
 // Done +++
@@ -365,7 +365,7 @@ async function getHV() {
 
 // Done +++
 function cutStringData(infomation) {
-    // try {
+    try {
         if (infomation !== null && infomation !== '' && infomation !== undefined) {
             const { result } = infomation;
             const details = result?.details[0]?.fieldsExtracted;
@@ -459,13 +459,13 @@ function cutStringData(infomation) {
             }
             sessionStorage.setItem('allDataNid', JSON.stringify(allDataNid));
         }
-    // }
-    // catch (error) {
-    //     return {
-    //         errorCode: error.status || 500,
-    //         errorMessage: error.message
-    //     }
-    // }
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
 }
 
 // Done +++
@@ -1049,7 +1049,6 @@ function showDataInform(element, personal) {
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
-    close_popup();
 
     $("#doe").flatpickr({
         dateFormat:'d/m/Y',
