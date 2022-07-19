@@ -49,7 +49,6 @@ function showUICheckPhone(element) {
                     </div>
                 </form>`;
     $(element).html(html);
-
     //custom show
     configUi({
         element: element,
@@ -157,6 +156,7 @@ function showUICheckNid(element) {
     $(element).html(html);
 
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>");
+    $(window).scrollTop(0);
 
     $('#callHP').click(function () {
         showUseGuideSelfy();
@@ -261,6 +261,7 @@ function captureNidFrontAndBack(element) {
 
     showProcessPipeline(1, true, 'captureNid');
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh CMND/CCCD</h4>");
+    $(window).scrollTop(0);
 
     $('#front_image').click(function () {
         deleteImage('FRONT');
@@ -1056,6 +1057,7 @@ function showDataInform(element, personal) {
             $('input[name=doe]').attr('type','text');
         }
     }
+    $(window).scrollTop(0);
 
     let fullnameEle = document.getElementById('fullname');
     let genderEle = document.getElementById('gender');
@@ -1698,7 +1700,7 @@ function showFormPincode(element, phone, screen) {
                     </form>
                 </div>`;
     $(element).html(html);
-
+    $(window).scrollTop(0);
     var btnSubmitPin = document.querySelector('#btnSubmitPin');
     btnSubmitPin.disabled = true;
 
@@ -1813,6 +1815,7 @@ function showFormSetupPin(element, screen, token) {
     }
 
     pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
+    $(window).scrollTop(0);
 
     $("#repincode").on('keypress', function (e) {
         if (e.key === 'e' || e.keyCode === 69) {
@@ -2303,7 +2306,6 @@ function setRoute(func) {
 function router(element) {
     var url = window.location.href;
     route = url.split('#')[1];
-    $(window).scrollTop(0);
     switch (route) {
         default:
             showAllProvider(element);
