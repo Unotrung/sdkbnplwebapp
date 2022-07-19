@@ -195,7 +195,7 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -235,7 +235,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ !');
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -484,7 +484,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
                     // alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
-                    showPopupMessage('Thông báo', 'Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
+                    showPopupMessage('Thông báo', 'Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh.');
                     return false;
                 }
                 else {
@@ -1649,7 +1649,7 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
             }
         }
