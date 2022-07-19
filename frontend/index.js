@@ -1646,6 +1646,7 @@ function forgotPinNid(element) {
     $("#nid_reset").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
             const regexNid = /^\d{12}$|^\d{9}$/;
+            dataNid.value = dataNid.value.slice(0, 12);
             let isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
                 formatStyleCorrectInput(dataNid, errorMessage);
