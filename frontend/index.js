@@ -15,6 +15,7 @@ function showCircularProgressbar(element) {
                     </p> 
                     </div> 
                 </div>`;
+
     $(element).html(html).removeAttr('style');
     showProcessPipeline(4, true);
     $("body").removeClass("loading");
@@ -49,6 +50,7 @@ function showUICheckPhone(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+
     //custom show
     configUi({
         element: element,
@@ -69,8 +71,9 @@ function showUICheckPhone(element) {
     btnSubmitPhone.disabled = true;
 
     $("#phone").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -89,6 +92,11 @@ function showUICheckPhone(element) {
                 formatStyleCorrectInput(dataPhone, errorMessage);
             }
             else {
+                btnSubmitPhone.disabled = true;
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+            }
+
+            if (checkAllDataSame(dataPhone.value)) {
                 btnSubmitPhone.disabled = true;
                 formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
             }
@@ -116,7 +124,7 @@ function showUICheckPhone(element) {
                 showCircularProgressbar(element);
             }
             else if (step === 0) {
-                messageScreen(element,{ screen: "unsuccessScreen", pipeline: false });
+                showMessage(element, "<h3>Đang chờ xác minh...</h3>", "ico-success");
             }
         }
         else if (result.errCode === 1003 && result.status === false) {
@@ -175,8 +183,9 @@ function showUICheckNid(element) {
     let isActive = false;
 
     $("#nid").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -197,13 +206,18 @@ function showUICheckNid(element) {
                 isActive = false;
                 formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
             }
+
+            if (checkAllDataSame(dataNid.value)) {
+                isActive = false;
+                btnSubmitNid.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+            }
         }
         else {
             isActive = false;
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
         fillInd = isActive;
-        console.log(fillInd + " " + btnSelActive);
         if (isActive === true && btnSelActive === true) {
             btnSubmitNid.disabled = false;
         }
@@ -235,7 +249,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -392,12 +406,11 @@ function cutStringData(infomation) {
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
                     if (data) {
                         if (nid !== idNumber) {
-                            console.log('nid && idNumber: ', nid !== idNumber);
                             sessionStorage.removeItem('front-image');
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
                             close_popup();
-                            if(showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')){
+                            if (showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')) {
                                 runDocumentCaptureScreen('FRONT');
                             }
                             return;
@@ -421,7 +434,6 @@ function cutStringData(infomation) {
                         showUseGuideBackNid();
                     }
                     else {
-                        // alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
@@ -481,9 +493,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
             if (apiResults !== null) {
                 const data = apiResults?.result;
                 const matchFace = data?.match;
-                console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    // alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
                     showPopupMessage('Thông báo', 'Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh.');
                     return false;
                 }
@@ -778,44 +788,6 @@ function deleteImage(side) {
 }
 
 // Done +++
-// function postNationalID(ImageURL) {
-//     try {
-//         var block = ImageURL.split(";");
-//         var contentType = block[0].split(":")[1];
-//         var realData = block[1].split(",")[1];
-//         var blob = b64toBlob(realData, contentType);
-//         var formDataToUpload = new FormData();
-//         formDataToUpload.append("image", blob);
-//         var settings = {
-//             "url": "https://vnm-docs.hyperverge.co/v2/nationalID",
-//             "method": "POST",
-//             "timeout": 0,
-//             "headers": {
-//                 "appId": "abe84d",
-//                 "appKey": "7d2c0d7e1690c216458c",
-//                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
-//             },
-//             "async": false,
-//             "processData": false,
-//             "contentType": false,
-//             "mimeType": "multipart/form-data",
-//             "data": formDataToUpload
-//         };
-//         $.ajax(settings).done(function (response) {
-//             const data = JSON.parse(response);
-//             cutStringData(data);
-//         });
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return {
-//             errorCode: error.status || 500,
-//             errorMessage: error.message
-//         }
-//     }
-// }
-
-// Done +++
 function showDataInform(element, personal) {
     disableEnterKey();
     setRoute("showDataInform");
@@ -930,14 +902,14 @@ function showDataInform(element, personal) {
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doi'>Ngày cấp</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' oninput='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' oninput='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}"  />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -960,20 +932,20 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
                                     <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
-                                        ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value)&&`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
+                                        ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
                                     <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
-                                        ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value)&&`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
+                                        ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}"  />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -1052,20 +1024,20 @@ function showDataInform(element, personal) {
     close_popup();
 
     $("#doe").flatpickr({
-        dateFormat:'d/m/Y',
+        dateFormat: 'd/m/Y',
         minDate: "today"
     });
 
     /* fix error safari input[type=date] - by UNO 19/07 */
-    var ua = navigator.userAgent.toLowerCase(); 
+    var ua = navigator.userAgent.toLowerCase();
     console.log("navigator : ", ua);
-    if (ua.indexOf('safari') != -1) { 
+    if (ua.indexOf('safari') != -1) {
         if (ua.indexOf('chrome') > -1) {
-             // Chrome
+            // Chrome
         } else {
             // Safari
-            $('input[name=dob]').attr('type','text');
-            $('input[name=doi]').attr('type','text');
+            $('input[name=dob]').attr('type', 'text');
+            $('input[name=doi]').attr('type', 'text');
         }
     }
     $(window).scrollTop(0);
@@ -1391,7 +1363,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 </div> 
                 <div class="form-row">
                         <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm'>Xác nhận</button>
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
@@ -1575,30 +1547,6 @@ function forgotPinPhone(element, phone) {
 
     $("#phone_reset").prop("disabled", true);
 
-    // var dataPhone = document.querySelector('#phone_reset');
-    // var errorMessage = document.querySelector('.error_message');
-    // var btnContinue = document.querySelector('#btnContinue');
-
-    // $("#phone_reset").on('input', function () {
-    //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-    //     dataPhone.value = dataPhone.value.slice(0, 10);
-    //     let isPhoneErr = !regexPhone.test(dataPhone.value);
-    //     if (dataPhone.value !== null && dataPhone.value !== '') {
-    //         if (!isPhoneErr) {
-    //             formatStyleCorrectInput(dataPhone, errorMessage);
-    //             btnContinue.disabled = false;
-    //         }
-    //         else {
-    //             formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-    //             btnContinue.disabled = true;
-    //         }
-    //     }
-    //     else {
-    //         formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-    //         btnContinue.disabled = true;
-    //     }
-    // });
-
     $('#btnContinue').click(function () {
         let phone_reset = $('#phone_reset').val().trim();
         sessionStorage.setItem('phone_reset', phone_reset);
@@ -1635,8 +1583,9 @@ function forgotPinNid(element) {
     btnSendOtp.disabled = true;
 
     $("#nid_reset").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
         }
     })
 
@@ -1647,6 +1596,7 @@ function forgotPinNid(element) {
     $("#nid_reset").on('input', function () {
         if (dataNid.value !== null && dataNid.value !== '') {
             const regexNid = /^\d{12}$|^\d{9}$/;
+            dataNid.value = dataNid.value.slice(0, 12);
             let isNidErr = !regexNid.test(dataNid.value);
             if (!isNidErr) {
                 formatStyleCorrectInput(dataNid, errorMessage);
@@ -1655,6 +1605,11 @@ function forgotPinNid(element) {
             else {
                 formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
+            }
+
+            if (checkAllDataSame(dataNid.value)) {
+                btnSubmitNid.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -1685,7 +1640,7 @@ function forgotPinNid(element) {
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             btnSendOtp.disabled = true;
         }
     })
@@ -1733,8 +1688,9 @@ function showFormPincode(element, phone, screen) {
     });
 
     $("#pincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -1801,7 +1757,6 @@ function showFormPincode(element, phone, screen) {
 // Done +++
 function showFormSetupPin(element, screen, token) {
     disableEnterKey();
-    // showHeader();
     var html = `<div class='form-card showFormSetupPin ${screen}' >
                     <form id='formSetupPinCode'>
                         ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
@@ -1829,8 +1784,9 @@ function showFormSetupPin(element, screen, token) {
     $(window).scrollTop(0);
 
     $("#repincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
         }
     })
 
@@ -1965,13 +1921,14 @@ function resendOTP(phone) {
     if (otp !== null) {
         console.log('Mã OTP của bạn là: ' + otp.otp);
     }
+    timer(60);
 }
 
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
-    if($( window ).width() < 415){
+    if ($(window).width() < 415) {
         alert('Mã OTP của bạn là: ' + otp);
     }
     $('body .overlay').remove();
@@ -1990,7 +1947,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
                             <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
@@ -2030,8 +1987,9 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     // });
 
     $("#otpcode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 

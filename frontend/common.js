@@ -127,16 +127,19 @@ function close_popup() {
     $('body .overlay-popup').remove();
 }
 
-function showLoading(){
+// Done +++
+function showLoading() {
     $('body').addClass('loading');
 }
 
-$('.close').on('click',function(){
+// Done +++
+$('.close').on('click', function () {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
 });
 
-function showPopupMessage(title,message){
+// Done +++
+function showPopupMessage(title, message) {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
     var html = `<div class="overlay-popup card-otpcode">
@@ -158,7 +161,7 @@ function showPopupMessage(title,message){
 
     $('body').append(html);
     $('body').addClass('popup');
-    $('#okpopup').on('click',function(){
+    $('#okpopup').on('click', function () {
         close_popup();
         return true;
     });

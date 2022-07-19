@@ -159,8 +159,8 @@ function callAjax($data, $url, $type, $token = '') {
             headers: options,
             async: false,
             dataType: 'json',
-            beforeSend:showLoading(),
-            complete:close_popup()
+            beforeSend: showLoading(),
+            complete: close_popup()
         });
         return data.responseJSON;
     }
