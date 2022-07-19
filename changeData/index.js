@@ -9,6 +9,7 @@ function handleChangeCity(ele1, ele2) {
             results.push(district);
         }
     });
+    $(ele2).append(new Option("", ""));
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
@@ -25,9 +26,11 @@ function handleChangeWard(ele1, ele2) {
             results.push(ward);
         }
     });
+    $(ele2).append(new Option("", ""));
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
+    
 }
 
 // Done +++
