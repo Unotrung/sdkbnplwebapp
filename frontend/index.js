@@ -937,7 +937,7 @@ function showDataInform(element, personal) {
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <input placeholder="dd/mm/yyyy" data-timeformat="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -1050,6 +1050,11 @@ function showDataInform(element, personal) {
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
     close_popup();
+
+    flatpickr('#doe',{
+        dateFormat:'d/m/Y',
+        minDate: "today"
+    });
 
     /* fix error safari input[type=date] - by UNO 19/07 */
     var ua = navigator.userAgent.toLowerCase(); 
@@ -1326,7 +1331,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
+                                    <div id='doe' class="info">${personal_all_infoConfirm.expirationDate}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='address'>Địa chỉ hiện tại</label>
