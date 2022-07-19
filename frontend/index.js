@@ -937,7 +937,7 @@ function showDataInform(element, personal) {
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" data-timeformat="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -1051,7 +1051,7 @@ function showDataInform(element, personal) {
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
     close_popup();
 
-    flatpickr('#doe',{
+    $("#doe").flatpickr({
         dateFormat:'d/m/Y',
         minDate: "today"
     });
@@ -1066,7 +1066,6 @@ function showDataInform(element, personal) {
             // Safari
             $('input[name=dob]').attr('type','text');
             $('input[name=doi]').attr('type','text');
-            $('input[name=doe]').attr('type','text');
         }
     }
     $(window).scrollTop(0);
