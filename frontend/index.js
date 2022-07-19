@@ -365,7 +365,7 @@ async function getHV() {
 
 // Done +++
 function cutStringData(infomation) {
-    try {
+    // try {
         if (infomation !== null && infomation !== '' && infomation !== undefined) {
             const { result } = infomation;
             const details = result?.details[0]?.fieldsExtracted;
@@ -381,8 +381,8 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value.trim() || '';
                 let homeTown = details?.homeTown?.value.trim() || '';
                 let permanentAddress = details?.permanentAddress?.value.trim().split(',');
-                let street = permanentAddress[permanentAddress.length - 4].trim() ? permanentAddress[permanentAddress.length - 4].trim() : '';
-                let ward = permanentAddress[permanentAddress.length - 3].trim() ? permanentAddress[permanentAddress.length - 3].trim() : '';
+                let street = (permanentAddress.length > 3)?(permanentAddress[0].trim() ? permanentAddress[0].trim() : ''):'';
+                let ward = (permanentAddress.length > 3)?(permanentAddress[1].trim() ? permanentAddress[1].trim() : ''):permanentAddress[0].trim();
                 let district = permanentAddress[permanentAddress.length - 2].trim() ? permanentAddress[permanentAddress.length - 2].trim() : '';
                 let city = permanentAddress[permanentAddress.length - 1].trim() ? permanentAddress[permanentAddress.length - 1].trim() : '';
                 let gender = details?.gender?.value.trim() || '';
@@ -459,13 +459,13 @@ function cutStringData(infomation) {
             }
             sessionStorage.setItem('allDataNid', JSON.stringify(allDataNid));
         }
-    }
-    catch (error) {
-        return {
-            errorCode: error.status || 500,
-            errorMessage: error.message
-        }
-    }
+    // }
+    // catch (error) {
+    //     return {
+    //         errorCode: error.status || 500,
+    //         errorMessage: error.message
+    //     }
+    // }
 }
 
 // Done +++
@@ -937,7 +937,7 @@ function showDataInform(element, personal) {
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" ${conditionDoe ? 'disabled' : ''} />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}"} />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
