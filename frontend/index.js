@@ -1386,7 +1386,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-                        <button type='button' class='payment-button btn-previous' onclick='showDataInform("${element}")'>Quay lại</button>
+                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
                 </div> `;
     $(element).html(html);
