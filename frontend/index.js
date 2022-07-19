@@ -1,7 +1,7 @@
 const arrType_front = ["cccd_chip_front", "cccd_front", "cmnd_old_front"];
 const arrType_back = ["cccd_chip_back", "cmnd_new_cccd_back", "cmnd_old_back"];
 let billTotal = 0;
-let customer = { avatar: './assets/img/avatar.png', limit: '10000000', name: 'Trung' };
+let customer = { avatar: './assets/img/avatar.png', limit: '50000000', name: 'Trung' };
 let btnSelActive, fillInd, btnFrontActive, btnBackActive = false;
 
 // Done +++
