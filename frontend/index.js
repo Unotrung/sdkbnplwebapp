@@ -2303,6 +2303,7 @@ function setRoute(func) {
 function router(element) {
     var url = window.location.href;
     route = url.split('#')[1];
+    $(window).scrollTop(0);
     switch (route) {
         default:
             showAllProvider(element);
