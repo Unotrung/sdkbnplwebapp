@@ -2386,7 +2386,7 @@ function messageScreen(element, config) {
     if (config.screen == 'pincode_success') {
         html = `<div class='box showMessage box-mobile'>
                     <div class='paragraph-text text-center margin-bottom-default'>
-                        <div class='ico-success'></div>
+                        <div class='ico-success ico-150'></div>
                         <h3>Cập nhật mã PIN thành công</h3>
                         <p style='text-align: center;'>
                             Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
