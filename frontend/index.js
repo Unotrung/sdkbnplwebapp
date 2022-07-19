@@ -1681,7 +1681,7 @@ function forgotPinNid(element) {
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không khớp với số điện thoại đã đăng ký');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không đúng, Vui lòng nhập số khác');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
@@ -1903,6 +1903,7 @@ function showFormSetupPin(element, screen, token) {
         let pin = pin1 + pin2 + pin3 + pin4;
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
+        $('#btnSubmitPin').attr("disabled", true);
         if (pin === pincf && pin !== null && pincf !== null) {
             if (screen === 'SHOW_LOGIN') {
                 const data = JSON.parse(sessionStorage.getItem('personal_all_info'));
@@ -1955,6 +1956,8 @@ function showFormSetupPin(element, screen, token) {
             addBorderStyle('setuppin', "RED");
             addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
+            iPut1, iPut2 = false;
+            $('#btnSubmitPin').attr("disabled", true);
         }
     })
 }
