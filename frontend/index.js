@@ -195,7 +195,7 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -235,7 +235,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ !');
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -380,10 +380,10 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value.trim() || '';
                 let homeTown = details?.homeTown?.value.trim() || '';
                 let permanentAddress = details?.permanentAddress?.value.trim().split(',');
-                let street = permanentAddress[permanentAddress.length - 4].trim() ? permanentAddress[permanentAddress.length - 4].trim() : '';
-                let ward = permanentAddress[permanentAddress.length - 3].trim() ? permanentAddress[permanentAddress.length - 3].trim() : '';
-                let district = permanentAddress[permanentAddress.length - 2].trim() ? permanentAddress[permanentAddress.length - 2].trim() : '';
-                let city = permanentAddress[permanentAddress.length - 1].trim() ? permanentAddress[permanentAddress.length - 1].trim() : '';
+                let street = permanentAddress[permanentAddress.length - 4] ? permanentAddress[permanentAddress.length - 4] : '';
+                let ward = permanentAddress[permanentAddress.length - 3] ? permanentAddress[permanentAddress.length - 3] : '';
+                let district = permanentAddress[permanentAddress.length - 2] ? permanentAddress[permanentAddress.length - 2] : '';
+                let city = permanentAddress[permanentAddress.length - 1] ? permanentAddress[permanentAddress.length - 1] : '';
                 let gender = details?.gender?.value.trim() || '';
                 let doe = details?.doe?.value.trim() || '';
                 let nationality = details?.nationality?.value.trim() || '';
@@ -1544,7 +1544,7 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
             }
         }
@@ -1734,11 +1734,13 @@ function showFormSetupPin(element, screen, token) {
         previewDuration: -1,
         inputId: 'pin',
         onInput: (value) => {
-            console.log('Length Value: ', value.length);
             if (value.length === 4) {
                 iPut1 = true;
                 if (iPut1 && iPut2) {
                     btnSubmitPin.disabled = false;
+                }
+                else {
+                    btnSubmitPin.disabled = true;
                 }
             }
             else if (value.length === 0) {
@@ -1748,7 +1750,7 @@ function showFormSetupPin(element, screen, token) {
             }
             else {
                 iPut1 = false;
-                $('.pincode-input').removeClass('error_pincode_gray');
+                $('.pincode-input').removeClass('error_pincode_red');
                 btnSubmitPin.disabled = true;
             }
         }
@@ -1765,6 +1767,9 @@ function showFormSetupPin(element, screen, token) {
                 if (iPut1 && iPut2) {
                     btnSubmitPin.disabled = false;
                 }
+                else {
+                    btnSubmitPin.disabled = true;
+                }
             }
             else if (value.length === 0) {
                 iPut2 = false;
@@ -1773,7 +1778,7 @@ function showFormSetupPin(element, screen, token) {
             }
             else {
                 iPut2 = false;
-                $('.pincode-input').removeClass('error_pincode_gray');
+                $('.pincode-input').removeClass('error_pincode_red');
                 btnSubmitPin.disabled = true;
             }
         }
@@ -1793,7 +1798,7 @@ function showFormSetupPin(element, screen, token) {
         let pin = pin1 + pin2 + pin3 + pin4;
         let pincf = pincf1 + pincf2 + pincf3 + pincf4;
 
-        if (pin === pincf) {
+        if (pin === pincf && pin !== null && pincf !== null) {
             if (screen === 'SHOW_LOGIN') {
                 const data = JSON.parse(sessionStorage.getItem('personal_all_info'));
                 const front_nid_image = sessionStorage.getItem('front-image');
@@ -1846,8 +1851,8 @@ function showFormSetupPin(element, screen, token) {
         }
         else {
             formatStyleWrongInput(repincode, errorMessage, 'Mã PIN không trùng khớp');
-            addBorderStyle('setuppin', 'GRAY');
-            addBorderStyle('setupcfpin', 'GRAY');
+            addBorderStyle('setuppin', 'RED');
+            addBorderStyle('setupcfpin', 'RED');
             btnSubmitPin.disabled = true;
         }
     })
@@ -2004,9 +2009,10 @@ function showFormVerifyOTP(element, phone, otp, screen) {
     })
 }
 
+// Done +++
 /* countdown */
-let timerOn = true;
 function timer(remaining) {
+    let timerOn = true;
     var m = Math.floor(remaining / 60);
     var s = remaining % 60;
 
@@ -2339,6 +2345,7 @@ function showUseGuideNid() {
     $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
 }
 
+// Done +++
 function showUseGuideBackNid() {
     $('body').find('.guideslide').remove();
     $("#formValueNid").hide();
@@ -2376,6 +2383,7 @@ function showUseGuideBackNid() {
     $('.guideslideback').html(html);
 }
 
+// Done +++
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
@@ -2385,6 +2393,7 @@ $("#tryagain").on("click", function () {
     window.location.href = DOMAIN;
 });
 
+// Done +++
 function close_popup() {
     $('body').removeClass('popup');
     $('body .overlay-popup').remove();
@@ -2617,7 +2626,7 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, ' CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
             }
         }
@@ -2766,7 +2775,7 @@ function showFormPincode(element, phone, screen) {
 function showFormSetupPin(element, screen, token) {
     disableEnterKey();
     // showHeader();
-    var html = `<div class='form-card showFormSetupPin ${screen}' >
+    var html = `<div class='form-card showFormSetupPin ${screen}'>
                     <form id='formSetupPinCode'>
                         ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
                         <div class=''>
@@ -2809,7 +2818,8 @@ function showFormSetupPin(element, screen, token) {
         onInput: (value) => {
             if (value.length == 4) {
                 iPut1 = true;
-                if (iPut1 && iPut2) {
+                if (iPut1 === true && iPut2 === true) {
+                    console.log('iPut1 && iPut2 => 1: ', iPut1 && iPut2);
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
@@ -2818,6 +2828,7 @@ function showFormSetupPin(element, screen, token) {
                 }
             }
             else {
+                iPut1 = false;
                 $('.pincode-input').removeClass('error_pincode_red');
                 $('#btnSubmitPin').attr("disabled", true);
             }
@@ -2833,7 +2844,8 @@ function showFormSetupPin(element, screen, token) {
         onInput: (value) => {
             if (value.length == 4) {
                 iPut2 = true;
-                if (iPut1 && iPut2) {
+                if (iPut1 === true && iPut2 === true) {
+                    console.log('iPut1 && iPut2 => 2: ', iPut1 && iPut2);
                     $('#btnSubmitPin').attr("disabled", false);
                 }
                 else {
@@ -2842,6 +2854,7 @@ function showFormSetupPin(element, screen, token) {
                 }
             }
             else {
+                iPut2 = false;
                 $('.pincode-input').removeClass('error_pincode_red');
                 $('#btnSubmitPin').attr("disabled", true);
             }
@@ -2914,6 +2927,7 @@ function showFormSetupPin(element, screen, token) {
             addBorderStyle('setuppin', "RED");
             addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
+            $('#btnSubmitPin').attr("disabled", true);
         }
     })
 }
@@ -2926,6 +2940,7 @@ function resendOTP(phone) {
     if (otp !== null) {
         console.log('Mã OTP của bạn là: ' + otp.otp);
     }
+    timer(60);
 }
 
 // Done +++
@@ -2951,7 +2966,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
                             <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
