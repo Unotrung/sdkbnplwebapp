@@ -391,6 +391,18 @@ function cutStringData(infomation) {
                 let nid = sessionStorage.getItem('nid');
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
                     if (data) {
+                        if (nid !== idNumber) {
+                            console.log('nid && idNumber: ', nid !== idNumber);
+                            sessionStorage.removeItem('front-image');
+                            $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
+                            $("#btnCaptureFront").removeClass("showImage");
+                            close_popup();
+                            if(showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')){
+                                runDocumentCaptureScreen('FRONT');
+                            }
+                            return;
+                        }
+
                         front_nid_customer = {
                             province: province,
                             idNumber: idNumber,
@@ -416,12 +428,6 @@ function cutStringData(infomation) {
                         close_popup();
                         showPopupMessage('Thông báo', 'Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại');
                         runDocumentCaptureScreen('FRONT');
-                    }
-                    if (nid !== idNumber) {
-                        console.log('nid && idNumber: ', nid !== idNumber);
-                        $('body').addClass('popup');
-                        showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại');
-                        // alert('Chứng minh nhân dân nhập tay với chứng minh nhân dân mặt trước không trùng khớp');
                         return;
                     }
                 });
@@ -477,7 +483,8 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const matchFace = data?.match;
                 console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
+                    // alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
+                    showPopupMessage('Thông báo', 'Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
                     return false;
                 }
                 else {
