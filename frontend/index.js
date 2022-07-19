@@ -1681,7 +1681,7 @@ function forgotPinNid(element) {
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không đúng, Vui lòng nhập số khác');
+            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không đúng. Vui lòng nhập số khác.');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
