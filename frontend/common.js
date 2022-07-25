@@ -68,7 +68,7 @@ var PincodeInput = function () {
                 })), t.addEventListener("focus", (function () {
                     e.focusedCellIdx = s
                 })), t.addEventListener("keydown", (function (t) {
-                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && "Meta" !== t.key && e.cells[s].setAttribute("type", "text")
+                    e.onKeyDown(t, s), "ArrowLeft" !== t.key && "ArrowRight" !== t.key && "ArrowUp" !== t.key && "ArrowDown" !== t.key && "Backspace" !== t.key && "Delete" !== t.key && "Control" !== t.key && "Meta" !== t.key && "Tab" !== t.key && "e" !== t.key && "d" !== t.key && "E" !== t.key && "D" !== t.key && e.cells[s].setAttribute("type", "text")
                 })), t.addEventListener("focus", (function () {
                     t.classList.add("pincode-input--focused");
                     t.classList.remove("error_pincode_red");
@@ -116,27 +116,22 @@ var PincodeInput = function () {
 
 
 // Done +++
-$("#tryagain").on("click", function () {
-    window.location.href = DOMAIN;
-});
-
-// Done +++
 function close_popup() {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
     $('body .overlay-popup').remove();
 }
 
-function showLoading(){
+function showLoading() {
     $('body').addClass('loading');
 }
 
-$('.close').on('click',function(){
+$('.close').on('click', function () {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
 });
 
-function showPopupMessage(title,message){
+function showPopupMessage(title, message) {
     $('body').removeClass('loading');
     $('body').removeClass('popup');
     var html = `<div class="overlay-popup card-otpcode">
@@ -158,7 +153,7 @@ function showPopupMessage(title,message){
 
     $('body').append(html);
     $('body').addClass('popup');
-    $('#okpopup').on('click',function(){
+    $('#okpopup').on('click', function () {
         close_popup();
         return true;
     });

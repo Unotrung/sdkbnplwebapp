@@ -2526,6 +2526,6 @@ div.angled-borders {
 }
 
 .disabled{
-    color: #666666;
+    color: #666666 !important;
     pointer-events: none;
 }
