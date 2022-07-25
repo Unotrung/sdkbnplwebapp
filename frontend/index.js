@@ -303,12 +303,10 @@ function captureNidFrontAndBack(element) {
     }
 
     $('#btnSubmit').click(function () {
-        showLoading();
         let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
         if (adn !== null && adn !== '') {
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
-            let phone = sessionStorage.getItem('phone');
             if (fn !== null && bn !== null) {
                 let personal = new Personal(fn.name, fn.gender, phone, fn.dob, fn.idNumber, bn.doi, fn.doe, fn.province, fn.district, fn.ward, fn.street);
                 showDataInform('#voolo', personal);
@@ -915,7 +913,7 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
                                     <select id='gender' name='gender' class='input-global' autocomplete="off" onchange='onChangeValidation("#gender")' onclick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
-                                    <option value="" >Chọn</option>
+                                    <option value="" >Chọn giới tính</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
                                     </select>
@@ -987,7 +985,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
-                                    <option value=''></option> 
+                                    <option value=''>Chọn thành phố/tỉnh</option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_city_permanent error_message'></span>
@@ -995,7 +993,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
-                                    <option value=''></option> 
+                                    <option value=''>Chọn quận/huyện</option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_district_permanent error_message'></span>
@@ -1003,7 +1001,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường/Xã</label>
                                 <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
-                                    <option value=''></option> 
+                                    <option value=''>Chọn phường/xã</option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
