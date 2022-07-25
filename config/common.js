@@ -54,9 +54,9 @@ function deleteStorageData() {
 // Done +++
 function disableEnterKey() {
     document.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' || e.keyCode === 13) {
+        if (e.key === 'Enter' || e.keyCode === 13 || e.which === 13 || e.code === 'Enter') {
             e.preventDefault();
-            return false;
+	    return false;
         }
     })
 }
@@ -64,9 +64,9 @@ function disableEnterKey() {
 // Done +++
 function disabledEKey() {
     document.addEventListener('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'e') {
             e.preventDefault();
-            return false;
+	    return false;
         }
     })
 }
@@ -78,13 +78,13 @@ function resetPinCode() {
 }
 
 // Done +++
-function checkAllDataSame(data) {
+function checkAllDataSame(data){
     var first = data % 10;
-    while (data) {
-        if (data % 10 !== first) {
-            return false;
-        };
-        data = Math.floor(data / 10);
+    while (data){
+       if(data % 10 !== first){
+	       return false;
+       }
+       data = Math.floor(data / 10);
     }
     return true;
 }
