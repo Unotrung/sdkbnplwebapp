@@ -670,7 +670,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>KÌ HẠN 1</div class='sub4'>
@@ -793,6 +793,26 @@ function deleteImage(side) {
     }
 }
 
+function onHandleChangeDataCity() {
+    onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
+    handleChangeCity("#city", "#district");
+}
+
+function onHandleChangeDataDistrict() {
+    onChangeValidation("#district", "Vui lòng nhập quận, huyện");
+    handleChangeWard("#district", "#ward");
+}
+
+function onHandleChangeDataCityPermanent() {
+    onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
+    handleChangeCity("#city_permanent", "#district_permanent");
+}
+
+function onHandleChangeDataDistrictPermanent() {
+    onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
+    handleChangeWard("#district_permanent", "#ward_permanent");
+}
+
 // Done +++
 function showDataInform(element, personal) {
     disableEnterKey();
@@ -874,22 +894,22 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onClick='onChangeValidation("#fullname", "Vui lòng nhập họ và tên")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname", "Vui lòng nhập họ và tên")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                     <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onClick='onChangeValidation("#phone", "Vui lòng nhập số điện thoại")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
+                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onchange='onChangeValidation("#phone", "Vui lòng nhập số điện thoại")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='dob' name='dob' onClick='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
+                                    <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='dob' name='dob' onchange='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
                                     <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' autocomplete="off" onClick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
+                                    <select id='gender' name='gender' class='input-global' autocomplete="off" onchange='onChangeValidation("#gender")' onclick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
                                     <option value="" >Chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
@@ -898,21 +918,21 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onClick='onChangeValidation("#nid","Vui lòng nhập CMND/CCCD")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onchange='onChangeValidation("#nid","Vui lòng nhập CMND/CCCD")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doi'>Ngày cấp</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' onClick='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' onclick='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' onClick='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' onclick='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -927,28 +947,28 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" onClick='onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
+                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" onchange='onHandleChangeDataCity()' onclick='onHandleChangeDataCity()' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
                                         ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onClick='onChangeValidation("#district", "Vui lòng nhập quận, huyện")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
+                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrict()' onclick='onHandleChangeDataDistrict()' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
                                         ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
-                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
+                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
                                         ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onClick='onChangeValidation("#street", "Vui lòng nhập đường")' value="${conditionStreet ? street : ''}" />
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onchange='onChangeValidation("#street", "Vui lòng nhập đường")' onclick='onChangeValidation("#street", "Vui lòng nhập đường")' value="${conditionStreet ? street : ''}" />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -961,7 +981,7 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh")' onchange='handleChangeCity("#city_permanent", "#district_permanent")'>
+                                <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
                                     <option value=''></option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
@@ -969,7 +989,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện")'  onchange='handleChangeWard("#district_permanent", "#ward_permanent")'>
+                                <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
                                     <option value=''></option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
@@ -977,7 +997,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường/Xã</label>
-                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
                                     <option value=''></option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
@@ -985,7 +1005,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
-                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onClick='onChangeValidation("#street_permanent", "Vui lòng nhập đường")'/>
+                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent", "Vui lòng nhập đường")' onclick='onChangeValidation("#street_permanent", "Vui lòng nhập đường")'/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
@@ -998,19 +1018,19 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onClick='onChangeValidation("#relationship, "Vui lòng nhập mối quan hệ")'>
+                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onchange='onChangeValidation("#relationship, "Vui lòng nhập mối quan hệ")'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
                                     <span class='error_relationship error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onClick='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")'/>
+                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")' onclick='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")' />
                                     <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onClick='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")'/>
+                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")' onclick='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1348,7 +1368,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
+                        <button type='button' class='payment-button btn-previous' onchange='window.location.reload();'>Quay lại</button>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
                 </div> `;
     $(element).html(html);
@@ -1651,7 +1671,7 @@ function showFormPincode(element, phone, screen) {
                                 </div>
                             </div>
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onchange='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
                     </form>
                 </div>`;
     $(element).html(html);
@@ -1975,7 +1995,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain"  onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain"  onchange='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;

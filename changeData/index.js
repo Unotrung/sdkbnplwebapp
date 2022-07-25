@@ -30,7 +30,7 @@ function handleChangeWard(ele1, ele2) {
     results.map((item, index) => {
         $(ele2).append(new Option(item['UI_Show'], item['Value']));
     });
-    
+
 }
 
 // Done +++
