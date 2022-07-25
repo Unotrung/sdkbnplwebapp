@@ -6,6 +6,13 @@ let options = {
     'appKey': appKey,
     'appId': appId
 };
-var myScreenOrientation = window.screen.orientation;
-myScreenOrientation.lock("portrait");
+
+screen.orientation.lock("portrait")
+	.then(function() {
+		// alert('Locked');
+        console.log('Locked');
+	})
+	.catch(function(error) {
+		console.log(error);
+	});
 

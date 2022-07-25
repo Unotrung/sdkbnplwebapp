@@ -2413,6 +2413,9 @@ input{
         margin-bottom: 0px;
     }
 }  
+@media only screen and (orientation:landscape) {
+    
+}
 button.payment-button.btn-previous:before {
     content: "\276E";
     padding: 0 10px 0 0;
