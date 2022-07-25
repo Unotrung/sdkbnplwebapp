@@ -6,3 +6,6 @@ let options = {
     'appKey': appKey,
     'appId': appId
 };
+var myScreenOrientation = window.screen.orientation;
+myScreenOrientation.lock("portrait");
+
