@@ -2524,3 +2524,8 @@ div.angled-borders {
 .hv-modal-content{
     max-width: 415px;
 }
+
+.disabled{
+    color: #666666;
+    pointer-events: none;
+}

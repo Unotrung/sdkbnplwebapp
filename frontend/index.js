@@ -26,6 +26,7 @@ function showCircularProgressbar(element) {
         if (result.errCode === 1000 && result.status === true) {
             let step = result.data.step;
             if (step === 4) {
+		deleteStorageData();
                 clearInterval(myInterval);
                 messageScreen(element, { screen: "successScreen", pipeline: true });
             }
@@ -69,8 +70,9 @@ function showUICheckPhone(element) {
     btnSubmitPhone.disabled = true;
 
     $("#phone").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -175,8 +177,9 @@ function showUICheckNid(element) {
     let isActive = false;
 
     $("#nid").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -195,7 +198,13 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+            }
+            
+            if (checkAllDataSame(dataNid.value)) {
+                isActive = false;
+                btnSubmitNid.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -203,7 +212,6 @@ function showUICheckNid(element) {
             formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
         }
         fillInd = isActive;
-        console.log(fillInd + " " + btnSelActive);
         if (isActive === true && btnSelActive === true) {
             btnSubmitNid.disabled = false;
         }
@@ -392,7 +400,6 @@ function cutStringData(infomation) {
                 makeFaceMatchCall(sessionStorage.getItem('selfie-image'), sessionStorage.getItem('front-image')).then((data) => {
                     if (data) {
                         if (nid !== idNumber) {
-                            console.log('nid && idNumber: ', nid !== idNumber);
                             sessionStorage.removeItem('front-image');
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
@@ -421,7 +428,6 @@ function cutStringData(infomation) {
                         showUseGuideBackNid();
                     }
                     else {
-                        // alert('Ảnh selfie và ảnh mặt trước CMND/CCCD không trùng khớp');
                         sessionStorage.removeItem('front-image');
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
@@ -483,7 +489,6 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const matchFace = data?.match;
                 console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    // alert('Ảnh selfie và ảnh chụp mặt trước CMND/CCCD không trùng khớp');
                     showPopupMessage('Thông báo', 'Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh.');
                     return false;
                 }
@@ -570,7 +575,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 var attemptsCount = HVResponse.getAttemptsCount();
                 console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    showPopupMessage("Thông báo", "Lỗi chụp CMND/CCCD<br/>Vui lòng chụp lại");
+                    showPopupMessage("Thông báo", "Hình ảnh không đạt yêu cầu");
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
@@ -877,15 +882,12 @@ function showDataInform(element, personal) {
     }
     if (city) {
         dtCity = findCity(city);
-        console.log('dtCity: ', dtCity);
     }
     if (district) {
         dtDistrict = findDistrict(district);
-        console.log('dtDistrict: ', dtDistrict);
     }
     if (ward) {
         dtWard = findWard(ward);
-        console.log('dtWard: ', dtWard);
     }
 
     var html = `<div class='form-card form-showdata'>
@@ -899,22 +901,22 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' oninput='onChangeValidation("#fullname")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onClick='onChangeValidation("#fullname", "Vui lòng nhập họ và tên")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                     <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" oninput='onChangeValidation("#phone")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onClick='onChangeValidation("#phone", "Vui lòng nhập số điện thoại")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='dob'>Ngày sinh</label>
-                                    <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='dob' name='dob' oninput='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
+                                    <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='dob' name='dob' onClick='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
                                     <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='gender'>Giới tính</label>
-                                    <select id='gender' name='gender' class='input-global' autocomplete="off" oninput='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
+                                    <select id='gender' name='gender' class='input-global' autocomplete="off" onClick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
                                     <option value="" >Chọn</option>
                                     <option value="M" ${genM}>Nam</option>
                                     <option value="F" ${genF}>Nữ</option>
@@ -923,21 +925,21 @@ function showDataInform(element, personal) {
                                 </div>
                                 <div class='form-row'>
                                     <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' oninput='onChangeValidation("#nid")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onClick='onChangeValidation("#nid","Vui lòng nhập CMND/CCCD")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doi'>Ngày cấp</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' oninput='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" ${conditionDoi ? 'disabled' : ''}/>
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' onClick='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
                                             <label for='doe'>Ngày hết hạn</label>
-                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" id='doe' name='doe' oninput='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}"} />
+                                            <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' onClick='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" />
                                             <span class='error_doe error_message'></span>
                                         </div>
                                     </div>
@@ -952,28 +954,28 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='city'>Thành phố/Tỉnh</label>
-                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" oninput='onChangeValidation("#city")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
+                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" onClick='onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh")' onchange='handleChangeCity("#city", "#district")' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
                                         ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
-                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" oninput='onChangeValidation("#district")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
+                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onClick='onChangeValidation("#district", "Vui lòng nhập quận, huyện")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
                                         ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value)&&`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
-                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
+                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
                                         ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value)&&`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
                                     <label for='street'>Đường</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' oninput='onChangeValidation("#street")' value="${conditionStreet ? street : ''}" ${conditionStreet ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onClick='onChangeValidation("#street", "Vui lòng nhập đường")' value="${conditionStreet ? street : ''}" />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -986,7 +988,7 @@ function showDataInform(element, personal) {
                         <div class="card-body">
                             <div class='form-row'>
                                 <label for='city_permanent'>Thành phố/Tỉnh</label>
-                                <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#city_permanent")' onchange='handleChangeCity("#city_permanent", "#district_permanent")'>
+                                <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh")' onchange='handleChangeCity("#city_permanent", "#district_permanent")'>
                                     <option value=''></option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
@@ -994,7 +996,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='district_permanent'>Quận/Huyện</label>
-                                <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#district_permanent")' onchange='handleChangeWard("#district_permanent", "#ward_permanent")'>
+                                <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện")'  onchange='handleChangeWard("#district_permanent", "#ward_permanent")'>
                                     <option value=''></option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
@@ -1002,7 +1004,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='ward_permanent'>Phường/Xã</label>
-                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" oninput='onChangeValidation("#ward_permanent")'>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
                                     <option value=''></option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
@@ -1010,7 +1012,7 @@ function showDataInform(element, personal) {
                             </div>
                             <div class='form-row'>
                                 <label for='street_permanent'>Đường</label>
-                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' oninput="onChangeValidation('#street_permanent')"/>
+                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onClick='onChangeValidation("#street_permanent", "Vui lòng nhập đường")'/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
@@ -1023,19 +1025,19 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='relationship'>Mối quan hệ </label>
-                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship'>
+                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onClick='onChangeValidation("#relationship, "Vui lòng nhập mối quan hệ")'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
                                     <span class='error_relationship error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" oninput='onChangeValidation("#fullname_ref")'/>
+                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onClick='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")'/>
                                     <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' oninput='onChangeValidation("#phone_ref")'/>
+                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onClick='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1049,11 +1051,7 @@ function showDataInform(element, personal) {
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
     pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
-
-    $("#doe").flatpickr({
-        dateFormat:'d/m/Y',
-        minDate: "today"
-    });
+    close_popup();
 
     /* fix error safari input[type=date] - by UNO 19/07 */
     var ua = navigator.userAgent.toLowerCase(); 
@@ -1108,7 +1106,8 @@ function showDataInform(element, personal) {
                 phone = $(this).val().slice(0, 10);
             }
             else {
-                showMessageStatus(phone_refEle, 'Số điện thoại không hợp lệ', 'ERROR');
+		isActivePhone = false;
+                showMessageStatus(phoneEle, 'Số điện thoại không hợp lệ', 'ERROR');
             }
         }
         if ($(this).attr("id") === 'phone_ref') {
@@ -1120,11 +1119,6 @@ function showDataInform(element, personal) {
             else {
                 isActivePhone = false;
                 showMessageStatus(phone_refEle, 'CMND/CCCD không hợp lệ', 'ERROR');
-            }
-
-            if (phone_ref.length === 0) {
-                isActivePhone = false;
-                showMessageStatus(phone_refEle, 'Vui lòng nhập thông tin', 'ERROR');
             }
         }
 
@@ -1160,8 +1154,9 @@ function showDataInform(element, personal) {
     });
 
     $("#phone_ref").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -1203,9 +1198,6 @@ function showDataInform(element, personal) {
         let isCheckEmpty = checkEmptyError([fullnameEle, genderEle, phoneEle, dobEle, nidEle, doiELe, doeEle, cityEle, districtEle, wardEle, streetEle, relationshipEle, fullname_refEle, phone_refEle, city_permanentEle, district_permanentEle, ward_permanentEle, street_permanentEle])
 
         let isPhoneError = checkPhoneValidate(phoneEle);
-        if (phoneEle.value === '') {
-            showMessageStatus(phoneEle, 'Vui lòng nhập thông tin', 'ERROR');
-        }
         if (isPhoneError) {
             showMessageStatus(phoneEle, 'Số điện thoại không hợp lệ', 'ERROR');
         }
@@ -1214,9 +1206,6 @@ function showDataInform(element, personal) {
         }
 
         let isPhoneRefError = checkPhoneValidate(phone_refEle);
-        if (phone_refEle.value === '') {
-            showMessageStatus(phone_refEle, 'Vui lòng nhập thông tin', 'ERROR');
-        }
         if (isPhoneRefError) {
             showMessageStatus(phone_refEle, 'Số điện thoại không hợp lệ', 'ERROR');
         }
@@ -1225,11 +1214,8 @@ function showDataInform(element, personal) {
         }
 
         let isNidError = checkNidValidate(nidEle);
-        if (nidEle.value === '') {
-            showMessageStatus(nidEle, 'Vui lòng nhập thông tin', 'ERROR');
-        }
         if (isNidError) {
-            showMessageStatus(nidEle, 'CMND/CCCD không hợp lệ', 'ERROR');
+            showMessageStatus(nidEle, 'Số CMND/CCCD không hợp lệ', 'ERROR');
         }
         else {
             showMessageStatus(nidEle, '', 'SUCCESS');
@@ -1329,7 +1315,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='doe'>Ngày hết hạn</label>
-                                    <div id='doe' class="info">${personal_all_infoConfirm.expirationDate}</div>
+                                    <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
                                     <label for='address'>Địa chỉ hiện tại</label>
@@ -1414,7 +1400,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
         "temporaryCity": personal_all_infoConfirm.temporaryCity.city_permanentVal,
         "temporaryDistrict": personal_all_infoConfirm.temporaryDistrict.district_permanentVal,
         "temporaryWard": personal_all_infoConfirm.temporaryWard.ward_permanentVal,
-        "temporaryStreet": personal_all_infoConfirm.street_permanentVal,
+        "temporaryStreet": personal_all_infoConfirm.temporaryStreet,
         "expirationDate": personal_all_infoConfirm.expirationDate
     }
 
@@ -1540,12 +1526,10 @@ function showCapture(base64, eId) {
         }
         else {
             $('body').addClass('popup');
-            alert('Không tìm thấy máy ảnh ! Vui lòng kiểm tra lại !');
         }
     }
     else {
         $('body').addClass('popup');
-        alert('Không tìm thấy ảnh ! Vui lòng kiểm tra lại !');
     }
 }
 
@@ -1572,34 +1556,15 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
-    $("#phone_reset").prop("disabled", true);
-
-    // var dataPhone = document.querySelector('#phone_reset');
-    // var errorMessage = document.querySelector('.error_message');
-    // var btnContinue = document.querySelector('#btnContinue');
-
-    // $("#phone_reset").on('input', function () {
-    //     const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
-    //     dataPhone.value = dataPhone.value.slice(0, 10);
-    //     let isPhoneErr = !regexPhone.test(dataPhone.value);
-    //     if (dataPhone.value !== null && dataPhone.value !== '') {
-    //         if (!isPhoneErr) {
-    //             formatStyleCorrectInput(dataPhone, errorMessage);
-    //             btnContinue.disabled = false;
-    //         }
-    //         else {
-    //             formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
-    //             btnContinue.disabled = true;
-    //         }
-    //     }
-    //     else {
-    //         formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
-    //         btnContinue.disabled = true;
-    //     }
-    // });
+    let phone_reset = $('#phone_reset').val().trim();
+    if (phone_reset === null || phone_reset === '') {
+        $("#phone_reset").prop("disabled", true);
+    }
+    else {
+        $("#phone_reset").prop("disabled", false);
+    }
 
     $('#btnContinue').click(function () {
-        let phone_reset = $('#phone_reset').val().trim();
         sessionStorage.setItem('phone_reset', phone_reset);
         forgotPinNid(element);
     });
@@ -1634,8 +1599,9 @@ function forgotPinNid(element) {
     btnSendOtp.disabled = true;
 
     $("#nid_reset").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
         }
     })
 
@@ -1653,8 +1619,13 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
                 btnSendOtp.disabled = true;
+            }
+
+	    if (checkAllDataSame(dataNid.value)) {
+                btnSendOtp.disabled = true;
+                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
         }
         else {
@@ -1681,11 +1652,11 @@ function forgotPinNid(element) {
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không đúng. Vui lòng nhập số khác.');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không đúng. Vui lòng nhập số khác.');
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ');
+            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             btnSendOtp.disabled = true;
         }
     })
@@ -1726,6 +1697,10 @@ function showFormPincode(element, phone, screen) {
             if (value.length === 4) {
                 btnSubmitPin.disabled = false;
             }
+	    else if (value.length === 0) {
+                formatStyleWrongInput(pincode, errorMessage, 'Vui lòng nhập mã PIN');
+                btnSubmitPin.disabled = true;
+            }
             else {
                 btnSubmitPin.disabled = true;
             }
@@ -1733,8 +1708,9 @@ function showFormPincode(element, phone, screen) {
     });
 
     $("#pincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false;
         }
     })
 
@@ -1803,7 +1779,6 @@ function showFormPincode(element, phone, screen) {
 // Done +++
 function showFormSetupPin(element, screen, token) {
     disableEnterKey();
-    // showHeader();
     var html = `<div class='form-card showFormSetupPin ${screen}' >
                     <form id='formSetupPinCode'>
                         ${screen === 'SHOW_RESET_PIN' ? "<div class='voolo-logo'></div>" : ''}
@@ -1831,8 +1806,16 @@ function showFormSetupPin(element, screen, token) {
     $(window).scrollTop(0);
 
     $("#repincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69) {
+       if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
             e.preventDefault();
+            return false
+        }
+    })
+
+     $("#pincode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
+            e.preventDefault();
+            return false
         }
     })
 
@@ -1919,7 +1902,7 @@ function showFormSetupPin(element, screen, token) {
                 }
                 let result = addInfoPersonal(all_data_info.name, all_data_info.sex === 'M' ? 'Nam' : 'Nữ', all_data_info.birthday,
                     all_data_info.phone, all_data_info.citizenId, all_data_info.issueDate,
-                    new Date(all_data_info.expirationDate), all_data_info.city, all_data_info.district,
+                    all_data_info.expirationDate, all_data_info.city, all_data_info.district,
                     all_data_info.ward, all_data_info.street, all_data_info.temporaryCity,
                     all_data_info.temporaryDistrict, all_data_info.temporaryWard, all_data_info.temporaryStreet,
                     all_data_info.personal_title_ref, all_data_info.name_ref, all_data_info.phone_ref,
@@ -1964,12 +1947,14 @@ function showFormSetupPin(element, screen, token) {
 
 // Done +++
 function resendOTP(phone) {
+    resetTimer();
     var inputs = document.querySelectorAll('.pincode-input');
     inputs.forEach(input => input.value = '');
     let otp = sendOtp(phone);
     if (otp !== null) {
         console.log('Mã OTP của bạn là: ' + otp.otp);
     }
+    timer(60);
 }
 
 // Done +++
@@ -1995,14 +1980,15 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Xác nhận</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain"  onclick='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
     timer(60);
+    resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
     btnSubmitVerifyOTP.disabled = true;
@@ -2099,7 +2085,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 if (data.status === true) {
                     close_popup();
                     showCircularProgressbar('#voolo');
-                    deleteStorageData();
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     if (data?.countFail !== 5) {
@@ -2147,6 +2132,12 @@ function timer(remaining) {
     remaining -= 1;
 
     if (remaining >= 0 && timerOn) {
+	if (s > 0) {
+            $('#sendOtpAgain').addClass('disabled');
+        }
+        else if (s == 0) {
+            $('#sendOtpAgain').removeClass('disabled');
+        }
         setTimeout(function () {
             timer(remaining);
         }, 1000);
@@ -2221,8 +2212,7 @@ function showContract(element) {
                 $('body').addClass('popup');
             }
         }
-    });
-    // close_popup();
+    })
 }
 
 // Done +++
@@ -2441,6 +2431,10 @@ function messageScreen(element, config) {
         }
         n = n - 1;
     }, 1000);
+ 
+    $('#tryagain').click(function (e) {
+        location.href = DOMAIN;
+    });
 };
 
 // Done +++
@@ -2448,4 +2442,8 @@ String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-
+function resetTimer(){
+    setInterval(() => {
+        $('#sendOtpAgain').removeClass('disabled');
+    },61000);
+}
