@@ -808,21 +808,25 @@ function deleteImage(side) {
     }
 }
 
+// Done +++
 function onHandleChangeDataCity() {
     onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city", "#district");
 }
 
+// Done +++
 function onHandleChangeDataDistrict() {
     onChangeValidation("#district", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district", "#ward");
 }
 
+// Done +++
 function onHandleChangeDataCityPermanent() {
     onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
+// Done +++
 function onHandleChangeDataDistrictPermanent() {
     onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district_permanent", "#ward_permanent");
@@ -2049,7 +2053,7 @@ function resendOTP(phone, screen) {
             console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
-    timer(5);
+    timer(60);
 }
 
 // Done +++
@@ -2082,7 +2086,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(5);
+    timer(60);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
