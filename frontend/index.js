@@ -17,6 +17,7 @@ function showCircularProgressbar(element) {
                 </div>`;
     $(element).html(html).removeAttr('style');
     showProcessPipeline(4, true);
+
     $("body").removeClass("loading");
     $("body").removeClass("pinalert");
 
@@ -26,7 +27,7 @@ function showCircularProgressbar(element) {
         if (result.errCode === 1000 && result.status === true) {
             let step = result.data.step;
             if (step === 4) {
-		deleteStorageData();
+                deleteStorageData();
                 clearInterval(myInterval);
                 messageScreen(element, { screen: "successScreen", pipeline: true });
             }
@@ -50,6 +51,7 @@ function showUICheckPhone(element) {
                     </div>
                 </form>`;
     $(element).html(html);
+
     //custom show
     configUi({
         element: element,
@@ -118,7 +120,7 @@ function showUICheckPhone(element) {
                 showCircularProgressbar(element);
             }
             else if (step === 0) {
-                messageScreen(element,{ screen: "unsuccessScreen", pipeline: false });
+                messageScreen(element, { screen: "unsuccessScreen", pipeline: false });
             }
         }
         else if (result.errCode === 1003 && result.status === false) {
@@ -200,7 +202,7 @@ function showUICheckNid(element) {
                 isActive = false;
                 formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
-            
+
             if (checkAllDataSame(dataNid.value)) {
                 isActive = false;
                 btnSubmitNid.disabled = true;
@@ -317,24 +319,32 @@ function captureNidFrontAndBack(element) {
 
 // Done +++
 async function matchField(value1, value2) {
-    let data = $.ajax({
-        type: "POST",
-        url: "https://apac.docs.hyperverge.co/v1/matchFields",
-        async: false,
-        headers: {
-            appId: "abe84d",
-            appKey: "7d2c0d7e1690c216458c",
-            transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
-        },
-        data: JSON.stringify({
-            "id_number": {
-                "value1": value1,
-                "value2": value2
-            }
-        }),
-        contentType: "application/json",
-    });
-    return data.responseJSON;
+    try {
+        let data = $.ajax({
+            type: "POST",
+            url: "https://apac.docs.hyperverge.co/v1/matchFields",
+            async: false,
+            headers: {
+                appId: "abe84d",
+                appKey: "7d2c0d7e1690c216458c",
+                transactionId: "822bc277-0d58-42d8-84d0-ae17006c0d22"
+            },
+            data: JSON.stringify({
+                "id_number": {
+                    "value1": value1,
+                    "value2": value2
+                }
+            }),
+            contentType: "application/json",
+        });
+        return data.responseJSON;
+    }
+    catch (error) {
+        return {
+            errorCode: error.status || 500,
+            errorMessage: error.message
+        }
+    }
 }
 
 // Done +++
@@ -389,8 +399,8 @@ function cutStringData(infomation) {
                 let dob = details?.dob?.value.trim() || '';
                 let homeTown = details?.homeTown?.value.trim() || '';
                 let permanentAddress = details?.permanentAddress?.value.trim().split(',');
-                let street = (permanentAddress.length > 3)?(permanentAddress[0].trim() ? permanentAddress[0].trim() : ''):'';
-                let ward = (permanentAddress.length > 3)?(permanentAddress[1].trim() ? permanentAddress[1].trim() : ''):permanentAddress[0].trim();
+                let street = (permanentAddress.length > 3) ? (permanentAddress[0].trim() ? permanentAddress[0].trim() : '') : '';
+                let ward = (permanentAddress.length > 3) ? (permanentAddress[1].trim() ? permanentAddress[1].trim() : '') : permanentAddress[0].trim();
                 let district = permanentAddress[permanentAddress.length - 2].trim() ? permanentAddress[permanentAddress.length - 2].trim() : '';
                 let city = permanentAddress[permanentAddress.length - 1].trim() ? permanentAddress[permanentAddress.length - 1].trim() : '';
                 let gender = details?.gender?.value.trim() || '';
@@ -404,7 +414,7 @@ function cutStringData(infomation) {
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
                             close_popup();
-                            if(showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')){
+                            if (showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')) {
                                 runDocumentCaptureScreen('FRONT');
                             }
                             return;
@@ -657,6 +667,7 @@ function showAllTenor(element, nCount = 0) {
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
     html += `<form class='formValue orderTop box-mobile box-tenor'> <div style="margin-bottom:24px" class='sub2'>Vui lòng chọn kì hạn thanh toán</div>`;
+
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
@@ -674,6 +685,7 @@ function showAllTenor(element, nCount = 0) {
             </div>
         </div>`
     }
+
     if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
     html += `<button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button></form>`;
     $(element).html(html);
@@ -692,7 +704,6 @@ function showAllTenor(element, nCount = 0) {
     });
 
     customerInfo(element);
-
 
     $('#btnContinue').click(function () {
         let phone = sessionStorage.getItem('phone');
@@ -781,44 +792,6 @@ function deleteImage(side) {
         }
     }
 }
-
-// Done +++
-// function postNationalID(ImageURL) {
-//     try {
-//         var block = ImageURL.split(";");
-//         var contentType = block[0].split(":")[1];
-//         var realData = block[1].split(",")[1];
-//         var blob = b64toBlob(realData, contentType);
-//         var formDataToUpload = new FormData();
-//         formDataToUpload.append("image", blob);
-//         var settings = {
-//             "url": "https://vnm-docs.hyperverge.co/v2/nationalID",
-//             "method": "POST",
-//             "timeout": 0,
-//             "headers": {
-//                 "appId": "abe84d",
-//                 "appKey": "7d2c0d7e1690c216458c",
-//                 "transactionId": "6bdec326-5eff-4492-b045-160816e61cea",
-//             },
-//             "async": false,
-//             "processData": false,
-//             "contentType": false,
-//             "mimeType": "multipart/form-data",
-//             "data": formDataToUpload
-//         };
-//         $.ajax(settings).done(function (response) {
-//             const data = JSON.parse(response);
-//             cutStringData(data);
-//         });
-//     }
-//     catch (error) {
-//         console.log(error);
-//         return {
-//             errorCode: error.status || 500,
-//             errorMessage: error.message
-//         }
-//     }
-// }
 
 // Done +++
 function showDataInform(element, personal) {
@@ -962,14 +935,14 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='district'>Quận/Huyện</label>
                                     <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onClick='onChangeValidation("#district", "Vui lòng nhập quận, huyện")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
-                                        ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value)&&`<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
+                                        ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='ward'>Phường/Xã</label>
                                     <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
-                                        ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value)&&`<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
+                                        ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
@@ -1054,15 +1027,15 @@ function showDataInform(element, personal) {
     close_popup();
 
     /* fix error safari input[type=date] - by UNO 19/07 */
-    var ua = navigator.userAgent.toLowerCase(); 
+    var ua = navigator.userAgent.toLowerCase();
     console.log("navigator : ", ua);
-    if (ua.indexOf('safari') != -1) { 
+    if (ua.indexOf('safari') != -1) {
         if (ua.indexOf('chrome') > -1) {
-             // Chrome
+            // Chrome
         } else {
             // Safari
-            $('input[name=dob]').attr('type','text');
-            $('input[name=doi]').attr('type','text');
+            $('input[name=dob]').attr('type', 'text');
+            $('input[name=doi]').attr('type', 'text');
         }
     }
     $(window).scrollTop(0);
@@ -1106,7 +1079,7 @@ function showDataInform(element, personal) {
                 phone = $(this).val().slice(0, 10);
             }
             else {
-		isActivePhone = false;
+                isActivePhone = false;
                 showMessageStatus(phoneEle, 'Số điện thoại không hợp lệ', 'ERROR');
             }
         }
@@ -1558,10 +1531,10 @@ function forgotPinPhone(element, phone) {
 
     let phone_reset = $('#phone_reset').val().trim();
     if (phone_reset === null || phone_reset === '') {
-        $("#phone_reset").prop("disabled", true);
+        $("#phone_reset").prop("disabled", false);
     }
     else {
-        $("#phone_reset").prop("disabled", false);
+        $("#phone_reset").prop("disabled", true);
     }
 
     $('#btnContinue').click(function () {
@@ -1623,7 +1596,7 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = true;
             }
 
-	    if (checkAllDataSame(dataNid.value)) {
+            if (checkAllDataSame(dataNid.value)) {
                 btnSendOtp.disabled = true;
                 formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
             }
@@ -1671,7 +1644,7 @@ function showFormPincode(element, phone, screen) {
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
                                     <h4>Nhập mã PIN</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : (screen==='VERIFY_PIN'?'Vui lòng nhập mã PIN để xác thực thông tin':'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : (screen === 'VERIFY_PIN' ? 'Vui lòng nhập mã PIN để xác thực thông tin' : 'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
                                     <div class='sub4'>Mã PIN</div>
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
@@ -1697,7 +1670,7 @@ function showFormPincode(element, phone, screen) {
             if (value.length === 4) {
                 btnSubmitPin.disabled = false;
             }
-	    else if (value.length === 0) {
+            else if (value.length === 0) {
                 formatStyleWrongInput(pincode, errorMessage, 'Vui lòng nhập mã PIN');
                 btnSubmitPin.disabled = true;
             }
@@ -1708,11 +1681,18 @@ function showFormPincode(element, phone, screen) {
     });
 
     $("#pincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
             e.preventDefault();
             return false;
         }
-    })
+    });
+
+    $("#pincode").on('keydown', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+            e.preventDefault();
+            return false;
+        }
+    });
 
     var pincode = document.querySelector('#pincode');
     var errorMessage = document.querySelector('.error_message');
@@ -1726,8 +1706,8 @@ function showFormPincode(element, phone, screen) {
             console.log(screen);
             switch (screen) {
                 default:
-                    // showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
-                    // showPopupMessage('Thông báo', '<h3>something wrong...</h3>');
+                // showMessage(element, '<h3>something wrong...</h3>', 'ico-unsuccess');
+                // showPopupMessage('Thông báo', '<h3>something wrong...</h3>');
                 case "SHOW_TENOR":
                     showAllTenor(element, 3);
                     break;
@@ -1805,20 +1785,6 @@ function showFormSetupPin(element, screen, token) {
     pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
     $(window).scrollTop(0);
 
-    $("#repincode").on('keypress', function (e) {
-       if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
-            e.preventDefault();
-            return false
-        }
-    })
-
-     $("#pincode").on('keypress', function (e) {
-        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD') {
-            e.preventDefault();
-            return false
-        }
-    })
-
     let iPut1, iPut2 = false;
     $('#btnSubmitPin').attr("disabled", true);
 
@@ -1869,6 +1835,34 @@ function showFormSetupPin(element, screen, token) {
                 $('.pincode-input').removeClass('error_pincode_red');
                 $('#btnSubmitPin').attr("disabled", true);
             }
+        }
+    });
+
+    $("#repincode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+            e.preventDefault();
+            return false
+        }
+    });
+
+    $("#repincode").on('keydown', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+            e.preventDefault();
+            return false
+        }
+    });
+
+    $("#pincode").on('keypress', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+            e.preventDefault();
+            return false
+        }
+    });
+
+    $("#pincode").on('keydown', function (e) {
+        if (e.key === 'e' || e.keyCode === 69 || e.which === 69 || e.code === 'KeyE' || e.key === 'd' || e.keyCode === 68 || e.which === 68 || e.code === 'KeyD' || e.key === 'Tab' || e.keyCode === 9 || e.which === 9 || e.code === 'Tab') {
+            e.preventDefault();
+            return false
         }
     });
 
@@ -1954,14 +1948,14 @@ function resendOTP(phone) {
     if (otp !== null) {
         console.log('Mã OTP của bạn là: ' + otp.otp);
     }
-    timer(60);
+    timer(5);
 }
 
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     disableEnterKey();
     console.log('Mã OTP của bạn là: ' + otp);
-    if($( window ).width() < 415){
+    if ($(window).width() < 415) {
         alert('Mã OTP của bạn là: ' + otp);
     }
     $('body .overlay').remove();
@@ -1987,7 +1981,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(60);
+    timer(5);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -2117,36 +2111,6 @@ function showFormVerifyOTP(element, phone, otp, screen) {
             }
         }
     });
-}
-
-/* countdown */
-let timerOn = true;
-function timer(remaining) {
-    var m = Math.floor(remaining / 60);
-    var s = remaining % 60;
-
-    m = m < 10 ? '0' + m : m;
-    s = s < 10 ? '0' + s : s;
-    // m + ':' + s
-    document.getElementById('timer').innerHTML = s + 's';
-    remaining -= 1;
-
-    if (remaining >= 0 && timerOn) {
-	if (s > 0) {
-            $('#sendOtpAgain').addClass('disabled');
-        }
-        else if (s == 0) {
-            $('#sendOtpAgain').removeClass('disabled');
-        }
-        setTimeout(function () {
-            timer(remaining);
-        }, 1000);
-        return;
-    }
-
-    if (!timerOn) {
-        return;
-    }
 }
 
 // Done +++
@@ -2431,7 +2395,7 @@ function messageScreen(element, config) {
         }
         n = n - 1;
     }, 1000);
- 
+
     $('#tryagain').click(function (e) {
         location.href = DOMAIN;
     });
@@ -2440,10 +2404,4 @@ function messageScreen(element, config) {
 // Done +++
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
-}
-
-function resetTimer(){
-    setInterval(() => {
-        $('#sendOtpAgain').removeClass('disabled');
-    },61000);
 }
