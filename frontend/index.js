@@ -671,7 +671,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>KÌ HẠN 1</div class='sub4'>
@@ -1373,7 +1373,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-                        <button type='button' class='payment-button btn-previous' onchange='window.location.reload();'>Quay lại</button>
+                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
                 </div> `;
     $(element).html(html);
@@ -1700,7 +1700,7 @@ function showFormPincode(element, phone, screen) {
                                 </div>
                             </div>
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onchange='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
                     </form>
                 </div>`;
     $(element).html(html);
@@ -1989,13 +1989,22 @@ function showFormSetupPin(element, screen, token) {
 }
 
 // Done +++
-function resendOTP(phone) {
+function resendOTP(phone, screen) {
     resetTimer();
     var inputs = document.querySelectorAll('.pincode-input');
     inputs.forEach(input => input.value = '');
-    let otp = sendOtp(phone);
-    if (otp !== null) {
-        console.log('Mã OTP của bạn là: ' + otp.otp);
+    if (screen === 'RESET_PIN') {
+        let nid_reset = sessionStorage.getItem('nid_reset');
+        let otp = sendOtpPin(phone, nid_reset);
+        if (otp !== null) {
+            console.log('Mã OTP của bạn là: ' + otp.otp);
+        }
+    }
+    else if (screen === 'VERIFY_PHONE') {
+        let otp = sendOtp(phone);
+        if (otp !== null) {
+            console.log('Mã OTP của bạn là: ' + otp.otp);
+        }
     }
     timer(60);
 }
@@ -2024,7 +2033,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain"  onchange='resendOTP("${phone}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
