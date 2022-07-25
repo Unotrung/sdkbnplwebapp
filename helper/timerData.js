@@ -27,5 +27,5 @@ function timer(remaining) {
 function resetTimer() {
     setInterval(() => {
         $('#sendOtpAgain').removeClass('disabled');
-    }, 6000);
+    }, 60009);
 }
