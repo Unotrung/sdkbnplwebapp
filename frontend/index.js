@@ -670,7 +670,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
