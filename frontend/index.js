@@ -523,7 +523,7 @@ async function LaunchFaceCaptureScreen() {
         hvFaceConfig.faceTextConfig.setFaceDetectedDescription('Chụp ảnh ngay');
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle('faceCaptureReviewTitle');
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
-
+        $("body").removeClass("loading");
         callback = (HVError, HVResponse) => {
             if (HVError) {
                 var errorCode = HVError.getErrorCode();
@@ -562,6 +562,7 @@ async function LaunchDocumentCaptureScreen(side) {
         hvDocConfig.setShouldShowDocReviewScreen(false);
         hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
         hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình');
+        $("body").removeClass("loading");
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
         let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
@@ -1534,7 +1535,7 @@ function forgotPinPhone(element, phone) {
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">Số điện thoại</h4>
                             <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
-                            <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone}" />
+                            <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone ? phone : ''}" />
                             <span class='error_message'></span>
                         </div>
                         <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
@@ -1549,6 +1550,9 @@ function forgotPinPhone(element, phone) {
         intro: false
     });
 
+    let dataPhone = document.querySelector('#phone_reset');
+    let btnContinue = document.querySelector('#btnContinue');
+
     let phone_reset = $('#phone_reset').val().trim();
     if (phone_reset === null || phone_reset === '') {
         $("#phone_reset").prop("disabled", false);
@@ -1556,6 +1560,27 @@ function forgotPinPhone(element, phone) {
     else {
         $("#phone_reset").prop("disabled", true);
     }
+
+    $("#phone_reset").on('input', function () {
+        const regexPhone = /^(09|03|07|08|05)+([0-9]{8}$)/;
+        dataPhone.value = dataPhone.value.slice(0, 10);
+        let isPhoneErr = !regexPhone.test(dataPhone.value);
+
+        if (dataPhone.value !== null && dataPhone.value !== '') {
+            if (!isPhoneErr) {
+                btnContinue.disabled = false;
+                formatStyleCorrectInput(dataPhone, errorMessage);
+            }
+            else {
+                btnContinue.disabled = true;
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+            }
+        }
+        else {
+            btnContinue.disabled = true;
+            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+        }
+    });
 
     $('#btnContinue').click(function () {
         sessionStorage.setItem('phone_reset', phone_reset);
