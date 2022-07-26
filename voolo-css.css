@@ -2444,6 +2444,13 @@ input{
     .headrow .line{
         padding-left: 7%;
     }
+    .form-showdata{
+        width: 80%;
+    }
+    .form-confirmdata{
+        width: 80%;
+        max-width: initial;
+    }
 }
 button.payment-button.btn-previous:before {
     content: "\276E";

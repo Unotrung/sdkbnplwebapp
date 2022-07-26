@@ -1058,8 +1058,8 @@ function showDataInform(element, personal) {
             // Chrome
         } else {
             // Safari
-            $('input[name=dob]').attr('type', 'text');
-            $('input[name=doi]').attr('type', 'text');
+            // $('input[name=dob]').attr('type', 'text');
+            // $('input[name=doi]').attr('type', 'text');
         }
     }
     $(window).scrollTop(0);
