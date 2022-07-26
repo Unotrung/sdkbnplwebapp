@@ -2414,7 +2414,36 @@ input{
     }
 }  
 @media only screen and (orientation:landscape) {
-    
+    .main-page .list-items{
+        padding: 0;
+    }
+    .main-page .paragraph-text{
+        min-width: auto;
+    }
+    .main-page .list-items .card{
+        max-width: 100%;
+        padding-left: 20px;
+    }
+    #voolo form.formValue{
+        max-width:auto;
+        margin: 0;
+        padding: 32px 20px;
+    }
+    input, select{
+        width: 100%;
+    }
+    .headrow{
+        min-width: initial;
+    }
+    .headrow .pipeline{
+        max-width: 100%;
+    }
+    .headrow .pipeline .pipe{
+        margin-right: 40px;
+    }
+    .headrow .line{
+        padding-left: 7%;
+    }
 }
 button.payment-button.btn-previous:before {
     content: "\276E";
