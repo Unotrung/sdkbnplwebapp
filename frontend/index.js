@@ -305,6 +305,7 @@ function captureNidFrontAndBack(element) {
     $('#btnSubmit').click(function () {
         let adn = JSON.parse(sessionStorage.getItem('allDataNid'));
         if (adn !== null && adn !== '') {
+            let phone = sessionStorage.getItem('phone');
             let fn = adn?.front_nid_customer;
             let bn = adn?.back_nid_customer;
             if (fn !== null && bn !== null) {
