@@ -2500,6 +2500,22 @@ input{
         width: 35%;
     }
 }
+@media only screen and (max-width: 360px){
+    .main-page .list-items .card{
+        min-width: 100%;
+        padding-left: 0;
+    }
+    .form-otpcode .pincode-input{
+        width: 35px;
+        height: 35px;
+    }
+    .showFormSetupPin{
+        width: 100%;
+    }
+    .box.showCircularProgressbar{
+        width: 100%;
+    }
+}
 button.payment-button.btn-previous:before {
     content: "\276E";
     padding: 0 10px 0 0;
