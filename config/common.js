@@ -48,7 +48,18 @@ function formatCurrency(money) {
 
 // Done +++
 function deleteStorageData() {
-    sessionStorage.clear();
+    sessionStorage.removeItem('nid');
+    sessionStorage.removeItem('selfie-image');
+    sessionStorage.removeItem('allDataNid');
+    sessionStorage.removeItem('front-image');
+    sessionStorage.removeItem('back-image');
+    sessionStorage.removeItem('typeBackNid');
+    sessionStorage.removeItem('typeFrontNid');
+    sessionStorage.removeItem('back_nid_customer');
+    sessionStorage.removeItem('front_nid_customer');
+    sessionStorage.removeItem('phone_reset');
+    sessionStorage.removeItem('nid_reset');
+    sessionStorage.removeItem('personal_all_info');
 }
 
 // Done +++
