@@ -1622,7 +1622,7 @@ input{
     margin-bottom: 32px;
 }
 /*  and (min-width: 390px)  */
-@media only screen and (min-width: 360px) and (max-width: 540px){
+@media only screen and (min-width: 320px) and (max-width: 540px){
     input, select{
         margin: 6px 0;
         padding: 8px 17px;
