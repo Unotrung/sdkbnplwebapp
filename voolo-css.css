@@ -1622,7 +1622,7 @@ input{
     margin-bottom: 32px;
 }
 /*  and (min-width: 390px)  */
-@media only screen and (max-width: 428px){
+@media only screen and (min-width: 360px) and (max-width: 540px){
     input, select{
         margin: 6px 0;
         padding: 8px 17px;
@@ -1684,6 +1684,8 @@ input{
     .main-page .list-items .card{
         width: 100%;
         min-width: 335px;
+        float: none;
+        margin: 0 auto;
     }
     .main-page .list-items .card .card-head{
         padding: 22.86px 0 13.71px 14.76px;
@@ -2413,7 +2415,50 @@ input{
         margin-bottom: 0px;
     }
 }  
-@media only screen and (max-width: 844px) and (orientation:landscape) {
+@media only screen and (max-width: 844px) and (orientation:landscape){
+    .main-page .list-items{
+        padding: 0;
+    }
+    .main-page .paragraph-text{
+        min-width: auto;
+    }
+    .main-page .list-items .card{
+        max-width: 100%;
+        padding-left: 20px;
+    }
+    #voolo form.formValue{
+        max-width:auto;
+        margin: 0;
+        padding: 32px 20px;
+    }
+    input, select{
+        width: 100%;
+    }
+    .headrow{
+        min-width: initial;
+    }
+    .headrow .pipeline{
+        max-width: 100%;
+    }
+    .headrow .pipeline .pipe{
+        margin-right: 40px;
+    }
+    .headrow .line{
+        padding-left: 7%;
+    }
+    .form-showdata{
+        width: 80%;
+    }
+    .form-confirmdata{
+        width: 80%;
+        max-width: initial;
+    }
+    .alert-box{
+        width: 35%;
+    }
+}
+/* ipad */
+@media screen and (min-width: 541px) and (max-width: 912px) {
     .main-page .list-items{
         padding: 0;
     }
