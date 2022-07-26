@@ -2451,6 +2451,9 @@ input{
         width: 80%;
         max-width: initial;
     }
+    .alert-box{
+        width: 35%;
+    }
 }
 button.payment-button.btn-previous:before {
     content: "\276E";
