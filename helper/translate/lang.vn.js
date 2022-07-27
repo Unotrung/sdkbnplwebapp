@@ -36,6 +36,6 @@ lang = {
 
     //showCircularProgressbar
     showCircularProgressbar : {
-        processing : "Đang trong tiến trình xác minh thông tin",
+        verifying : "Đang trong tiến trình xác minh thông tin",
     },
 };
