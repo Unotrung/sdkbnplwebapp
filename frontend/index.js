@@ -148,18 +148,18 @@ function showUICheckNid(element) {
     var html = `<form id='formValueNid' class='formValue showUICheckNid'>
                     <div class='mobile'>
                         <div class='form__row'>
-                            <label for='nid'>Vui lòng nhập số CMND/CCCD</label>
+                            <label for='nid'>${lang.showUICheckNid.input_nid}</label>
                             <input autocomplete="off" type='number' id='nid' class='input-global' autocomplete="off" />
                             <span class='error_message'></span>
                         </div>
-                        <label>Chụp ảnh chân dung</label>
+                        <label>${lang.showUICheckNid.capture_selfie}</label>
                         <button type='button' id='callHP' class='btnCapture'></button>
-                        <button type='button' id='btnSubmitNid' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnSubmitNid' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                     </div>
                 </form>`;
     $(element).html(html);
 
-    pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showUICheckNid.capture_selfie+"</h4>");
     $(window).scrollTop(0);
 
     $('#callHP').click(function () {
@@ -200,18 +200,18 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid);
             }
 
             if (checkAllDataSame(dataNid.value)) {
                 isActive = false;
                 btnSubmitNid.disabled = true;
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid);
             }
         }
         else {
             isActive = false;
-            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_null);
         }
         fillInd = isActive;
         if (isActive === true && btnSelActive === true) {
@@ -230,7 +230,7 @@ function showUICheckNid(element) {
         let result = checkNidExists(data);
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD đã được đăng ký.');
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_registered);
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -245,7 +245,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, 'CMND/CCCD không hợp lệ !');
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_);
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -257,12 +257,12 @@ function captureNidFrontAndBack(element) {
     setRoute("captureNidFrontAndBack");
     var html = `<form class='formValue captureNidFrontAndBack' id="formValueNid">
                     <div class='buttons mobile'>
-                        <label for='' class='title'>Chụp ảnh CMND/CCCD</label>
+                        <label for='' class='title'>${lang.captureNidFrontAndBack.capture_nid}</label>
                         <div>
-                        <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>CMND mặt trước</label></button>
-                        <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>CMND mặt sau</label></button>
+                        <button type='button' id='btnCaptureFront' class='btnCapture'><label class='caption'>${lang.captureNidFrontAndBack.capture_front_nid}</label></button>
+                        <button type='button' id='btnCaptureBack' class='btnCapture'><label class='caption'>${lang.captureNidFrontAndBack.capture_back_nid}</label></button>
                         </div>
-                        <button type='button' id='btnSubmit' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnSubmit' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                     </div>
                 </form> `;
     $(element).html(html);
@@ -270,7 +270,7 @@ function captureNidFrontAndBack(element) {
     disableEnterKey();
 
     showProcessPipeline(1, true, 'captureNid');
-    pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh CMND/CCCD</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.captureNidFrontAndBack.capture_nid+"</h4>");
     $(window).scrollTop(0);
 
     $('#front_image').click(function () {
@@ -413,7 +413,7 @@ function cutStringData(infomation) {
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
                             close_popup();
-                            if (showPopupMessage('Thông báo', 'CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại')) {
+                            if (showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)) {
                                 runDocumentCaptureScreen('FRONT');
                             }
                             return;
@@ -441,7 +441,7 @@ function cutStringData(infomation) {
                         $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                         $("#btnCaptureFront").removeClass("showImage");
                         close_popup();
-                        showPopupMessage('Thông báo', 'Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại');
+                        showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_capture_front_nid);
                         runDocumentCaptureScreen('FRONT');
                         return;
                     }
@@ -498,7 +498,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const matchFace = data?.match;
                 console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    showPopupMessage('Thông báo', 'Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh.');
+                    showPopupMessage(lang.cutStringData.notification, lang.makeFaceMatchCall.error_selfie_notmatch);
                     return false;
                 }
                 else {
@@ -515,13 +515,13 @@ async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
-        hvFaceConfig.faceTextConfig.setFaceCaptureTitle('Chụp ảnh chân dung');
-        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
-        hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription('Vui lòng KHÔNG đội nón, đeo kính, khẩu trang, chọn nơi có đủ ánh sáng để chụp ảnh');
-        hvFaceConfig.faceTextConfig.setFaceTooBigDescription('Cách xa camera');
-        hvFaceConfig.faceTextConfig.setFaceDetectedDescription('Chụp ảnh ngay');
-        hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle('faceCaptureReviewTitle');
-        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
+        hvFaceConfig.faceTextConfig.setFaceCaptureTitle(lang.LaunchFaceCaptureScreen.capture_selfie);
+        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone);
+        hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription(lang.LaunchFaceCaptureScreen.capture_rules);
+        hvFaceConfig.faceTextConfig.setFaceTooBigDescription(lang.LaunchFaceCaptureScreen.away_camera);
+        hvFaceConfig.faceTextConfig.setFaceDetectedDescription(lang.LaunchFaceCaptureScreen.capture_now);
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle(lang.LaunchFaceCaptureScreen.capture_review);
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription(lang.LaunchFaceCaptureScreen.FaceCaptureReviewBottomDescription);
         $("body").removeClass("loading");
         callback = (HVError, HVResponse) => {
             if (HVError) {
@@ -536,7 +536,7 @@ async function LaunchFaceCaptureScreen() {
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
                     $("#formValueNid").show();
-                    $('body').find('.pageTitle').text("Chụp ảnh chân dung");
+                    $('body').find('.pageTitle').text(lang.LaunchFaceCaptureScreen.capture_selfie);
                     sessionStorage.setItem('selfie-image', imageBase64);
                     showCapture(imageBase64, 'callHP');
                     close_popup();
@@ -559,18 +559,18 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
-        hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
-        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình');
+        hvDocConfig.docTextConfig.setDocCaptureReviewTitle(lang.LaunchDocumentCaptureScreen.capture_nid);
+        hvDocConfig.docTextConfig.setDocCaptureBottomDescription(lang.LaunchDocumentCaptureScreen.choose_place);
         $("body").removeClass("loading");
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
         let applyBackNid = side === 'BACK' && side !== 'FRONT' && side !== '';
         if (applyFrontNid) {
-            hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt trước');
+            hvDocConfig.docTextConfig.setDocCaptureTitle(lang.LaunchDocumentCaptureScreen.capture_front);
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.FRONT, {}, {});
         }
         else if (applyBackNid) {
-            hvDocConfig.docTextConfig.setDocCaptureTitle('Chụp ảnh mặt sau');
+            hvDocConfig.docTextConfig.setDocCaptureTitle(lang.LaunchDocumentCaptureScreen.capture_back);
             hvDocConfig.setOCRDetails("https://vnm-docs.hyperverge.co/v2/nationalID", hvDocConfig.DocumentSide.BACK, {}, {});
         }
         callback = (HVError, HVResponse) => {
@@ -585,14 +585,14 @@ async function LaunchDocumentCaptureScreen(side) {
                 var attemptsCount = HVResponse.getAttemptsCount();
                 console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    showPopupMessage("Thông báo", "Hình ảnh không đạt yêu cầu");
+                    showPopupMessage(lang.cutStringData.notification, lang.LaunchDocumentCaptureScreen.Unsatisfactory_picture);
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
                     $('.guideslide').remove();
                     $('.guideslideback').remove();
                     $("#formValueNid").show();
-                    $('body').find('.pageTitle').text("Chụp ảnh CMND/CCCD");
+                    $('body').find('.pageTitle').text(lang.LaunchDocumentCaptureScreen.capture_nid);
                     if (applyFrontNid) {
                         console.log("apiResults front: ", apiResults['result']['details'][0]['fieldsExtracted']);
                         sessionStorage.setItem('front-image', imageBase64);
@@ -666,28 +666,28 @@ function showAllTenor(element, nCount = 0) {
     const data = getAllTenor();
     let tenors = data.data;
     count = nCount === 0 ? tenors.length : nCount;
-    html += `<form class='formValue orderTop box-mobile box-tenor'> <div style="margin-bottom:24px" class='sub2'>Vui lòng chọn kì hạn thanh toán</div>`;
+    html += `<form class='formValue orderTop box-mobile box-tenor'> <div style="margin-bottom:24px" class='sub2'>${lang.showAllTenor.select_payment_term}</div>`;
 
     for (var i = 0; i < count; i++) {
         html += `
         <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
-                    <div class='sub4'>KÌ HẠN 1</div class='sub4'>
+                    <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
                     <h5 class='totalprice'>${formatCurrency(parseInt(sumBill) + parseInt(tenors[i].convertFee))}</h5>
                 </div>
                 <ul>
-                    <li>Giá sản phẩm: ${formatCurrency(billTotal)}</li>
-                    <li>Phí chuyển đổi: ${formatCurrency(tenors[i].convertFee)}</li>
-                    <li>Thời gian thanh toán: ${tenors[i].paymentSchedule} ngày</li>
+                    <li>${lang.showAllTenor.product_price} ${formatCurrency(billTotal)}</li>
+                    <li>${lang.showAllTenor.conversion_fee} ${formatCurrency(tenors[i].convertFee)}</li>
+                    <li>${lang.showAllTenor.payment_time} ${tenors[i].paymentSchedule} ${lang.showAllTenor.payment_type}</li>
                 </ul>
                 <p></p>
             </div>
         </div>`
     }
 
-    if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>Hiển thị thêm</a>`;
-    html += `<button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button></form>`;
+    if (count <= 3 && tenors.length > 3) html += `<a onclick='showAllTenor("${element}",0)' class='ahref'>${lang.showAllTenor.show_more}</a>`;
+    html += `<button type='button' id='btnContinue' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button></form>`;
     $(element).html(html);
 
     disableEnterKey();
@@ -758,30 +758,30 @@ function deleteImage(side) {
             if (sessionStorage.getItem('selfie-image') !== null) {
                 sessionStorage.removeItem('selfie-image');
                 $("#selfie_picture").attr("src", "");
-                alert('Xóa ảnh selfie thành công !');
+                alert(lang.deleteImage.delete_img_success);
             }
             else {
-                alert('Không tìm thấy ảnh để xóa !');
+                alert(lang.deleteImage.not_found_img);
             }
         }
         else if (side === 'FRONT') {
             if (sessionStorage.getItem('front_image') !== null) {
                 sessionStorage.removeItem('front-image');
                 $("#front_picture").attr("src", "");
-                alert('Xóa mặt trước selfie thành công !');
+                alert(lang.deleteImage.delete_front_img);
             }
             else {
-                alert('Không tìm thấy ảnh để xóa !');
+                alert(lang.deleteImage.not_found_img);
             }
         }
         else {
             if (sessionStorage.getItem('back_image') !== null) {
                 sessionStorage.removeItem('back-image');
                 $("#back_picture").attr("src", "");
-                alert('Xóa mặt sau selfie thành công !');
+                alert(lang.deleteImage.delete_back_img);
             }
             else {
-                alert('Không tìm thấy ảnh để xóa !');
+                alert(lang.deleteImage.not_found_img);
             }
         }
     }
@@ -795,25 +795,25 @@ function deleteImage(side) {
 
 // Done +++
 function onHandleChangeDataCity() {
-    onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
+    onChangeValidation("#city", lang.onHandleChangeDataCity.input_city);
     handleChangeCity("#city", "#district");
 }
 
 // Done +++
 function onHandleChangeDataDistrict() {
-    onChangeValidation("#district", "Vui lòng nhập quận, huyện");
+    onChangeValidation("#district", lang.onHandleChangeDataCity.input_district);
     handleChangeWard("#district", "#ward");
 }
 
 // Done +++
 function onHandleChangeDataCityPermanent() {
-    onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
+    onChangeValidation("#city_permanent", lang.onHandleChangeDataCity.input_city);
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
 // Done +++
 function onHandleChangeDataDistrictPermanent() {
-    onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
+    onChangeValidation("#district_permanent", lang.onHandleChangeDataCity.input_district);
     handleChangeWard("#district_permanent", "#ward_permanent");
 }
 
@@ -888,54 +888,54 @@ function showDataInform(element, personal) {
     }
 
     var html = `<div class='form-card form-showdata'>
-                    <h4 class='form-showdata-title'>Nhập thông tin cá nhân</h4>
-                    <p class='form-showdata-desc'>Vui lòng điền các trường thông tin bên dưới</p>
+                    <h4 class='form-showdata-title'>${lang.showDataInform.input_info}</h4>
+                    <p class='form-showdata-desc'>${lang.showDataInform.fill_fields_below}</p>
                     <form class='' id='formDataValue'>
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-showdata-info sub4'>Thông tin cá nhân</h3>
+                                <h3 class='form-showdata-info sub4'>${lang.showDataInform.info}</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
-                                    <label for='fullname'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname", "Vui lòng nhập họ và tên")' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <label for='fullname'>${lang.showDataInform.info_name}</label>
+                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname", ${lang.showDataInform.input_name})' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                     <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='phone'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onchange='onChangeValidation("#phone", "Vui lòng nhập số điện thoại")' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
+                                    <label for='phone'>${lang.showDataInform.info_phone}</label>
+                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onchange='onChangeValidation("#phone", ${lang.showDataInform.input_phone})' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='dob'>Ngày sinh</label>
+                                    <label for='dob'>${lang.showDataInform.info_birth}</label>
                                     <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='dob' name='dob' onchange='onChangeValidation("#dob")' value="${conditionDob ? dob : ''}" ${conditionDob ? 'disabled' : ''} style='max-width:191px'/>
                                     <span class='error_dob error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='gender'>Giới tính</label>
+                                    <label for='gender'>${lang.showDataInform.info_gender}</label>
                                     <select id='gender' name='gender' class='input-global' autocomplete="off" onchange='onChangeValidation("#gender")' onclick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
-                                    <option value="" >Chọn giới tính</option>
-                                    <option value="M" ${genM}>Nam</option>
-                                    <option value="F" ${genF}>Nữ</option>
+                                    <option value="" >${lang.showDataInform.choose_gender}</option>
+                                    <option value="M" ${genM}>${lang.showDataInform.gender_man}</option>
+                                    <option value="F" ${genF}>${lang.showDataInform.gender_woman}</option>
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='nid'>Số CMND/CCCD</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onchange='onChangeValidation("#nid","Vui lòng nhập CMND/CCCD")' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <label for='nid'>${lang.showDataInform.nid}</label>
+                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onchange='onChangeValidation("#nid",${lang.showDataInform.input_nid})' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
-                                            <label for='doi'>Ngày cấp</label>
+                                            <label for='doi'>${lang.showDataInform.doi}</label>
                                             <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' onclick='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
-                                            <label for='doe'>Ngày hết hạn</label>
+                                            <label for='doe'>${lang.showDataInform.doe}</label>
                                             <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' onclick='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" />
                                             <span class='error_doe error_message'></span>
                                         </div>
@@ -946,33 +946,33 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-showdata-info'>Địa chỉ hiện tại</h3>
+                                <h3 class='form-showdata-info'>${lang.showDataInform.cur_address}</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
-                                    <label for='city'>Thành phố/Tỉnh</label>
-                                    <select placeholder='Chọn thành phố/tỉnh' id='city' name='city' class='input-global' autocomplete="off" onchange='onHandleChangeDataCity()' onclick='onHandleChangeDataCity()' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
+                                    <label for='city'>${lang.showDataInform.city}</label>
+                                    <select placeholder='${lang.showDataInform.choose_city}' id='city' name='city' class='input-global' autocomplete="off" onchange='onHandleChangeDataCity()' onclick='onHandleChangeDataCity()' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
                                         ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='district'>Quận/Huyện</label>
-                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrict()' onclick='onHandleChangeDataDistrict()' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
+                                    <label for='district'>${lang.showDataInform.district}</label>
+                                    <select placeholder='${lang.showDataInform.choose_district}' id='district' name='district' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrict()' onclick='onHandleChangeDataDistrict()' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
                                         ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='ward'>Phường/Xã</label>
-                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
+                                    <label for='ward'>${lang.showDataInform.wards}</label>
+                                    <select placeholder='${lang.showDataInform.choose_wards}' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
                                         ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
-                                    <label for='street'>Đường</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onchange='onChangeValidation("#street", "Vui lòng nhập đường")' onclick='onChangeValidation("#street", "Vui lòng nhập đường")' value="${conditionStreet ? street : ''}" />
+                                    <label for='street'>${lang.showDataInform.street}</label>
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onchange='onChangeValidation("#street", ${lang.showDataInform.input_street})' onclick='onChangeValidation("#street", ${lang.showDataInform.input_street})' value="${conditionStreet ? street : ''}" />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -980,36 +980,36 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                         <div class="card-head">
-                            <h3 class='form-showdata-info'>Địa chỉ tạm trú</h3>
+                            <h3 class='form-showdata-info'>${lang.showDataInform.res_address}</h3>
                         </div>
                         <div class="card-body">
                             <div class='form-row'>
-                                <label for='city_permanent'>Thành phố/Tỉnh</label>
+                                <label for='city_permanent'>${lang.showDataInform.city}</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
-                                    <option value=''>Chọn thành phố/tỉnh</option> 
+                                    <option value=''>${lang.showDataInform.choose_city}</option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_city_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='district_permanent'>Quận/Huyện</label>
+                                <label for='district_permanent'>${lang.showDataInform.district}</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
-                                    <option value=''>Chọn quận/huyện</option> 
+                                    <option value=''>${lang.showDataInform.choose_district}</option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='ward_permanent'>Phường/Xã</label>
-                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
-                                    <option value=''>Chọn phường/xã</option> 
+                                <label for='ward_permanent'>${lang.showDataInform.wards}</label>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent",${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward_permanent", ${lang.showDataInform.input_wards})'>
+                                    <option value=''>${lang.showDataInform.choose_wards}</option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='street_permanent'>Đường</label>
-                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent", "Vui lòng nhập đường")' onclick='onChangeValidation("#street_permanent", "Vui lòng nhập đường")'/>
+                                <label for='street_permanent'>${lang.showDataInform.street}</label>
+                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent", ${lang.showDataInform.input_street})' onclick='onChangeValidation("#street_permanent", ${lang.showDataInform.input_street})'/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
@@ -1017,37 +1017,37 @@ function showDataInform(element, personal) {
                     </div>
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-showdata-info'>Thông tin tham chiếu</h3>
+                                <h3 class='form-showdata-info'>${lang.showDataInform.reference_info}</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
-                                    <label for='relationship'>Mối quan hệ </label>
-                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onchange='onChangeValidation("#relationship, "Vui lòng nhập mối quan hệ")'>
+                                    <label for='relationship'>${lang.showDataInform.relationship}</label>
+                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onchange='onChangeValidation("#relationship, ${lang.showDataInform.input_relation})'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
                                     <span class='error_relationship error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='fullname_ref'>Họ và tên</label>
-                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")' onclick='onChangeValidation("#fullname_ref", "Vui lòng nhập họ và tên")' />
+                                    <label for='fullname_ref'>${lang.showDataInform.info_name_ref}</label>
+                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref", ${lang.showDataInform.input_name_ref})' onclick='onChangeValidation("#fullname_ref", ${lang.showDataInform.input_name_ref})' />
                                     <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='phone_ref'>Số điện thoại</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")' onclick='onChangeValidation("#phone_ref", "Vui lòng nhập Số điện thoại")'/>
+                                    <label for='phone_ref'>${lang.showDataInform.info_phone_ref}</label>
+                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref", ${lang.showDataInform.input_phone_ref})' onclick='onChangeValidation("#phone_ref", ${lang.showDataInform.input_phone_ref})'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
                             <div class="card-footer"></div>
                         </div>
-                        <button type='submit' class='payment-button medium' id='btnContinue'>Tiếp tục</button>
+                        <button type='submit' class='payment-button medium' id='btnContinue'>${lang.showUICheckPhone.button_next}</button>
                     </form >
                 </div> `;
     $(element).html(html).removeClass('captureNid');
 
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>Chụp ảnh chân dung</h4>", 'non-pageTitle');
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.capture_selfie+"</h4>", 'non-pageTitle');
     close_popup();
 
     /* fix error safari input[type=date] - by UNO 19/07 */
@@ -1104,7 +1104,7 @@ function showDataInform(element, personal) {
             }
             else {
                 isActivePhone = false;
-                showMessageStatus(phoneEle, 'Số điện thoại không hợp lệ', 'ERROR');
+                showMessageStatus(phoneEle, lang.showDataInform.error_phone, 'ERROR');
             }
         }
         if ($(this).attr("id") === 'phone_ref') {
@@ -1115,7 +1115,7 @@ function showDataInform(element, personal) {
             }
             else {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, 'CMND/CCCD không hợp lệ', 'ERROR');
+                showMessageStatus(phone_refEle, lang.showDataInform.error_nid, 'ERROR');
             }
         }
 
@@ -1124,7 +1124,7 @@ function showDataInform(element, personal) {
         if (phoneData.length === 10 && phoneRefData.length === 10) {
             if (phoneRefData === phoneData) {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, 'Số điện thoại tham chiếu trùng số điện thoại đăng ký', 'ERROR');
+                showMessageStatus(phone_refEle, lang.showDataInform.error_same_phone, 'ERROR');
             }
             else {
                 isActivePhone = true;
@@ -1196,7 +1196,7 @@ function showDataInform(element, personal) {
 
         let isPhoneError = checkPhoneValidate(phoneEle);
         if (isPhoneError) {
-            showMessageStatus(phoneEle, 'Số điện thoại không hợp lệ', 'ERROR');
+            showMessageStatus(phoneEle, lang.showDataInform.error_phone, 'ERROR');
         }
         else {
             showMessageStatus(phoneEle, '', 'SUCCESS');
@@ -1204,7 +1204,7 @@ function showDataInform(element, personal) {
 
         let isPhoneRefError = checkPhoneValidate(phone_refEle);
         if (isPhoneRefError) {
-            showMessageStatus(phone_refEle, 'Số điện thoại không hợp lệ', 'ERROR');
+            showMessageStatus(phone_refEle, lang.showDataInform.error_phone, 'ERROR');
         }
         else {
             showMessageStatus(phone_refEle, '', 'SUCCESS');
@@ -1212,7 +1212,7 @@ function showDataInform(element, personal) {
 
         let isNidError = checkNidValidate(nidEle);
         if (isNidError) {
-            showMessageStatus(nidEle, 'Số CMND/CCCD không hợp lệ', 'ERROR');
+            showMessageStatus(nidEle, lang.showDataInform.error_nid, 'ERROR');
         }
         else {
             showMessageStatus(nidEle, '', 'SUCCESS');
@@ -1278,48 +1278,48 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
     disableEnterKey();
     showHeader();
     var html = `<div class='form-card form-confirmdata'>
-                    <h4 class='form-confirmdata-title'>Đối soát thông tin</h4>
-                    <p class='form-confirmdata-desc'>Vui lòng xác nhận các thông tin bên dưới</p>
+                    <h4 class='form-confirmdata-title'>${lang.showConfirmDataInform.check_info}</h4>
+                    <p class='form-confirmdata-desc'>${lang.showConfirmDataInform.confirm_info}</p>
                     <form class=''>
                         <div class="card">
                             <div class="card-head">
-                                <div class='form-showdata-info sub4'>Thông tin cá nhân</div>
+                                <div class='form-showdata-info sub4'>${lang.showDataInform.info}</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
-                                    <label for='name'>Họ và tên</label>
+                                    <label for='name'>${lang.showDataInform.info_name}</label>
                                     <div id='name' class="info">${personal_all_infoConfirm.name}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='phone'>Số điện thoại</label>
+                                    <label for='phone'>${lang.showDataInform.info_phone}</label>
                                     <div id='phone' class="info">${personal_all_infoConfirm.phone}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='birthday'>Ngày sinh</label>
+                                    <label for='birthday'>${lang.showDataInform.info_birth}</label>
                                     <div id='birthday' class="info">${convertDateString2(personal_all_infoConfirm.birthday)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='gender'>Giới tính</label>
+                                    <label for='gender'>${lang.showDataInform.info_gender}</label>
                                     <div id='gender' class="info">${personal_all_infoConfirm.sex === 'M' ? 'Nam' : 'Nữ'}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='citizenId'>Số CMND/CCCD</label>
+                                    <label for='citizenId'>${lang.showDataInform.nid}</label>
                                     <div id='citizenId' class="info">${personal_all_infoConfirm.citizenId}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='issueDate'>Ngày cấp</label>
+                                    <label for='issueDate'>${lang.showDataInform.doi}</label>
                                     <div id='issueDate' class="info">${convertDateString2(personal_all_infoConfirm.issueDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='doe'>Ngày hết hạn</label>
+                                    <label for='doe'>${lang.showDataInform.doe}</label>
                                     <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='address'>Địa chỉ hiện tại</label>
+                                    <label for='address'>${lang.showDataInform.cur_address}</label>
                                     <div id='address' class="info">${personal_all_infoConfirm.street}, ${personal_all_infoConfirm.ward.wardText}, ${personal_all_infoConfirm.district.districtText}, ${personal_all_infoConfirm.city.cityText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='address'>Địa chỉ tạm trú</label>
+                                    <label for='address'>${lang.showDataInform.res_address}</label>
                                     <div id='address' class="info">${personal_all_infoConfirm.temporaryStreet}, ${personal_all_infoConfirm.temporaryWard.ward_permanentText}, ${personal_all_infoConfirm.temporaryDistrict.district_permanentText}, ${personal_all_infoConfirm.temporaryCity.city_permanentText}</div>
                                 </div>
                             </div >
@@ -1327,23 +1327,23 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                         </div >
                         <div class="card" style="display:none">
                             <div class="card-head">
-                                <div class="form-showdata-info sub4">Địa chỉ tạm trú</div>
+                                <div class="form-showdata-info sub4">${lang.showDataInform.res_address}</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
-                                    <label for='city_permanent'>Thành phố/Tỉnh</label>
+                                    <label for='city_permanent'>${lang.showDataInform.city}</label>
                                     <div id='city_permanent' class="info">${personal_all_infoConfirm.temporaryCity.city_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='district_permanent'>Quận/Huyện</label>
+                                    <label for='district_permanent'>${lang.showDataInform.district}</label>
                                     <div id='district_permanent' class="info">${personal_all_infoConfirm.temporaryDistrict.district_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='ward_permanent'>Phường</label>
+                                    <label for='ward_permanent'>${lang.showDataInform.wards}</label>
                                     <div id='ward_permanent' class="info">${personal_all_infoConfirm.temporaryWard.ward_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='street_permanent'>Đường</label>
+                                    <label for='street_permanent'>${lang.showDataInform.street}</label>
                                     <div id='street_permanent' class="info">${personal_all_infoConfirm.temporaryStreet}</div>
                                 </div>
                             </div>
@@ -1351,19 +1351,19 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                         </div>
                         <div class="card">
                             <div class="card-head">
-                                <div class="form-showdata-info sub4">Thông tin tham chiếu</div>
+                                <div class="form-showdata-info sub4">${lang.showDataInform.reference_info}</div>
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
-                                    <label for='relationship'>Mối quan hệ </label>
+                                    <label for='relationship'>${lang.showDataInform.relationship}</label>
                                     <div id='relationship' class="info">${personal_all_infoConfirm.personal_title_ref.relationshipText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='name_ref'>Họ và tên</label>
+                                    <label for='name_ref'>${lang.showDataInform.info_name_ref}</label>
                                     <div id='name_ref' class="info">${personal_all_infoConfirm.name_ref}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='phone_ref'>Số điện thoại</label>
+                                    <label for='phone_ref'>${lang.showDataInform.phone_ref}</label>
                                     <div id='phone_ref' class="info">${personal_all_infoConfirm.phone_ref}</div>
                                 </div>
                             </div>
@@ -1372,12 +1372,12 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
+                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>${lang.showConfirmDataInform.button_back}</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >${lang.showConfirmDataInform.button_confirm}</button>
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>Nhập thông tin cá nhân</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.input_info+"</h4>");
     $(window).scrollTop(0);
 
     let personal_all_info = {
@@ -1532,12 +1532,12 @@ function forgotPinPhone(element, phone) {
     var html = `<form id ='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
-                            <h4 style="margin-bottom:40px">Số điện thoại</h4>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
+                            <h4 style="margin-bottom:40px">${lang.forgotPinPhone.phone_number}</h4>
+                            <label for='phone_reset'>${lang.forgotPinPhone.input_phone_null}</label>
                             <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone ? phone : ''}" />
                             <span class='error_message'></span>
                         </div>
-                        <button type='button' id='btnContinue' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnContinue' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                     </div>
                 </form>`;
     $(element).html(html);
@@ -1572,12 +1572,12 @@ function forgotPinPhone(element, phone) {
             }
             else {
                 btnContinue.disabled = true;
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+                formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.error_phone);
             }
         }
         else {
             btnContinue.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+            formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.input_phone);
         }
     });
 
@@ -1593,12 +1593,12 @@ function forgotPinNid(element) {
     var html = `<form class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
-                            <h4 style="margin-bottom:40px">Số CMND/CCCD</h4>
-                            <label for='nid_reset'>Vui lòng nhập số CMND/CCCD</label>
+                            <h4 style="margin-bottom:40px">${lang.showDataInform.nid}</h4>
+                            <label for='nid_reset'>${lang.forgotPinNid.input_nid_null}</label>
                             <input autocomplete="off" type='number' id='nid_reset' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
-                        <button type='button' id='btnSendOtp' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnSendOtp' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                     </div>
                 </form>`;
     $(element).html(html);
@@ -1636,17 +1636,17 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid);
                 btnSendOtp.disabled = true;
             }
 
             if (checkAllDataSame(dataNid.value)) {
                 btnSendOtp.disabled = true;
-                formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid);
             }
         }
         else {
-            formatStyleWrongInput(dataNid, errorMessage, 'Vui lòng nhập CMND/CCCD');
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.input_nid);
             btnSendOtp.disabled = true;
         }
     });
@@ -1661,19 +1661,19 @@ function forgotPinNid(element) {
             showFormVerifyOTP(element, phone_reset, data.otp, 'RESET_PIN');
         }
         else if (data.status === false && data.message === 'Send otp failure') {
-            formatStyleWrongInput(dataNid, errorMessage, 'Mã OTP không chính xác');
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_OTP);
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1002) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Tài khoản chưa tồn tại. Vui lòng đăng ký');
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_acc);
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.statusCode === 1001) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không đúng. Vui lòng nhập số khác.');
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid_retype);
             btnSendOtp.disabled = true;
         }
         else if (data.status === false && data.errorCode === 8000) {
-            formatStyleWrongInput(dataNid, errorMessage, 'Số CMND/CCCD không hợp lệ');
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid);
             btnSendOtp.disabled = true;
         }
     })
@@ -1688,14 +1688,14 @@ function showFormPincode(element, phone, screen) {
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
                                     <h4>${lang.showFormPincode.pin_input}</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.pls_payment : (screen === 'VERIFY_PIN' ? 'Vui lòng nhập mã PIN để xác thực thông tin' : 'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
-                                    <div class='sub4'>Mã PIN</div>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.pls_payment : (screen === 'VERIFY_PIN' ? lang.showFormPincode.pin_verify_info : lang.showFormPincode.pin_verify_payment)}</p>
+                                    <div class='sub4'>${lang.showFormPincode.pin}</div>
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
                                 </div>
                             </div>
-                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+                            <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
+                            <p style='text-align: center;' class='txt-note'>${lang.showFormPincode.forgot_pin}<a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>${lang.showFormPincode.click}</a></p>
                     </form>
                 </div>`;
     $(element).html(html);
@@ -1715,7 +1715,7 @@ function showFormPincode(element, phone, screen) {
                 btnSubmitPin.disabled = false;
             }
             else if (value.length === 0) {
-                formatStyleWrongInput(pincode, errorMessage, 'Vui lòng nhập mã PIN');
+                formatStyleWrongInput(pincode, errorMessage, lang.showFormPincode.error_input_pin);
                 btnSubmitPin.disabled = true;
             }
             else {
@@ -1771,17 +1771,17 @@ function showFormPincode(element, phone, screen) {
         //     return;
         // }
         else if (result.status === false && result.statusCode === 1002) {
-            formatStyleWrongPincode(pincode, errorMessage, 'Số điện thoại không hợp lệ');
+            formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.error_phone);
             btnSubmitPin.disabled = true;
         }
         else if (result.status === false && result.statusCode === 1003) {
             if (result?.countFail !== 5) {
-                formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (' + result?.countFail + '/5)');
+                formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.error_incorrect_pin + '(' + result?.countFail + '/5)');
                 addBorderStyle('pin', "RED");
                 btnSubmitPin.disabled = true;
             }
             else {
-                formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+                formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.error_incorrect_pin_5);
                 addBorderStyle('pin', "RED");
                 for (i = 1; i <= 4; i++) {
                     $("#pin" + i).attr('disabled', true);
@@ -1790,7 +1790,7 @@ function showFormPincode(element, phone, screen) {
             }
         }
         else if (result.status === false && result.statusCode === 1004) {
-            formatStyleWrongPincode(pincode, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+            formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.error_incorrect_pin_5);
             addBorderStyle('pin', "RED");
             for (i = 1; i <= 4; i++) {
                 $("#pin" + i).attr('disabled', true);
@@ -1809,15 +1809,15 @@ function showFormSetupPin(element, screen, token) {
                         <div class=''>
                             <div class='no-line'></div>
                             <div class='text-center form-pincode m-top-16'>
-                                <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? 'Cài đặt mã PIN của bạn' : 'Cài đặt mã PIN của bạn'}</h4>
-                                <p class='sub4'>Mã PIN</p>
+                                <h4 class='form-showdata-title'>${screen === 'SHOW_RESET_PIN' ? lang.showFormSetupPin.setup_pin : lang.showFormSetupPin.setup_pin}</h4>
+                                <p class='sub4'>${lang.showFormPincode.pin}</p>
                                 <div id='pincode'></div>
-                                <p class='sub4'>Nhập lại mã PIN</p>
+                                <p class='sub4'>${lang.showFormSetupPin.retype_pin}</p>
                                 <div id='repincode'></div>
                                 <span class='error_message error_message_pin'></span>
                             </div>
                         </div>
-                        <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+                        <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
                     </form>
                 </div>`;
     $(element).css("display", "grid");
@@ -1826,7 +1826,7 @@ function showFormSetupPin(element, screen, token) {
         showProcessPipeline(2, true);
     }
 
-    pageTitle(element, '<h4 class="pageTitle">Cài đặt mã PIN của bạn</h4>', 'non-pageTitle');
+    pageTitle(element, '<h4 class="pageTitle">'+lang.showFormSetupPin.setup_pin+'</h4>', 'non-pageTitle');
     $(window).scrollTop(0);
 
     let iPut1, iPut2 = false;
@@ -1948,13 +1948,13 @@ function showFormSetupPin(element, screen, token) {
                 if (result.status === true) {
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
-                    showPopupMessage('Thành công', 'Đã gửi thông tin thành công');
+                    showPopupMessage(lang.showFormSetupPin.notification_success, lang.showFormSetupPin.send_info);
                     showContract(element);
                 }
                 else {
                     $('body .overlay-popup').remove();
                     $('body .overlay').remove();
-                    showPopupMessage('Không thành công', 'Lỗi gửi thông tin, vui lòng thử lại!');
+                    showPopupMessage(lang.showFormSetupPin.notification_unsuccess, lang.showFormSetupPin.error_send_info);
                 }
             }
             else if (screen === 'SHOW_RESET_PIN') {
@@ -1973,7 +1973,7 @@ function showFormSetupPin(element, screen, token) {
             var pincode = document.querySelector('#pincode');
             var repincode = document.querySelector('#repincode');
             var errorMessage = document.querySelector('.error_message');
-            formatStyleWrongPincode(repincode, errorMessage, 'Mã PIN không trùng khớp');
+            formatStyleWrongPincode(repincode, errorMessage, lang.showFormSetupPin.pin_notmatch);
             addBorderStyle('setuppin', "RED");
             addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
@@ -1992,13 +1992,13 @@ function resendOTP(phone, screen) {
         let nid_reset = sessionStorage.getItem('nid_reset');
         let otp = sendOtpPin(phone, nid_reset);
         if (otp !== null) {
-            console.log('Mã OTP của bạn là: ' + otp.otp);
+            console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
     else if (screen === 'VERIFY_PHONE') {
         let otp = sendOtp(phone);
         if (otp !== null) {
-            console.log('Mã OTP của bạn là: ' + otp.otp);
+            console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
     timer(60);
@@ -2007,9 +2007,9 @@ function resendOTP(phone, screen) {
 // Done +++
 function showFormVerifyOTP(element, phone, otp, screen) {
     disableEnterKey();
-    console.log('Mã OTP của bạn là: ' + otp);
+    console.log(lang.resendOTP.OTP + otp);
     if ($(window).width() < 415) {
-        alert('Mã OTP của bạn là: ' + otp);
+        alert(lang.resendOTP.OTP + otp);
     }
     $('body .overlay').remove();
     $('body .overlay-popup').remove();
@@ -2020,15 +2020,15 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <div class='card'>
                                 <div class='card-head no-line'></div>
                                 <div class='card-body text-center form-otpcode'>
-                                    <h4>Nhập OTP</h4>
-                                    <p class='compact-12'>Mã OTP đã được gửi đến số điện thoại <b>${phone.replaceAt(3, "****")}</b></p>
+                                    <h4>${lang.showFormVerifyOTP.input_OTP}</h4>
+                                    <p class='compact-12'>${lang.showFormVerifyOTP.sent_OTP}<b>${phone.replaceAt(3, "****")}</b></p>
                                     <div id='otpcode'></div>
                                     <span class='error_message error_message_otp'></span>
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
+                            <p style='text-align: center;' class='compact-12'>${lang.showFormVerifyOTP.OTP_not_receive}  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>${lang.showFormVerifyOTP.resend_OTP}(<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
@@ -2099,12 +2099,12 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
                 else if (data.status === false && data.statusCode === 4000) {
                     if (data?.countFail !== 5) {
-                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP + '(' + data?.countFail + '/5)');
                         addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
                     }
                     else {
-                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                        formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP_5);
                         addBorderStyle('otp', 'RED');
                         for (i = 1; i <= 6; i++) {
                             $("#otp" + i).attr('disabled', true);
@@ -2113,12 +2113,12 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     }
                 }
                 else if (data.status === false && data.statusCode === 3000) {
-                    formatWrongOTP(errorMessage, 'Mã OTP hết hiệu lực');
+                    formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_expired_OTP);
                     addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
                 }
                 else if (data.status === false && data.errorCode === 1004) {
-                    formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                    formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP_5);
                     addBorderStyle('otp', 'RED');
                     for (i = 1; i <= 6; i++) {
                         $("#otp" + i).attr('disabled', true);
@@ -2135,12 +2135,12 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 }
                 else if (data.statusCode === 4000 && data.status === false) {
                     if (data?.countFail !== 5) {
-                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (' + data?.countFail + '/5)');
+                        formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP + '(' + data?.countFail + '/5)');
                         addBorderStyle('otp', 'RED');
                         btnSubmitVerifyOTP.disabled = true;
                     }
                     else {
-                        formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                        formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP_5);
                         addBorderStyle('otp', 'RED');
                         for (i = 1; i <= 6; i++) {
                             $("#otp" + i).attr('disabled', true);
@@ -2149,12 +2149,12 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                     }
                 }
                 else if (data.statusCode === 3000 && data.status === false) {
-                    formatWrongOTP(errorMessage, 'Mã OTP hết hiệu lực');
+                    formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_expired_OTP);
                     addBorderStyle('otp', 'RED');
                     btnSubmitVerifyOTP.disabled = true;
                 }
                 else if (data.errorCode === 1004 && data.status === false) {
-                    formatWrongOTP(errorMessage, 'Mã OTP không chính xác (5/5). Vui lòng thử lại sau 60 phút');
+                    formatWrongOTP(errorMessage, lang.showFormVerifyOTP.error_incorrect_OTP_5);
                     addBorderStyle('otp', 'RED');
                     for (i = 1; i <= 6; i++) {
                         $("#otp" + i).attr('disabled', true);
@@ -2173,7 +2173,7 @@ function showContract(element) {
     let data = getContract();
     var html = `<div class='contractForm'>
                     <div class='box form-card-2'>
-                        <div class='contract-title'><h2>Mẫu hợp đồng</h2></div>
+                        <div class='contract-title'><h2>${lang.showContract.contract}</h2></div>
                         <div style='display: block'  class='contract-detail'>
                             <h3>${data.title1}</h3>
                             <h3>${data.title2}</h3>
@@ -2182,17 +2182,17 @@ function showContract(element) {
                         <div class='contract-term'>
                             <label for='confirm_contract' class='compact-12'>
                                 <input type='checkbox' name='confirm_contract' id='confirm_contract' />
-                                Tôi đồng ý với Điều kiện và Điều khoản hợp đồng
+                                ${lang.showContract.confirm_contract}
                             </label>
                         </div>
                         <div class='contract-term'>
                             <label for='confirm_otp' class='compact-12'>
                                 <input type='checkbox' name='confirm_otp' id='confirm_otp'/> 
-                                Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi
+                                ${lang.showContract.send_OTP_to_phone}
                             </label>
                         </div>
                     </div>
-                    <button type='button' id='btnContinue' class='payment-button medium'>Tiếp tục</button>
+                    <button type='button' id='btnContinue' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
             </div>`;
     $(element).html(html).removeClass('non-flex');
     showProcessPipeline(3, true);
@@ -2239,13 +2239,13 @@ function customerInfo(element, status = true) {
     if (status) {
         strStatus = `
         <div class='ico-success'></div >
-        <b>Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.</b>
+        <b>${lang.customerInfo.congatulation}</b>
         `;
     }
     else {
         strStatus = `
             <div class='ico-unsuccess'></div>
-            <b>Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.</b>
+            <b>${lang.customerInfo.unfortunately}</b>
         `;
     }
     var str = `<div class="customer" >
@@ -2254,7 +2254,7 @@ function customerInfo(element, status = true) {
                         <div class="avatar"><img src="${customer.avatar}" /></div>
                         <div class='detail'>
                             <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
-                            <p class='limit-text'>Hạn mức tín dụng của bạn là : <span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
+                            <p class='limit-text'>${lang.customerInfo.limit_credit}<span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                             ${strStatus}
                         </div>
                     </div>
@@ -2298,7 +2298,7 @@ function showProcessPipeline(step, logo = false, formName = '') {
     var pipeline = `
         <div class='headrow' >
             ${(logo) ? '<div class="voolo-logo"></div>' : ''}
-            <div class='sub2'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</div>
+            <div class='sub2'>${lang.showProcessPipeline.pay_first_buy_later}</div>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -2307,11 +2307,11 @@ function showProcessPipeline(step, logo = false, formName = '') {
                 <span class='Tpipe last'></span>
             </div>
             <div class='pipeline'>
-                <span class='pipe ${s1}'><span class='label-span'>Thông tin khách hàng</span></span>
-                <span class='pipe ${s2}'><span class='label-span'>Cài đặt PIN</span></span>
-                <span class='pipe ${s3}'><span class='label-span'>Ký điện tử</span></span>
-                <span class='pipe ${s4}'><span class='label-span'>Xác minh thông tin</span></span>
-                <span class='pipe ${s5}'><span class='label-span'>Hoàn thành</span></span>
+                <span class='pipe ${s1}'><span class='label-span'>${lang.showProcessPipeline.cus_info}</span></span>
+                <span class='pipe ${s2}'><span class='label-span'>${lang.showProcessPipeline.setup_pin}</span></span>
+                <span class='pipe ${s3}'><span class='label-span'>${lang.showProcessPipeline.sign_onl}</span></span>
+                <span class='pipe ${s4}'><span class='label-span'>${lang.showProcessPipeline.verify_info}</span></span>
+                <span class='pipe ${s5}'><span class='label-span'>${lang.showProcessPipeline.complete}</span></span>
             </div>
         </div>`;
 
@@ -2364,9 +2364,9 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
-                        <h3>Bạn đã đăng ký thành công</h3>
+                        <h3>${lang.messageScreen.registered_success}</h3>
                         <p style='text-align: center;' class='text-message'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2376,9 +2376,9 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
-                        <h3>Đăng ký không thành công</h3>
+                        <h3>${lang.messageScreen,registered_unsuccess}</h3>
                         <p style='text-align: center;' class='text-message'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại.<span> Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2388,9 +2388,9 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
-                        <h3>Cập nhật mã PIN không thành công</h3>
-                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-                        <button class='payment-button' id="tryagain">Thử lại</button>
+                        <h3>${lang.messageScreen.update_fail_pin}</h3>
+                        <p>${lang.messageScreen.call_switchboard}</p>
+                        <button class='payment-button' id="tryagain">${lang.messageScreen.button_retry}</button>
                     </div> 
                 </div>`;
     }
@@ -2399,9 +2399,9 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
-                        <h3>Cập nhật mã PIN thành công</h3>
+                        <h3>${lang.messageScreen.update_success_pin}</h3>
                         <p style='text-align: center;'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2411,10 +2411,10 @@ function messageScreen(element, config) {
         html = `<div class='box box-mobile showMessage ${config.screen}' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-success ico-150'></div>
-                        <h3>Chúc mừng bạn đã <span>mua hàng thành công</span></h3>
-                        <div class='id_bill'>Mã thanh toán: <a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
+                        <h3>${lang.messageScreen.buy_success}</h3>
+                        <div class='id_bill'>${lang.messageScreen.payment_code}<a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
                         <p style='text-align: center;'>
-                            Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div>
                 </div>`;
@@ -2424,9 +2424,9 @@ function messageScreen(element, config) {
         html = `<div class='box box-mobile showMessage' >
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
-                        <h3>Mua hàng không thành công</h3>
-                        <p>Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.</p>
-                        <button class='payment-button' id="tryagain">Thử lại</button>
+                        <h3>${lang.messageScreen.buy_fail}</h3>
+                        <p>${lang.messageScreen.call_switchboard}</p>
+                        <button class='payment-button' id="tryagain">${lang.messageScreen.button_retry}</button>
                     </div>
                 </div>`;
     }
