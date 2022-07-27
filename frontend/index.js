@@ -9,7 +9,7 @@ function showCircularProgressbar(element) {
     var html = `<div class='box showCircularProgressbar' style='margin-top:200px'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                     <div class="imgloading-140"></div>
-                    <h2 class='sub2'>Đang trong tiến trình xác minh thông tin</h2>
+                    <h2 class='sub2'>${lang.showCircularProgressbar.verifying}</h2>
                     <p style='text-align: center;'>
                     Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
                     </p> 
@@ -43,11 +43,11 @@ function showUICheckPhone(element) {
                     <div class='mobile'>
                         <div class='form__row'>
                             <h5>Số điện thoại</h5>
-                            <label for='phone' class='text-b-m'>Vui lòng nhập số điện thoại để tiếp tục</label>
+                            <label for='phone' class='text-b-m'>${lang.showUICheckPhone.type_phone}</label>
                             <input autocomplete="off" type='number' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
-                        <button type='button' id='btnSubmitPhone' class='payment-button'>Tiếp tục</button>
+                        <button type='button' id='btnSubmitPhone' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                     </div>
                 </form>`;
     $(element).html(html);
@@ -94,12 +94,12 @@ function showUICheckPhone(element) {
             }
             else {
                 btnSubmitPhone.disabled = true;
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+                formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
             }
         }
         else {
             btnSubmitPhone.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+            formatStyleWrongInput(dataPhone, errorMessage, error_phone_null);
         }
     });
 
@@ -713,7 +713,7 @@ function showAllTenor(element, nCount = 0) {
 
 // Done +++
 function showAllProvider(element) {
-    let html = `<div class='box'> <div class='paragraph-text text-center margin-bottom-default'><h6>Chọn nhà cung cấp BNPL</h6></div>`;
+    let html = `<div class='box'> <div class='paragraph-text text-center margin-bottom-default'><h6>${lang.showAllProvider.choose_provider}</h6></div>`;
     const data = getAllProviders();
     let providers = data.data;
     for (var i = 0; i < providers.length; i++) {
@@ -1415,15 +1415,11 @@ function configUi(config) {
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
         <div class="paragraph-text text-center margin-bottom-default" > 
-            <p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>
+            ${lang.configUi.slogan}
         </div>
         <div class='voolo-intro'>
-            <div class='sub4 sub3-mobile'>VOOLO giúp bạn:</div>
-            <ul>
-                <li>Mua sắm không giới hạn </li>
-                <li>Thanh toán linh hoạt </li>
-                <li>Hoàn tiền ngay chỉ trong 1 ngày </li>
-            </ul>
+            <div class='sub4 sub3-mobile'>${lang.configUi.voolo_intro}</div>
+            ${lang.configUi.sub_voolo_intro}
         </div>`;
     $(config.element + " form").prepend(iHtml);
 }
@@ -1460,27 +1456,27 @@ function listProductions(config) {
     }
     lItems += `<div class='list-items'>
                     <div class='card'>
-                        <div class='card-head'><span class='sub4 sub4-mobile'>Thông tin đơn hàng</span></div>
+                        <div class='card-head'><span class='sub4 sub4-mobile'>${lang.listProductions.order_info}</span></div>
                         <div class='card-body'>
                             ${list}
                             <div class='area-cost'>
                                 <div class='item tag' style=''>
-                                    Thêm mã giảm giá hoặc thẻ quà tặng
+                                    ${lang.listProductions.add_promotion}
                                 </div>
                             </div>
                             <div class='area-cost quote'>
                                 <div class='item' style='margin-bottom: 14px;'>
-                                    <span class='pTitle'>Thành tiền</span>
+                                    <span class='pTitle'>${lang.listProductions.amount}</span>
                                     <span class='pPrice compact-16'>${sTotal}</span>
                                 </div>
                                 <div class='item'>
-                                    <span class='pTitle'>Phí vận chuyển</span>
+                                    <span class='pTitle'>${lang.listProductions.delivery_fee}</span>
                                     <span class='pPrice compact-16'>0 đ</span>
                                 </div>
                             </div>
                         </div>
                         <div class='card-footer'>
-                            <span>Tổng cộng</span>
+                            <span>${lang.listProductions.total_amount}</span>
                             <span class='total-price'>`+ sTotal + `</span>
                         </div>
                     </div>
@@ -1691,8 +1687,8 @@ function showFormPincode(element, phone, screen) {
                     <form id='formSetupPinCode' class="box-mobile m-top-16">
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
-                                    <h4>Nhập mã PIN</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : (screen === 'VERIFY_PIN' ? 'Vui lòng nhập mã PIN để xác thực thông tin' : 'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
+                                    <h4>${lang.showFormPincode.pin_input}</h4>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.pls_payment : (screen === 'VERIFY_PIN' ? 'Vui lòng nhập mã PIN để xác thực thông tin' : 'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
                                     <div class='sub4'>Mã PIN</div>
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
