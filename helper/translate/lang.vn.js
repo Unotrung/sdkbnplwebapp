@@ -15,10 +15,13 @@ lang = {
 
     //showUICheckPhone
     showUICheckPhone : {
+        phone : "Số điện thoại",
         type_phone : "Vui lòng nhập số điện thoại để tiếp tục",
         button_next: "Tiếp tục",
         error_phone: "Số điện thoại không hợp lệ",
         error_phone_null: "Vui lòng nhập số điện thoại",
+        error_incorrect_OTP_5 : "Mã OTP không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
+        error_incorrect_pin_5 : "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
     },
 
     //configUi
@@ -33,6 +36,7 @@ lang = {
     //showCircularProgressbar
     showCircularProgressbar : {
         verifying : "Đang trong tiến trình xác minh thông tin",
+        note : "Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút",
     },
 
     //showUICheckNid
@@ -256,5 +260,58 @@ lang = {
         call_switchboard : "Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.",
         button_retry : "Thử lại",
         callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>`
+    },
+
+    //showUseGuideSelfy
+    showUseGuideSelfy : {
+        guide_take_portraits : "Hướng dẫn chụp ảnh chân dung",
+
+    },
+
+    //showUseGuideNid
+    showUseGuideNid : {
+        guide_take_nid : "Hướng dẫn chụp ảnh CMND/CCCD",
+    },
+
+    //showUseGuideBackNid
+    showUseGuideBackNid : {
+        capture_front_success : "hụp ảnh mặt trước thành công",
+        back_card_continue : "Lật mặt sau của card để tiếp tục chụp ảnh",
+        button_start : "Bắt đầu",
+    },
+
+    //checkPhoneValidate
+    checkPhoneValidate : {
+        error_phone : "Số điện thoại không hợp lệ",
+    },
+
+    //checkNidValidate
+    checkNidValidate : {
+        error_nid : "Chứng minh nhân dân không hợp lệ",
+    },
+
+    //checkPinValidate
+    checkPinValidate : {
+        error_pin : "Mã Pin không hợp lệ",
+    },
+
+    //onChangeValidation
+    onChangeValidation : {
+        type_info : "Vui lòng nhập thông tin",
+    },
+
+    //showHeader
+    showHeader : {
+        welcome_process : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",  
+    },
+
+    //showMessage
+    showMessage : {
+        callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.`, 
+    },
+
+    //showPopupMessage
+    showPopupMessage : {
+        button_ok : "OK",
     }
 };

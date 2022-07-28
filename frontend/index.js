@@ -11,7 +11,7 @@ function showCircularProgressbar(element) {
                     <div class="imgloading-140"></div>
                     <h2 class='sub2'>${lang.showCircularProgressbar.verifying}</h2>
                     <p style='text-align: center;'>
-                    Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
+                        ${lang.showCircularProgressbar.note}
                     </p> 
                     </div> 
                 </div>`;
@@ -42,7 +42,7 @@ function showUICheckPhone(element) {
     var html = `<form id='formValuePhone' class='formValue showUICheckPhone'>
                     <div class='mobile'>
                         <div class='form__row'>
-                            <h5>Số điện thoại</h5>
+                            <h5>${lang.showUICheckPhone.phone}</h5>
                             <label for='phone' class='text-b-m'>${lang.showUICheckPhone.type_phone}</label>
                             <input autocomplete="off" type='number' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
@@ -99,7 +99,7 @@ function showUICheckPhone(element) {
         }
         else {
             btnSubmitPhone.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, error_phone_null);
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone_null);
         }
     });
 
@@ -127,15 +127,15 @@ function showUICheckPhone(element) {
             showUICheckNid(element);
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1008 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Mã OTP không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_OTP_5);
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1004 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_pin_5);
             btnSubmitPhone.disabled = true;
         }
     });
