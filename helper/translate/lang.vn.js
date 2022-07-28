@@ -373,8 +373,6 @@ lang = {
         input_phone_ref : "Vui lòng nhập Số điện thoại",
         capture_selfie : "Chụp ảnh chân dung",
         error_phone : "Số điện thoại không hợp lệ",
-        error_nid : "CMND/CCCD không hợp lệ",
-        error_same_phone : "Số điện thoại tham chiếu trùng số điện thoại đăng ký",
     },
 
     showConfirmDataInform : {
