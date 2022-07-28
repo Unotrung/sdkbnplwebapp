@@ -2458,3 +2458,20 @@ function messageScreen(element, config) {
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
+
+function fec_CheckAccountInfo(){
+
+    $.ajax({
+        url:"https://api-uat.fecredit.com.vn/CheckAccountInfo",
+        method:"GET",
+        headers: {
+            'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
+            'RequestorID': 'LAZADA',
+            'DateTime': '2021-10-11T11:05:08.818225+07:00'
+        },
+        success:function(res){
+            console.log(res);
+        }
+    });
+
+}
