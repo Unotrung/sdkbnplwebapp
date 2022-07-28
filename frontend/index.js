@@ -2462,18 +2462,24 @@ String.prototype.replaceAt = function (index, replacement) {
 function fec_CheckAccountInfo(){
 
     $.ajax({
-        url:"https://api-uat.fecredit.com.vn/CheckAccountInfo?AccountNumber=1500030000055566",
+        url:"https://api-uat.fecredit.com.vn/CheckAccountInfo",
         method:"GET",
+        data:{
+            TransactionID:'30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
+            AccountNumber:'1500030000055566',
+            TotalAmount:'3000000',
+
+        },
         headers: {
             'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
             'RequestorID': 'LAZADA',
             'DateTime': '2021-10-11T11:05:08.818225+07:00'
         },
         success:function(res){
-            console.log(res);
+            console.log("Response fec_CheckAccountInfo: ",res);
         }
     }).then((resp)=>{
-        console.log(resp);
+        console.log("Response fec_CheckAccountInfo: ",resp);
     });
 
 }
