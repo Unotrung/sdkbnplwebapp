@@ -412,10 +412,10 @@ function cutStringData(infomation) {
                             sessionStorage.removeItem('front-image');
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
-                            close_popup();
-                            if (showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)) {
+                            if(showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)){
                                 runDocumentCaptureScreen('FRONT');
                             }
+                            close_popup();
                             return;
                         }
 
@@ -2462,7 +2462,7 @@ String.prototype.replaceAt = function (index, replacement) {
 function fec_CheckAccountInfo(){
 
     $.ajax({
-        url:"https://api-uat-internal.fecredit.com.vn/CheckAccountInfo",
+        url:"http://172.18.21.88:443/CheckAccountInfo",
         method:"GET",
         data:{
             TransactionID:'30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
