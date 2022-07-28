@@ -53,6 +53,7 @@
     <script type="text/javascript" src="./frontend/showUseGuide.js"></script>
     <script type="text/javascript" src="./frontend/common.js"></script>
     <script type="text/javascript" src="./frontend/index.js"></script>
+    <script type="text/javascript" src="./helper/translate/lang.vn.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript">
       var pData = [
@@ -86,6 +87,9 @@
       </div>
     </div> 
 
-    <div class="version" style="position: fixed;bottom: 20px;right: 20px;color: #858585;font-size: 10px;">build 19.07.2022 v2.0.7</div>
+    <div class="version" style="position: fixed;bottom: 20px;right: 20px;color: #858585;font-size: 10px;">Build 28.07.2022 v2.0.7 <a class="wSize"></a></a></div>
+    <script>
+      $(".wSize").html(window.screen.width+"x"+window.screen.height+", " + window.screen.orientation.type);
+    </script>
   </body>
 </html>

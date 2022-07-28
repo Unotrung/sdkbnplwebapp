@@ -6,3 +6,13 @@ let options = {
     'appKey': appKey,
     'appId': appId
 };
+
+screen.orientation.lock("portrait")
+	.then(function() {
+		// alert('Locked');
+        console.log('Locked');
+	})
+	.catch(function(error) {
+		console.log(error);
+	});
+
