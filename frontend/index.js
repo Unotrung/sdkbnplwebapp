@@ -2474,11 +2474,8 @@ function fec_CheckAccountInfo(){
             'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
             'RequestorID': 'LAZADA',
             'DateTime': '2021-10-11T11:05:08.818225+07:00'
-        },
-        success:function(res){
-            console.log("Response fec_CheckAccountInfo: ",res);
         }
-    }).then((resp)=>{
+    }).done(function( data ) {
         console.log("Response fec_CheckAccountInfo: ",resp);
     });
 
