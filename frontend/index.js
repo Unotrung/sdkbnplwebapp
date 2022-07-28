@@ -11,7 +11,7 @@ function showCircularProgressbar(element) {
                     <div class="imgloading-140"></div>
                     <h2 class='sub2'>${lang.showCircularProgressbar.verifying}</h2>
                     <p style='text-align: center;'>
-                        ${lang.showCircularProgressbar.note}
+                    Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút
                     </p> 
                     </div> 
                 </div>`;
@@ -42,7 +42,7 @@ function showUICheckPhone(element) {
     var html = `<form id='formValuePhone' class='formValue showUICheckPhone'>
                     <div class='mobile'>
                         <div class='form__row'>
-                            <h5>${lang.showUICheckPhone.phone}</h5>
+                            <h5>Số điện thoại</h5>
                             <label for='phone' class='text-b-m'>${lang.showUICheckPhone.type_phone}</label>
                             <input autocomplete="off" type='number' id='phone' class='form__input input-global' />
                             <span class='error_message'></span>
@@ -127,15 +127,15 @@ function showUICheckPhone(element) {
             showUICheckNid(element);
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
+            formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1008 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_OTP_5);
+            formatStyleWrongInput(dataPhone, errorMessage, 'Mã OTP không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1004 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_incorrect_pin_5);
+            formatStyleWrongInput(dataPhone, errorMessage, 'Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.');
             btnSubmitPhone.disabled = true;
         }
     });
@@ -515,7 +515,6 @@ async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
-<<<<<<< HEAD
         hvFaceConfig.faceTextConfig.setFaceCaptureTitle(lang.LaunchFaceCaptureScreen.capture_selfie);
         hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone);
         hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription(lang.LaunchFaceCaptureScreen.capture_rules);
@@ -523,15 +522,6 @@ async function LaunchFaceCaptureScreen() {
         hvFaceConfig.faceTextConfig.setFaceDetectedDescription(lang.LaunchFaceCaptureScreen.capture_now);
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle(lang.LaunchFaceCaptureScreen.capture_review);
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription(lang.LaunchFaceCaptureScreen.FaceCaptureReviewBottomDescription);
-=======
-        hvFaceConfig.faceTextConfig.setFaceCaptureTitle('Chụp ảnh chân dung');
-        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
-        hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription('Vui lòng KHÔNG đội nón, đeo kính, khẩu trang, chọn nơi có đủ ánh sáng để chụp ảnh');
-        hvFaceConfig.faceTextConfig.setFaceTooBigDescription('Cách xa camera');
-        hvFaceConfig.faceTextConfig.setFaceDetectedDescription('Chụp ảnh ngay');
-        hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle('faceCaptureReviewTitle');
-        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
->>>>>>> a4a163d (Update 15:21 25/07/2022)
         $("body").removeClass("loading");
         callback = (HVError, HVResponse) => {
             if (HVError) {
@@ -569,13 +559,8 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
-<<<<<<< HEAD
         hvDocConfig.docTextConfig.setDocCaptureReviewTitle(lang.LaunchDocumentCaptureScreen.capture_nid);
         hvDocConfig.docTextConfig.setDocCaptureBottomDescription(lang.LaunchDocumentCaptureScreen.choose_place);
-=======
-        hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
-        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình');
->>>>>>> a4a163d (Update 15:21 25/07/2022)
         $("body").removeClass("loading");
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
@@ -685,7 +670,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
@@ -808,25 +793,21 @@ function deleteImage(side) {
     }
 }
 
-// Done +++
 function onHandleChangeDataCity() {
     onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city", "#district");
 }
 
-// Done +++
 function onHandleChangeDataDistrict() {
     onChangeValidation("#district", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district", "#ward");
 }
 
-// Done +++
 function onHandleChangeDataCityPermanent() {
     onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
-// Done +++
 function onHandleChangeDataDistrictPermanent() {
     onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district_permanent", "#ward_permanent");
@@ -953,15 +934,9 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='gender'>${lang.showDataInform.info_gender}</label>
                                     <select id='gender' name='gender' class='input-global' autocomplete="off" onchange='onChangeValidation("#gender")' onclick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
-<<<<<<< HEAD
                                     <option value="" >${lang.showDataInform.choose_gender}</option>
                                     <option value="M" ${genM}>${lang.showDataInform.gender_man}</option>
                                     <option value="F" ${genF}>${lang.showDataInform.gender_woman}</option>
-=======
-                                    <option value="" >Chọn giới tính</option>
-                                    <option value="M" ${genM}>Nam</option>
-                                    <option value="F" ${genF}>Nữ</option>
->>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
@@ -1031,11 +1006,7 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='city_permanent'>${lang.showDataInform.city}</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
-<<<<<<< HEAD
                                     <option value=''>${lang.showDataInform.choose_city}</option> 
-=======
-                                    <option value=''>Chọn thành phố/tỉnh</option> 
->>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_city_permanent error_message'></span>
@@ -1043,25 +1014,15 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='district_permanent'>${lang.showDataInform.district}</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
-<<<<<<< HEAD
                                     <option value=''>${lang.showDataInform.choose_district}</option> 
-=======
-                                    <option value=''>Chọn quận/huyện</option> 
->>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-<<<<<<< HEAD
                                 <label for='ward_permanent'>${lang.showDataInform.wards}</label>
                                 <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent",${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward_permanent", ${lang.showDataInform.input_wards})'>
                                     <option value=''>${lang.showDataInform.choose_wards}</option> 
-=======
-                                <label for='ward_permanent'>Phường/Xã</label>
-                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
-                                    <option value=''>Chọn phường/xã</option> 
->>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
@@ -1431,13 +1392,8 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
-<<<<<<< HEAD
                         <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>${lang.showConfirmDataInform.button_back}</button>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' >${lang.showConfirmDataInform.button_confirm}</button>
-=======
-                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
-                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
@@ -1596,13 +1552,8 @@ function forgotPinPhone(element, phone) {
     var html = `<form id ='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
-<<<<<<< HEAD
                             <h4 style="margin-bottom:40px">${lang.forgotPinPhone.phone_number}</h4>
                             <label for='phone_reset'>${lang.forgotPinPhone.input_phone_null}</label>
-=======
-                            <h4 style="margin-bottom:40px">Số điện thoại</h4>
-                            <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
->>>>>>> a4a163d (Update 15:21 25/07/2022)
                             <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone ? phone : ''}" />
                             <span class='error_message'></span>
                         </div>
@@ -1641,20 +1592,12 @@ function forgotPinPhone(element, phone) {
             }
             else {
                 btnContinue.disabled = true;
-<<<<<<< HEAD
                 formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.error_phone);
-=======
-                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
->>>>>>> a4a163d (Update 15:21 25/07/2022)
             }
         }
         else {
             btnContinue.disabled = true;
-<<<<<<< HEAD
             formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.input_phone);
-=======
-            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
->>>>>>> a4a163d (Update 15:21 25/07/2022)
         }
     });
 
@@ -1771,13 +1714,8 @@ function showFormPincode(element, phone, screen) {
                                     <span class='error_message error_message_pin'></span>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='txt-note'>${lang.showFormPincode.forgot_pin}<a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>${lang.showFormPincode.click}</a></p>
-=======
-                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
                     </form>
                 </div>`;
     $(element).html(html);
@@ -2074,24 +2012,16 @@ function resendOTP(phone, screen) {
         let nid_reset = sessionStorage.getItem('nid_reset');
         let otp = sendOtpPin(phone, nid_reset);
         if (otp !== null) {
-<<<<<<< HEAD
             console.log(lang.resendOTP.OTP + otp.otp);
-=======
-            console.log('Mã OTP của bạn là: ' + otp.otp);
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
         }
     }
     else if (screen === 'VERIFY_PHONE') {
         let otp = sendOtp(phone);
         if (otp !== null) {
-<<<<<<< HEAD
             console.log(lang.resendOTP.OTP + otp.otp);
-=======
-            console.log('Mã OTP của bạn là: ' + otp.otp);
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
         }
     }
-    timer(60);
+    timer(5);
 }
 
 // Done +++
@@ -2117,19 +2047,14 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-<<<<<<< HEAD
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='compact-12'>${lang.showFormVerifyOTP.OTP_not_receive}  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>${lang.showFormVerifyOTP.resend_OTP}(<c id="timer"></c>)</a></p>
-=======
-                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
-                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
                         </form>
                     </div>
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(60);
+    timer(5);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -2553,30 +2478,3 @@ function messageScreen(element, config) {
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
-<<<<<<< HEAD
-=======
-
-function fec_CheckAccountInfo(){
-
-    $.ajax({
-        url:"http://172.18.21.88:443/CheckAccountInfo",
-        method:"GET",
-        data:{
-            TransactionID:'30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
-            AccountNumber:'1500030000055566',
-            TotalAmount:'3000000',
-
-        },
-        headers: {
-            'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
-            'RequestorID': 'LAZADA',
-            'DateTime': '2021-10-11T11:05:08.818225+07:00'
-        },
-        contentType:"application/json"
-    }).then(function( data ) {
-        console.log("Response fec_CheckAccountInfo: ",data);
-        alert(data);
-    });
-
-}
->>>>>>> 24ded95 (update)
