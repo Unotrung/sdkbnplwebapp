@@ -2472,6 +2472,8 @@ function fec_CheckAccountInfo(){
         success:function(res){
             console.log(res);
         }
+    }).then((resp)=>{
+        console.log(resp);
     });
 
 }
