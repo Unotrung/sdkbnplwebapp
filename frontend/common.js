@@ -4,7 +4,7 @@ function showHeader() {
                     <div id='header-voolo-logo'>
                         <img src='./assets/img/VOOLO_logo_horizontal.png' />
                     </div>
-                    <h1 id='header-voolo-title'>Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau</h1>
+                    <h1 id='header-voolo-title'>${lang.showHeader.welcome_process}</h1>
                 </div>`;
     return html;
 }
@@ -25,7 +25,7 @@ function showMessage(element, message, icon) {
                         <div class='${icon}'></div>
                         ${message}
                         <p style='text-align: center;'>
-                        Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.
+                            ${lang.showMessage.callback}
                         </p>
                     </div> 
                 </div> `;
@@ -146,7 +146,7 @@ function showPopupMessage(title, message) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
-                            <button type='button' id="okpopup" class='payment-button' style="margin:32px 0">OK</button>
+                            <button type='button' id="okpopup" class='payment-button' style="margin:32px 0">${lang.showPopupMessage.button_ok}</button>
                         </form>
                     </div>
                 </div>`;

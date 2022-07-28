@@ -12,10 +12,13 @@ lang = {
     },
 
     showUICheckPhone: {
+        phone: "Số điện thoại",
         type_phone: "Vui lòng nhập số điện thoại để tiếp tục",
         button_next: "Tiếp tục",
         invalid_phone: "Số điện thoại không hợp lệ",
         empty_phone: "Vui lòng nhập số điện thoại",
+        error_incorrect_OTP_5: "Mã OTP không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
+        error_incorrect_pin_5: "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
     },
 
     configUi: {
@@ -29,6 +32,7 @@ lang = {
 
     showCircularProgressbar: {
         verifying: "Đang trong tiến trình xác minh thông tin",
+        note: "Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút",
     },
 
     showUICheckNid: {

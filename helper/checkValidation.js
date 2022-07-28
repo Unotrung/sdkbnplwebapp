@@ -7,7 +7,7 @@ function checkPhoneValidate(input) {
         showMessageStatus(input, '', 'SUCCESS');
     }
     else {
-        showMessageStatus(input, 'Số điện thoại không hợp lệ', 'ERROR');
+        showMessageStatus(input, lang.checkPhoneValidate.error_phone, 'ERROR');
     }
     return isPhoneErr;
 }
@@ -21,7 +21,7 @@ function checkNidValidate(input) {
         showMessageStatus(input, '', 'SUCCESS');
     }
     else {
-        showMessageStatus(input, 'Chứng minh nhân dân không hợp lệ', 'ERROR');
+        showMessageStatus(input, lang.checkNidValidate.error_nid, 'ERROR');
     }
     return isNidErr;
 }
@@ -35,7 +35,7 @@ function checkPinValidate(input) {
         showMessageStatus(input, '', 'SUCCESS');
     }
     else {
-        showMessageStatus(input, 'Mã Pin không hợp lệ', 'ERROR');
+        showMessageStatus(input, lang.checkPinValidate.error_pin, 'ERROR');
     }
     return isPinErr;
 }
@@ -55,7 +55,7 @@ function onChangeValidation(input, message) {
     }
     else {
         element.style.border = '1px solid #EE4D2D';
-        span.innerText = message ? message : 'Vui lòng nhập thông tin';
+        span.innerText = message ? message : lang.onChangeValidation.type_info;
         span.style.visibility = 'visible';
         span.style.opacity = '1';
         span.style.marginTop = '0px';
@@ -74,7 +74,7 @@ function checkEmptyError(listInput) {
         }
         else {
             isEmptyError = true;
-            showMessageStatus(input, 'Vui lòng nhập thông tin', 'ERROR');
+            showMessageStatus(input, lang.onChangeValidation.input_info, 'ERROR');
         }
     });
     return isEmptyError;
