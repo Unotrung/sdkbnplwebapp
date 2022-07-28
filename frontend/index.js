@@ -670,7 +670,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
@@ -793,21 +793,25 @@ function deleteImage(side) {
     }
 }
 
+// Done +++
 function onHandleChangeDataCity() {
     onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city", "#district");
 }
 
+// Done +++
 function onHandleChangeDataDistrict() {
     onChangeValidation("#district", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district", "#ward");
 }
 
+// Done +++
 function onHandleChangeDataCityPermanent() {
     onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
+// Done +++
 function onHandleChangeDataDistrictPermanent() {
     onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district_permanent", "#ward_permanent");
@@ -1714,8 +1718,13 @@ function showFormPincode(element, phone, screen) {
                                     <span class='error_message error_message_pin'></span>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='txt-note'>${lang.showFormPincode.forgot_pin}<a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>${lang.showFormPincode.click}</a></p>
+=======
+                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
                     </form>
                 </div>`;
     $(element).html(html);
@@ -2021,7 +2030,7 @@ function resendOTP(phone, screen) {
             console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
-    timer(5);
+    timer(60);
 }
 
 // Done +++
@@ -2054,7 +2063,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(5);
+    timer(60);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
