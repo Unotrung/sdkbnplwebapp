@@ -515,6 +515,7 @@ async function LaunchFaceCaptureScreen() {
     try {
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
+<<<<<<< HEAD
         hvFaceConfig.faceTextConfig.setFaceCaptureTitle(lang.LaunchFaceCaptureScreen.capture_selfie);
         hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone);
         hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription(lang.LaunchFaceCaptureScreen.capture_rules);
@@ -522,6 +523,15 @@ async function LaunchFaceCaptureScreen() {
         hvFaceConfig.faceTextConfig.setFaceDetectedDescription(lang.LaunchFaceCaptureScreen.capture_now);
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle(lang.LaunchFaceCaptureScreen.capture_review);
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription(lang.LaunchFaceCaptureScreen.FaceCaptureReviewBottomDescription);
+=======
+        hvFaceConfig.faceTextConfig.setFaceCaptureTitle('Chụp ảnh chân dung');
+        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
+        hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription('Vui lòng KHÔNG đội nón, đeo kính, khẩu trang, chọn nơi có đủ ánh sáng để chụp ảnh');
+        hvFaceConfig.faceTextConfig.setFaceTooBigDescription('Cách xa camera');
+        hvFaceConfig.faceTextConfig.setFaceDetectedDescription('Chụp ảnh ngay');
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle('faceCaptureReviewTitle');
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription('Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.');
+>>>>>>> a4a163d (Update 15:21 25/07/2022)
         $("body").removeClass("loading");
         callback = (HVError, HVResponse) => {
             if (HVError) {
@@ -559,8 +569,13 @@ async function LaunchDocumentCaptureScreen(side) {
         var hvDocConfig = new HVDocConfig();
         hvDocConfig.setShouldShowInstructionPage(false);
         hvDocConfig.setShouldShowDocReviewScreen(false);
+<<<<<<< HEAD
         hvDocConfig.docTextConfig.setDocCaptureReviewTitle(lang.LaunchDocumentCaptureScreen.capture_nid);
         hvDocConfig.docTextConfig.setDocCaptureBottomDescription(lang.LaunchDocumentCaptureScreen.choose_place);
+=======
+        hvDocConfig.docTextConfig.setDocCaptureReviewTitle('Chụp ảnh CMND/CCCD');
+        hvDocConfig.docTextConfig.setDocCaptureBottomDescription('Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình');
+>>>>>>> a4a163d (Update 15:21 25/07/2022)
         $("body").removeClass("loading");
 
         let applyFrontNid = side === 'FRONT' && side !== 'BACK' && side !== '';
@@ -1552,8 +1567,13 @@ function forgotPinPhone(element, phone) {
     var html = `<form id ='formValuePhone' class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
+<<<<<<< HEAD
                             <h4 style="margin-bottom:40px">${lang.forgotPinPhone.phone_number}</h4>
                             <label for='phone_reset'>${lang.forgotPinPhone.input_phone_null}</label>
+=======
+                            <h4 style="margin-bottom:40px">Số điện thoại</h4>
+                            <label for='phone_reset'>Vui lòng nhập số điện thoại để tiếp tục</label>
+>>>>>>> a4a163d (Update 15:21 25/07/2022)
                             <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone ? phone : ''}" />
                             <span class='error_message'></span>
                         </div>
@@ -1592,12 +1612,20 @@ function forgotPinPhone(element, phone) {
             }
             else {
                 btnContinue.disabled = true;
+<<<<<<< HEAD
                 formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.error_phone);
+=======
+                formatStyleWrongInput(dataPhone, errorMessage, 'Số điện thoại không hợp lệ');
+>>>>>>> a4a163d (Update 15:21 25/07/2022)
             }
         }
         else {
             btnContinue.disabled = true;
+<<<<<<< HEAD
             formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.input_phone);
+=======
+            formatStyleWrongInput(dataPhone, errorMessage, 'Vui lòng nhập số điện thoại');
+>>>>>>> a4a163d (Update 15:21 25/07/2022)
         }
     });
 
