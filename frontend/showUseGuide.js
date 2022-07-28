@@ -3,7 +3,7 @@ function showUseGuideSelfy() {
     $("#formValueNid").hide();
     $('#voolo').append("<div class='guideslide'></div>");
     $('.guideslide').load('useguide.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh chân dung");
+    $('body').find('.pageTitle').text(lang.showUseGuideSelfy.guide_take_portraits);
 }
 
 function showUseGuideNid() {
@@ -11,7 +11,7 @@ function showUseGuideNid() {
     $("#formValueNid").hide();
     $('#voolo').append("<div class='guideslide nid-front' style=''></div>");
     $('.guideslide').load('useguidenid.html');
-    $('body').find('.pageTitle').text("Hướng dẫn chụp ảnh CMND/CCCD");
+    $('body').find('.pageTitle').text(lang.showUseGuideNid.guide_take_nid);
 }
 
 function showUseGuideBackNid() {
@@ -22,7 +22,7 @@ function showUseGuideBackNid() {
     var html = `<div class='box2 showMessage'>
                     <div class=''>
                         <div class='ico-success ico-120'></div>
-                        <div class='statusTitle'>Chụp ảnh mặt trước thành công</div>
+                        <div class='statusTitle'>${lang.showUseGuideBackNid.capture_front_success}</div>
                         <div class='line'>
                             <span class='font-m'>Now</span>
                         </div>
@@ -30,7 +30,7 @@ function showUseGuideBackNid() {
                             <img src='./assets/img/refresh-ico.png' width="20" height="20" />
                         </div>
                         <p style='text-align: center;'>
-                            Lật mặt sau của card để tiếp tục chụp ảnh
+                            ${lang.showUseGuideBackNid.back_card_continue}
                         </p>
                         <div class="angled-borders">
                             <div id="f1_container">
@@ -45,7 +45,7 @@ function showUseGuideBackNid() {
                             </div>
                         </div>
                         <div style="width:100%">
-                            <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">Bắt đầu</button>
+                            <button class='payment-button' id="" style='margin-top:26px' onClick="runDocumentCaptureScreen('BACK')">${lang.showUseGuideBackNid.button_start}</button>
                         </div>
                     </div>
                 </div> `;
