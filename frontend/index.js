@@ -953,9 +953,15 @@ function showDataInform(element, personal) {
                                 <div class='form-row'>
                                     <label for='gender'>${lang.showDataInform.info_gender}</label>
                                     <select id='gender' name='gender' class='input-global' autocomplete="off" onchange='onChangeValidation("#gender")' onclick='onChangeValidation("#gender")' ${conditionGender ? 'disabled' : ''} style='max-width:139px;'>
+<<<<<<< HEAD
                                     <option value="" >${lang.showDataInform.choose_gender}</option>
                                     <option value="M" ${genM}>${lang.showDataInform.gender_man}</option>
                                     <option value="F" ${genF}>${lang.showDataInform.gender_woman}</option>
+=======
+                                    <option value="" >Chọn giới tính</option>
+                                    <option value="M" ${genM}>Nam</option>
+                                    <option value="F" ${genF}>Nữ</option>
+>>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     </select>
                                     <span class='error_gender error_message'></span>
                                 </div>
@@ -1025,7 +1031,11 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='city_permanent'>${lang.showDataInform.city}</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
+<<<<<<< HEAD
                                     <option value=''>${lang.showDataInform.choose_city}</option> 
+=======
+                                    <option value=''>Chọn thành phố/tỉnh</option> 
+>>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_city_permanent error_message'></span>
@@ -1033,15 +1043,25 @@ function showDataInform(element, personal) {
                             <div class='form-row'>
                                 <label for='district_permanent'>${lang.showDataInform.district}</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
+<<<<<<< HEAD
                                     <option value=''>${lang.showDataInform.choose_district}</option> 
+=======
+                                    <option value=''>Chọn quận/huyện</option> 
+>>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
+<<<<<<< HEAD
                                 <label for='ward_permanent'>${lang.showDataInform.wards}</label>
                                 <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent",${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward_permanent", ${lang.showDataInform.input_wards})'>
                                     <option value=''>${lang.showDataInform.choose_wards}</option> 
+=======
+                                <label for='ward_permanent'>Phường/Xã</label>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")' onclick='onChangeValidation("#ward_permanent", "Vui lòng nhập phường, xã")'>
+                                    <option value=''>Chọn phường/xã</option> 
+>>>>>>> 579ef9b (Update 6:55 25/07/2022)
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
