@@ -2462,7 +2462,7 @@ String.prototype.replaceAt = function (index, replacement) {
 function fec_CheckAccountInfo(){
 
     $.ajax({
-        url:"https://api-uat.fecredit.com.vn/CheckAccountInfo",
+        url:"https://api-uat.fecredit.com.vn/CheckAccountInfo?AccountNumber=1500030000055566",
         method:"GET",
         headers: {
             'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
