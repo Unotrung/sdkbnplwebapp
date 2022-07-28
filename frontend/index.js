@@ -685,7 +685,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
@@ -1411,8 +1411,13 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                     </form>
                 </div> 
                 <div class="form-row">
+<<<<<<< HEAD
                         <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>${lang.showConfirmDataInform.button_back}</button>
                         <button type='submit' class='payment-button medium' id='btnContinueConfirm' >${lang.showConfirmDataInform.button_confirm}</button>
+=======
+                        <button type='button' class='payment-button btn-previous' onclick='window.location.reload();'>Quay lại</button>
+                        <button type='submit' class='payment-button medium' id='btnContinueConfirm' >Xác nhận</button>
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
@@ -1746,8 +1751,13 @@ function showFormPincode(element, phone, screen) {
                                     <span class='error_message error_message_pin'></span>
                                 </div>
                             </div>
+<<<<<<< HEAD
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='txt-note'>${lang.showFormPincode.forgot_pin}<a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>${lang.showFormPincode.click}</a></p>
+=======
+                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
+                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
                     </form>
                 </div>`;
     $(element).html(html);
@@ -2044,13 +2054,21 @@ function resendOTP(phone, screen) {
         let nid_reset = sessionStorage.getItem('nid_reset');
         let otp = sendOtpPin(phone, nid_reset);
         if (otp !== null) {
+<<<<<<< HEAD
             console.log(lang.resendOTP.OTP + otp.otp);
+=======
+            console.log('Mã OTP của bạn là: ' + otp.otp);
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
         }
     }
     else if (screen === 'VERIFY_PHONE') {
         let otp = sendOtp(phone);
         if (otp !== null) {
+<<<<<<< HEAD
             console.log(lang.resendOTP.OTP + otp.otp);
+=======
+            console.log('Mã OTP của bạn là: ' + otp.otp);
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
         }
     }
     timer(60);
@@ -2079,8 +2097,13 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 </div>
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
+<<<<<<< HEAD
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='compact-12'>${lang.showFormVerifyOTP.OTP_not_receive}  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>${lang.showFormVerifyOTP.resend_OTP}(<c id="timer"></c>)</a></p>
+=======
+                            <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>Tiếp tục</button>
+                            <p style='text-align: center;' class='compact-12'>Không nhận được OTP?  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>Gửi lại OTP (<c id="timer"></c>)</a></p>
+>>>>>>> 7181d71 (Update 16:15 25/07/2022)
                         </form>
                     </div>
                 </div>`;
