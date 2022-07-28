@@ -2463,17 +2463,149 @@ function fec_CheckAccountInfo(){
 
     $.ajax({
         url:"http://172.18.21.88:443/CheckAccountInfo",
-        method:"GET",
+        method:"POST",
         data:{
-            TransactionID:'30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
-            AccountNumber:'1500030000055566',
-            TotalAmount:'3000000',
-
-        },
+            "BaseInfo": {
+              "TransactionID": "e6626f8d-aba9-47",
+              "ApplicationID": "",
+              "PartnerReferenceID": "12345"
+            },
+            "AppInfo": {
+              "Product": {
+                "ProductSchemeID": "10830"
+              },
+              "PersonalInfo": {
+                "FullName": "ĐẶNG Nguyễn",
+                "FirstName": "ĐẶNG",
+                "MiddleName": "Hoàng",
+                "LastName": "Nguyễn",
+                "Gender": "M",
+                "DateOfBirth": "1991-05-06",
+                "Nationality": "1",
+                "Occupation": "OTHERS",
+                "SocialStatusId": "3",
+                "JobTitle": "OTHERS",
+                "NationalIDs": [
+                  {
+                    "NationalID": "281133501",
+                    "PlaceIssue": "75",
+                    "DateIssue": "2016-02-16",
+                    "IsPrimary": true
+                  },
+                  {
+                    "NationalID": "312410205121",
+                    "PlaceIssue": "75",
+                    "DateIssue": "2016-02-16",
+                    "IsPrimary": false
+                  }
+                ],
+                "Contacts": {
+                  "Phones": {
+                    "Phone": [
+                      {
+                        "PhoneType": "Mobile",
+                        "PhoneNumber": "84873412345",
+                        "IsPrimaryPhone": true
+                      },
+                      {
+                        "PhoneType": "Mobile",
+                        "PhoneNumber": "84873412345",
+                        "IsPrimaryPhone": false
+                      }
+                    ]
+                  },
+                  "Addresses": {
+                    "Address": [
+                      {
+                        "Type": "PERMNENT",
+                        "HouseType": "URBAN",
+                        "Country": "1",
+                        "City": "75",
+                        "District": "787",
+                        "Ward": "10998",
+                        "Street_Hamlet": "street 123",
+                        "BuildingName": "Building 1",
+                        "HouseNumber": "123",
+                        "ApartmentNumber": "13B",
+                        "StayDurationMonths": 11,
+                        "StayDurationYears": 2
+                      },
+                      {
+                        "Type": "CURRES",
+                        "HouseType": "RURAL",
+                        "Country": "1",
+                        "City": "75",
+                        "District": "787",
+                        "Ward": "10998",
+                        "Street_Hamlet": "street 987",
+                        "BuildingName": "Building 9",
+                        "HouseNumber": "876",
+                        "ApartmentNumber": "12E",
+                        "StayDurationMonths": 11,
+                        "StayDurationYears": 1
+                      }
+                    ]
+                  }
+                },
+                "Documents": [
+                  {
+                    "DocTypeId": "Selfie",
+                    "DocName": "Selfie.jpg",
+                    "DocContent": "<Base64File Encoding>"
+                  },
+                  {
+                    "DocTypeId": "NationalID_F",
+                    "DocName": "NationalID_F.jpg",
+                    "DocContent": "<Base64File Encoding>"
+                  },
+                  {
+                    "DocTypeId": "NationalID_B",
+                    "DocName": "NationalID_B.jpg",
+                    "DocContent": "<Base64File Encoding>"
+                  }
+                ]
+              },
+              "ReferencePersons": {
+                "ReferencePerson": [
+                  {
+                    "FullName": "Anh8 Son",
+                    "ReferenceRelation": "B",
+                    "Phones": {
+                      "Phone": [
+                        {
+                          "PhoneType": "MOBILE",
+                          "PhoneNumber": "84873412341"
+                        },
+                        {
+                          "PhoneType": "MOBILE",
+                          "PhoneNumber": "84873412342"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "OCR": {
+                "NationalIDDetail": {
+                  "Address": "333 star Building",
+                  "DateOfBirth": "1976-06-16",
+                  "NationalIDExpiryDate": "2001-01-01",
+                  "NationalIDDateIssue": "2001-01-01",
+                  "Gender": "M",
+                  "NationalID": "806888788021",
+                  "Name": "Nguyễn Phi",
+                  "Province": "LAI CHÂU"
+                }
+              },
+              "IncomeAndExp": {
+                "CustMonthlyNetIncome": 123232356
+              }
+            }
+          },
         headers: {
-            'TransID': '30f8a4f1-31ee-4406-a6ca-0b27ee11585d',
+            'TransID': 'e6626f8d-aba9-47',
             'RequestorID': 'LAZADA',
-            'DateTime': '2021-10-11T11:05:08.818225+07:00'
+            'DateTime': '2022-07-28T11:05:08.818225+07:00'
         },
         contentType:"application/json"
     }).then(function( data ) {
