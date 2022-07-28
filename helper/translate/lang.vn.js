@@ -275,7 +275,7 @@ lang = {
 
     //showUseGuideBackNid
     showUseGuideBackNid : {
-        capture_front_success : "hụp ảnh mặt trước thành công",
+        capture_front_success : "Chụp ảnh mặt trước thành công",
         back_card_continue : "Lật mặt sau của card để tiếp tục chụp ảnh",
         button_start : "Bắt đầu",
     },
@@ -313,5 +313,34 @@ lang = {
     //showPopupMessage
     showPopupMessage : {
         button_ok : "OK",
-    }
+    },
+
+    //useguide.html
+    guide : "Hướng dẫn ",
+    capture_selfie : "chụp ảnh chân dung",
+    none : "Không nên",
+    pls : "Vui lòng ",
+    selfie_rules : "KHÔNG đội nón, đeo kính, khẩu trang",
+    choose_place : "chọn nơi có đủ ánh sáng",
+    capture : " để chụp ảnh",
+    good : "Tốt lắm",
+    proceed_portrait : "Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn",
+    button_skip : "Bỏ qua >",
+    button_start : "Bắt đầu",
+
+
+    //useguidenid.html
+    guide : "Hướng dẫn ",
+    capture_selfie : "chụp ảnh chân dung",
+    none : "Không nên",
+    pls : "Vui lòng ",
+    choose_place : "chọn nơi có đủ ánh sáng",
+    capture : " để chụp ảnh",
+    hold_clamp_nid : "KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ",
+    done : "Nên",
+    place_nid : "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng."
+    show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
+    button_skip : "Bỏ qua >",
+    button_start : "Bắt đầu",
+
 };
