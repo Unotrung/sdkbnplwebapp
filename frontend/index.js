@@ -2462,7 +2462,7 @@ String.prototype.replaceAt = function (index, replacement) {
 function fec_CheckAccountInfo(){
 
     $.ajax({
-        url:"http://172.18.21.88:443/CheckAccountInfo",
+        url:"https://172.18.21.88:443/CheckAccountInfo",
         method:"POST",
         data:{
             "BaseInfo": {
