@@ -309,7 +309,7 @@ lang = {
     showMessage : {
         callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.`, 
     },
-
+    
     //showProcessPipeline
     showProcessPipeline : {
         pay_first_buy_later : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",
