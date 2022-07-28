@@ -236,5 +236,78 @@ lang = {
         here: "đây",
         return: "để quay trở lại.",
         auto_return: "Tự động trở lại trang mua hàng sau ",
-    }
+    },
+
+    showUseGuideSelfy: {
+        guide_take_portraits: "Hướng dẫn chụp ảnh chân dung",
+
+    },
+
+    showUseGuideNid: {
+        guide_take_nid: "Hướng dẫn chụp ảnh CMND/CCCD",
+    },
+
+    showUseGuideBackNid: {
+        capture_front_success: "Chụp ảnh mặt trước thành công",
+        back_card_continue: "Lật mặt sau của card để tiếp tục chụp ảnh",
+        button_start: "Bắt đầu",
+    },
+
+    checkPhoneValidate: {
+        error_phone: "Số điện thoại không hợp lệ",
+    },
+
+    checkNidValidate: {
+        error_nid: "Chứng minh nhân dân không hợp lệ",
+    },
+
+    checkPinValidate: {
+        error_pin: "Mã Pin không hợp lệ",
+    },
+
+    onChangeValidation: {
+        type_info: "Vui lòng nhập thông tin",
+    },
+
+    showHeader: {
+        welcome_process: "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",
+    },
+
+    showMessage: {
+        click: "Bấm vào",
+        here: "đây",
+        return: " để quay trở lại.",
+        auto_return: " Tự động trở lại trang mua hàng sau 5s.",
+    },
+
+    showPopupMessage: {
+        button_ok: "OK",
+    },
+
+    guide: "Hướng dẫn ",
+    capture_selfie: "chụp ảnh chân dung",
+    none: "Không nên",
+    pls: "Vui lòng ",
+    selfie_rules: "KHÔNG đội nón, đeo kính, khẩu trang",
+    choose_place: "chọn nơi có đủ ánh sáng",
+    capture: " để chụp ảnh",
+    good: "Tốt lắm",
+    proceed_portrait: "Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn",
+    button_skip: "Bỏ qua >",
+    button_start: "Bắt đầu",
+
+
+    guide: "Hướng dẫn ",
+    capture_selfie: "chụp ảnh chân dung",
+    none: "Không nên",
+    pls: "Vui lòng ",
+    choose_place: "chọn nơi có đủ ánh sáng",
+    capture: " để chụp ảnh",
+    hold_clamp_nid: "KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ",
+    done: "Nên",
+    place_nid: "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng."
+    show_4_corners: "Hiển thị tất cả 4 góc của thẻ của bạn",
+    button_skip: "Bỏ qua >",
+    button_start: "Bắt đầu",
+
 };

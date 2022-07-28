@@ -25,9 +25,9 @@ function showMessage(element, message, icon) {
                         <div class='${icon}'></div>
                         ${message}
                         <p style='text-align: center;'>
-                            ${lang.showMessage.callback}
+                            ${lang.showMessage.click} <a class="ahref" href="${DOMAIN}" style='width:auto'>${lang.showMessage.here}</a> ${lang.showMessage.return}${lang.showMessage.auto_return},
                         </p>
-                    </div> 
+                    </div>
                 </div> `;
     $(element).html(html);
 }
@@ -113,7 +113,6 @@ var PincodeInput = function () {
         }, e
     }()
 }();
-
 
 // Done +++
 function close_popup() {
