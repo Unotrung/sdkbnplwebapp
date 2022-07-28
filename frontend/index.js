@@ -670,7 +670,7 @@ function showAllTenor(element, nCount = 0) {
 
     for (var i = 0; i < count; i++) {
         html += `
-        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onclick='selectTenor(this)'>
+        <div class='voolo-intro tenor-list' data-id='${tenors[i]._id}' onchange='selectTenor(this)'>
             <div class='tenor-item'>
                 <div class="tenor-head">
                     <div class='sub4'>${lang.showAllTenor.term_1}</div class='sub4'>
@@ -791,6 +791,26 @@ function deleteImage(side) {
             errorMessage: error.message
         }
     }
+}
+
+function onHandleChangeDataCity() {
+    onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
+    handleChangeCity("#city", "#district");
+}
+
+function onHandleChangeDataDistrict() {
+    onChangeValidation("#district", "Vui lòng nhập quận, huyện");
+    handleChangeWard("#district", "#ward");
+}
+
+function onHandleChangeDataCityPermanent() {
+    onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
+    handleChangeCity("#city_permanent", "#district_permanent");
+}
+
+function onHandleChangeDataDistrictPermanent() {
+    onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
+    handleChangeWard("#district_permanent", "#ward_permanent");
 }
 
 // Done +++
@@ -957,25 +977,15 @@ function showDataInform(element, personal) {
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
-<<<<<<< HEAD
                                     <label for='district'>${lang.showDataInform.district}</label>
                                     <select placeholder='${lang.showDataInform.choose_district}' id='district' name='district' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrict()' onclick='onHandleChangeDataDistrict()' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
-=======
-                                    <label for='district'>Quận/Huyện</label>
-                                    <select placeholder='Chọn quận/huyện' id='district' name='district' class='input-global' autocomplete="off" onClick='onChangeValidation("#district", "Vui lòng nhập quận, huyện")' onchange='handleChangeWard("#district", "#ward")' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
->>>>>>> 5c30b97 (Update 12:49 25/07/2022)
                                         ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
-<<<<<<< HEAD
                                     <label for='ward'>${lang.showDataInform.wards}</label>
                                     <select placeholder='${lang.showDataInform.choose_wards}' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
-=======
-                                    <label for='ward'>Phường/Xã</label>
-                                    <select placeholder='Chọn phường/xã' id='ward' name='ward' class='input-global' autocomplete="off" onClick='onChangeValidation("#ward", "Vui lòng nhập phường, xã")'  value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
->>>>>>> 5c30b97 (Update 12:49 25/07/2022)
                                         ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
@@ -1697,15 +1707,9 @@ function showFormPincode(element, phone, screen) {
                     <form id='formSetupPinCode' class="box-mobile m-top-16">
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
-<<<<<<< HEAD
                                     <h4>${lang.showFormPincode.pin_input}</h4>
                                     <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.pls_payment : (screen === 'VERIFY_PIN' ? lang.showFormPincode.pin_verify_info : lang.showFormPincode.pin_verify_payment)}</p>
                                     <div class='sub4'>${lang.showFormPincode.pin}</div>
-=======
-                                    <h4>Nhập mã PIN</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? 'Vui lòng nhập mã PIN để thanh toán' : (screen === 'VERIFY_PIN' ? 'Vui lòng nhập mã PIN để xác thực thông tin' : 'Vui lòng nhập mã PIN để xác thực thanh toán')}</p>
-                                    <div class='sub4'>Mã PIN</div>
->>>>>>> 5c30b97 (Update 12:49 25/07/2022)
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
                                 </div>
