@@ -94,12 +94,12 @@ function showUICheckPhone(element) {
             }
             else {
                 btnSubmitPhone.disabled = true;
-                formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.invalid_phone);
+                formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
             }
         }
         else {
             btnSubmitPhone.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.empty_phone);
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone_null);
         }
     });
 
@@ -127,7 +127,7 @@ function showUICheckPhone(element) {
             showUICheckNid(element);
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.invalid_phone);
+            formatStyleWrongInput(dataPhone, errorMessage, lang.showUICheckPhone.error_phone);
             btnSubmitPhone.disabled = true;
         }
         else if (result.errCode === 1008 && result.status === false) {
@@ -148,7 +148,7 @@ function showUICheckNid(element) {
     var html = `<form id='formValueNid' class='formValue showUICheckNid'>
                     <div class='mobile'>
                         <div class='form__row'>
-                            <label for='nid'>${lang.showUICheckNid.type_nid}</label>
+                            <label for='nid'>${lang.showUICheckNid.input_nid}</label>
                             <input autocomplete="off" type='number' id='nid' class='input-global' autocomplete="off" />
                             <span class='error_message'></span>
                         </div>
@@ -159,7 +159,7 @@ function showUICheckNid(element) {
                 </form>`;
     $(element).html(html);
 
-    pageTitle(element, "<h4 class='pageTitle'>" + lang.showUICheckNid.capture_selfie + "</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showUICheckNid.capture_selfie+"</h4>");
     $(window).scrollTop(0);
 
     $('#callHP').click(function () {
@@ -200,18 +200,18 @@ function showUICheckNid(element) {
             }
             else {
                 isActive = false;
-                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.invalid_nid);
+                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid);
             }
 
             if (checkAllDataSame(dataNid.value)) {
                 isActive = false;
                 btnSubmitNid.disabled = true;
-                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.invalid_nid);
+                formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid);
             }
         }
         else {
             isActive = false;
-            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.empty_nid);
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_null);
         }
         fillInd = isActive;
         if (isActive === true && btnSelActive === true) {
@@ -230,7 +230,7 @@ function showUICheckNid(element) {
         let result = checkNidExists(data);
         console.log('Check nid exists: ', result);
         if (result.statusCode === 1000 && result.status === true && checkSelfieImage !== null) {
-            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.registered_nid);
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_registered);
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -245,7 +245,7 @@ function showUICheckNid(element) {
             close_popup();
         }
         else if (result.errorCode === 8000 && result.status === false) {
-            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.invalid_nid);
+            formatStyleWrongInput(dataNid, errorMessage, lang.showUICheckNid.error_nid_);
             btnSubmitNid.disabled = true;
             close_popup();
         }
@@ -270,7 +270,7 @@ function captureNidFrontAndBack(element) {
     disableEnterKey();
 
     showProcessPipeline(1, true, 'captureNid');
-    pageTitle(element, "<h4 class='pageTitle'>" + lang.captureNidFrontAndBack.capture_nid + "</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.captureNidFrontAndBack.capture_nid+"</h4>");
     $(window).scrollTop(0);
 
     $('#front_image').click(function () {
@@ -412,7 +412,7 @@ function cutStringData(infomation) {
                             sessionStorage.removeItem('front-image');
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
-                            if (showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)) {
+                            if(showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)){
                                 runDocumentCaptureScreen('FRONT');
                             }
                             close_popup();
@@ -498,7 +498,7 @@ function makeFaceMatchCall(faceImageBase64String, docImageBase64String) {
                 const matchFace = data?.match;
                 console.log('matchFace: ', matchFace);
                 if (matchFace === 'no') {
-                    showPopupMessage(lang.cutStringData.notification, lang.makeFaceMatchCall.not_match_selfie);
+                    showPopupMessage(lang.cutStringData.notification, lang.makeFaceMatchCall.error_selfie_notmatch);
                     return false;
                 }
                 else {
@@ -516,12 +516,12 @@ async function LaunchFaceCaptureScreen() {
         var hvFaceConfig = new HVFaceConfig();
         hvFaceConfig.setShouldShowInstructionPage(false);
         hvFaceConfig.faceTextConfig.setFaceCaptureTitle(lang.LaunchFaceCaptureScreen.capture_selfie);
-        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone_and_device);
+        hvFaceConfig.faceTextConfig.setFaceCaptureBottomDescription(lang.LaunchFaceCaptureScreen.use_phone);
         hvFaceConfig.faceTextConfig.setFaceNotDetectedDescription(lang.LaunchFaceCaptureScreen.capture_rules);
         hvFaceConfig.faceTextConfig.setFaceTooBigDescription(lang.LaunchFaceCaptureScreen.away_camera);
         hvFaceConfig.faceTextConfig.setFaceDetectedDescription(lang.LaunchFaceCaptureScreen.capture_now);
         hvFaceConfig.faceTextConfig.setFaceCaptureReviewTitle(lang.LaunchFaceCaptureScreen.capture_review);
-        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription(lang.LaunchFaceCaptureScreen.use_phone_and_device);
+        hvFaceConfig.faceTextConfig.setFaceCaptureReviewBottomDescription(lang.LaunchFaceCaptureScreen.FaceCaptureReviewBottomDescription);
         $("body").removeClass("loading");
         callback = (HVError, HVResponse) => {
             if (HVError) {
@@ -585,7 +585,7 @@ async function LaunchDocumentCaptureScreen(side) {
                 var attemptsCount = HVResponse.getAttemptsCount();
                 console.log(apiResults);
                 if (apiResults['result']['summary']['action'] !== 'pass') {
-                    showPopupMessage(lang.cutStringData.notification, lang.LaunchDocumentCaptureScreen.unsatisfactory_picture);
+                    showPopupMessage(lang.cutStringData.notification, lang.LaunchDocumentCaptureScreen.Unsatisfactory_picture);
                     return;
                 }
                 if (imageBase64 !== '' && imageBase64 !== null && imageBase64 !== undefined) {
@@ -793,21 +793,25 @@ function deleteImage(side) {
     }
 }
 
+// Done +++
 function onHandleChangeDataCity() {
     onChangeValidation("#city", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city", "#district");
 }
 
+// Done +++
 function onHandleChangeDataDistrict() {
     onChangeValidation("#district", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district", "#ward");
 }
 
+// Done +++
 function onHandleChangeDataCityPermanent() {
     onChangeValidation("#city_permanent", "Vui lòng nhập thành phố, tỉnh");
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
+// Done +++
 function onHandleChangeDataDistrictPermanent() {
     onChangeValidation("#district_permanent", "Vui lòng nhập quận, huyện");
     handleChangeWard("#district_permanent", "#ward_permanent");
@@ -815,25 +819,25 @@ function onHandleChangeDataDistrictPermanent() {
 
 // Done +++
 function onHandleChangeDataCity() {
-    onChangeValidation("#city", lang.onHandleChangeDataCity.type_city);
+    onChangeValidation("#city", lang.onHandleChangeDataCity.input_city);
     handleChangeCity("#city", "#district");
 }
 
 // Done +++
 function onHandleChangeDataDistrict() {
-    onChangeValidation("#district", lang.onHandleChangeDataCity.type_district);
+    onChangeValidation("#district", lang.onHandleChangeDataCity.input_district);
     handleChangeWard("#district", "#ward");
 }
 
 // Done +++
 function onHandleChangeDataCityPermanent() {
-    onChangeValidation("#city_permanent", lang.onHandleChangeDataCity.type_city);
+    onChangeValidation("#city_permanent", lang.onHandleChangeDataCity.input_city);
     handleChangeCity("#city_permanent", "#district_permanent");
 }
 
 // Done +++
 function onHandleChangeDataDistrictPermanent() {
-    onChangeValidation("#district_permanent", lang.onHandleChangeDataCity.type_district);
+    onChangeValidation("#district_permanent", lang.onHandleChangeDataCity.input_district);
     handleChangeWard("#district_permanent", "#ward_permanent");
 }
 
@@ -908,8 +912,8 @@ function showDataInform(element, personal) {
     }
 
     var html = `<div class='form-card form-showdata'>
-                    <h4 class='form-showdata-title'>${lang.showDataInform.type_info}</h4>
-                    <p class='form-showdata-desc'>${lang.showDataInform.enter_all_field}</p>
+                    <h4 class='form-showdata-title'>${lang.showDataInform.input_info}</h4>
+                    <p class='form-showdata-desc'>${lang.showDataInform.fill_fields_below}</p>
                     <form class='' id='formDataValue'>
                         <div class="card">
                             <div class="card-head">
@@ -918,12 +922,12 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='fullname'>${lang.showDataInform.info_name}</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname", ${lang.showDataInform.type_name})' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
+                                    <input class='input-global' autocomplete="off" type='text' id='fullname' name='fullname' onchange='onChangeValidation("#fullname", ${lang.showDataInform.input_name})' value="${conditionFullname ? fullname : ''}" ${conditionFullname ? 'disabled' : ''} />
                                     <span class='error_fullname error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone'>${lang.showDataInform.info_phone}</label>
-                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onchange='onChangeValidation("#phone", ${lang.showDataInform.type_phone})' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
+                                    <input class='input-global' autocomplete="off" type='number' id="phone" name="phone" onchange='onChangeValidation("#phone", ${lang.showDataInform.input_phone})' value="${conditionPhone ? phone : ''}"  ${conditionPhone ? 'disabled' : ''}  />
                                     <span class='error_phone error_message'></span>
                                 </div>
                                 <div class='form-row'>
@@ -941,21 +945,21 @@ function showDataInform(element, personal) {
                                     <span class='error_gender error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='nid'>${lang.showDataInform.info_nid}</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onchange='onChangeValidation("#nid",${lang.showDataInform.type_nid})' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
+                                    <label for='nid'>${lang.showDataInform.nid}</label>
+                                    <input class='input-global' autocomplete="off" type='number' id='nid' name='nid' onchange='onChangeValidation("#nid",${lang.showDataInform.input_nid})' value="${conditionNid ? nid : ''}" ${conditionNid ? 'disabled' : ''}/>
                                     <span class='error_nid error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
-                                            <label for='doi'>${lang.showDataInform.info_doi}</label>
+                                            <label for='doi'>${lang.showDataInform.doi}</label>
                                             <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doi' name='doi' onchange='onChangeValidation("#doi")' onclick='onChangeValidation("#doi")' value="${conditionDoi ? doi : ''}" />
                                             <span class='error_doi error_message'></span>
                                         </div>
                                     </div>
                                     <div class='mobile-cell'>
                                         <div class="form-cell">
-                                            <label for='doe'>${lang.showDataInform.info_doe}</label>
+                                            <label for='doe'>${lang.showDataInform.doe}</label>
                                             <input placeholder="dd/mm/yyyy" class='input-global' autocomplete="off" type='date' id='doe' name='doe' onchange='onChangeValidation("#doe")' onclick='onChangeValidation("#doe")' value="${conditionDoe ? doe : ''}" />
                                             <span class='error_doe error_message'></span>
                                         </div>
@@ -966,33 +970,33 @@ function showDataInform(element, personal) {
                         </div >
                         <div class="card">
                             <div class="card-head">
-                                <h3 class='form-showdata-info'>${lang.showDataInform.current_address}</h3>
+                                <h3 class='form-showdata-info'>${lang.showDataInform.cur_address}</h3>
                             </div>
                             <div class="card-body">
                                 <div class='form-row'>
-                                    <label for='city'>${lang.showDataInform.info_city}</label>
+                                    <label for='city'>${lang.showDataInform.city}</label>
                                     <select placeholder='${lang.showDataInform.choose_city}' id='city' name='city' class='input-global' autocomplete="off" onchange='onHandleChangeDataCity()' onclick='onHandleChangeDataCity()' value="${(conditionCity && dtCity) ? dtCity.Value : ''}"> 
                                         ${cities.data.map((city, index) => (`<option key=${index} value='${city.Value}' ${dtCity ? (dtCity.Value === city.Value) && 'selected' : ''}>${city.UI_Show}</option>`))}
                                     </select>
                                     <span class='error_city error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='district'>${lang.showDataInform.info_district}</label>
+                                    <label for='district'>${lang.showDataInform.district}</label>
                                     <select placeholder='${lang.showDataInform.choose_district}' id='district' name='district' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrict()' onclick='onHandleChangeDataDistrict()' value="${(conditionDistrict && dtDistrict) ? dtDistrict.Value : ''}">   
                                         ${districts.data.map((district, index) => ((dtCity.Value === district.Parent_Value) && `<option key=${index} value='${district.Value}' ${dtDistrict ? (dtDistrict.Value === district.Value) && 'selected' : ''}>${district.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_district error_message'></span>
                                 </div>
                                 <div class='form-row'>
-                                    <label for='ward'>${lang.showDataInform.info_ward}</label>
-                                    <select placeholder='${lang.showDataInform.choose_ward}' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", ${lang.showDataInform.type_ward})' onclick='onChangeValidation("#ward", ${lang.showDataInform.type_ward})' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
+                                    <label for='ward'>${lang.showDataInform.wards}</label>
+                                    <select placeholder='${lang.showDataInform.choose_wards}' id='ward' name='ward' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward", ${lang.showDataInform.input_wards})' value="${(conditionWard && dtWard) ? dtWard.Value : ''}">
                                         ${wards.data.map((ward, index) => ((dtDistrict.Value === ward.Parent_Value) && `<option key=${index} value='${ward.Value}' ${dtWard ? (dtWard.Value === ward.Value) && 'selected' : ''}>${ward.UI_Show}</option>`))}
                                     </select >
                                     <span class='error_ward error_message'></span>
                                 </div >
                                 <div class='form-row'>
-                                    <label for='street'>${lang.showDataInform.info_street}</label>
-                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onchange='onChangeValidation("#street", ${lang.showDataInform.type_street})' onclick='onChangeValidation("#street", ${lang.showDataInform.type_street})' value="${conditionStreet ? street : ''}" />
+                                    <label for='street'>${lang.showDataInform.street}</label>
+                                    <input class='input-global' autocomplete="off" type='text' id='street' name='street' onchange='onChangeValidation("#street", ${lang.showDataInform.input_street})' onclick='onChangeValidation("#street", ${lang.showDataInform.input_street})' value="${conditionStreet ? street : ''}" />
                                     <span class='error_street error_message'></span>
                                 </div>
                             </div >
@@ -1004,7 +1008,7 @@ function showDataInform(element, personal) {
                         </div>
                         <div class="card-body">
                             <div class='form-row'>
-                                <label for='city_permanent'>${lang.showDataInform.info_city}</label>
+                                <label for='city_permanent'>${lang.showDataInform.city}</label>
                                 <select id='city_permanent' name='city_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataCityPermanent()' onclick='onHandleChangeDataCityPermanent()'>
                                     <option value=''>${lang.showDataInform.choose_city}</option> 
                                     ${cities.data.map((city, index) => ('<option key="' + index + '" value="' + city.Value + '">' + city.UI_Show + '</option>'))}
@@ -1012,7 +1016,7 @@ function showDataInform(element, personal) {
                                 <span class='error_city_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='district_permanent'>${lang.showDataInform.info_district}</label>
+                                <label for='district_permanent'>${lang.showDataInform.district}</label>
                                 <select id='district_permanent' name='district_permanent' class='input-global' autocomplete="off" onchange='onHandleChangeDataDistrictPermanent()' onclick='onHandleChangeDataDistrictPermanent()'>
                                     <option value=''>${lang.showDataInform.choose_district}</option> 
                                     ${districts.data.map((district, index) => ('<option key="' + index + '" value="' + district.Value + '">' + district.UI_Show + '</option>'))}
@@ -1020,16 +1024,16 @@ function showDataInform(element, personal) {
                                 <span class='error_district_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='ward_permanent'>${lang.showDataInform.info_ward}</label>
-                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent",${lang.showDataInform.type_ward})' onclick='onChangeValidation("#ward_permanent", ${lang.showDataInform.type_ward})'>
-                                    <option value=''>${lang.showDataInform.choose_ward}</option> 
+                                <label for='ward_permanent'>${lang.showDataInform.wards}</label>
+                                <select id='ward_permanent' name='ward_permanent' class='input-global' autocomplete="off" onchange='onChangeValidation("#ward_permanent",${lang.showDataInform.input_wards})' onclick='onChangeValidation("#ward_permanent", ${lang.showDataInform.input_wards})'>
+                                    <option value=''>${lang.showDataInform.choose_wards}</option> 
                                     ${wards.data.map((ward, index) => ('<option key="' + index + '" value="' + ward.Value + '">' + ward.UI_Show + '</option>'))}
                                 </select>
                                 <span class='error_ward_permanent error_message'></span>
                             </div>
                             <div class='form-row'>
-                                <label for='street_permanent'>${lang.showDataInform.info_street}</label>
-                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent", ${lang.showDataInform.type_street})' onclick='onChangeValidation("#street_permanent", ${lang.showDataInform.type_street})'/>
+                                <label for='street_permanent'>${lang.showDataInform.street}</label>
+                                <input class='input-global' autocomplete="off" type='text' id='street_permanent' name='street_permanent' onchange='onChangeValidation("#street_permanent", ${lang.showDataInform.input_street})' onclick='onChangeValidation("#street_permanent", ${lang.showDataInform.input_street})'/>
                                 <span class='error_street_permanent error_message'></span>
                             </div>
                         </div>
@@ -1042,19 +1046,19 @@ function showDataInform(element, personal) {
                             <div class="card-body">
                                 <div class='form-row'>
                                     <label for='relationship'>${lang.showDataInform.relationship}</label>
-                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onchange='onChangeValidation("#relationship, ${lang.showDataInform.type_relation})'>
+                                    <select class='input-global' autocomplete="off" type='text' id='relationship' name='relationship' onchange='onChangeValidation("#relationship, ${lang.showDataInform.input_relation})'>
                                         ${referencesRelation.data.map((reference, index) => (`<option key='${index}' value='${reference['Value']}'>${reference['Text']}</option>`))}
                                     </select>
                                     <span class='error_relationship error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='fullname_ref'>${lang.showDataInform.info_name_ref}</label>
-                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref", ${lang.showDataInform.type_name_ref})' onclick='onChangeValidation("#fullname_ref", ${lang.showDataInform.type_name_ref})' />
+                                    <input class='input-global' autocomplete="off" type='text' id="fullname_ref" name="fullname_ref" onchange='onChangeValidation("#fullname_ref", ${lang.showDataInform.input_name_ref})' onclick='onChangeValidation("#fullname_ref", ${lang.showDataInform.input_name_ref})' />
                                     <span class='error_fullname_ref error_message'></span>
                                 </div>
                                 <div class='form-row'>
                                     <label for='phone_ref'>${lang.showDataInform.info_phone_ref}</label>
-                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref", ${lang.showDataInform.type_phone_ref})' onclick='onChangeValidation("#phone_ref", ${lang.showDataInform.type_phone_ref})'/>
+                                    <input class='input-global' autocomplete="off" type='number' id='phone_ref' name='phone_ref' onchange='onChangeValidation("#phone_ref", ${lang.showDataInform.input_phone_ref})' onclick='onChangeValidation("#phone_ref", ${lang.showDataInform.input_phone_ref})'/>
                                     <span class='error_phone_ref error_message'></span>
                                 </div>
                             </div>
@@ -1067,7 +1071,7 @@ function showDataInform(element, personal) {
 
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>" + lang.showDataInform.capture_selfie + "</h4>", 'non-pageTitle');
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.capture_selfie+"</h4>", 'non-pageTitle');
     close_popup();
 
     /* fix error safari input[type=date] - by UNO 19/07 */
@@ -1078,8 +1082,8 @@ function showDataInform(element, personal) {
             // Chrome
         } else {
             // Safari
-            $('input[name=dob]').attr('type', 'text');
-            $('input[name=doi]').attr('type', 'text');
+            // $('input[name=dob]').attr('type', 'text');
+            // $('input[name=doi]').attr('type', 'text');
         }
     }
     $(window).scrollTop(0);
@@ -1124,7 +1128,7 @@ function showDataInform(element, personal) {
             }
             else {
                 isActivePhone = false;
-                showMessageStatus(phoneEle, lang.showDataInform.invalid_phone, 'ERROR');
+                showMessageStatus(phoneEle, lang.showDataInform.error_phone, 'ERROR');
             }
         }
         if ($(this).attr("id") === 'phone_ref') {
@@ -1135,7 +1139,7 @@ function showDataInform(element, personal) {
             }
             else {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, lang.showDataInform.invalid_phone, 'ERROR');
+                showMessageStatus(phone_refEle, lang.showDataInform.error_nid, 'ERROR');
             }
         }
 
@@ -1144,7 +1148,7 @@ function showDataInform(element, personal) {
         if (phoneData.length === 10 && phoneRefData.length === 10) {
             if (phoneRefData === phoneData) {
                 isActivePhone = false;
-                showMessageStatus(phone_refEle, lang.showDataInform.same_phone, 'ERROR');
+                showMessageStatus(phone_refEle, lang.showDataInform.error_same_phone, 'ERROR');
             }
             else {
                 isActivePhone = true;
@@ -1216,7 +1220,7 @@ function showDataInform(element, personal) {
 
         let isPhoneError = checkPhoneValidate(phoneEle);
         if (isPhoneError) {
-            showMessageStatus(phoneEle, lang.showDataInform.invalid_phone, 'ERROR');
+            showMessageStatus(phoneEle, lang.showDataInform.error_phone, 'ERROR');
         }
         else {
             showMessageStatus(phoneEle, '', 'SUCCESS');
@@ -1224,7 +1228,7 @@ function showDataInform(element, personal) {
 
         let isPhoneRefError = checkPhoneValidate(phone_refEle);
         if (isPhoneRefError) {
-            showMessageStatus(phone_refEle, lang.showDataInform.invalid_phone, 'ERROR');
+            showMessageStatus(phone_refEle, lang.showDataInform.error_phone, 'ERROR');
         }
         else {
             showMessageStatus(phone_refEle, '', 'SUCCESS');
@@ -1232,7 +1236,7 @@ function showDataInform(element, personal) {
 
         let isNidError = checkNidValidate(nidEle);
         if (isNidError) {
-            showMessageStatus(nidEle, lang.showDataInform.invalid_nid, 'ERROR');
+            showMessageStatus(nidEle, lang.showDataInform.error_nid, 'ERROR');
         }
         else {
             showMessageStatus(nidEle, '', 'SUCCESS');
@@ -1323,19 +1327,19 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                                     <div id='gender' class="info">${personal_all_infoConfirm.sex === 'M' ? 'Nam' : 'Nữ'}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='citizenId'>${lang.showDataInform.info_nid}</label>
+                                    <label for='citizenId'>${lang.showDataInform.nid}</label>
                                     <div id='citizenId' class="info">${personal_all_infoConfirm.citizenId}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='issueDate'>${lang.showDataInform.info_doi}</label>
+                                    <label for='issueDate'>${lang.showDataInform.doi}</label>
                                     <div id='issueDate' class="info">${convertDateString2(personal_all_infoConfirm.issueDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='doe'>${lang.showDataInform.info_doe}</label>
+                                    <label for='doe'>${lang.showDataInform.doe}</label>
                                     <div id='doe' class="info">${convertDateString2(personal_all_infoConfirm.expirationDate)}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='address'>${lang.showDataInform.current_address}</label>
+                                    <label for='address'>${lang.showDataInform.cur_address}</label>
                                     <div id='address' class="info">${personal_all_infoConfirm.street}, ${personal_all_infoConfirm.ward.wardText}, ${personal_all_infoConfirm.district.districtText}, ${personal_all_infoConfirm.city.cityText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
@@ -1351,19 +1355,19 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                             </div>
                             <div class="card-body">
                                 <div class='form-row form-verify'>
-                                    <label for='city_permanent'>${lang.showDataInform.info_city}</label>
+                                    <label for='city_permanent'>${lang.showDataInform.city}</label>
                                     <div id='city_permanent' class="info">${personal_all_infoConfirm.temporaryCity.city_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='district_permanent'>${lang.showDataInform.info_district}</label>
+                                    <label for='district_permanent'>${lang.showDataInform.district}</label>
                                     <div id='district_permanent' class="info">${personal_all_infoConfirm.temporaryDistrict.district_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='ward_permanent'>${lang.showDataInform.info_ward}</label>
+                                    <label for='ward_permanent'>${lang.showDataInform.wards}</label>
                                     <div id='ward_permanent' class="info">${personal_all_infoConfirm.temporaryWard.ward_permanentText}</div>
                                 </div>
                                 <div class='form-row form-verify'>
-                                    <label for='street_permanent'>${lang.showDataInform.info_street}</label>
+                                    <label for='street_permanent'>${lang.showDataInform.street}</label>
                                     <div id='street_permanent' class="info">${personal_all_infoConfirm.temporaryStreet}</div>
                                 </div>
                             </div>
@@ -1397,7 +1401,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>" + lang.showDataInform.type_info + "</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.input_info+"</h4>");
     $(window).scrollTop(0);
 
     let personal_all_info = {
@@ -1435,15 +1439,11 @@ function configUi(config) {
     if (config.logo) iHtml += "<div class='voolo-logo'></div>";
     if (config.intro) iHtml += `
         <div class="paragraph-text text-center margin-bottom-default" > 
-            <p>${lang.configUi.slogan1}</p><p>${lang.configUi.slogan2}</p>
+            ${lang.configUi.slogan}
         </div>
         <div class='voolo-intro'>
             <div class='sub4 sub3-mobile'>${lang.configUi.voolo_intro}</div>
-            <ul>
-                <li>${lang.configUi.feature_voolo_intro_1}</li>
-                <li>${lang.configUi.feature_voolo_intro_2}</li>
-                <li>${lang.configUi.feature_voolo_intro_3}</li>
-            </ul>
+            ${lang.configUi.sub_voolo_intro}
         </div>`;
     $(config.element + " form").prepend(iHtml);
 }
@@ -1557,7 +1557,7 @@ function forgotPinPhone(element, phone) {
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
                             <h4 style="margin-bottom:40px">${lang.forgotPinPhone.phone_number}</h4>
-                            <label for='phone_reset'>${lang.forgotPinPhone.empty_phone}</label>
+                            <label for='phone_reset'>${lang.forgotPinPhone.input_phone_null}</label>
                             <input autocomplete="off" type='number' id='phone_reset' class='form__input input-global' value="${phone ? phone : ''}" />
                             <span class='error_message'></span>
                         </div>
@@ -1596,12 +1596,12 @@ function forgotPinPhone(element, phone) {
             }
             else {
                 btnContinue.disabled = true;
-                formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.invalid_phone);
+                formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.error_phone);
             }
         }
         else {
             btnContinue.disabled = true;
-            formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.type_phone);
+            formatStyleWrongInput(dataPhone, errorMessage, lang.forgotPinPhone.input_phone);
         }
     });
 
@@ -1617,8 +1617,8 @@ function forgotPinNid(element) {
     var html = `<form class='formValue forgotPinPhone'>
                     <div class='mobile'>
                         <div class='form__row m-top-16'>
-                            <h4 style="margin-bottom:40px">${lang.showDataInform.info_nid}</h4>
-                            <label for='nid_reset'>${lang.forgotPinNid.empty_nid}</label>
+                            <h4 style="margin-bottom:40px">${lang.showDataInform.nid}</h4>
+                            <label for='nid_reset'>${lang.forgotPinNid.input_nid_null}</label>
                             <input autocomplete="off" type='number' id='nid_reset' class='form__input input-global' />
                             <span class='error_message'></span>
                         </div>
@@ -1660,17 +1660,17 @@ function forgotPinNid(element) {
                 btnSendOtp.disabled = false;
             }
             else {
-                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.invalid_nid);
+                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid);
                 btnSendOtp.disabled = true;
             }
 
             if (checkAllDataSame(dataNid.value)) {
                 btnSendOtp.disabled = true;
-                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.invalid_nid);
+                formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.error_nid);
             }
         }
         else {
-            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.type_nid);
+            formatStyleWrongInput(dataNid, errorMessage, lang.forgotPinNid.input_nid);
             btnSendOtp.disabled = true;
         }
     });
@@ -1711,9 +1711,9 @@ function showFormPincode(element, phone, screen) {
                     <form id='formSetupPinCode' class="box-mobile m-top-16">
                             <div class='${screen}'>
                                 <div class='text-center form-pincode'>
-                                    <h4>${lang.showFormPincode.type_pin}</h4>
-                                    <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.type_payment : (screen === 'VERIFY_PIN' ? lang.showFormPincode.info_pin_verify : lang.showFormPincode.pin_verify_payment)}</p>
-                                    <div class='sub4'>${lang.showFormPincode.info_pin}</div>
+                                    <h4>${lang.showFormPincode.pin_input}</h4>
+                                    <p class=''>${screen === 'SHOW_TENOR' ? lang.showFormPincode.pls_payment : (screen === 'VERIFY_PIN' ? lang.showFormPincode.pin_verify_info : lang.showFormPincode.pin_verify_payment)}</p>
+                                    <div class='sub4'>${lang.showFormPincode.pin}</div>
                                     <div id='pincode'></div>
                                     <span class='error_message error_message_pin'></span>
                                 </div>
@@ -1739,7 +1739,7 @@ function showFormPincode(element, phone, screen) {
                 btnSubmitPin.disabled = false;
             }
             else if (value.length === 0) {
-                formatStyleWrongInput(pincode, errorMessage, lang.showFormPincode.error_type_pin);
+                formatStyleWrongInput(pincode, errorMessage, lang.showFormPincode.error_input_pin);
                 btnSubmitPin.disabled = true;
             }
             else {
@@ -1795,7 +1795,7 @@ function showFormPincode(element, phone, screen) {
         //     return;
         // }
         else if (result.status === false && result.statusCode === 1002) {
-            formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.invalid_phone);
+            formatStyleWrongPincode(pincode, errorMessage, lang.showFormPincode.error_phone);
             btnSubmitPin.disabled = true;
         }
         else if (result.status === false && result.statusCode === 1003) {
@@ -1850,7 +1850,7 @@ function showFormSetupPin(element, screen, token) {
         showProcessPipeline(2, true);
     }
 
-    pageTitle(element, '<h4 class="pageTitle">' + lang.showFormSetupPin.setup_pin + '</h4>', 'non-pageTitle');
+    pageTitle(element, '<h4 class="pageTitle">'+lang.showFormSetupPin.setup_pin+'</h4>', 'non-pageTitle');
     $(window).scrollTop(0);
 
     let iPut1, iPut2 = false;
@@ -1997,7 +1997,7 @@ function showFormSetupPin(element, screen, token) {
             var pincode = document.querySelector('#pincode');
             var repincode = document.querySelector('#repincode');
             var errorMessage = document.querySelector('.error_message');
-            formatStyleWrongPincode(repincode, errorMessage, lang.showFormSetupPin.not_match_pin);
+            formatStyleWrongPincode(repincode, errorMessage, lang.showFormSetupPin.pin_notmatch);
             addBorderStyle('setuppin', "RED");
             addBorderStyle('setupcfpin', "RED");
             $("body").removeClass("loading");
@@ -2025,7 +2025,7 @@ function resendOTP(phone, screen) {
             console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
-    timer(5);
+    timer(60);
 }
 
 // Done +++
@@ -2044,7 +2044,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                             <div class='card'>
                                 <div class='card-head no-line'></div>
                                 <div class='card-body text-center form-otpcode'>
-                                    <h4>${lang.showFormVerifyOTP.type_OTP}</h4>
+                                    <h4>${lang.showFormVerifyOTP.input_OTP}</h4>
                                     <p class='compact-12'>${lang.showFormVerifyOTP.sent_OTP}<b>${phone.replaceAt(3, "****")}</b></p>
                                     <div id='otpcode'></div>
                                     <span class='error_message error_message_otp'></span>
@@ -2052,13 +2052,13 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                                 <div class='card-footer' style="height:4px"></div>
                             </div>
                             <button type='button' id='btnSubmitVerifyOTP' class='payment-button'>${lang.showUICheckPhone.button_next}</button>
-                            <p style='text-align: center;' class='compact-12'>${lang.showFormVerifyOTP.not_receive_OTP}  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>${lang.showFormVerifyOTP.resend_OTP}(<c id="timer"></c>)</a></p>
+                            <p style='text-align: center;' class='compact-12'>${lang.showFormVerifyOTP.OTP_not_receive}  <a class="ahref" id="sendOtpAgain" onclick='resendOTP("${phone}", "${screen}")' style='width:auto'>${lang.showFormVerifyOTP.resend_OTP}(<c id="timer"></c>)</a></p>
                         </form>
                     </div>
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(5);
+    timer(60);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');
@@ -2263,7 +2263,7 @@ function customerInfo(element, status = true) {
     if (status) {
         strStatus = `
         <div class='ico-success'></div >
-        <b>${lang.customerInfo.congratulation}</b>
+        <b>${lang.customerInfo.congatulation}</b>
         `;
     }
     else {
@@ -2277,7 +2277,7 @@ function customerInfo(element, status = true) {
                     <div id="customerInfo">
                         <div class="avatar"><img src="${customer.avatar}" /></div>
                         <div class='detail'>
-                            <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>${lang.customerInfo.yeah}</c></h3>
+                            <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
                             <p class='limit-text'>${lang.customerInfo.limit_credit}<span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                             ${strStatus}
                         </div>
@@ -2322,7 +2322,7 @@ function showProcessPipeline(step, logo = false, formName = '') {
     var pipeline = `
         <div class='headrow' >
             ${(logo) ? '<div class="voolo-logo"></div>' : ''}
-            <div class='sub2'>${lang.showProcessPipeline.buy_now_pay_later}</div>
+            <div class='sub2'>${lang.showProcessPipeline.pay_first_buy_later}</div>
             <div class='line'>
                 <span class='Tpipe ${(step !== 1) ? s1 : ""}'></span>
                 <span class='Tpipe ${s3}'></span>
@@ -2390,7 +2390,7 @@ function messageScreen(element, config) {
                         <div class='ico-success ico-150'></div>
                         <h3>${lang.messageScreen.registered_success}</h3>
                         <p style='text-align: center;' class='text-message'>
-                            ${lang.messageScreen.click} <a class="ahref" href="${DOMAIN}" style='width:auto'>${lang.messageScreen.here}</a> >${lang.messageScreen.return} <span>${lang.messageScreen.auto_return} <c class='coutdown'></c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2400,9 +2400,9 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
-                        <h3>${lang.messageScreen, registered_unsuccess}</h3>
+                        <h3>${lang.messageScreen,registered_unsuccess}</h3>
                         <p style='text-align: center;' class='text-message'>
-                            ${lang.messageScreen.click} <a class="ahref" href="${DOMAIN}" style='width:auto'>${lang.messageScreen.here}</a> >${lang.messageScreen.return} <span>${lang.messageScreen.auto_return} <c class='coutdown'></c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2425,7 +2425,7 @@ function messageScreen(element, config) {
                         <div class='ico-success ico-150'></div>
                         <h3>${lang.messageScreen.update_success_pin}</h3>
                         <p style='text-align: center;'>
-                            ${lang.messageScreen.click} <a class="ahref" href="${DOMAIN}" style='width:auto'>${lang.messageScreen.here}</a> >${lang.messageScreen.return} <span>${lang.messageScreen.auto_return} <c class='coutdown'></c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div> 
                 </div>`;
@@ -2438,7 +2438,7 @@ function messageScreen(element, config) {
                         <h3>${lang.messageScreen.buy_success}</h3>
                         <div class='id_bill'>${lang.messageScreen.payment_code}<a class='link_id_bill'>ABC-200305-0306-F94C</a></div>
                         <p style='text-align: center;'>
-                            ${lang.messageScreen.click} <a class="ahref" href="${DOMAIN}" style='width:auto'>${lang.messageScreen.here}</a> >${lang.messageScreen.return} <span>${lang.messageScreen.auto_return} <c class='coutdown'></c>s.</span>
+                            ${lang.messageScreen.callback}
                         </p>
                     </div>
                 </div>`;
