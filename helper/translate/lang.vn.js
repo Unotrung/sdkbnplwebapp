@@ -1,10 +1,8 @@
 lang = {
-    //showAllProvider
     showAllProvider : {
         choose_provider : "Chọn nhà cung cấp BNPL",
     },
 
-    //listProductions
     listProductions : {
         order_info : "Thông tin đơn hàng",
         add_promotion : "Thêm mã giảm giá hoặc thẻ quà tặng",
@@ -13,7 +11,6 @@ lang = {
         total_amount : "Tổng cộng",
     },
 
-    //showUICheckPhone
     showUICheckPhone : {
         phone : "Số điện thoại",
         type_phone : "Vui lòng nhập số điện thoại để tiếp tục",
@@ -24,22 +21,17 @@ lang = {
         error_incorrect_pin_5 : "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
     },
 
-    //configUi
     configUi : {
         slogan : "<p>Mua trước Trả sau Không khoản trả trước</p><p>Nhẹ nhàng với 0% lãi suất </p>",
         voolo_intro : "VOOLO giúp bạn:",
         sub_voolo_intro : "<ul><li>Mua sắm không giới hạn </li><li>Thanh toán linh hoạt </li><li>Hoàn tiền ngay chỉ trong 1 ngày </li></ul>",
     },
 
-
-
-    //showCircularProgressbar
     showCircularProgressbar : {
         verifying : "Đang trong tiến trình xác minh thông tin",
         note : "Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút",
     },
 
-    //showUICheckNid
     showUICheckNid : {
         input_nid : "Vui lòng nhập số CMND/CCCD",
         capture_selfie : "Chụp ảnh chân dung",
@@ -49,27 +41,22 @@ lang = {
         error_nid_ : "CMND/CCCD không hợp lệ !",
     },
 
-    //captureNidFrontAndBack
     captureNidFrontAndBack : {
         capture_nid : "Chụp ảnh CMND/CCCD",
         capture_front_nid : "CMND mặt trước",
         capture_back_nid : "CMND mặt sau",
-        capture_nid : "Chụp ảnh CMND/CCCD",
     },
 
-    //cutStringData
     cutStringData : {
         notification : "Thông báo",
         error_nid_front : "CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại",
         error_capture_front_nid : "Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại",
     },
 
-    //makeFaceMatchCall
     makeFaceMatchCall : {
         error_selfie_notmatch : "Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh. ", 
     },
 
-    //LaunchFaceCaptureScreen
     LaunchFaceCaptureScreen : {
         capture_selfie : "Chụp ảnh chân dung",
         use_phone : "Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.",
@@ -80,7 +67,6 @@ lang = {
         FaceCaptureReviewBottomDescription : "Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.",
     },
 
-    //LaunchDocumentCaptureScreen
     LaunchDocumentCaptureScreen : {
         capture_nid : "Chụp ảnh CMND/CCCD",
         choose_place : "Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình",
@@ -89,7 +75,6 @@ lang = {
         Unsatisfactory_picture: "Hình ảnh không đạt yêu cầu",
     },
 
-    //showAllTenor
     showAllTenor : {
         select_payment_term : "Vui lòng chọn kì hạn thanh toán",
         term_1 : "KÌ HẠN 1",
@@ -100,7 +85,6 @@ lang = {
         show_more : "Hiển thị thêm",
     },
 
-    //deleteImage
     deleteImage : {
         delete_img_success : "Xóa ảnh selfie thành công !",
         not_found_img : "Không tìm thấy ảnh để xóa !",
@@ -108,13 +92,11 @@ lang = {
         delete_back_img : "Xóa mặt sau selfie thành công !",
     },
 
-    //onHandleChangeDataCity
     onHandleChangeDataCity : {
         input_district : "Vui lòng nhập quận, huyện",
         input_city : "Vui lòng nhập thành phố, tỉnh",
     },
 
-    //showDataInform
     showDataInform : {
         input_info : "Nhập thông tin cá nhân",
         fill_fields_below : "Vui lòng điền các trường thông tin bên dưới",
@@ -156,7 +138,6 @@ lang = {
         error_same_phone : "Số điện thoại tham chiếu trùng số điện thoại đăng ký",
     },
 
-    //showConfirmDataInform
     showConfirmDataInform : {
         check_info : "Đối soát thông tin",
         confirm_info : "Vui lòng xác nhận các thông tin bên dưới",
@@ -164,7 +145,6 @@ lang = {
         button_confirm : "Xác nhận",
     },
 
-    //forgotPinPhone
     forgotPinPhone : {
         phone_number : "Số điện thoại",
         input_phone_null : "Vui lòng nhập số điện thoại để tiếp tục",
@@ -172,7 +152,6 @@ lang = {
         input_phone : "Vui lòng nhập số điện thoại",
     },
 
-    //forgotPinNid
     forgotPinNid : {
         input_nid_null : "Vui lòng nhập số CMND/CCCD",
         error_nid : "Số CMND/CCCD không hợp lệ",
@@ -182,7 +161,6 @@ lang = {
         error_nid_retype : "Số CMND/CCCD không đúng. Vui lòng nhập số khác.",
     },
 
-    //showFormPincode
     showFormPincode : {
         pin_input : "Nhập mã PIN",
         pls_payment : "Vui lòng nhập mã PIN để thanh toán",
@@ -197,7 +175,6 @@ lang = {
         error_incorrect_pin_5 : "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",
     },
 
-    //showFormSetupPin
     showFormSetupPin : {
         setup_pin : "Cài đặt mã PIN của bạn",
         retype_pin : "Nhập lại mã PIN",
@@ -208,12 +185,10 @@ lang = {
         pin_notmatch : "Mã PIN không trùng khớp",
     },
 
-    //resendOTP
     resendOTP : {
         OTP : "Mã OTP của bạn là: ",
     },
 
-    //showFormVerifyOTP
     showFormVerifyOTP : {
         input_OTP : "Nhập OTP",
         sent_OTP : "Mã OTP đã được gửi đến số điện thoại ",
@@ -224,21 +199,18 @@ lang = {
         error_expired_OTP : "Mã OTP hết hiệu lực",  
     },
 
-    //showContract
     showContract : {
         contract : "Mẫu hợp đồng",
         confirm_contract : "Tôi đồng ý với Điều kiện và Điều khoản hợp đồng",
         send_OTP_to_phone : "Vui lòng gửi OTP xác nhận về số điện thoại đã đăng ký VOOLO của tôi",
     },
 
-    //customerInfo
     customerInfo : {
         congatulation : "Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.",
         unfortunately : "Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.",
         limit_credit : "Hạn mức tín dụng của bạn là : ",
     },
 
-    //showProcessPipeline
     showProcessPipeline : {
         pay_first_buy_later : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",
         cus_info : "Thông tin khách hàng",
@@ -248,7 +220,6 @@ lang = {
         complete : "Hoàn thành",
     }, 
 
-    //messageScreen
     messageScreen : {
         registered_success : "Bạn đã đăng ký thành công",
         registered_unsuccess : "Đăng ký không thành công",
@@ -257,162 +228,73 @@ lang = {
         buy_success : "Chúc mừng bạn đã <span>mua hàng thành công</span>",
         buy_fail : "Mua hàng không thành công",
         payment_code : "Mã thanh toán: ",
-        call_switchboard : "Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.",
+        call_switchboard : "Vui lòng thử lại hoặc liên hệ <b>1900636574</b> để được hỗ trợ.",
         button_retry : "Thử lại",
         callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>`
     },
 
-    //showUseGuideSelfy
     showUseGuideSelfy : {
         guide_take_portraits : "Hướng dẫn chụp ảnh chân dung",
-
     },
 
-    //showUseGuideNid
     showUseGuideNid : {
         guide_take_nid : "Hướng dẫn chụp ảnh CMND/CCCD",
     },
 
-    //showUseGuideBackNid
     showUseGuideBackNid : {
         capture_front_success : "hụp ảnh mặt trước thành công",
         back_card_continue : "Lật mặt sau của card để tiếp tục chụp ảnh",
         button_start : "Bắt đầu",
     },
 
-    //checkPhoneValidate
     checkPhoneValidate : {
         error_phone : "Số điện thoại không hợp lệ",
     },
 
-    //checkNidValidate
     checkNidValidate : {
         error_nid : "Chứng minh nhân dân không hợp lệ",
     },
 
-    //checkPinValidate
     checkPinValidate : {
         error_pin : "Mã Pin không hợp lệ",
     },
 
-    //onChangeValidation
     onChangeValidation : {
         type_info : "Vui lòng nhập thông tin",
     },
 
-    //showHeader
     showHeader : {
         welcome_process : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",  
     },
 
-    //showMessage
-    showMessage : {
-        callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.`, 
-    },
-    
-    //showProcessPipeline
-    showProcessPipeline : {
-        pay_first_buy_later : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",
-        cus_info : "Thông tin khách hàng",
-        setup_pin : "Cài đặt PIN",
-        sign_onl : "Ký điện tử",
-        verify_info : "Xác minh thông tin",
-        complete : "Hoàn thành",
-    }, 
-
-    //messageScreen
-    messageScreen : {
-        registered_success : "Bạn đã đăng ký thành công",
-        registered_unsuccess : "Đăng ký không thành công",
-        update_fail_pin : "Cập nhật mã PIN không thành công",
-        update_success_pin : "Cập nhật mã PIN thành công",
-        buy_success : "Chúc mừng bạn đã <span>mua hàng thành công</span>",
-        buy_fail : "Mua hàng không thành công",
-        payment_code : "Mã thanh toán: ",
-        call_switchboard : "Vui lòng thử lại hoặc liên hệ <b>1900xxx</b> để được hỗ trợ.",
-        button_retry : "Thử lại",
-        callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. <span>Tự động trở lại trang mua hàng sau <c class='coutdown'>5</c>s.</span>`
-    },
-
-    //showUseGuideSelfy
-    showUseGuideSelfy : {
-        guide_take_portraits : "Hướng dẫn chụp ảnh chân dung",
-
-    },
-
-    //showUseGuideNid
-    showUseGuideNid : {
-        guide_take_nid : "Hướng dẫn chụp ảnh CMND/CCCD",
-    },
-
-    //showUseGuideBackNid
-    showUseGuideBackNid : {
-        capture_front_success : "Chụp ảnh mặt trước thành công",
-        back_card_continue : "Lật mặt sau của card để tiếp tục chụp ảnh",
-        button_start : "Bắt đầu",
-    },
-
-    //checkPhoneValidate
-    checkPhoneValidate : {
-        error_phone : "Số điện thoại không hợp lệ",
-    },
-
-    //checkNidValidate
-    checkNidValidate : {
-        error_nid : "Chứng minh nhân dân không hợp lệ",
-    },
-
-    //checkPinValidate
-    checkPinValidate : {
-        error_pin : "Mã Pin không hợp lệ",
-    },
-
-    //onChangeValidation
-    onChangeValidation : {
-        type_info : "Vui lòng nhập thông tin",
-    },
-
-    //showHeader
-    showHeader : {
-        welcome_process : "Chào mừng bạn đến với quy trình đăng ký Mua trước Trả sau",  
-    },
-
-    //showMessage
     showMessage : {
         callback : `Bấm vào <a class="ahref" href="${DOMAIN}" style='width:auto'>đây</a> để quay trở lại. Tự động trở lại trang mua hàng sau 5s.`, 
     },
 
-    //showPopupMessage
     showPopupMessage : {
         button_ok : "OK",
     },
 
-    //useguide.html
-    guide : "Hướng dẫn ",
-    capture_selfie : "chụp ảnh chân dung",
-    none : "Không nên",
-    pls : "Vui lòng ",
-    selfie_rules : "KHÔNG đội nón, đeo kính, khẩu trang",
-    choose_place : "chọn nơi có đủ ánh sáng",
-    capture : " để chụp ảnh",
-    good : "Tốt lắm",
-    proceed_portrait : "Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn",
-    button_skip : "Bỏ qua >",
-    button_start : "Bắt đầu",
+    useguide.html : {
+        guide_capture_selfie : "Hướng dẫn <br/>chụp ảnh chân dung",
+        none : "Không nên",
+        pls_selfie_rules : "Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong>",
+        pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
+        good : "Tốt lắm",
+        proceed_portrait : "Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn",
+        button_skip : "Bỏ qua >",
+        button_start : "Bắt đầu",
+    },
 
-
-    //useguidenid.html
-    guide : "Hướng dẫn ",
-    capture_selfie : "chụp ảnh chân dung",
-    none : "Không nên",
-    pls : "Vui lòng ",
-    choose_place : "chọn nơi có đủ ánh sáng",
-    capture : " để chụp ảnh",
-    hold_clamp_nid : "KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ",
-    done : "Nên",
-    place_nid : "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng.",
-    show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
-    button_skip : "Bỏ qua >",
-    button_start : "Bắt đầu",
-
+    useguidenid.html : {
+        guide_capture_selfie : "Hướng dẫn <br/>chụp ảnh chân dung",
+        none : "Không nên",
+        pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
+        hold_clamp_nid : "Vui lòng <strong>KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ</strong>",
+        done : "Nên",
+        place_nid : "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng.",
+        show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
+        button_skip : "Bỏ qua >",
+        button_start : "Bắt đầu",
+    }      
 };
