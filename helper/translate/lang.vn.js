@@ -88,8 +88,8 @@ lang = {
     deleteImage : {
         delete_img_success : "Xóa ảnh selfie thành công !",
         not_found_img : "Không tìm thấy ảnh để xóa !",
-        delete_front_img : "Xóa mặt trước selfie thành công !",
-        delete_back_img : "Xóa mặt sau selfie thành công !",
+        delete_front_img : "Xóa mặt trước CMND/CCCD thành công !",
+        delete_back_img : "Xóa mặt sau CMND/CCCD thành công !",
     },
 
     onHandleChangeDataCity : {
@@ -139,7 +139,7 @@ lang = {
     },
 
     showConfirmDataInform : {
-        check_info : "Đối soát thông tin",
+        check_info : "Xác nhận thông tin",
         confirm_info : "Vui lòng xác nhận các thông tin bên dưới",
         button_back : "Quay lại",
         button_confirm : "Xác nhận",
@@ -296,5 +296,9 @@ lang = {
         show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
         button_skip : "Bỏ qua >",
         button_start : "Bắt đầu",
+    },
+
+    indexhtml : {
+        waiting : "Vui lòng chờ trong giây lát...",
     }
 };

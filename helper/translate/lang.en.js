@@ -16,9 +16,9 @@ lang = {
         type_phone : "Please enter your mobile number",
         button_next: "Continue",
         error_phone: "Invalid phone number",
-        error_phone_null: "Vui lòng nhập số điện thoại", //not
-        error_incorrect_OTP_5 : "OTP is incorrect (5/5).  Please try again after 24 hours.",
-        error_incorrect_pin_5 : "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.",//not
+        error_phone_null: "Please enter phone number", 
+        error_incorrect_OTP_5 : "OTP is incorrect (5/5).  Please try again after 60 minutes.",
+        error_incorrect_pin_5 : "PIN is incorrect (5/5).  Please try again after 60 minutes.",
     },
  
     configUi : {
@@ -29,7 +29,7 @@ lang = {
 
     showCircularProgressbar : {
         verifying : "Processing to verify information",
-        note : "Lưu ý: Tiến trình xác minh hồ sơ có thể mất từ 5-15 phút", //not
+        note : "Note: Profile verification may take 5-15 minutes",
     },
 
     showUICheckNid : {
@@ -37,42 +37,42 @@ lang = {
         capture_selfie : "Take a selfie",
         error_nid : "Invalid national ID",
         error_nid_null : "Please enter national ID number",
-        error_nid_registered : "CMND/CCCD đã được đăng ký.", //not
+        error_nid_registered : "ID registered.", 
         error_nid_ : "Invalid national ID",
     },
 
     captureNidFrontAndBack : {
-        capture_nid : "Chụp ảnh CMND/CCCD", //not
-        capture_front_nid : "CMND mặt trước", //not
-        capture_back_nid : "CMND mặt sau", //not
+        capture_nid : "Take photo of ID",
+        capture_front_nid : "ID on the front", 
+        capture_back_nid : "ID on the back", 
     },
 
     cutStringData : {
-        notification : "Thông báo", //not
-        error_nid_front : "CMND/CCCD trước không trùng khớp,<br/> đề nghị chụp lại", //not
-        error_capture_front_nid : "Lỗi chụp CMND/CCCD<br/>Mặt trước, đề nghị chụp lại", //not
+        notification : "Notify", 
+        error_nid_front : "The previous ID does not match,<br/> suggest to take a photo", 
+        error_capture_front_nid : "Error taking ID<br/>Front side, Suggest to take a photo", 
     },
 
     makeFaceMatchCall : {
-        error_selfie_notmatch : "Ảnh chân dung và ảnh trên CMND/CCCD không khớp, đề nghị chụp lại ảnh. ", //not
+        error_selfie_notmatch : "Portrait photo and photo on ID don't match, Suggest to take a photo", 
     },
 
     LaunchFaceCaptureScreen : {
         capture_selfie : "Take a selfie",
-        use_phone : "Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.", //not
-        capture_rules : "Vui lòng KHÔNG đội nón, đeo kính, khẩu trang, chọn nơi có đủ ánh sáng để chụp ảnh",//not
-        away_camera : "Cách xa camera", //not
+        use_phone : "Please make sure your camera is connected.", 
+        capture_rules : "Please avoid wearing caps, masks, or glasses.",
+        away_camera : "To get a complete portrait, please keep a respectable distance from camera to your face.",   
         capture_now : "Capture now",
         capture_review : "faceCaptureReviewTitle",
-        FaceCaptureReviewBottomDescription : "Bạn đang chụp ảnh chân dung để đăng ký tài khoản (KYC). Vui lòng sử dụng số điện thoại và thiết bị của bạn.", //not
+        FaceCaptureReviewBottomDescription : "You are taking a portrait photo for account registration (KYC). Please use your phone number and device.", 
     },
 
     LaunchDocumentCaptureScreen : {
-        capture_nid : "Chụp ảnh CMND/CCCD", //not
-        choose_place : "Chọn nơi đủ ánh sáng và đưa CMND/CCCD trong khung hình", //not
-        capture_front : "Chụp ảnh mặt trước", //not
-        capture_back : "Chụp ảnh mặt sau", //not
-        Unsatisfactory_picture: "Hình ảnh không đạt yêu cầu", //not
+        capture_nid : "Take photo of ID", 
+        choose_place : "Choose a well-lit place and put your ID in the frame",
+        capture_front : "Front ID Card capture", 
+        capture_back : "Back ID Card capture", 
+        Unsatisfactory_picture: "Unsatisfactory picture", 
     },
 
     showAllTenor : {
@@ -82,19 +82,19 @@ lang = {
         conversion_fee : "Conversion fee:",
         payment_time : "Payment duration:",
         payment_type : "days",
-        show_more : "Hiển thị thêm", //not
+        show_more : "Show more", 
     },
 
     deleteImage : {
-        delete_img_success : "Xóa ảnh selfie thành công !", //not
-        not_found_img : "Không tìm thấy ảnh để xóa !", //not
-        delete_front_img : "Xóa mặt trước selfie thành công !", //not
-        delete_back_img : "Xóa mặt sau selfie thành công !", //not
+        delete_img_success : "Delete selfie photo successfully!",
+        not_found_img : "No photos found to delete!",
+        delete_front_img : "Delete the front of ID successfully!",
+        delete_back_img : "Delete the back of ID successfully!", 
     },
 
     onHandleChangeDataCity : {
-        input_district : "Vui lòng nhập quận, huyện", //not
-        input_city : "Vui lòng nhập thành phố, tỉnh", //not
+        input_district : "Please enter district", 
+        input_city : "Please enter city, province", 
     },
 
     showDataInform : {
@@ -102,44 +102,44 @@ lang = {
         fill_fields_below : "Please complete the following fields",
         info : "Personal information",
         info_name : "Full name",
-        input_name : "Vui lòng nhập họ và tên", //not
+        input_name : "Please enter first and last name", 
         info_phone : "Phone number",
-        input_phone : "Vui lòng nhập số điện thoại", //not
+        input_phone : "Please enter phone number", 
         info_birth : "Date of birth",
         info_gender : "Gender",
-        choose_gender : "Chọn giới tính", //not
-        gender_man : "Nam", //not
-        gender_woman : "Nữ", //not
+        choose_gender : "Select gender", 
+        gender_man : "Male", 
+        gender_woman : "Female", 
         nid : "ID number",
         input_nid : "Please enter national ID number",
         doi : "Date of issue",
         doe : "Date of expiry",
         cur_address : "Current Address",
         city : "City/Province",
-        choose_city : "Chọn thành phố/tỉnh", //not
+        choose_city : "Select city/province",
         district : "District",
-        choose_district : "Chọn quận/huyện", //not
+        choose_district : "Select district", 
         wards : "Ward",
-        choose_wards : "Chọn phường/xã", //not
-        input_wards : "Vui lòng nhập phường, xã", //not
+        choose_wards : "Select ward, commune", 
+        input_wards : "Please enter ward, commune", 
         street : "Street",
-        input_street : "Vui lòng nhập đường", //not
-        res_address : "Địa chỉ tạm trú", //not
+        input_street : "Please enter the street",   
+        res_address : "Temporary residence address",
         reference_info : "Reference information",
         relationship : "Relationship",
-        input_relation : "Vui lòng nhập mối quan hệ", //not
+        input_relation : "Please enter relationship",
         info_name_ref : "Full name",
-        input_name_ref : "Vui lòng nhập họ và tên", //not
+        input_name_ref : "Please enter first and last name",
         info_phone_ref : "Phone number",
-        input_phone_ref : "Vui lòng nhập Số điện thoại", //not
+        input_phone_ref : "Please enter phone number",
         capture_selfie : "Take a selfie",
         error_phone : "Invalid phone number",
-        error_nid : "CMND/CCCD không hợp lệ", //not
-        error_same_phone : "Số điện thoại tham chiếu trùng số điện thoại đăng ký", //not
+        error_nid : "Invalid ID",
+        error_same_phone : "The reference phone number is the same as the registered phone number", 
     },
 
     showConfirmDataInform : {
-        check_info : "Đối soát thông tin", //not
+        check_info : "Review information",
         confirm_info : "Please review and confirm the information below",
         button_back : "Back",
         button_confirm : "Confirm",
@@ -149,7 +149,7 @@ lang = {
         phone_number : "Phone number",
         input_phone_null : "Please enter your mobile number",
         error_phone : "Invalid phone number",
-        input_phone : "Vui lòng nhập số điện thoại", //not
+        input_phone : "Please enter phone number",
     },
 
     forgotPinNid : {
@@ -158,12 +158,12 @@ lang = {
         input_nid : "Please enter national ID number",
         error_OTP : "OTP is incorrect",
         error_acc : "Account does not exist. Please sign up!",
-        error_nid_retype : "Số CMND/CCCD không đúng. Vui lòng nhập số khác.", //not
+        error_nid_retype : "ID is incorrect. Please enter another number.",
     },
 
     showFormPincode : {
         pin_input : "Enter PIN Code",
-        pls_payment : "Vui lòng nhập mã PIN để thanh toán", //not
+        pls_payment : "Please enter PIN code to confirm your payment", 
         pin : "PIN Code",
         pin_verify_info : "Please enter PIN code to confirm your payment",
         pin_verify_payment : "Please enter PIN code to confirm your payment",
@@ -171,22 +171,22 @@ lang = {
         click : "Click here",
         error_input_pin : "Please enter PIN Code",
         error_phone : "Invalid phone number",
-        error_incorrect_pin : "Mã PIN không chính xác", //not
-        error_incorrect_pin_5 : "Mã PIN không chính xác (5/5).</br>Tài khoản của bạn đã bị khóa, thử lại sau 60 phút.", //not
+        error_incorrect_pin : "Incorrect PIN code", 
+        error_incorrect_pin_5 : "PIN is incorrect (5/5).  Please try again after 60 minutes.", 
     },
 
     showFormSetupPin : {
         setup_pin : "Set up PIN Code",
         retype_pin : "Retype PIN Code",
-        notification_success : "Thành công", //not
-        send_info : "Đã gửi thông tin thành công", //not
-        notification_unsuccess : "Không thành công", //not
-        error_send_info : "Lỗi gửi thông tin, vui lòng thử lại!", //not
+        notification_success : "Successful", 
+        send_info : "Information sent successfully",
+        notification_unsuccess : "Unsuccessful", 
+        error_send_info : "Error sending information, please try again!", 
         pin_notmatch : "PIN code does not match",
     },
 
     resendOTP : {
-        OTP : "Mã OTP của bạn là: ", //not
+        OTP : "Your OTP code is: ", 
     },
 
     showFormVerifyOTP : {
@@ -207,7 +207,7 @@ lang = {
 
     customerInfo : {
         congatulation : "Congratulations! You are qualified to complete this order with current credit limit.",
-        unfortunately : "Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.", //not
+        unfortunately : "Unfortunately, with this credit you are not eligible to complete the order.",
         limit_credit : "Your available credit limit: ", 
     },
 
@@ -229,7 +229,7 @@ lang = {
         buy_fail : "Your order is unsuccessful!",
         payment_code : "Payment code: ",
         call_switchboard : "Please try again or contact <b>1900636574</b> for support.",
-        button_retry : "Thử lại", //not
+        button_retry : "Retry",
         callback : `Click <a class="ahref" href="${DOMAIN}" style='width:auto'>here</a> go to homepage. <span>Automatically back to homepage after <c class='coutdown'>5</c>s.</span>`
     },
 
@@ -238,13 +238,13 @@ lang = {
     },
 
     showUseGuideNid : {
-        guide_take_nid : "Hướng dẫn chụp ảnh CMND/CCCD", //not
+        guide_take_nid : "Instructions for taking photos of ID",
     },
 
     showUseGuideBackNid : {
-        capture_front_success : "Chụp ảnh mặt trước thành công", //not
-        back_card_continue : "Lật mặt sau của card để tiếp tục chụp ảnh", //not
-        button_start : "Bắt đầu", //not
+        capture_front_success : "Successful front-facing pictures shoot",
+        back_card_continue : "Flip the back of the card to continue taking pictures",
+        button_start : "Start", 
     },
 
     checkPhoneValidate : {
@@ -252,11 +252,11 @@ lang = {
     },
 
     checkNidValidate : {
-        error_nid : "Chứng minh nhân dân không hợp lệ", //not
+        error_nid : "Invalid ID", 
     },
 
     checkPinValidate : {
-        error_pin : "Mã Pin không hợp lệ", //not
+        error_pin : "Invalid PIN", 
     },
 
     onChangeValidation : {
@@ -274,27 +274,31 @@ lang = {
     showPopupMessage : {
         button_ok : "OK",
     },
-    //not
+    
     useguidehtml : {
         guide_capture_selfie : "How to capture:",
-        none : "Không nên", 
-        pls_selfie_rules : "Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong>",
-        pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
-        good : "Tốt lắm",
-        proceed_portrait : "Chúng tôi sẽ tiến hành chụp ảnh chân dung của bạn",
-        button_skip : "Bỏ qua >",
-        button_start : "Bắt đầu",
+        none : "Shouldn't", 
+        pls_selfie_rules : "Please <strong>DO NOT wear hats, glasses, masks</strong>",
+        pls_choose_place : "Please <strong>choose a place with enough light</strong> to take pictures",
+        good : "Very well",
+        proceed_portrait : "We will proceed to take your portrait",
+        button_skip : "Skip >",
+        button_start : "Start",
     },
-    //not
+    
     useguidenidhtml : {
         guide_capture_selfie : "How to capture:",
-        none : "Không nên",
-        pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
-        hold_clamp_nid : "Vui lòng <strong>KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ</strong>",
-        done : "Nên",
-        place_nid : "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng.",
-        show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
-        button_skip : "Bỏ qua >",
-        button_start : "Bắt đầu",
-    }       
+        none : "Shouldn't",
+        pls_choose_place : "Please <strong>choose a place with enough light</strong> to take pictures",
+        hold_clamp_nid : "Please <strong>DO NOT hold your CCCD card, or clip the corners of it</strong>",
+        done : "Should",
+        place_nid : "Place your ID on a flat table.",
+        show_4_corners : "Show all 4 corners of your card",
+        button_skip : "Skip >",
+        button_start : "Start",
+    },
+    
+    indexhtml : {
+        waiting : "Please wait few second...",
+    }
 };
