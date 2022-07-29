@@ -275,7 +275,7 @@ lang = {
         button_ok : "OK",
     },
 
-    useguide.html : {
+    useguidehtml : {
         guide_capture_selfie : "Hướng dẫn <br/>chụp ảnh chân dung",
         none : "Không nên",
         pls_selfie_rules : "Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong>",
@@ -286,7 +286,7 @@ lang = {
         button_start : "Bắt đầu",
     },
 
-    useguidenid.html : {
+    useguidenidhtml : {
         guide_capture_selfie : "Hướng dẫn <br/>chụp ảnh chân dung",
         none : "Không nên",
         pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
@@ -296,5 +296,5 @@ lang = {
         show_4_corners : "Hiển thị tất cả 4 góc của thẻ của bạn",
         button_skip : "Bỏ qua >",
         button_start : "Bắt đầu",
-    }      
+    }
 };
