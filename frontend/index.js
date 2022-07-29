@@ -2005,7 +2005,7 @@ function resendOTP(phone, screen) {
             console.log(lang.resendOTP.OTP + otp.otp);
         }
     }
-    timer(60);
+    timer(5);
 }
 
 // Done +++
@@ -2038,7 +2038,7 @@ function showFormVerifyOTP(element, phone, otp, screen) {
                 </div>`;
     $(element).append(html);
     $('body').addClass('pinalert');
-    timer(60);
+    timer(5);
     resetTimer();
 
     var btnSubmitVerifyOTP = document.querySelector('#btnSubmitVerifyOTP');

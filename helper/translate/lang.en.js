@@ -275,7 +275,7 @@ lang = {
         button_ok : "OK",
     },
     //not
-    useguide.html : {
+    useguide : {
         guide_capture_selfie : "How to capture:",
         none : "Không nên", 
         pls_selfie_rules : "Vui lòng <strong>KHÔNG đội nón, đeo kính, khẩu trang</strong>",
@@ -286,7 +286,7 @@ lang = {
         button_start : "Bắt đầu",
     },
     //not
-    useguidenid.html : {
+    useguidenid : {
         guide_capture_selfie : "How to capture:",
         none : "Không nên",
         pls_choose_place : "Vui lòng <strong>chọn nơi có đủ ánh sáng</strong> để chụp ảnh",
