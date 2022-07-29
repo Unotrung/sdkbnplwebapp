@@ -1718,13 +1718,8 @@ function showFormPincode(element, phone, screen) {
                                     <span class='error_message error_message_pin'></span>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <button type='button' id='btnSubmitPin' class='payment-button medium'>${lang.showUICheckPhone.button_next}</button>
                             <p style='text-align: center;' class='txt-note'>${lang.showFormPincode.forgot_pin}<a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>${lang.showFormPincode.click}</a></p>
-=======
-                            <button type='button' id='btnSubmitPin' class='payment-button medium'>Tiếp tục</button>
-                            <p style='text-align: center;' class='txt-note'>Quên mã PIN? <a class="ahref" onclick='forgotPinPhone("${element}","${phone}")' style='width:auto'>Nhấn vào đây</a></p>
->>>>>>> 7181d71 (Update 16:15 25/07/2022)
                     </form>
                 </div>`;
     $(element).html(html);
