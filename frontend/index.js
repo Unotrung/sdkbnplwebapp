@@ -159,7 +159,7 @@ function showUICheckNid(element) {
                 </form>`;
     $(element).html(html);
 
-    pageTitle(element, "<h4 class='pageTitle'>"+lang.showUICheckNid.capture_selfie+"</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>" + lang.showUICheckNid.capture_selfie + "</h4>");
     $(window).scrollTop(0);
 
     $('#callHP').click(function () {
@@ -270,7 +270,7 @@ function captureNidFrontAndBack(element) {
     disableEnterKey();
 
     showProcessPipeline(1, true, 'captureNid');
-    pageTitle(element, "<h4 class='pageTitle'>"+lang.captureNidFrontAndBack.capture_nid+"</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>" + lang.captureNidFrontAndBack.capture_nid + "</h4>");
     $(window).scrollTop(0);
 
     $('#front_image').click(function () {
@@ -412,7 +412,7 @@ function cutStringData(infomation) {
                             sessionStorage.removeItem('front-image');
                             $("#btnCaptureFront").attr("style", "background-image: url(./assets/img/camera.png) center no-repeat");
                             $("#btnCaptureFront").removeClass("showImage");
-                            if(showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)){
+                            if (showPopupMessage(lang.cutStringData.notification, lang.cutStringData.error_nid_front)) {
                                 runDocumentCaptureScreen('FRONT');
                             }
                             close_popup();
@@ -1071,7 +1071,7 @@ function showDataInform(element, personal) {
 
     //show progress bar
     showProcessPipeline(1, true, "showDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.capture_selfie+"</h4>", 'non-pageTitle');
+    pageTitle(element, "<h4 class='pageTitle'>" + lang.showDataInform.capture_selfie + "</h4>", 'non-pageTitle');
     close_popup();
 
     /* fix error safari input[type=date] - by UNO 19/07 */
@@ -1401,7 +1401,7 @@ function showConfirmDataInform(element, personal_all_infoConfirm) {
                 </div> `;
     $(element).html(html);
     showProcessPipeline(1, true, "showConfirmDataInform");
-    pageTitle(element, "<h4 class='pageTitle'>"+lang.showDataInform.input_info+"</h4>");
+    pageTitle(element, "<h4 class='pageTitle'>" + lang.showDataInform.input_info + "</h4>");
     $(window).scrollTop(0);
 
     let personal_all_info = {
@@ -1850,7 +1850,7 @@ function showFormSetupPin(element, screen, token) {
         showProcessPipeline(2, true);
     }
 
-    pageTitle(element, '<h4 class="pageTitle">'+lang.showFormSetupPin.setup_pin+'</h4>', 'non-pageTitle');
+    pageTitle(element, '<h4 class="pageTitle">' + lang.showFormSetupPin.setup_pin + '</h4>', 'non-pageTitle');
     $(window).scrollTop(0);
 
     let iPut1, iPut2 = false;
@@ -2400,7 +2400,7 @@ function messageScreen(element, config) {
         html = `<div class='box showMessage box-mobile formValue-mt-315'>
                     <div class='paragraph-text text-center margin-bottom-default'>
                         <div class='ico-unsuccess ico-150'></div>
-                        <h3>${lang.messageScreen,registered_unsuccess}</h3>
+                        <h3>${lang.messageScreen, registered_unsuccess}</h3>
                         <p style='text-align: center;' class='text-message'>
                             ${lang.messageScreen.callback}
                         </p>
