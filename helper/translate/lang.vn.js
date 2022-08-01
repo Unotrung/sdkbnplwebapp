@@ -305,9 +305,8 @@ lang = {
     capture: " để chụp ảnh",
     hold_clamp_nid: "KHÔNG giữ thẻ CCCD của bạn, hoặc kẹp các góc của thẻ",
     done: "Nên",
-    place_nid: "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng."
+    place_nid: "Đặt thẻ CMND/ CCCD của bạn trên bàn phẳng.",
     show_4_corners: "Hiển thị tất cả 4 góc của thẻ của bạn",
     button_skip: "Bỏ qua >",
     button_start: "Bắt đầu",
-
 };
