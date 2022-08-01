@@ -27,7 +27,7 @@ function showMessage(element, message, icon) {
                         <p style='text-align: center;'>
                             ${lang.showMessage.callback}
                         </p>
-                    </div> 
+                    </div>
                 </div> `;
     $(element).html(html);
 }
@@ -113,7 +113,6 @@ var PincodeInput = function () {
         }, e
     }()
 }();
-
 
 // Done +++
 function close_popup() {

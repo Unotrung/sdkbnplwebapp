@@ -99,3 +99,38 @@ function checkAllDataSame(data) {
     }
     return true;
 }
+
+// Done +++
+function debounce(fn, delay) {
+    delay = delay || 0;
+    let timerId;
+    return () => {
+        if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+        }
+        timerId = setTimeout(() => {
+            fn();
+        }, delay);
+    }
+}
+
+// Done +++
+function throttle(fn, delay) {
+    delay = delay || 0;
+    let last = 0;
+    return () => {
+        const now = new Date().getTime();
+        if (now - last < delay) {
+            return;
+        }
+        last = now;
+        fn();
+    }
+}
+
+// Done +++
+function handlePaste(e) {
+    const paste = e.clipboardData.getData('text');
+    inputs.foreach((input) => { input.value = paste[i] || '' });
+}
