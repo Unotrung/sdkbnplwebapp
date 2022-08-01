@@ -208,7 +208,8 @@ lang = {
     customerInfo : {
         congatulation : "Congratulations! You are qualified to complete this order with current credit limit.",
         unfortunately : "Unfortunately, with this credit you are not eligible to complete the order.",
-        limit_credit : "Your available credit limit: ", 
+        limit_credit : "Your available credit limit: ",
+        yeah : "yeah!",
     },
 
     showProcessPipeline : {

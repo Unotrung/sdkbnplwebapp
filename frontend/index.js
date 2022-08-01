@@ -2277,7 +2277,7 @@ function customerInfo(element, status = true) {
                     <div id="customerInfo">
                         <div class="avatar"><img src="${customer.avatar}" /></div>
                         <div class='detail'>
-                            <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>ơi!</c></h3>
+                            <h3 style="font-weight:700;font-size:20px;">${customer.name}, <c>${lang.customerInfo.yeah}</c></h3>
                             <p class='limit-text'>${lang.customerInfo.limit_credit}<span class='limit-number'>${formatCurrency(customer.limit * 1)}</span></p>
                             ${strStatus}
                         </div>

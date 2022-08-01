@@ -209,6 +209,7 @@ lang = {
         congatulation : "Chúc mừng bạn, với hạn mức tín dụng này bạn đủ điều kiện để hoàn tất đơn hàng.",
         unfortunately : "Rất tiếc, với hạn mức tín dụng này bạn không đủ điều kiện để hoàn tất đơn hàng.",
         limit_credit : "Hạn mức tín dụng của bạn là : ",
+        yeah : "ơi!",
     },
 
     showProcessPipeline : {
